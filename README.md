@@ -1,4 +1,4 @@
-chocolate_duke3D
+Chocolate Duke3D
 ================
 
 Chocolate Duke Nukem 3D is the equivalent of Chocolate Doom:
