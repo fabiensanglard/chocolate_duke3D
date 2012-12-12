@@ -2267,11 +2267,27 @@ void limitrate(void)
 } /* limitrate */
 
 
+
+
+
+
+
 //-------------------------------------------------------------------------------------------------
 //  TIMER
 //=================================================================================================
 
-// FIX_00007: game speed corrected. The game speed is now as the real 
+/*
+ FCS: The timer section sadly uses Native high precision calls to implement timer functions.
+ QueryPerformanceFrequency and QueryPerformanceCounter
+ it seems SDL precision was not good enough (or rather using unaccurate OS functions) to replicate
+ a DOS timer.
+ */
+
+int TIMER_GetPlatformTicksInOneSecond(int64_t* t);
+void TIMER_GetPlatformTicks(int64_t* t);
+
+
+// FIX_00007: game speed corrected. The game speed is now as the real
 // DOS duke3d. Unloading a full 200 bullet pistol must take 45.1 sec.
 // SDL timer was not fast/accurate enough and was slowing down the gameplay,
 // so bad
@@ -2298,33 +2314,39 @@ void (*installusertimercallback(void (*callback)(void)))(void)
 }
 
 
-//
-// inittimer() -- initialise timer
-//
+/*
+ inittimer() -- initialise timer
+ FCS: The tickspersecond parameter is a ratio value that helps replicating
+      oldschool DOS tick per seconds.
+ 
+      The way the timer work is:
+      float newSystemTickPerSecond = [0,1]
+      tickPerSecond on a DOS system = tickspersecond * newSystemTickPerSecond ;
+*/
+
 int inittimer(int tickspersecond)
 {
 	int64 t;
 	
-    /*
+    
 	if (timerfreq) return 0;	// already installed
 
-	printf("Initialising timer\n");
+	printf("Initialising timer, with tickPerSecond=%d\n",tickspersecond);
 
 	// OpenWatcom seems to want us to query the value into a local variable
 	// instead of the global 'timerfreq' or else it gets pissed with an
 	// access violation
-	if (!QueryPerformanceFrequency((LARGE_INTEGER*)&t)) {
+	if (!TIMER_GetPlatformTicksInOneSecond(&t)) {
 		printf("Failed fetching timer frequency\n");
 		return -1;
 	}
 	timerfreq = t;
 	timerticspersec = tickspersecond;
-	QueryPerformanceCounter((LARGE_INTEGER*)&t);
+	TIMER_GetPlatformTicks(&t);
 	timerlastsample = (long)(t*timerticspersec / timerfreq);
 
 	usertimercallback = NULL;
-    */
-    printf("FCS: Fix the timer.\n");
+    
 	return 0;
 }
 
@@ -2349,8 +2371,8 @@ void sampletimer(void)
 	
 	if (!timerfreq) return;
 
-	//QueryPerformanceCounter((LARGE_INTEGER*)&i);
-    printf("FCS: Fix the timer.\n");
+	TIMER_GetPlatformTicks(&i);
+    
     
 	n = (long)(i*timerticspersec / timerfreq) - timerlastsample;
 	if (n>0) {
@@ -2362,14 +2384,14 @@ void sampletimer(void)
 }
 
 
-//
-// getticks() -- returns the windows ticks count
-//
+/*
+   getticks() -- returns the windows ticks count
+   FCS: This seeems to be only used in the multiplayer code
+*/
 unsigned long getticks(void)
 {
 	int64 i;
-	//QueryPerformanceCounter((LARGE_INTEGER*)&i);
-    printf("FCS: Fix the timer.\n");
+	TIMER_GetPlatformTicks(&i);
 	return (unsigned long)(i*(long long)(1000)/timerfreq);
 }
 
@@ -2430,5 +2452,30 @@ void uninitkeys(void)
 //    return(SDL_GetTicks());
 //} /* getticks */
 
+
+#if PLATFORM_WIN32
+
+int TIMER_GetPlatformTicksInOneSecond(int64_t* t);
+{
+    QueryPerformanceFrequency((LARGE_INTEGER*)t);
+    return 1;
+}
+
+void TIMER_GetPlatformTicks(int64_t* t){
+    QueryPerformanceCounter((LARGE_INTEGER*)t);
+}
+#else
+//FCS: Let's try to use SDL again: Maybe SDL library is accurate enough now.
+int TIMER_GetPlatformTicksInOneSecond(int64_t* t)
+{
+    *t = 1000;
+    return 1;
+}
+    
+void TIMER_GetPlatformTicks(int64_t* t)
+{
+    *t = SDL_GetTicks();
+}
+#endif
 /* end of sdl_driver.c ... */
 

@@ -24,6 +24,9 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 */
 //-------------------------------------------------------------------------
 
+#ifndef FUNCT_H
+#define FUNCT_H
+
 extern void sendscore(char *s);
 //#line "sounds.c" 25
 extern void SoundStartup(void );
@@ -586,3 +589,4 @@ extern void moveactors(void );
 //#line "actors.c" 6005
 extern void moveexplosions(void );
 
+#endif
