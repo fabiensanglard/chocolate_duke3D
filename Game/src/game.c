@@ -24,7 +24,10 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 */
 //-------------------------------------------------------------------------
 
-#include <windows.h>
+#ifdef _WIN32
+  #include <windows.h>
+#endif
+
 #include "types.h"
 
 #include "develop.h"
@@ -37,7 +40,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 #include "control.h"
 #include "sounds.h"
 #include "config.h"
-#include "audiolib\sndcards.h"
+#include "audiolib/sndcards.h"
 
 #include "duke3d.h"
 
@@ -8038,23 +8041,18 @@ void copyprotect(void)
     }
 }
 
+#ifdef _WIN32
 
-static int load_duke3d_groupfile(void)
+void findGRPToUse(char* game_dir,char* baseDir,char* groupfilefullpath)
 {
-	// FIX_00032: Added multi base GRP manager. Use duke3d*.grp to handle multiple grp.
-    char groupfile[9][512];
-	char groupfilefullpath[512];
-	int kbdKey, i = 0;
-
-	char *baseDir="duke3d*.grp";
-	WIN32_FIND_DATA FindFileData;
+    WIN32_FIND_DATA FindFileData;
 	HANDLE hFind =  INVALID_HANDLE_VALUE;
-
+    
 	if(game_dir[0] != '\0')
 	{
 		sprintf(groupfilefullpath, "%s\\%s", game_dir, baseDir);
 		hFind = FindFirstFile(groupfilefullpath, &FindFileData);
-		if (hFind == INVALID_HANDLE_VALUE) 
+		if (hFind == INVALID_HANDLE_VALUE)
 		{
 			sprintf(groupfilefullpath, "%s", baseDir);
 		}
@@ -8062,21 +8060,21 @@ static int load_duke3d_groupfile(void)
 			FindClose(hFind);
 	}
 	else
-		sprintf(groupfilefullpath, "%s", baseDir);		
-
+		sprintf(groupfilefullpath, "%s", baseDir);
+    
 	printf("Searching duke3d*.grp:\n\n");
 	hFind = FindFirstFile(groupfilefullpath,&FindFileData);
-
-	if ( hFind==INVALID_HANDLE_VALUE ) 
+    
+	if ( hFind==INVALID_HANDLE_VALUE )
 		Error(EXIT_SUCCESS, "Can't find %s\n", groupfilefullpath);
- 
-	do 
+    
+	do
 	{
 		i++;
 		sprintf(groupfile[i-1], "%s", FindFileData.cFileName);
 		printf("Found GRP #%d:\t%d Bytes\t %s \n", i, FindFileData.nFileSizeLow, groupfile[i-1]);
 	} while ( FindNextFile(hFind, &FindFileData) && i < 9 );
-
+    
 	if(i==1)
 		sprintf(groupfilefullpath, "%s", groupfile[0]);
 	else
@@ -8090,6 +8088,31 @@ static int load_duke3d_groupfile(void)
 	}
 	
 	FindClose(hFind);
+}
+
+#else
+
+void findGRPToUse(char* game_dir,char* baseDir,char* groupfilefullpath){
+    
+    char *grpName="DUKE3D.GRP";
+    sprintf(groupfilefullpath, "%s\\%s", game_dir, grpName);
+    printf("The ONLY GRP location for this port is '%s'.\n",groupfilefullpath);
+}
+
+#endif
+
+static int load_duke3d_groupfile(void)
+{
+	// FIX_00032: Added multi base GRP manager. Use duke3d*.grp to handle multiple grp.
+    char groupfile[9][512];
+	char groupfilefullpath[512];
+	int kbdKey, i = 0;
+
+	char *baseDir="duke3d*.grp";
+    
+    
+    findGRPToUse(game_dir,baseDir,groupfilefullpath);
+	
 
 	FixFilePath(groupfilefullpath);
 

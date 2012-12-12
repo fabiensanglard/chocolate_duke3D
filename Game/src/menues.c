@@ -175,7 +175,7 @@ void getangplayers(short snum)
     }
 }
 
-static int loadpheader(char spot,int32 *vn,int32 *ln,int32 *psk,int32 *nump)
+int loadpheader(char spot,int32 *vn,int32 *ln,int32 *psk,int32 *nump)
 {
 
      long i;

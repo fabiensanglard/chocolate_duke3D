@@ -346,7 +346,7 @@ long getanimationgoal(long *animptr)
 	return(j);
 }
 
-static long setanimation(short animsect,long *animptr, long thegoal, long thevel)
+long setanimation(short animsect,long *animptr, long thegoal, long thevel)
 {
 	long i, j;
 

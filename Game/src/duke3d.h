@@ -64,6 +64,10 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 #include "dukeunix.h"
 #endif
 
+#if PLATFORM_MACOSX
+#include "dukeunix.h"
+#endif
+
 #if PLATFORM_WIN32
 #include "dukewin.h"
 #endif

@@ -47,9 +47,6 @@
 		2D7B627F16788F9B00E35E54 /* scriplib.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B626516788F9B00E35E54 /* scriplib.c */; };
 		2D7B628016788F9B00E35E54 /* sector.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B626716788F9B00E35E54 /* sector.c */; };
 		2D7B628116788F9B00E35E54 /* sounds.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B626A16788F9B00E35E54 /* sounds.c */; };
-		2D7B62DB1678902400E35E54 /* fx_man.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B629F1678902400E35E54 /* fx_man.c */; };
-		2D7B62F91678908300E35E54 /* task_man.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62F71678908300E35E54 /* task_man.c */; };
-		2D7B62FC1678909C00E35E54 /* music.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62FA1678909C00E35E54 /* music.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -164,12 +161,7 @@
 		2D7B626B16788F9B00E35E54 /* sounds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sounds.h; path = ../../Game/src/sounds.h; sourceTree = "<group>"; };
 		2D7B626C16788F9B00E35E54 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = types.h; path = ../../Game/src/types.h; sourceTree = "<group>"; };
 		2D7B626D16788F9B00E35E54 /* util_lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = util_lib.h; path = ../../Game/src/util_lib.h; sourceTree = "<group>"; };
-		2D7B629F1678902400E35E54 /* fx_man.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fx_man.c; sourceTree = "<group>"; };
-		2D7B62A01678902400E35E54 /* fx_man.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fx_man.h; sourceTree = "<group>"; };
-		2D7B62F71678908300E35E54 /* task_man.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = task_man.c; sourceTree = "<group>"; };
-		2D7B62F81678908300E35E54 /* task_man.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = task_man.h; sourceTree = "<group>"; };
-		2D7B62FA1678909C00E35E54 /* music.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = music.c; sourceTree = "<group>"; };
-		2D7B62FB1678909C00E35E54 /* music.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = music.h; sourceTree = "<group>"; };
+		2D7B62FD167905C400E35E54 /* dukeunix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = dukeunix.h; path = ../../Game/src/dukeunix.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -285,7 +277,6 @@
 		2D7B623916788F7900E35E54 /* Game */ = {
 			isa = PBXGroup;
 			children = (
-				2D7B62851678902400E35E54 /* audiolib */,
 				2D7B623A16788F9B00E35E54 /* _functio.h */,
 				2D7B623B16788F9B00E35E54 /* _rts.h */,
 				2D7B623C16788F9B00E35E54 /* actors.c */,
@@ -333,6 +324,7 @@
 				2D7B626B16788F9B00E35E54 /* sounds.h */,
 				2D7B626C16788F9B00E35E54 /* types.h */,
 				2D7B626D16788F9B00E35E54 /* util_lib.h */,
+				2D7B62FD167905C400E35E54 /* dukeunix.h */,
 			);
 			name = Game;
 			sourceTree = "<group>";
@@ -348,20 +340,6 @@
 			);
 			name = midi;
 			path = ../../Game/src/midi;
-			sourceTree = "<group>";
-		};
-		2D7B62851678902400E35E54 /* audiolib */ = {
-			isa = PBXGroup;
-			children = (
-				2D7B62FA1678909C00E35E54 /* music.c */,
-				2D7B62FB1678909C00E35E54 /* music.h */,
-				2D7B62F71678908300E35E54 /* task_man.c */,
-				2D7B62F81678908300E35E54 /* task_man.h */,
-				2D7B629F1678902400E35E54 /* fx_man.c */,
-				2D7B62A01678902400E35E54 /* fx_man.h */,
-			);
-			name = audiolib;
-			path = ../../Game/src/audiolib;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -452,9 +430,6 @@
 				2D7B627F16788F9B00E35E54 /* scriplib.c in Sources */,
 				2D7B628016788F9B00E35E54 /* sector.c in Sources */,
 				2D7B628116788F9B00E35E54 /* sounds.c in Sources */,
-				2D7B62DB1678902400E35E54 /* fx_man.c in Sources */,
-				2D7B62F91678908300E35E54 /* task_man.c in Sources */,
-				2D7B62FC1678909C00E35E54 /* music.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
