@@ -188,7 +188,12 @@ long prevlineasm1(long i1, long i2, long i3, long i4, long i5, long i6)
     if (i3 == 0)
     {
 	    i1 += i4;
-	    ((unsigned long)i4) >>= mach3_al;
+        
+        //((unsigned long)i4) >>= mach3_al;
+        unsigned long tmp = i4;
+	    tmp >>= mach3_al;
+        i4 = tmp;
+        
 	    i4 = (i4&0xffffff00) | (source[i4]&0xff);
 	    *dest = ((unsigned char*)i2)[i4];
 	    return i1;

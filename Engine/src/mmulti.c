@@ -13,7 +13,12 @@
 #include <time.h>
 
 #include "mmulti_unstable.h"
-#include <enet.h>
+
+#if defined(__APPLE__)
+   #include "enet/include/enet.h"
+#else
+   #include <enet.h>
+#endif
 
 //STL
 //#include <vector>

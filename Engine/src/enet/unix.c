@@ -15,7 +15,11 @@
 #include <time.h>
 
 #define ENET_BUILDING_LIB 1
-#include "enet/enet.h"
+#if defined (__APPLE__)
+  #include "include/enet.h"
+#else
+  #include "enet/enet.h"
+#endif
 
 #ifdef HAS_FCNTL
 #include <fcntl.h>

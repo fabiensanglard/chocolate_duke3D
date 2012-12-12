@@ -29,7 +29,12 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
+#include "platform.h"
+#if !PLATFORM_MACOSX
 #include <malloc.h>
+#endif
+
 
 #include <fcntl.h>
 #include <time.h>
@@ -148,7 +153,7 @@ struct player_struct;
 #include "keyboard.h"
 #include "util_lib.h"
 #include "function.h"
-#include "audiolib\fx_man.h"
+#include "audiolib/fx_man.h"
 #include "config.h"
 #include "sounds.h"
 #include "control.h"
@@ -157,10 +162,10 @@ struct player_struct;
 #include "soundefs.h"
 
 #if PLATFORM_DOS
-#include "audiolib\task_man.h"
-#include "audiolib\sndcards.h"
+#include "audiolib/task_man.h"
+#include "audiolib/sndcards.h"
 #endif
-#include "audiolib\music.h"
+#include "audiolib/music.h"
 
 #include "names.h"
 

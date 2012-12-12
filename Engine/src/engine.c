@@ -14,9 +14,7 @@
 
 #include <string.h>
 
-#if !PLATFORM_MACOSX
-#include <malloc.h>
-#endif
+
 
 #include <math.h>
 #include <stdio.h>
@@ -32,6 +30,10 @@
 #include "pragmas.h"
 
 #include "platform.h"
+
+#if !PLATFORM_MACOSX
+#include <malloc.h>
+#endif
 
 #include "build.h"
 #include "cache1d.h"

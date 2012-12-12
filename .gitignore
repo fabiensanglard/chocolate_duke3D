@@ -2,3 +2,7 @@
 *.suo
 _UpgradeReport_Files
 UpgradeLog.*
+DerivedData
+.xcuserstate
+*.xcuserdatad
+.DS_Store

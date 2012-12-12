@@ -2305,6 +2305,7 @@ int inittimer(int tickspersecond)
 {
 	int64 t;
 	
+    /*
 	if (timerfreq) return 0;	// already installed
 
 	printf("Initialising timer\n");
@@ -2322,7 +2323,8 @@ int inittimer(int tickspersecond)
 	timerlastsample = (long)(t*timerticspersec / timerfreq);
 
 	usertimercallback = NULL;
-
+    */
+    printf("FCS: Fix the timer.\n");
 	return 0;
 }
 
@@ -2347,7 +2349,9 @@ void sampletimer(void)
 	
 	if (!timerfreq) return;
 
-	QueryPerformanceCounter((LARGE_INTEGER*)&i);
+	//QueryPerformanceCounter((LARGE_INTEGER*)&i);
+    printf("FCS: Fix the timer.\n");
+    
 	n = (long)(i*timerticspersec / timerfreq) - timerlastsample;
 	if (n>0) {
 		totalclock += n;
@@ -2364,7 +2368,8 @@ void sampletimer(void)
 unsigned long getticks(void)
 {
 	int64 i;
-	QueryPerformanceCounter((LARGE_INTEGER*)&i);
+	//QueryPerformanceCounter((LARGE_INTEGER*)&i);
+    printf("FCS: Fix the timer.\n");
 	return (unsigned long)(i*(long long)(1000)/timerfreq);
 }
 

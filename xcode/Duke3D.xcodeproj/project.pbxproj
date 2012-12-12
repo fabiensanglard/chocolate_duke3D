@@ -6,6 +6,52 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		2D7B621D1678885A00E35E54 /* a.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B61F11678885A00E35E54 /* a.c */; };
+		2D7B621E1678885A00E35E54 /* cache1d.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B61F41678885A00E35E54 /* cache1d.c */; };
+		2D7B621F1678885A00E35E54 /* host.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B61FA1678885A00E35E54 /* host.c */; };
+		2D7B62201678885A00E35E54 /* list.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62061678885A00E35E54 /* list.c */; };
+		2D7B62211678885A00E35E54 /* memory.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62071678885A00E35E54 /* memory.c */; };
+		2D7B62221678885A00E35E54 /* packet.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62081678885A00E35E54 /* packet.c */; };
+		2D7B62231678885A00E35E54 /* peer.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62091678885A00E35E54 /* peer.c */; };
+		2D7B62241678885A00E35E54 /* protocol.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B620A1678885A00E35E54 /* protocol.c */; };
+		2D7B62251678885A00E35E54 /* unix.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B620D1678885A00E35E54 /* unix.c */; };
+		2D7B62261678885A00E35E54 /* win32.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B620E1678885A00E35E54 /* win32.c */; };
+		2D7B62271678885A00E35E54 /* engine.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62101678885A00E35E54 /* engine.c */; };
+		2D7B62281678885A00E35E54 /* mmulti_stable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62131678885A00E35E54 /* mmulti_stable.cpp */; };
+		2D7B62291678885A00E35E54 /* mmulti.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62161678885A00E35E54 /* mmulti.c */; };
+		2D7B622A1678885A00E35E54 /* mmulti.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62171678885A00E35E54 /* mmulti.cpp */; };
+		2D7B622B1678885A00E35E54 /* multi.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62181678885A00E35E54 /* multi.c */; };
+		2D7B622C1678885A00E35E54 /* pragmas.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B621A1678885A00E35E54 /* pragmas.c */; };
+		2D7B622D1678885A00E35E54 /* sdl_driver.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B621C1678885A00E35E54 /* sdl_driver.c */; };
+		2D7B623616788ACE00E35E54 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D7B623416788AB200E35E54 /* Cocoa.framework */; };
+		2D7B623716788AE200E35E54 /* SDL_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D7B623216788AAB00E35E54 /* SDL_mixer.framework */; };
+		2D7B623816788AF800E35E54 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D7B623016788A9B00E35E54 /* SDL.framework */; };
+		2D7B626E16788F9B00E35E54 /* actors.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B623C16788F9B00E35E54 /* actors.c */; };
+		2D7B626F16788F9B00E35E54 /* animlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B623D16788F9B00E35E54 /* animlib.c */; };
+		2D7B627016788F9B00E35E54 /* config.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B623F16788F9B00E35E54 /* config.c */; };
+		2D7B627116788F9B00E35E54 /* console.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B624116788F9B00E35E54 /* console.c */; };
+		2D7B627216788F9B00E35E54 /* control.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B624316788F9B00E35E54 /* control.c */; };
+		2D7B627316788F9B00E35E54 /* cvar_defs.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B624516788F9B00E35E54 /* cvar_defs.c */; };
+		2D7B627416788F9B00E35E54 /* cvars.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B624716788F9B00E35E54 /* cvars.c */; };
+		2D7B627516788F9B00E35E54 /* game.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B625016788F9B00E35E54 /* game.c */; };
+		2D7B627616788F9B00E35E54 /* gamedef.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B625216788F9B00E35E54 /* gamedef.c */; };
+		2D7B627716788F9B00E35E54 /* global.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B625416788F9B00E35E54 /* global.c */; };
+		2D7B627816788F9B00E35E54 /* keyboard.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B625616788F9B00E35E54 /* keyboard.c */; };
+		2D7B627916788F9B00E35E54 /* menues.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B625816788F9B00E35E54 /* menues.c */; };
+		2D7B627A16788F9B00E35E54 /* win_midiout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B625B16788F9B00E35E54 /* win_midiout.cpp */; };
+		2D7B627B16788F9B00E35E54 /* xmidi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B625D16788F9B00E35E54 /* xmidi.cpp */; };
+		2D7B627C16788F9B00E35E54 /* player.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B626116788F9B00E35E54 /* player.c */; };
+		2D7B627D16788F9B00E35E54 /* premap.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B626216788F9B00E35E54 /* premap.c */; };
+		2D7B627E16788F9B00E35E54 /* rts.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B626316788F9B00E35E54 /* rts.c */; };
+		2D7B627F16788F9B00E35E54 /* scriplib.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B626516788F9B00E35E54 /* scriplib.c */; };
+		2D7B628016788F9B00E35E54 /* sector.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B626716788F9B00E35E54 /* sector.c */; };
+		2D7B628116788F9B00E35E54 /* sounds.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B626A16788F9B00E35E54 /* sounds.c */; };
+		2D7B62DB1678902400E35E54 /* fx_man.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B629F1678902400E35E54 /* fx_man.c */; };
+		2D7B62F91678908300E35E54 /* task_man.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62F71678908300E35E54 /* task_man.c */; };
+		2D7B62FC1678909C00E35E54 /* music.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62FA1678909C00E35E54 /* music.c */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		2D7B61DC167886FB00E35E54 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -20,6 +66,110 @@
 
 /* Begin PBXFileReference section */
 		2D7B61DE167886FB00E35E54 /* Duke3D */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Duke3D; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D7B61F11678885A00E35E54 /* a.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = a.c; path = ../../Engine/src/a.c; sourceTree = "<group>"; };
+		2D7B61F21678885A00E35E54 /* a.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = a.h; path = ../../Engine/src/a.h; sourceTree = "<group>"; };
+		2D7B61F31678885A00E35E54 /* build.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = build.h; path = ../../Engine/src/build.h; sourceTree = "<group>"; };
+		2D7B61F41678885A00E35E54 /* cache1d.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cache1d.c; path = ../../Engine/src/cache1d.c; sourceTree = "<group>"; };
+		2D7B61F51678885A00E35E54 /* cache1d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cache1d.h; path = ../../Engine/src/cache1d.h; sourceTree = "<group>"; };
+		2D7B61F61678885A00E35E54 /* display.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = display.h; path = ../../Engine/src/display.h; sourceTree = "<group>"; };
+		2D7B61F81678885A00E35E54 /* api.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = api.txt; sourceTree = "<group>"; };
+		2D7B61F91678885A00E35E54 /* design.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = design.txt; sourceTree = "<group>"; };
+		2D7B61FA1678885A00E35E54 /* host.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = host.c; sourceTree = "<group>"; };
+		2D7B61FC1678885A00E35E54 /* enet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = enet.h; sourceTree = "<group>"; };
+		2D7B61FD1678885A00E35E54 /* list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = list.h; sourceTree = "<group>"; };
+		2D7B61FE1678885A00E35E54 /* memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = memory.h; sourceTree = "<group>"; };
+		2D7B61FF1678885A00E35E54 /* protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = protocol.h; sourceTree = "<group>"; };
+		2D7B62001678885A00E35E54 /* time.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = time.h; sourceTree = "<group>"; };
+		2D7B62011678885A00E35E54 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
+		2D7B62021678885A00E35E54 /* unix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unix.h; sourceTree = "<group>"; };
+		2D7B62031678885A00E35E54 /* utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utility.h; sourceTree = "<group>"; };
+		2D7B62041678885A00E35E54 /* win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = win32.h; sourceTree = "<group>"; };
+		2D7B62051678885A00E35E54 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		2D7B62061678885A00E35E54 /* list.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = list.c; sourceTree = "<group>"; };
+		2D7B62071678885A00E35E54 /* memory.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = memory.c; sourceTree = "<group>"; };
+		2D7B62081678885A00E35E54 /* packet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = packet.c; sourceTree = "<group>"; };
+		2D7B62091678885A00E35E54 /* peer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = peer.c; sourceTree = "<group>"; };
+		2D7B620A1678885A00E35E54 /* protocol.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = protocol.c; sourceTree = "<group>"; };
+		2D7B620B1678885A00E35E54 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		2D7B620C1678885A00E35E54 /* tutorial.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tutorial.txt; sourceTree = "<group>"; };
+		2D7B620D1678885A00E35E54 /* unix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unix.c; sourceTree = "<group>"; };
+		2D7B620E1678885A00E35E54 /* win32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = win32.c; sourceTree = "<group>"; };
+		2D7B620F1678885A00E35E54 /* engine_protos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = engine_protos.h; path = ../../Engine/src/engine_protos.h; sourceTree = "<group>"; };
+		2D7B62101678885A00E35E54 /* engine.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = engine.c; path = ../../Engine/src/engine.c; sourceTree = "<group>"; };
+		2D7B62111678885A00E35E54 /* engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = engine.h; path = ../../Engine/src/engine.h; sourceTree = "<group>"; };
+		2D7B62121678885A00E35E54 /* icon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = icon.h; path = ../../Engine/src/icon.h; sourceTree = "<group>"; };
+		2D7B62131678885A00E35E54 /* mmulti_stable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mmulti_stable.cpp; path = ../../Engine/src/mmulti_stable.cpp; sourceTree = "<group>"; };
+		2D7B62141678885A00E35E54 /* mmulti_stable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mmulti_stable.h; path = ../../Engine/src/mmulti_stable.h; sourceTree = "<group>"; };
+		2D7B62151678885A00E35E54 /* mmulti_unstable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mmulti_unstable.h; path = ../../Engine/src/mmulti_unstable.h; sourceTree = "<group>"; };
+		2D7B62161678885A00E35E54 /* mmulti.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mmulti.c; path = ../../Engine/src/mmulti.c; sourceTree = "<group>"; };
+		2D7B62171678885A00E35E54 /* mmulti.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mmulti.cpp; path = ../../Engine/src/mmulti.cpp; sourceTree = "<group>"; };
+		2D7B62181678885A00E35E54 /* multi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = multi.c; path = ../../Engine/src/multi.c; sourceTree = "<group>"; };
+		2D7B62191678885A00E35E54 /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = platform.h; path = ../../Engine/src/platform.h; sourceTree = "<group>"; };
+		2D7B621A1678885A00E35E54 /* pragmas.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pragmas.c; path = ../../Engine/src/pragmas.c; sourceTree = "<group>"; };
+		2D7B621B1678885A00E35E54 /* pragmas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pragmas.h; path = ../../Engine/src/pragmas.h; sourceTree = "<group>"; };
+		2D7B621C1678885A00E35E54 /* sdl_driver.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sdl_driver.c; path = ../../Engine/src/sdl_driver.c; sourceTree = "<group>"; };
+		2D7B622E1678887600E35E54 /* win32_compat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = win32_compat.h; path = ../../Engine/src/win32_compat.h; sourceTree = "<group>"; };
+		2D7B622F1678895A00E35E54 /* macos_compat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = macos_compat.h; path = ../../Engine/src/macos_compat.h; sourceTree = "<group>"; };
+		2D7B623016788A9B00E35E54 /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = /Library/Frameworks/SDL.framework; sourceTree = "<absolute>"; };
+		2D7B623216788AAB00E35E54 /* SDL_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_mixer.framework; path = /Library/Frameworks/SDL_mixer.framework; sourceTree = "<absolute>"; };
+		2D7B623416788AB200E35E54 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		2D7B623A16788F9B00E35E54 /* _functio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = _functio.h; path = ../../Game/src/_functio.h; sourceTree = "<group>"; };
+		2D7B623B16788F9B00E35E54 /* _rts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = _rts.h; path = ../../Game/src/_rts.h; sourceTree = "<group>"; };
+		2D7B623C16788F9B00E35E54 /* actors.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = actors.c; path = ../../Game/src/actors.c; sourceTree = "<group>"; };
+		2D7B623D16788F9B00E35E54 /* animlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = animlib.c; path = ../../Game/src/animlib.c; sourceTree = "<group>"; };
+		2D7B623E16788F9B00E35E54 /* animlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = animlib.h; path = ../../Game/src/animlib.h; sourceTree = "<group>"; };
+		2D7B623F16788F9B00E35E54 /* config.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = config.c; path = ../../Game/src/config.c; sourceTree = "<group>"; };
+		2D7B624016788F9B00E35E54 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = config.h; path = ../../Game/src/config.h; sourceTree = "<group>"; };
+		2D7B624116788F9B00E35E54 /* console.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = console.c; path = ../../Game/src/console.c; sourceTree = "<group>"; };
+		2D7B624216788F9B00E35E54 /* console.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = console.h; path = ../../Game/src/console.h; sourceTree = "<group>"; };
+		2D7B624316788F9B00E35E54 /* control.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = control.c; path = ../../Game/src/control.c; sourceTree = "<group>"; };
+		2D7B624416788F9B00E35E54 /* control.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = control.h; path = ../../Game/src/control.h; sourceTree = "<group>"; };
+		2D7B624516788F9B00E35E54 /* cvar_defs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cvar_defs.c; path = ../../Game/src/cvar_defs.c; sourceTree = "<group>"; };
+		2D7B624616788F9B00E35E54 /* cvar_defs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cvar_defs.h; path = ../../Game/src/cvar_defs.h; sourceTree = "<group>"; };
+		2D7B624716788F9B00E35E54 /* cvars.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cvars.c; path = ../../Game/src/cvars.c; sourceTree = "<group>"; };
+		2D7B624816788F9B00E35E54 /* cvars.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cvars.h; path = ../../Game/src/cvars.h; sourceTree = "<group>"; };
+		2D7B624916788F9B00E35E54 /* DbgHelp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DbgHelp.h; path = ../../Game/src/DbgHelp.h; sourceTree = "<group>"; };
+		2D7B624A16788F9B00E35E54 /* develop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = develop.h; path = ../../Game/src/develop.h; sourceTree = "<group>"; };
+		2D7B624B16788F9B00E35E54 /* duke3d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = duke3d.h; path = ../../Game/src/duke3d.h; sourceTree = "<group>"; };
+		2D7B624C16788F9B00E35E54 /* dukewin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = dukewin.h; path = ../../Game/src/dukewin.h; sourceTree = "<group>"; };
+		2D7B624D16788F9B00E35E54 /* file_lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = file_lib.h; path = ../../Game/src/file_lib.h; sourceTree = "<group>"; };
+		2D7B624E16788F9B00E35E54 /* funct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = funct.h; path = ../../Game/src/funct.h; sourceTree = "<group>"; };
+		2D7B624F16788F9B00E35E54 /* function.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = function.h; path = ../../Game/src/function.h; sourceTree = "<group>"; };
+		2D7B625016788F9B00E35E54 /* game.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = game.c; path = ../../Game/src/game.c; sourceTree = "<group>"; };
+		2D7B625116788F9B00E35E54 /* game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = game.h; path = ../../Game/src/game.h; sourceTree = "<group>"; };
+		2D7B625216788F9B00E35E54 /* gamedef.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = gamedef.c; path = ../../Game/src/gamedef.c; sourceTree = "<group>"; };
+		2D7B625316788F9B00E35E54 /* gamedefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gamedefs.h; path = ../../Game/src/gamedefs.h; sourceTree = "<group>"; };
+		2D7B625416788F9B00E35E54 /* global.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = global.c; path = ../../Game/src/global.c; sourceTree = "<group>"; };
+		2D7B625516788F9B00E35E54 /* joystick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = joystick.h; path = ../../Game/src/joystick.h; sourceTree = "<group>"; };
+		2D7B625616788F9B00E35E54 /* keyboard.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = keyboard.c; path = ../../Game/src/keyboard.c; sourceTree = "<group>"; };
+		2D7B625716788F9B00E35E54 /* keyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = keyboard.h; path = ../../Game/src/keyboard.h; sourceTree = "<group>"; };
+		2D7B625816788F9B00E35E54 /* menues.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = menues.c; path = ../../Game/src/menues.c; sourceTree = "<group>"; };
+		2D7B625A16788F9B00E35E54 /* databuf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = databuf.h; sourceTree = "<group>"; };
+		2D7B625B16788F9B00E35E54 /* win_midiout.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = win_midiout.cpp; sourceTree = "<group>"; };
+		2D7B625C16788F9B00E35E54 /* win_midiout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = win_midiout.h; sourceTree = "<group>"; };
+		2D7B625D16788F9B00E35E54 /* xmidi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xmidi.cpp; sourceTree = "<group>"; };
+		2D7B625E16788F9B00E35E54 /* xmidi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xmidi.h; sourceTree = "<group>"; };
+		2D7B625F16788F9B00E35E54 /* mouse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mouse.h; path = ../../Game/src/mouse.h; sourceTree = "<group>"; };
+		2D7B626016788F9B00E35E54 /* names.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = names.h; path = ../../Game/src/names.h; sourceTree = "<group>"; };
+		2D7B626116788F9B00E35E54 /* player.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = player.c; path = ../../Game/src/player.c; sourceTree = "<group>"; };
+		2D7B626216788F9B00E35E54 /* premap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = premap.c; path = ../../Game/src/premap.c; sourceTree = "<group>"; };
+		2D7B626316788F9B00E35E54 /* rts.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = rts.c; path = ../../Game/src/rts.c; sourceTree = "<group>"; };
+		2D7B626416788F9B00E35E54 /* rts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = rts.h; path = ../../Game/src/rts.h; sourceTree = "<group>"; };
+		2D7B626516788F9B00E35E54 /* scriplib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = scriplib.c; path = ../../Game/src/scriplib.c; sourceTree = "<group>"; };
+		2D7B626616788F9B00E35E54 /* scriplib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = scriplib.h; path = ../../Game/src/scriplib.h; sourceTree = "<group>"; };
+		2D7B626716788F9B00E35E54 /* sector.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sector.c; path = ../../Game/src/sector.c; sourceTree = "<group>"; };
+		2D7B626816788F9B00E35E54 /* sounddebugdefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sounddebugdefs.h; path = ../../Game/src/sounddebugdefs.h; sourceTree = "<group>"; };
+		2D7B626916788F9B00E35E54 /* soundefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = soundefs.h; path = ../../Game/src/soundefs.h; sourceTree = "<group>"; };
+		2D7B626A16788F9B00E35E54 /* sounds.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sounds.c; path = ../../Game/src/sounds.c; sourceTree = "<group>"; };
+		2D7B626B16788F9B00E35E54 /* sounds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sounds.h; path = ../../Game/src/sounds.h; sourceTree = "<group>"; };
+		2D7B626C16788F9B00E35E54 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = types.h; path = ../../Game/src/types.h; sourceTree = "<group>"; };
+		2D7B626D16788F9B00E35E54 /* util_lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = util_lib.h; path = ../../Game/src/util_lib.h; sourceTree = "<group>"; };
+		2D7B629F1678902400E35E54 /* fx_man.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fx_man.c; sourceTree = "<group>"; };
+		2D7B62A01678902400E35E54 /* fx_man.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fx_man.h; sourceTree = "<group>"; };
+		2D7B62F71678908300E35E54 /* task_man.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = task_man.c; sourceTree = "<group>"; };
+		2D7B62F81678908300E35E54 /* task_man.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = task_man.h; sourceTree = "<group>"; };
+		2D7B62FA1678909C00E35E54 /* music.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = music.c; sourceTree = "<group>"; };
+		2D7B62FB1678909C00E35E54 /* music.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = music.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,6 +177,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D7B623816788AF800E35E54 /* SDL.framework in Frameworks */,
+				2D7B623716788AE200E35E54 /* SDL_mixer.framework in Frameworks */,
+				2D7B623616788ACE00E35E54 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,8 +205,163 @@
 		2D7B61E1167886FB00E35E54 /* Duke3D */ = {
 			isa = PBXGroup;
 			children = (
+				2D7B623916788F7900E35E54 /* Game */,
+				2D7B623416788AB200E35E54 /* Cocoa.framework */,
+				2D7B623216788AAB00E35E54 /* SDL_mixer.framework */,
+				2D7B623016788A9B00E35E54 /* SDL.framework */,
+				2D7B61F01678884400E35E54 /* Engine */,
 			);
 			path = Duke3D;
+			sourceTree = "<group>";
+		};
+		2D7B61F01678884400E35E54 /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				2D7B61F11678885A00E35E54 /* a.c */,
+				2D7B61F21678885A00E35E54 /* a.h */,
+				2D7B61F31678885A00E35E54 /* build.h */,
+				2D7B61F41678885A00E35E54 /* cache1d.c */,
+				2D7B61F51678885A00E35E54 /* cache1d.h */,
+				2D7B61F61678885A00E35E54 /* display.h */,
+				2D7B61F71678885A00E35E54 /* enet */,
+				2D7B620F1678885A00E35E54 /* engine_protos.h */,
+				2D7B62101678885A00E35E54 /* engine.c */,
+				2D7B62111678885A00E35E54 /* engine.h */,
+				2D7B62121678885A00E35E54 /* icon.h */,
+				2D7B62131678885A00E35E54 /* mmulti_stable.cpp */,
+				2D7B62141678885A00E35E54 /* mmulti_stable.h */,
+				2D7B62151678885A00E35E54 /* mmulti_unstable.h */,
+				2D7B62161678885A00E35E54 /* mmulti.c */,
+				2D7B62171678885A00E35E54 /* mmulti.cpp */,
+				2D7B62181678885A00E35E54 /* multi.c */,
+				2D7B62191678885A00E35E54 /* platform.h */,
+				2D7B621A1678885A00E35E54 /* pragmas.c */,
+				2D7B621B1678885A00E35E54 /* pragmas.h */,
+				2D7B621C1678885A00E35E54 /* sdl_driver.c */,
+				2D7B622E1678887600E35E54 /* win32_compat.h */,
+				2D7B622F1678895A00E35E54 /* macos_compat.h */,
+			);
+			name = Engine;
+			sourceTree = "<group>";
+		};
+		2D7B61F71678885A00E35E54 /* enet */ = {
+			isa = PBXGroup;
+			children = (
+				2D7B61F81678885A00E35E54 /* api.txt */,
+				2D7B61F91678885A00E35E54 /* design.txt */,
+				2D7B61FA1678885A00E35E54 /* host.c */,
+				2D7B61FB1678885A00E35E54 /* include */,
+				2D7B62051678885A00E35E54 /* LICENSE */,
+				2D7B62061678885A00E35E54 /* list.c */,
+				2D7B62071678885A00E35E54 /* memory.c */,
+				2D7B62081678885A00E35E54 /* packet.c */,
+				2D7B62091678885A00E35E54 /* peer.c */,
+				2D7B620A1678885A00E35E54 /* protocol.c */,
+				2D7B620B1678885A00E35E54 /* README */,
+				2D7B620C1678885A00E35E54 /* tutorial.txt */,
+				2D7B620D1678885A00E35E54 /* unix.c */,
+				2D7B620E1678885A00E35E54 /* win32.c */,
+			);
+			name = enet;
+			path = ../../Engine/src/enet;
+			sourceTree = "<group>";
+		};
+		2D7B61FB1678885A00E35E54 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				2D7B61FC1678885A00E35E54 /* enet.h */,
+				2D7B61FD1678885A00E35E54 /* list.h */,
+				2D7B61FE1678885A00E35E54 /* memory.h */,
+				2D7B61FF1678885A00E35E54 /* protocol.h */,
+				2D7B62001678885A00E35E54 /* time.h */,
+				2D7B62011678885A00E35E54 /* types.h */,
+				2D7B62021678885A00E35E54 /* unix.h */,
+				2D7B62031678885A00E35E54 /* utility.h */,
+				2D7B62041678885A00E35E54 /* win32.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		2D7B623916788F7900E35E54 /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				2D7B62851678902400E35E54 /* audiolib */,
+				2D7B623A16788F9B00E35E54 /* _functio.h */,
+				2D7B623B16788F9B00E35E54 /* _rts.h */,
+				2D7B623C16788F9B00E35E54 /* actors.c */,
+				2D7B623D16788F9B00E35E54 /* animlib.c */,
+				2D7B623E16788F9B00E35E54 /* animlib.h */,
+				2D7B623F16788F9B00E35E54 /* config.c */,
+				2D7B624016788F9B00E35E54 /* config.h */,
+				2D7B624116788F9B00E35E54 /* console.c */,
+				2D7B624216788F9B00E35E54 /* console.h */,
+				2D7B624316788F9B00E35E54 /* control.c */,
+				2D7B624416788F9B00E35E54 /* control.h */,
+				2D7B624516788F9B00E35E54 /* cvar_defs.c */,
+				2D7B624616788F9B00E35E54 /* cvar_defs.h */,
+				2D7B624716788F9B00E35E54 /* cvars.c */,
+				2D7B624816788F9B00E35E54 /* cvars.h */,
+				2D7B624916788F9B00E35E54 /* DbgHelp.h */,
+				2D7B624A16788F9B00E35E54 /* develop.h */,
+				2D7B624B16788F9B00E35E54 /* duke3d.h */,
+				2D7B624C16788F9B00E35E54 /* dukewin.h */,
+				2D7B624D16788F9B00E35E54 /* file_lib.h */,
+				2D7B624E16788F9B00E35E54 /* funct.h */,
+				2D7B624F16788F9B00E35E54 /* function.h */,
+				2D7B625016788F9B00E35E54 /* game.c */,
+				2D7B625116788F9B00E35E54 /* game.h */,
+				2D7B625216788F9B00E35E54 /* gamedef.c */,
+				2D7B625316788F9B00E35E54 /* gamedefs.h */,
+				2D7B625416788F9B00E35E54 /* global.c */,
+				2D7B625516788F9B00E35E54 /* joystick.h */,
+				2D7B625616788F9B00E35E54 /* keyboard.c */,
+				2D7B625716788F9B00E35E54 /* keyboard.h */,
+				2D7B625816788F9B00E35E54 /* menues.c */,
+				2D7B625916788F9B00E35E54 /* midi */,
+				2D7B625F16788F9B00E35E54 /* mouse.h */,
+				2D7B626016788F9B00E35E54 /* names.h */,
+				2D7B626116788F9B00E35E54 /* player.c */,
+				2D7B626216788F9B00E35E54 /* premap.c */,
+				2D7B626316788F9B00E35E54 /* rts.c */,
+				2D7B626416788F9B00E35E54 /* rts.h */,
+				2D7B626516788F9B00E35E54 /* scriplib.c */,
+				2D7B626616788F9B00E35E54 /* scriplib.h */,
+				2D7B626716788F9B00E35E54 /* sector.c */,
+				2D7B626816788F9B00E35E54 /* sounddebugdefs.h */,
+				2D7B626916788F9B00E35E54 /* soundefs.h */,
+				2D7B626A16788F9B00E35E54 /* sounds.c */,
+				2D7B626B16788F9B00E35E54 /* sounds.h */,
+				2D7B626C16788F9B00E35E54 /* types.h */,
+				2D7B626D16788F9B00E35E54 /* util_lib.h */,
+			);
+			name = Game;
+			sourceTree = "<group>";
+		};
+		2D7B625916788F9B00E35E54 /* midi */ = {
+			isa = PBXGroup;
+			children = (
+				2D7B625A16788F9B00E35E54 /* databuf.h */,
+				2D7B625B16788F9B00E35E54 /* win_midiout.cpp */,
+				2D7B625C16788F9B00E35E54 /* win_midiout.h */,
+				2D7B625D16788F9B00E35E54 /* xmidi.cpp */,
+				2D7B625E16788F9B00E35E54 /* xmidi.h */,
+			);
+			name = midi;
+			path = ../../Game/src/midi;
+			sourceTree = "<group>";
+		};
+		2D7B62851678902400E35E54 /* audiolib */ = {
+			isa = PBXGroup;
+			children = (
+				2D7B62FA1678909C00E35E54 /* music.c */,
+				2D7B62FB1678909C00E35E54 /* music.h */,
+				2D7B62F71678908300E35E54 /* task_man.c */,
+				2D7B62F81678908300E35E54 /* task_man.h */,
+				2D7B629F1678902400E35E54 /* fx_man.c */,
+				2D7B62A01678902400E35E54 /* fx_man.h */,
+			);
+			name = audiolib;
+			path = ../../Game/src/audiolib;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -107,6 +415,46 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D7B621D1678885A00E35E54 /* a.c in Sources */,
+				2D7B621E1678885A00E35E54 /* cache1d.c in Sources */,
+				2D7B621F1678885A00E35E54 /* host.c in Sources */,
+				2D7B62201678885A00E35E54 /* list.c in Sources */,
+				2D7B62211678885A00E35E54 /* memory.c in Sources */,
+				2D7B62221678885A00E35E54 /* packet.c in Sources */,
+				2D7B62231678885A00E35E54 /* peer.c in Sources */,
+				2D7B62241678885A00E35E54 /* protocol.c in Sources */,
+				2D7B62251678885A00E35E54 /* unix.c in Sources */,
+				2D7B62261678885A00E35E54 /* win32.c in Sources */,
+				2D7B62271678885A00E35E54 /* engine.c in Sources */,
+				2D7B62281678885A00E35E54 /* mmulti_stable.cpp in Sources */,
+				2D7B62291678885A00E35E54 /* mmulti.c in Sources */,
+				2D7B622A1678885A00E35E54 /* mmulti.cpp in Sources */,
+				2D7B622B1678885A00E35E54 /* multi.c in Sources */,
+				2D7B622C1678885A00E35E54 /* pragmas.c in Sources */,
+				2D7B622D1678885A00E35E54 /* sdl_driver.c in Sources */,
+				2D7B626E16788F9B00E35E54 /* actors.c in Sources */,
+				2D7B626F16788F9B00E35E54 /* animlib.c in Sources */,
+				2D7B627016788F9B00E35E54 /* config.c in Sources */,
+				2D7B627116788F9B00E35E54 /* console.c in Sources */,
+				2D7B627216788F9B00E35E54 /* control.c in Sources */,
+				2D7B627316788F9B00E35E54 /* cvar_defs.c in Sources */,
+				2D7B627416788F9B00E35E54 /* cvars.c in Sources */,
+				2D7B627516788F9B00E35E54 /* game.c in Sources */,
+				2D7B627616788F9B00E35E54 /* gamedef.c in Sources */,
+				2D7B627716788F9B00E35E54 /* global.c in Sources */,
+				2D7B627816788F9B00E35E54 /* keyboard.c in Sources */,
+				2D7B627916788F9B00E35E54 /* menues.c in Sources */,
+				2D7B627A16788F9B00E35E54 /* win_midiout.cpp in Sources */,
+				2D7B627B16788F9B00E35E54 /* xmidi.cpp in Sources */,
+				2D7B627C16788F9B00E35E54 /* player.c in Sources */,
+				2D7B627D16788F9B00E35E54 /* premap.c in Sources */,
+				2D7B627E16788F9B00E35E54 /* rts.c in Sources */,
+				2D7B627F16788F9B00E35E54 /* scriplib.c in Sources */,
+				2D7B628016788F9B00E35E54 /* sector.c in Sources */,
+				2D7B628116788F9B00E35E54 /* sounds.c in Sources */,
+				2D7B62DB1678902400E35E54 /* fx_man.c in Sources */,
+				2D7B62F91678908300E35E54 /* task_man.c in Sources */,
+				2D7B62FC1678909C00E35E54 /* music.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,6 +469,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "/Library/Frameworks/**";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -134,6 +483,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "/Library/Frameworks/SDL.framework/Headers/**";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -149,12 +499,14 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = "/Library/Frameworks/**";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "/Library/Frameworks/SDL.framework/Headers/**";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 			};
