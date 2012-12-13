@@ -11,7 +11,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
+ * aint32_t with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  */
@@ -73,7 +73,7 @@ inline void	Free(void *ptr)
 }
 
 // This is used to correct incorrect patch, vol and pan changes in midi files
-// The bias is just a value to used to work out if a vol and pan belong with a 
+// The bias is just a value to used to work out if a vol and pan beint32_t with a 
 // patch change. This is to ensure that the default state of a midi file is with
 // the tracks centred, unless the first patch change says otherwise.
 #define PATCH_VOL_PAN_BIAS	5
@@ -1593,7 +1593,7 @@ int XMIDIEventList::Write (DataSource *dest)
 	// This is so if using buffer datasource, the caller can know how big to make the buffer
 	if (!dest)
 	{
-		// Header is 14 bytes long and add the rest as well
+		// Header is 14 bytes int32_t and add the rest as well
 		len = ConvertListToMTrk (NULL);
 		return 14 + len;
 	}

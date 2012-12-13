@@ -62,13 +62,13 @@ typedef struct _LOADED_IMAGE {
     PIMAGE_NT_HEADERS32   FileHeader;
 #endif
     PIMAGE_SECTION_HEADER LastRvaSection;
-    ULONG                 NumberOfSections;
+    Uint32_t                 NumberOfSections;
     PIMAGE_SECTION_HEADER Sections;
-    ULONG                 Characteristics;
+    Uint32_t                 Characteristics;
     BOOLEAN               fSystemImage;
     BOOLEAN               fDOSImage;
     LIST_ENTRY            Links;
-    ULONG                 SizeOfImage;
+    Uint32_t                 SizeOfImage;
 } LOADED_IMAGE, *PLOADED_IMAGE;
 
 
@@ -156,7 +156,7 @@ ImageDirectoryEntryToDataEx (
     IN PVOID Base,
     IN BOOLEAN MappedAsImage,
     IN USHORT DirectoryEntry,
-    OUT PULONG Size,
+    OUT PUint32_t Size,
     OUT PIMAGE_SECTION_HEADER *FoundHeader OPTIONAL
     );
 
@@ -166,7 +166,7 @@ ImageDirectoryEntryToData (
     IN PVOID Base,
     IN BOOLEAN MappedAsImage,
     IN USHORT DirectoryEntry,
-    OUT PULONG Size
+    OUT PUint32_t Size
     );
 
 PIMAGE_SECTION_HEADER
@@ -174,7 +174,7 @@ IMAGEAPI
 ImageRvaToSection(
     IN PIMAGE_NT_HEADERS NtHeaders,
     IN PVOID Base,
-    IN ULONG Rva
+    IN Uint32_t Rva
     );
 
 PVOID
@@ -182,7 +182,7 @@ IMAGEAPI
 ImageRvaToVa(
     IN PIMAGE_NT_HEADERS NtHeaders,
     IN PVOID Base,
-    IN ULONG Rva,
+    IN Uint32_t Rva,
     IN OUT PIMAGE_SECTION_HEADER *LastRvaSection
     );
 
@@ -699,7 +699,7 @@ typedef BOOL
 (CALLBACK *PSYM_ENUMSYMBOLS_CALLBACK64)(
     PSTR SymbolName,
     DWORD64 SymbolAddress,
-    ULONG SymbolSize,
+    Uint32_t SymbolSize,
     PVOID UserContext
     );
 
@@ -707,7 +707,7 @@ typedef BOOL
 (CALLBACK *PSYM_ENUMSYMBOLS_CALLBACK64W)(
     PWSTR SymbolName,
     DWORD64 SymbolAddress,
-    ULONG SymbolSize,
+    Uint32_t SymbolSize,
     PVOID UserContext
     );
 
@@ -715,14 +715,14 @@ typedef BOOL
 (CALLBACK *PENUMLOADED_MODULES_CALLBACK64)(
     PSTR ModuleName,
     DWORD64 ModuleBase,
-    ULONG ModuleSize,
+    Uint32_t ModuleSize,
     PVOID UserContext
     );
 
 typedef BOOL
 (CALLBACK *PSYMBOL_REGISTERED_CALLBACK64)(
     HANDLE  hProcess,
-    ULONG   ActionCode,
+    Uint32_t   ActionCode,
     ULONG64 CallbackData,
     ULONG64 UserContext
     );
@@ -757,38 +757,38 @@ PVOID
 typedef BOOL
 (CALLBACK *PSYM_ENUMMODULES_CALLBACK)(
     PSTR  ModuleName,
-    ULONG BaseOfDll,
+    Uint32_t BaseOfDll,
     PVOID UserContext
     );
 
 typedef BOOL
 (CALLBACK *PSYM_ENUMSYMBOLS_CALLBACK)(
     PSTR  SymbolName,
-    ULONG SymbolAddress,
-    ULONG SymbolSize,
+    Uint32_t SymbolAddress,
+    Uint32_t SymbolSize,
     PVOID UserContext
     );
 
 typedef BOOL
 (CALLBACK *PSYM_ENUMSYMBOLS_CALLBACKW)(
     PWSTR  SymbolName,
-    ULONG SymbolAddress,
-    ULONG SymbolSize,
+    Uint32_t SymbolAddress,
+    Uint32_t SymbolSize,
     PVOID UserContext
     );
 
 typedef BOOL
 (CALLBACK *PENUMLOADED_MODULES_CALLBACK)(
     PSTR  ModuleName,
-    ULONG ModuleBase,
-    ULONG ModuleSize,
+    Uint32_t ModuleBase,
+    Uint32_t ModuleSize,
     PVOID UserContext
     );
 
 typedef BOOL
 (CALLBACK *PSYMBOL_REGISTERED_CALLBACK)(
     HANDLE  hProcess,
-    ULONG   ActionCode,
+    Uint32_t   ActionCode,
     PVOID   CallbackData,
     PVOID   UserContext
     );
@@ -1315,7 +1315,7 @@ SymGetLineFromName64(
     IN     PSTR                 ModuleName,
     IN     PSTR                 FileName,
     IN     DWORD                dwLineNumber,
-       OUT PLONG                plDisplacement,
+       OUT Pint32_t                plDisplacement,
     IN OUT PIMAGEHLP_LINE64     Line
     );
 
@@ -1329,7 +1329,7 @@ SymGetLineFromName(
     IN     PSTR               ModuleName,
     IN     PSTR               FileName,
     IN     DWORD              dwLineNumber,
-       OUT PLONG              plDisplacement,
+       OUT Pint32_t              plDisplacement,
     IN OUT PIMAGEHLP_LINE     Line
     );
 #endif
@@ -1539,20 +1539,20 @@ typedef struct _MODULE_TYPE_INFO { // AKA TYPTYP
 #define IMAGEHLP_SYMBOL_FUNCTION                   SYMF_FUNCTION        // 0x800
 
 typedef struct _SYMBOL_INFO {
-    ULONG       SizeOfStruct;
-    ULONG       TypeIndex;        // Type Index of symbol
+    Uint32_t       SizeOfStruct;
+    Uint32_t       TypeIndex;        // Type Index of symbol
     ULONG64     Reserved[2];
-    ULONG       Reserved2;
-    ULONG       Size;
+    Uint32_t       Reserved2;
+    Uint32_t       Size;
     ULONG64     ModBase;          // Base Address of module comtaining this symbol
-    ULONG       Flags;
+    Uint32_t       Flags;
     ULONG64     Value;            // Value of symbol, ValuePresent should be 1
     ULONG64     Address;          // Address of symbol including base address of module
-    ULONG       Register;         // register holding value or pointer to value
-    ULONG       Scope;            // scope of the symbol
-    ULONG       Tag;              // pdb classification
-    ULONG       NameLen;          // Actual length of name
-    ULONG       MaxNameLen;
+    Uint32_t       Register;         // register holding value or pointer to value
+    Uint32_t       Scope;            // scope of the symbol
+    Uint32_t       Tag;              // pdb classification
+    Uint32_t       NameLen;          // Actual length of name
+    Uint32_t       MaxNameLen;
     CHAR        Name[1];          // Name of symbol
 } SYMBOL_INFO, *PSYMBOL_INFO;
 
@@ -1567,7 +1567,7 @@ typedef struct _IMAGEHLP_STACK_FRAME
     ULONG64 Params[4];
     ULONG64 Reserved[5];
     BOOL    Virtual;
-    ULONG   Reserved2;
+    Uint32_t   Reserved2;
 } IMAGEHLP_STACK_FRAME, *PIMAGEHLP_STACK_FRAME;
 
 typedef VOID IMAGEHLP_CONTEXT, *PIMAGEHLP_CONTEXT;
@@ -1607,7 +1607,7 @@ SymFromName(
 typedef BOOL
 (CALLBACK *PSYM_ENUMERATESYMBOLS_CALLBACK)(
     PSYMBOL_INFO  pSymInfo,
-    ULONG         SymbolSize,
+    Uint32_t         SymbolSize,
     PVOID         UserContext
     );
 
@@ -1649,9 +1649,9 @@ typedef enum _IMAGEHLP_SYMBOL_TYPE_INFO {
 } IMAGEHLP_SYMBOL_TYPE_INFO;
 
 typedef struct _TI_FINDCHILDREN_PARAMS {
-    ULONG Count;
-    ULONG Start;
-    ULONG ChildId[1];
+    Uint32_t Count;
+    Uint32_t Start;
+    Uint32_t ChildId[1];
 } TI_FINDCHILDREN_PARAMS;
 
 BOOL
@@ -1659,7 +1659,7 @@ IMAGEAPI
 SymGetTypeInfo(
     IN  HANDLE          hProcess,
     IN  DWORD64         ModBase,
-    IN  ULONG           TypeId,
+    IN  Uint32_t           TypeId,
     IN  IMAGEHLP_SYMBOL_TYPE_INFO GetType,
     OUT PVOID           pInfo
     );
@@ -2210,14 +2210,14 @@ typedef struct _MINIDUMP_USER_RECORD {
 
 typedef struct _MINIDUMP_USER_STREAM {
     ULONG32 Type;
-    ULONG BufferSize;
+    Uint32_t BufferSize;
     PVOID Buffer;
 
 } MINIDUMP_USER_STREAM, *PMINIDUMP_USER_STREAM;
 
 
 typedef struct _MINIDUMP_USER_STREAM_INFORMATION {
-    ULONG UserStreamCount;
+    Uint32_t UserStreamCount;
     PMINIDUMP_USER_STREAM UserStreamArray;
 } MINIDUMP_USER_STREAM_INFORMATION, *PMINIDUMP_USER_STREAM_INFORMATION;
 
@@ -2235,20 +2235,20 @@ typedef enum _MINIDUMP_CALLBACK_TYPE {
 
 
 typedef struct _MINIDUMP_THREAD_CALLBACK {
-    ULONG ThreadId;
+    Uint32_t ThreadId;
     HANDLE ThreadHandle;
     CONTEXT Context;
-    ULONG SizeOfContext;
+    Uint32_t SizeOfContext;
     ULONG64 StackBase;
     ULONG64 StackEnd;
 } MINIDUMP_THREAD_CALLBACK, *PMINIDUMP_THREAD_CALLBACK;
 
 
 typedef struct _MINIDUMP_THREAD_EX_CALLBACK {
-    ULONG ThreadId;
+    Uint32_t ThreadId;
     HANDLE ThreadHandle;
     CONTEXT Context;
-    ULONG SizeOfContext;
+    Uint32_t SizeOfContext;
     ULONG64 StackBase;
     ULONG64 StackEnd;
     ULONG64 BackingStoreBase;
@@ -2257,7 +2257,7 @@ typedef struct _MINIDUMP_THREAD_EX_CALLBACK {
 
 
 typedef struct _MINIDUMP_INCLUDE_THREAD_CALLBACK {
-    ULONG ThreadId;
+    Uint32_t ThreadId;
 } MINIDUMP_INCLUDE_THREAD_CALLBACK, *PMINIDUMP_INCLUDE_THREAD_CALLBACK;
 
 
@@ -2272,14 +2272,14 @@ typedef enum _THREAD_WRITE_FLAGS {
 typedef struct _MINIDUMP_MODULE_CALLBACK {
     PWCHAR FullPath;
     ULONG64 BaseOfImage;
-    ULONG SizeOfImage;
-    ULONG CheckSum;
-    ULONG TimeDateStamp;
+    Uint32_t SizeOfImage;
+    Uint32_t CheckSum;
+    Uint32_t TimeDateStamp;
     VS_FIXEDFILEINFO VersionInfo;
     PVOID CvRecord; 
-    ULONG SizeOfCvRecord;
+    Uint32_t SizeOfCvRecord;
     PVOID MiscRecord;
-    ULONG SizeOfMiscRecord;
+    Uint32_t SizeOfMiscRecord;
 } MINIDUMP_MODULE_CALLBACK, *PMINIDUMP_MODULE_CALLBACK;
 
 
@@ -2298,9 +2298,9 @@ typedef enum _MODULE_WRITE_FLAGS {
 
 
 typedef struct _MINIDUMP_CALLBACK_INPUT {
-    ULONG ProcessId;
+    Uint32_t ProcessId;
     HANDLE ProcessHandle;
-    ULONG CallbackType;
+    Uint32_t CallbackType;
     union {
         MINIDUMP_THREAD_CALLBACK Thread;
         MINIDUMP_THREAD_EX_CALLBACK ThreadEx;
@@ -2312,8 +2312,8 @@ typedef struct _MINIDUMP_CALLBACK_INPUT {
 
 typedef struct _MINIDUMP_CALLBACK_OUTPUT {
     union {
-        ULONG ModuleWriteFlags;
-        ULONG ThreadWriteFlags;
+        Uint32_t ModuleWriteFlags;
+        Uint32_t ThreadWriteFlags;
     };
 } MINIDUMP_CALLBACK_OUTPUT, *PMINIDUMP_CALLBACK_OUTPUT;
 
@@ -2383,7 +2383,7 @@ typedef struct _MINIDUMP_CALLBACK_INFORMATION {
 // PVOID
 // RVA_TO_ADDR(
 //     PVOID Mapping,
-//     ULONG Rva
+//     Uint32_t Rva
 //     )
 //
 // Routine Description:
@@ -2421,10 +2421,10 @@ BOOL
 WINAPI
 MiniDumpReadDumpStream(
     IN PVOID BaseOfDump,
-    IN ULONG StreamNumber,
+    IN Uint32_t StreamNumber,
     OUT PMINIDUMP_DIRECTORY * Dir, OPTIONAL
     OUT PVOID * StreamPointer, OPTIONAL
-    OUT ULONG * StreamSize OPTIONAL
+    OUT Uint32_t * StreamSize OPTIONAL
     );
 
 #include <poppack.h>

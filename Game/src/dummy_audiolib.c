@@ -7,6 +7,7 @@
 //
 
 #include "audiolib/fx_man.h"
+#include <inttypes.h>
 
 char *FX_ErrorString( int ErrorNumber ){
    static char nope = '\0';
@@ -18,7 +19,7 @@ int   FX_GetBlasterSettings( fx_blaster_config *blaster ){return 1;}
 int   FX_SetupSoundBlaster( fx_blaster_config blaster, int *MaxVoices, int *MaxSampleBits, int *MaxChannels ){return 1;}
 int   FX_Init( int SoundCard, int numvoices, int numchannels, int samplebits, unsigned mixrate ){return FX_Ok;}
 int   FX_Shutdown( void ){return 1;}
-int   FX_SetCallBack( void ( *function )( unsigned long ) ){return FX_Ok;}
+int   FX_SetCallBack( void ( *function )( uint32_t ) ){return FX_Ok;}
 void  FX_SetVolume( int volume ){}
 int   FX_GetVolume( void ){return 1;}
 
@@ -37,33 +38,33 @@ int FX_SetPitch( int handle, int pitchoffset ){return 1;}
 int FX_SetFrequency( int handle, int frequency ){return 1;}
 
 int FX_PlayVOC( char *ptr, int pitchoffset, int vol, int left, int right,
-               int priority, unsigned long callbackval ){return 1;}
-int FX_PlayLoopedVOC( char *ptr, long loopstart, long loopend,
+               int priority, uint32_t callbackval ){return 1;}
+int FX_PlayLoopedVOC( char *ptr, int32_t loopstart, int32_t loopend,
                      int pitchoffset, int vol, int left, int right, int priority,
-                     unsigned long callbackval ){return 1;}
+                     uint32_t callbackval ){return 1;}
 int FX_PlayWAV( char *ptr, int pitchoffset, int vol, int left, int right,
-               int priority, unsigned long callbackval ){return 1;}
-int FX_PlayLoopedWAV( char *ptr, long loopstart, long loopend,
+               int priority, uint32_t callbackval ){return 1;}
+int FX_PlayLoopedWAV( char *ptr, int32_t loopstart, int32_t loopend,
                      int pitchoffset, int vol, int left, int right, int priority,
-                     unsigned long callbackval ){return 1;}
+                     uint32_t callbackval ){return 1;}
 int FX_PlayVOC3D( char *ptr, int pitchoffset, int angle, int distance,
-                 int priority, unsigned long callbackval ){return 1;}
+                 int priority, uint32_t callbackval ){return 1;}
 int FX_PlayWAV3D( char *ptr, int pitchoffset, int angle, int distance,
-                 int priority, unsigned long callbackval ){return 1;}
-int FX_PlayRaw( char *ptr, unsigned long length, unsigned rate,
+                 int priority, uint32_t callbackval ){return 1;}
+int FX_PlayRaw( char *ptr, uint32_t length, unsigned rate,
                int pitchoffset, int vol, int left, int right, int priority,
-               unsigned long callbackval ){return 1;}
-int FX_PlayLoopedRaw( char *ptr, unsigned long length, char *loopstart,
+               uint32_t callbackval ){return 1;}
+int FX_PlayLoopedRaw( char *ptr, uint32_t length, char *loopstart,
                      char *loopend, unsigned rate, int pitchoffset, int vol, int left,
-                     int right, int priority, unsigned long callbackval ){return 1;}
+                     int right, int priority, uint32_t callbackval ){return 1;}
 int FX_Pan3D( int handle, int angle, int distance ){return 1;}
 int FX_SoundActive( int handle ){return 1;}
 int FX_SoundsPlaying( void ){return 0;}
 int FX_StopSound( int handle ){return 1;}
 int FX_StopAllSounds( void ){return 1;}
-int FX_StartDemandFeedPlayback( void ( *function )( char **ptr, unsigned long *length ),
+int FX_StartDemandFeedPlayback( void ( *function )( char **ptr, uint32_t *length ),
                                int rate, int pitchoffset, int vol, int left, int right,
-                               int priority, unsigned long callbackval ){return 1;}
+                               int priority, uint32_t callbackval ){return 1;}
 int  FX_StartRecording( int MixRate, void ( *function )( char *ptr, int length ) ){return 1;}
 void FX_StopRecord( void ){}
 
@@ -146,11 +147,11 @@ int MUSIC_GetContext(void)
 	return 0;
 }
 
-void MUSIC_SetSongTick(unsigned long PositionInTicks)
+void MUSIC_SetSongTick(uint32_t PositionInTicks)
 {
 }
 
-void MUSIC_SetSongTime(unsigned long milliseconds)
+void MUSIC_SetSongTime(uint32_t milliseconds)
 {
 }
 

@@ -16,7 +16,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
+aint32_t with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 Original Source: 1996 - Todd Replogle
@@ -552,7 +552,7 @@ void CONFIG_SetupJoystick( int32 scripthandle )
 
 void readsavenames(void)
 {
-    long dummy;
+    int32_t dummy;
     short i;
     char fn[] = "game_.sav";
     FILE *fil;

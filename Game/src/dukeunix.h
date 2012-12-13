@@ -14,9 +14,6 @@
 #define __far
 #define __interrupt
 
-#ifdef __GNUC__
-typedef long long __int64;
-#endif
 
 //#define STUBBED(x)
 #ifdef __SUNPRO_C

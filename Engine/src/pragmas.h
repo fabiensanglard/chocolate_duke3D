@@ -14,8 +14,8 @@ static __inline void swapchar(unsigned char *p1, unsigned char *p2)
 { unsigned char tmp = *p1; *p1 = *p2; *p2 = tmp; }
 static __inline void swapshort(short *p1, short *p2)
 { short tmp = *p1; *p1 = *p2; *p2 = tmp; }
-static __inline void swaplong(long *p1, long *p2)
-{ long tmp = *p1; *p1 = *p2; *p2 = tmp; }
+static __inline void swaplong(int32_t *p1, int32_t *p2)
+{ int32_t tmp = *p1; *p1 = *p2; *p2 = tmp; }
 static __inline void swapchar2(unsigned char *p1, unsigned char *p2, int xsiz)
 {
     swapchar(p1, p2);
@@ -23,11 +23,11 @@ static __inline void swapchar2(unsigned char *p1, unsigned char *p2, int xsiz)
 }
 
 
-unsigned long getkensmessagecrc(long param);
+uint32_t getkensmessagecrc(int32_t param);
 
-static __inline long msqrtasm(unsigned long c)
+static __inline int32_t msqrtasm(uint32_t c)
 {
-	unsigned long a,b;
+	uint32_t a,b;
 
 	a = 0x40000000l;		// mov eax, 0x40000000
 	b = 0x20000000l;		// mov ebx, 0x20000000
@@ -46,7 +46,7 @@ static __inline long msqrtasm(unsigned long c)
 	return a;
 }
 
-void vlin16first (long i1, long i2);
+void vlin16first (int32_t i1, int32_t i2);
 
 static inline int sqr (int input1) { return input1*input1; }
 
@@ -151,14 +151,14 @@ static __inline int mul3 (int i1) { return i1*3; }
 static __inline int mul5 (int i1) { return i1*5; }
 static __inline int mul9 (int i1) { return i1*9; }
 
-void copybufreverse(void *S, void *D, long c);
-void copybuf(void *s, void *d, long c);
-void clearbuf(void *d, long c, long a);
-void clearbufbyte(void *D, long c, long a);
-void copybufbyte(void *S, void *D, long c);
+void copybufreverse(void *S, void *D, int32_t c);
+void copybuf(void *s, void *d, int32_t c);
+void clearbuf(void *d, int32_t c, int32_t a);
+void clearbufbyte(void *D, int32_t c, int32_t a);
+void copybufbyte(void *S, void *D, int32_t c);
 
-void qinterpolatedown16 (long* bufptr, long num, long val, long add);
-void qinterpolatedown16short (long* bufptr, long num, long val, long add);
+void qinterpolatedown16 (long* bufptr, int32_t num, int32_t val, int32_t add);
+void qinterpolatedown16short (long* bufptr, int32_t num, int32_t val, int32_t add);
 
 #endif /* !defined _INCLUDE_PRAGMAS_H_ */
 

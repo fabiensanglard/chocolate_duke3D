@@ -32,6 +32,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define __FX_MAN_H
 
 #include "sndcards.h"
+#include <inttypes.h>
 
 typedef struct
    {
@@ -83,7 +84,7 @@ int   FX_GetBlasterSettings( fx_blaster_config *blaster );
 int   FX_SetupSoundBlaster( fx_blaster_config blaster, int *MaxVoices, int *MaxSampleBits, int *MaxChannels );
 int   FX_Init( int SoundCard, int numvoices, int numchannels, int samplebits, unsigned mixrate );
 int   FX_Shutdown( void );
-int   FX_SetCallBack( void ( *function )( unsigned long ) );
+int   FX_SetCallBack( void ( *function )( uint32_t ) );
 void  FX_SetVolume( int volume );
 int   FX_GetVolume( void );
 
@@ -102,33 +103,33 @@ int FX_SetPitch( int handle, int pitchoffset );
 int FX_SetFrequency( int handle, int frequency );
 
 int FX_PlayVOC( char *ptr, int pitchoffset, int vol, int left, int right,
-       int priority, unsigned long callbackval );
-int FX_PlayLoopedVOC( char *ptr, long loopstart, long loopend,
-       int pitchoffset, int vol, int left, int right, int priority,
-       unsigned long callbackval );
+       int priority, uint32_t callbackval );
+int FX_PlayLoopedVOC( char *ptr, int32_t loopstart, int32_t loopend,
+       int32_t pitchoffset, int32_t vol, int32_t left, int32_t right, int32_t priority,
+       uint32_t callbackval );
 int FX_PlayWAV( char *ptr, int pitchoffset, int vol, int left, int right,
-       int priority, unsigned long callbackval );
-int FX_PlayLoopedWAV( char *ptr, long loopstart, long loopend,
+       int priority, uint32_t callbackval );
+int FX_PlayLoopedWAV( char *ptr, int32_t loopstart, int32_t loopend,
        int pitchoffset, int vol, int left, int right, int priority,
-       unsigned long callbackval );
-int FX_PlayVOC3D( char *ptr, int pitchoffset, int angle, int distance,
-       int priority, unsigned long callbackval );
+       uint32_t callbackval );
+int FX_PlayVOC3D( char *ptr, int32_t pitchoffset, int32_t angle, int32_t distance,
+       int priority, uint32_t callbackval );
 int FX_PlayWAV3D( char *ptr, int pitchoffset, int angle, int distance,
-       int priority, unsigned long callbackval );
-int FX_PlayRaw( char *ptr, unsigned long length, unsigned rate,
+       int priority, uint32_t callbackval );
+int FX_PlayRaw( char *ptr, uint32_t length, uint32_t rate,
        int pitchoffset, int vol, int left, int right, int priority,
-       unsigned long callbackval );
-int FX_PlayLoopedRaw( char *ptr, unsigned long length, char *loopstart,
+       uint32_t callbackval );
+int FX_PlayLoopedRaw( char *ptr, uint32_t length, char *loopstart,
        char *loopend, unsigned rate, int pitchoffset, int vol, int left,
-       int right, int priority, unsigned long callbackval );
-int FX_Pan3D( int handle, int angle, int distance );
-int FX_SoundActive( int handle );
-int FX_SoundsPlaying( void );
-int FX_StopSound( int handle );
-int FX_StopAllSounds( void );
-int FX_StartDemandFeedPlayback( void ( *function )( char **ptr, unsigned long *length ),
-       int rate, int pitchoffset, int vol, int left, int right,
-       int priority, unsigned long callbackval );
+       int right, int priority, uint32_t callbackval );
+int32_t FX_Pan3D( int handle, int angle, int distance );
+int32_t FX_SoundActive( int32_t handle );
+int32_t FX_SoundsPlaying( void );
+int32_t FX_StopSound( int handle );
+int32_t FX_StopAllSounds( void );
+int32_t FX_StartDemandFeedPlayback( void ( *function )( char **ptr, uint32_t *length ),
+       int32_t rate, int32_t pitchoffset, int32_t vol, int32_t left, int32_t right,
+       int32_t priority, uint32_t callbackval );
 int  FX_StartRecording( int MixRate, void ( *function )( char *ptr, int length ) );
 void FX_StopRecord( void );
 

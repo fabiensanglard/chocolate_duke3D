@@ -16,7 +16,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
+aint32_t with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 Original Source: 1996 - Todd Replogle
@@ -224,7 +224,7 @@ void *RTS_GetSound (int32 lump)
    if (lumpcache[lump] == NULL)
    {
       lumplockbyte[lump] = 200;
-      allocache((long *)&lumpcache[lump],(long)RTS_SoundLength(lump-1),&lumplockbyte[lump]);
+      allocache((int32_t *)&lumpcache[lump],(long)RTS_SoundLength(lump-1),&lumplockbyte[lump]);
       RTS_ReadLump(lump, lumpcache[lump]);
    }
    else

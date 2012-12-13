@@ -40,10 +40,10 @@
 /*
 void (*callcommit)(void);
 void (*initcrc)(void);
-long (*getcrc)(char *buffer, short bufleng);
+int32_t (*getcrc)(char *buffer, short bufleng);
 void (*initmultiplayers)(char damultioption, char dacomrateoption, char dapriority);
-void (*sendpacket)(long other, char *bufptr, long messleng);
-void (*setpackettimeout)(long datimeoutcount, long daresendagaincount);
+void (*sendpacket)(int32_t other, char *bufptr, int32_t messleng);
+void (*setpackettimeout)(int32_t datimeoutcount, int32_t daresendagaincount);
 void (*uninitmultiplayers)(void);
 void (*sendlogon)(void);
 void (*sendlogoff)(void);
@@ -51,7 +51,7 @@ int  (*getoutputcirclesize)(void);
 void (*setsocket)(short newsocket);
 short (*getpacket)(short *other, char *bufptr);
 void (*flushpackets)(void);
-void (*genericmultifunction)(long other, char *bufptr, long messleng, long command);
+void (*genericmultifunction)(int32_t other, char *bufptr, int32_t messleng, int32_t command);
 */
 /**/
 
@@ -115,7 +115,7 @@ void initcrc(void)
 	}
 #endif
 }
-long getcrc(char *buffer, short bufleng)
+int32_t getcrc(char *buffer, short bufleng)
 {
     #ifndef USER_DUMMY_NETWORK
 	switch(nNetMode)
@@ -142,7 +142,7 @@ void initmultiplayers(char damultioption, char dacomrateoption, char dapriority)
 	}
 #endif
 }
-void sendpacket(long other, char *bufptr, long messleng)
+void sendpacket(int32_t other, char *bufptr, int32_t messleng)
 {
 #ifndef USER_DUMMY_NETWORK
 	switch(nNetMode)
@@ -156,7 +156,7 @@ void sendpacket(long other, char *bufptr, long messleng)
 	}
 #endif
 }
-void setpackettimeout(long datimeoutcount, long daresendagaincount)
+void setpackettimeout(int32_t datimeoutcount, int32_t daresendagaincount)
 {
 #ifndef USER_DUMMY_NETWORK
 	switch(nNetMode)
@@ -266,7 +266,7 @@ void flushpackets(void)
 	}
 #endif
 }
-void genericmultifunction(long other, char *bufptr, long messleng, long command)
+void genericmultifunction(int32_t other, char *bufptr, int32_t messleng, int32_t command)
 {
     #ifndef USER_DUMMY_NETWORK
 	switch(nNetMode)
@@ -324,16 +324,16 @@ int _argc = 0;
 char **_argv = NULL;
 
     /* !!! move these elsewhere? */
-long xres, yres, bytesperline, frameplace, frameoffset, imageSize, maxpages;
+int32_t xres, yres, bytesperline, frameplace, frameoffset, imageSize, maxpages;
 char *screen, vesachecked;
-long buffermode, origbuffermode, linearmode;
+int32_t buffermode, origbuffermode, linearmode;
 char permanentupdate = 0, vgacompatible;
 
 SDL_Surface *surface = NULL; /* This isn't static so that we can use it elsewhere AH */
 static int debug_hall_of_mirrors = 0;
 static Uint32 sdl_flags = SDL_HWPALETTE;
-static long mouse_relative_x = 0;
-static long mouse_relative_y = 0;
+static int32_t mouse_relative_x = 0;
+static int32_t mouse_relative_y = 0;
 static short mouse_buttons = 0;
 static unsigned int lastkey = 0;
 /* so we can make use of setcolor16()... - DDOI */
@@ -341,11 +341,11 @@ static unsigned char drawpixel_color=0;
 
 static unsigned int scancodes[SDLK_LAST];
 
-static long last_render_ticks = 0;
-long total_render_time = 1;
-long total_rendered_frames = 0;
+static int32_t last_render_ticks = 0;
+int32_t total_render_time = 1;
+int32_t total_rendered_frames = 0;
 
-static char *titlelong = NULL;
+static char *title = NULL;
 static char *titleshort = NULL;
 
 void restore256_palette (void);
@@ -517,19 +517,19 @@ int using_opengl(void)
  * !!!  titlebar caption.   --ryan.
  */
 static char screenalloctype = 255;
-static void init_new_res_vars(int davidoption)
+static void init_new_res_vars(int32_t davidoption)
 {
     int i = 0;
     int j = 0;
 
     setupmouse();
 
-    SDL_WM_SetCaption(titlelong, titleshort);
+    SDL_WM_SetCaption(title, titleshort);
 
     xdim = xres = surface->w;
     ydim = yres = surface->h;
 
-	printf("init_new_res_vars %ld %ld\n",xdim,ydim);
+	printf("init_new_res_vars %d %d\n",xdim,ydim);
 
     bytesperline = surface->w;
     vesachecked = 1;
@@ -549,7 +549,7 @@ static void init_new_res_vars(int davidoption)
   	if (screen != NULL)
    	{
        	if (screenalloctype == 0) kkfree((void *)screen);
-   	    if (screenalloctype == 1) suckcache((long *)screen);
+   	    if (screenalloctype == 1) suckcache((int32_t *)screen);
    		screen = NULL;
    	} /* if */
 
@@ -568,7 +568,7 @@ static void init_new_res_vars(int davidoption)
   //  	screenalloctype = 0;
 //	    if ((screen = (char *)kkmalloc(i+(j<<1))) == NULL)
 //    	{
-//	    	 allocache((long *)&screen,i+(j<<1),&permanentlock);
+//	    	 allocache((int32_t *)&screen,i+(j<<1),&permanentlock);
 //    		 screenalloctype = 1;
 //    	}
 
@@ -579,8 +579,8 @@ static void init_new_res_vars(int davidoption)
 //        else
 //        {
 //            frameplace = FP_OFF(screen);
-//          	horizlookup = (long *)(frameplace+i);
-//           	horizlookup2 = (long *)(frameplace+i+j);
+//          	horizlookup = (int32_t *)(frameplace+i);
+//           	horizlookup2 = (int32_t *)(frameplace+i+j);
 //        } /* else */
 //    } /* if */
 		if(horizlookup)
@@ -589,8 +589,8 @@ static void init_new_res_vars(int davidoption)
 		if(horizlookup2)
 			free(horizlookup2);
 		
-		horizlookup = (long*)malloc(j);
-		horizlookup2 = (long*)malloc(j);
+		horizlookup = (int32_t*)malloc(j);
+		horizlookup2 = (int32_t*)malloc(j);
 
     j = 0;
   	for(i = 0; i <= ydim; i++)
@@ -751,7 +751,7 @@ void fullscreen_toggle_and_change_driver(void)
 //  toggle also made available from menu.
 //  Replace attempt_fullscreen_toggle(SDL_Surface **surface, Uint32 *flags)
   	
-	long int x,y;
+	int32_t x,y;
 	x = surface->w;
 	y = surface->h;
 
@@ -1036,7 +1036,7 @@ static __inline void init_debugging(void)
 
 
 #if (!defined __DATE__)
-#define __DATE__ "a long, long time ago"
+#define __DATE__ "a long, int32_t time ago"
 #endif
 
 static __inline void output_sdl_versions(void)
@@ -1185,7 +1185,7 @@ void Setup_StableNetworking()
 void _platform_init(int argc, char **argv, const char *title, const char *icon)
 {
     int i;
-	long long timeElapsed;
+	int32_t timeElapsed;
 	char dummyString[4096];
 
     _argc = argc;
@@ -1246,7 +1246,7 @@ void _platform_init(int argc, char **argv, const char *title, const char *icon)
     if (icon == NULL)
         icon = "BUILD";
 
-    titlelong = string_dupe(title);
+    title = string_dupe(title);
     titleshort = string_dupe(icon);
 
     sdl_flags = BFullScreen ? SDL_FULLSCREEN : 0;
@@ -1380,7 +1380,7 @@ void _platform_init(int argc, char **argv, const char *title, const char *icon)
 } /* _platform_init */
 
 
-int setvesa(long x, long y)
+int setvesa(int32_t x, int32_t y)
 {
 	Error(EXIT_FAILURE, "setvesa() called in SDL driver\n");
     return(0);
@@ -1411,7 +1411,7 @@ void setvmode(int mode)
 
 } 
 
-int _setgamemode(char davidoption, long daxdim, long daydim)
+int _setgamemode(char davidoption, int32_t daxdim, int32_t daydim)
 {
 	int validated, i;
 	SDL_Surface     *image;
@@ -1491,12 +1491,12 @@ int _setgamemode(char davidoption, long daxdim, long daydim)
 } /* setgamemode */
 
 
-static int get_dimensions_from_str(const char *str, long *_w, long *_h)
+static int get_dimensions_from_str(const char *str, int32_t *_w, int32_t *_h)
 {
     char *xptr = NULL;
     char *ptr = NULL;
-    long w = -1;
-    long h = -1;
+    int32_t w = -1;
+    int32_t h = -1;
 
     if (str == NULL)
         return(0);
@@ -1527,10 +1527,10 @@ static int get_dimensions_from_str(const char *str, long *_w, long *_h)
 } /* get_dimensions_from_str */
 
 
-static __inline void get_max_screen_res(long *max_w, long *max_h)
+static __inline void get_max_screen_res(int32_t *max_w, int32_t *max_h)
 {
-    long w = DEFAULT_MAXRESWIDTH;
-    long h = DEFAULT_MAXRESHEIGHT;
+    int32_t w = DEFAULT_MAXRESWIDTH;
+    int32_t h = DEFAULT_MAXRESHEIGHT;
     const char *envr = getenv(BUILD_MAXSCREENRES);
 
     if (envr != NULL)
@@ -1564,8 +1564,8 @@ static void add_vesa_mode(const char *typestr, int w, int h)
 /* Let the user specify a specific mode via environment variable. */
 static __inline void add_user_defined_resolution(void)
 {
-    long w;
-    long h;
+    int32_t w;
+    int32_t h;
     const char *envr = getenv(BUILD_USERSCREENRES);
 
     if (envr == NULL)
@@ -1623,8 +1623,8 @@ static void remove_vesa_mode(int index, const char *reason)
 
 static __inline void cull_large_vesa_modes(void)
 {
-    long max_w;
-    long max_h;
+    int32_t max_w;
+    int32_t max_h;
     int i;
 
     get_max_screen_res(&max_w, &max_h);
@@ -1668,7 +1668,7 @@ static __inline void sort_vesa_modelist(void)
 {
     int i;
     int sorted;
-    long tmp;
+    int32_t tmp;
 
     do
     {
@@ -1759,7 +1759,7 @@ void getvalidvesamodes(void)
 } /* getvalidvesamodes */
 
 
-int VBE_setPalette(long start, long num, char *palettebuffer)
+int VBE_setPalette(int32_t start, int32_t num, char *palettebuffer)
 /*
  * (From Ken's docs:)
  *   Set (num) palette palette entries starting at (start)
@@ -1830,7 +1830,7 @@ int VBE_setPalette(long start, long num, char *palettebuffer)
 } /* VBE_setPalette */
 
 
-int VBE_getPalette(long start, long num, char *palettebuffer)
+int VBE_getPalette(int32_t start, int32_t num, char *palettebuffer)
 {
     SDL_Color *sdlp = surface->format->palette->colors + start;
     char *p = palettebuffer + (start * 4);
@@ -1912,7 +1912,7 @@ void readmousebstatus(short *bstatus)
 
 static unsigned char mirrorcolor = 0;
 
-void _updateScreenRect(long x, long y, long w, long h)
+void _updateScreenRect(int32_t x, int32_t y, int32_t w, int32_t h)
 {
     if (renderer == RENDERER_SOFTWARE)
         SDL_UpdateRect(surface, x, y, w, h);
@@ -1963,19 +1963,19 @@ void _nextpage(void)
 } /* _nextpage */
 
 
-unsigned char readpixel(long offset)
+unsigned char readpixel(int32_t offset)
 {
     return( *((unsigned char *) offset) );
 } /* readpixel */
 
-void drawpixel(long offset, unsigned char pixel)
+void drawpixel(int32_t offset, unsigned char pixel)
 {
     *((unsigned char *) offset) = pixel;
 } /* drawpixel */
 
 
 /* !!! These are incorrect. */
-void drawpixels(long offset, unsigned short pixels)
+void drawpixels(int32_t offset, unsigned short pixels)
 {
     Uint8 *surface_end;
     Uint16 *pos;
@@ -1995,7 +1995,7 @@ void drawpixels(long offset, unsigned short pixels)
 } /* drawpixels */
 
 
-void drawpixelses(long offset, unsigned int pixelses)
+void drawpixelses(int32_t offset, unsigned int pixelses)
 {
     Uint8 *surface_end;
     Uint32 *pos;
@@ -2021,13 +2021,13 @@ void setcolor16(int col)
 	drawpixel_color = col;
 }
 
-void drawpixel16(long offset)
+void drawpixel16(int32_t offset)
 {
     drawpixel(((long) surface->pixels + offset), drawpixel_color);
 } /* drawpixel16 */
 
 
-void fillscreen16(long offset, long color, long blocksize)
+void fillscreen16(int32_t offset, int32_t color, int32_t blocksize)
 {
     Uint8 *surface_end;
     Uint8 *wanted_end;
@@ -2100,12 +2100,12 @@ static __inline void DrawVerticalRun (char **ScreenPtr, int XAdvance, int RunLen
     *ScreenPtr = WorkingScreenPtr;
 }
 
-void drawline16(long XStart, long YStart, long XEnd, long YEnd, char Color)
+void drawline16(int32_t XStart, int32_t YStart, int32_t XEnd, int32_t YEnd, char Color)
 {
     int Temp, AdjUp, AdjDown, ErrorTerm, XAdvance, XDelta, YDelta;
     int WholeStep, InitialPixelCount, FinalPixelCount, i, RunLength;
     char *ScreenPtr;
-    long dx, dy;
+    int32_t dx, dy;
 
     if (SDL_MUSTLOCK(surface))
         SDL_LockSurface(surface);
@@ -2289,7 +2289,7 @@ void *_getVideoBase(void)
     return((void *) surface->pixels);
 }
 
-void setactivepage(long dapagenum)
+void setactivepage(int32_t dapagenum)
 {
 	/* !!! Is this really still needed? - DDOI */
     /*fprintf(stderr, "%s, line %d; setactivepage(): STUB.\n", __FILE__, __LINE__);*/
@@ -2318,9 +2318,9 @@ void limitrate(void)
 // SDL timer was not fast/accurate enough and was slowing down the gameplay,
 // so bad
 
-typedef long long int64;
-static int64 timerfreq=0;
-static long timerlastsample=0;
+
+static int64_t timerfreq=0;
+static int32_t timerlastsample=0;
 static int timerticspersec=0;
 static void (*usertimercallback)(void) = NULL;
 
@@ -2352,7 +2352,7 @@ void (*installusertimercallback(void (*callback)(void)))(void)
 
 int inittimer(int tickspersecond)
 {
-	int64 t;
+	int64_t t;
 	
     
 	if (timerfreq) return 0;	// already installed
@@ -2392,8 +2392,8 @@ void uninittimer(void)
 //
 void sampletimer(void)
 {
-	int64 i;
-	long n;
+	int64_t i;
+	int32_t n;
 	
 	if (!timerfreq) return;
 
@@ -2414,11 +2414,11 @@ void sampletimer(void)
    getticks() -- returns the windows ticks count
    FCS: This seeems to be only used in the multiplayer code
 */
-unsigned long getticks(void)
+uint32_t getticks(void)
 {
-	int64 i;
+	int64_t i;
 	TIMER_GetPlatformTicks(&i);
-	return (unsigned long)(i*(long long)(1000)/timerfreq);
+	return (uint32_t)(i*(int32_t)(1000)/timerfreq);
 }
 
 
@@ -2473,7 +2473,7 @@ void uninitkeys(void)
 }
 
 
-//unsigned long getticks(void)
+//unsigned int32_t getticks(void)
 //{
 //    return(SDL_GetTicks());
 //} /* getticks */

@@ -16,7 +16,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
+aint32_t with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 Original Source: 1996 - Todd Replogle
@@ -36,7 +36,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 
 #define HIRESMUSICPATH "tunes"
 
-extern int32 FXDevice;
+extern int32_t FXDevice;
 extern int32 MusicDevice;
 extern int32 FXVolume;
 extern int32 MusicVolume;
@@ -57,6 +57,6 @@ void MusicShutdown( void );
 void clearsoundlocks(void);
 
 /* dunno where this came from; I added it. --ryan. */
-void testcallback(unsigned long num);
+void testcallback(uint32_t num);
 
 #endif

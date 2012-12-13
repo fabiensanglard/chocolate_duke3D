@@ -16,7 +16,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
+aint32_t with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 Original Source: 1996 - Todd Replogle
@@ -39,7 +39,7 @@ extern void MusicStartup(void );
 //#line "sounds.c" 166
 extern void MusicShutdown(void );
 //#line "sounds.c" 181
-extern int USRHOOKS_GetMem(char **ptr,unsigned long size);
+extern int USRHOOKS_GetMem(char **ptr,uint32_t size);
 //#line "sounds.c" 192
 extern int USRHOOKS_FreeMem(char *ptr);
 //#line "sounds.c" 200
@@ -49,7 +49,7 @@ extern void playmusic(char *fn);
 //#line "sounds.c" 251
 extern char loadsound(unsigned short num);
 //#line "sounds.c" 277
-extern int xyzsound(short num,short i,long x,long y,long z);
+extern int xyzsound(short num,short i,int32_t x,int32_t y,int32_t z);
 //#line "sounds.c" 407
 extern void sound(short num);
 //#line "sounds.c" 463
@@ -61,7 +61,7 @@ extern void stopenvsound(short num,short i);
 //#line "sounds.c" 494
 extern void pan3dsound(void );
 //#line "sounds.c" 571
-extern void TestCallBack(long num);
+extern void TestCallBack(int32_t num);
 //#line "sector.c" 9
 extern short callsound(short sn,short whatsprite);
 //#line "sector.c" 56
@@ -75,19 +75,19 @@ extern char isanearoperator(short lotag);
 //#line "sector.c" 161
 extern short checkcursectnums(short sect);
 //#line "sector.c" 169
-extern long ldist(spritetype *s1,spritetype *s2);
+extern int32_t ldist(spritetype *s1,spritetype *s2);
 //#line "sector.c" 177
-extern long dist(spritetype *s1,spritetype *s2);
+extern int32_t dist(spritetype *s1,spritetype *s2);
 //#line "sector.c" 186
-extern short findplayer(spritetype *s,long *d);
+extern short findplayer(spritetype *s,int32_t *d);
 //#line "sector.c" 214
-extern short findotherplayer(short p,long *d);
+extern short findotherplayer(short p,int32_t *d);
 //#line "sector.c" 240
 extern void doanimations(void );
 //#line "sector.c" 301
-extern long getanimationgoal(long *animptr);
+extern int32_t getanimationgoal(int32_t *animptr);
 //#line "sector.c" 315
-extern long setanimation(short animsect,long *animptr,long thegoal,long thevel);
+extern int32_t setanimation(short animsect,int32_t *animptr,int32_t thegoal,int32_t thevel);
 //#line "sector.c" 348
 extern void animatecamsprite(void );
 //#line "sector.c" 369
@@ -105,11 +105,11 @@ extern void operatemasterswitches(short low);
 //#line "sector.c" 1104
 extern void operateforcefields(short s,short low);
 //#line "sector.c" 1140
-extern char checkhitswitch(short snum,long w,char switchtype);
+extern char checkhitswitch(short snum,int32_t w,char switchtype);
 //#line "sector.c" 1515
 extern void activatebysector(short sect,short j);
 //#line "sector.c" 1532
-extern void checkhitwall(short spr,short dawallnum,long x,long y,long z,short atwith);
+extern void checkhitwall(short spr,short dawallnum,int32_t x,int32_t y,int32_t z,short atwith);
 //#line "sector.c" 1746
 extern void checkplayerhurt(struct player_struct *p,short j);
 //#line "sector.c" 1816
@@ -170,7 +170,7 @@ extern void genspriteremaps(void );
 //#line "premap.c" 1077
 extern void waitforeverybody(void);
 //#line "premap.c" 1131
-extern char checksum(long sum);
+extern char checksum(int32_t sum);
 //#line "premap.c" 1163
 extern char getsound(unsigned short num);
 //#line "premap.c" 1189
@@ -190,13 +190,13 @@ extern void quickkill(struct player_struct *p);
 //#line "player.c" 73
 extern void forceplayerangle(struct player_struct *p);
 //#line "player.c" 85
-extern void tracers(long x1,long y1,long z1,long x2,long y2,long z2,long n);
+extern void tracers(int32_t x1,int32_t y1,int32_t z1,int32_t x2,int32_t y2,int32_t z2,int32_t n);
 //#line "player.c" 114
-extern long hits(short i);
+extern int32_t hits(short i);
 //#line "player.c" 131
-extern long hitasprite(short i,short *hitsp);
+extern int32_t hitasprite(short i,short *hitsp);
 //#line "player.c" 152
-extern long hitawall(struct player_struct *p,short *hitw);
+extern int32_t hitawall(struct player_struct *p,short *hitw);
 //#line "player.c" 163
 extern short aim(spritetype *s,short aang, short auto_aim);
 //#line "player.c" 234
@@ -228,7 +228,7 @@ extern void processinput(short snum);
 //#line "menues.c" 18
 extern void cmenu(short cm);
 //#line "menues.c" 38
-extern void savetemp(char *fn,long daptr,long dasiz);
+extern void savetemp(char *fn,int32_t daptr,int32_t dasiz);
 //#line "menues.c" 49
 extern void getangplayers(short snum);
 //#line "menues.c" 67
@@ -241,7 +241,7 @@ extern int saveplayer(signed char spot);
 extern void sendgameinfo(void );
 //#line "menues.c" 434
 extern int probe(int x,int y,int i,int n);
-extern int probeXduke(int x,int y,int i,int n, long spriteSize);
+extern int probeXduke(int x,int y,int i,int n, int32_t spriteSize);
 //#line "menues.c" 521
 extern int menutext(int x,int y,short s,short p,char *t);
 //#line "menues.c" 630
@@ -258,9 +258,9 @@ extern void sortfilenames(void);
 extern void menus(void );
 void gameexitanycase(void);
 //#line "menues.c" 2414
-extern void palto(char r,char g,char b,long e);
+extern void palto(char r,char g,char b,int32_t e);
 //#line "menues.c" 2436
-extern void drawoverheadmap(long cposx,long cposy,long czoom,short cang);
+extern void drawoverheadmap(int32_t cposx,int32_t cposy,int32_t czoom,short cang);
 //#line "menues.c" 2685
 extern void playanm(char *fn,char);
 //#line "gamedef.c" 122
@@ -276,9 +276,9 @@ extern void makeitfall(short i);
 //#line "gamedef.c" 243
 extern void getlabel(void );
 //#line "gamedef.c" 267
-extern long keyword(void );
+extern int32_t keyword(void );
 //#line "gamedef.c" 300
-extern long transword(void );
+extern int32_t transword(void );
 //#line "gamedef.c" 342
 extern void transnum(void );
 //#line "gamedef.c" 402
@@ -292,19 +292,19 @@ extern char dodge(spritetype *s);
 //#line "gamedef.c" 1374
 extern short furthestangle(short i,short angs);
 //#line "gamedef.c" 1404
-extern short furthestcanseepoint(short i,spritetype *ts,long *dax,long *day);
+extern short furthestcanseepoint(short i,spritetype *ts,int32_t *dax,int32_t *day);
 //#line "gamedef.c" 1444
 extern void alterang(short a);
 //#line "gamedef.c" 1512
 extern void move(void);
 //#line "gamedef.c" 1711
-extern void parseifelse(long condition);
+extern void parseifelse(int32_t condition);
 //#line "gamedef.c" 1729
 extern char parse(void );
 //#line "gamedef.c" 2699
-extern void execute(short i,short p,long x);
+extern void execute(short i,short p,int32_t x);
 //#line "game.c" 63
-extern void overwritesprite(long thex,long they,short tilenum,signed char shade,char stat,char dapalnum);
+extern void overwritesprite(int32_t thex,int32_t they,short tilenum,signed char shade,char stat,char dapalnum);
 //#line "game.c" 70
 extern void timerhandler(void);
 //#line "game.c" 75
@@ -318,7 +318,7 @@ extern int gametextpart(int x,int y,char *t,char s,short p);
 //#line "game.c" 192
 extern int minitext(int x,int y,char *t,char p,char sb);
 //#line "game.c" 231
-extern void gamenumber(long x,long y,long n,char s);
+extern void gamenumber(int32_t x,int32_t y,int32_t n,char s);
 //#line "game.c" 248
 extern void ShutDown(void );
 //#line "game.c" 260
@@ -338,21 +338,21 @@ extern short badguy(spritetype *s);
 //#line "game.c" 924
 extern short badguypic(short pn);
 //#line "game.c" 963
-extern void myos(long x,long y,short tilenum,signed char shade,char orientation);
+extern void myos(int32_t x,int32_t y,short tilenum,signed char shade,char orientation);
 //#line "game.c" 976
-extern void myospal(long x,long y,short tilenum,signed char shade,char orientation,char p);
+extern void myospal(int32_t x,int32_t y,short tilenum,signed char shade,char orientation,char p);
 //#line "game.c" 991
-extern void invennum(long x,long y,char num1,char ha,char sbits);
+extern void invennum(int32_t x,int32_t y,char num1,char ha,char sbits);
 //#line "game.c" 1021
-extern void weaponnum(short ind,long x,long y,long num1,long num2,char ha);
+extern void weaponnum(short ind,int32_t x,int32_t y,int32_t num1,int32_t num2,char ha);
 //#line "game.c" 1049
-extern void weaponnum999(char ind,long x,long y,long num1,long num2,char ha);
+extern void weaponnum999(char ind,int32_t x,int32_t y,int32_t num1,int32_t num2,char ha);
 //#line "game.c" 1088
-extern void weapon_amounts(struct player_struct *p,long x,long y,long u);
+extern void weapon_amounts(struct player_struct *p,int32_t x,int32_t y,int32_t u);
 //#line "game.c" 1197
-extern void digitalnumber(long x,long y,long n,char s,char cs);
+extern void digitalnumber(int32_t x,int32_t y,int32_t n,char s,char cs);
 //#line "game.c" 1223
-extern void scratchmarks(long x,long y,long n,char s,char p);
+extern void scratchmarks(int32_t x,int32_t y,int32_t n,char s,char p);
 //#line "game.c" 1238
 extern void displayinventory(struct player_struct *p);
 //#line "game.c" 1296
@@ -379,25 +379,25 @@ extern void gameexit(char *t);
 //#line "game.c" 1752
 extern short strget(short x,short y,char *t,short dalen,short c);
 //#line "game.c" 1819
-extern void displayrest(long smoothratio);
+extern void displayrest(int32_t smoothratio);
 //#line "game.c" 2047
-extern void updatesectorz(long x,long y,long z,short *sectnum);
+extern void updatesectorz(int32_t x,int32_t y,int32_t z,short *sectnum);
 //#line "game.c" 2085
-extern void view(struct player_struct *pp,long *vx,long *vy,long *vz,short *vsectnum,short ang,short horiz);
+extern void view(struct player_struct *pp,int32_t *vx,int32_t *vy,int32_t *vz,short *vsectnum,short ang,short horiz);
 //#line "game.c" 2137
 extern void drawbackground(void );
 //#line "game.c" 2200
-extern void displayrooms(short snum,long smoothratio);
+extern void displayrooms(short snum,int32_t smoothratio);
 //#line "game.c" 2445
 extern short LocateTheLocator(short n,short sn);
 //#line "game.c" 2459
-extern short EGS(short whatsect,long s_x,long s_y,long s_z,short s_pn,signed char s_s,signed char s_xr,signed char s_yr,short s_a,short s_ve,long s_zv,short s_ow,signed char s_ss);
+extern short EGS(short whatsect,int32_t s_x,int32_t s_y,int32_t s_z,short s_pn,signed char s_s,signed char s_xr,signed char s_yr,short s_a,short s_ve,int32_t s_zv,short s_ow,signed char s_ss);
 //#line "game.c" 2537
 extern char wallswitchcheck(short i);
 //#line "game.c" 2588
 extern short spawn(short j,short pn);
 //#line "game.c" 4181
-extern void animatesprites(long x,long y,short a,long smoothratio);
+extern void animatesprites(int32_t x,int32_t y,short a,int32_t smoothratio);
 //#line "game.c" 4859
 extern void cheats(void );
 //#line "game.c" 5303
@@ -429,7 +429,7 @@ extern void record(void );
 //#line "game.c" 6626
 extern void closedemowrite(void );
 //#line "game.c" 6642
-extern long playback(void );
+extern int32_t playback(void );
 //#line "game.c" 6777
 extern char moveloop(void);
 //#line "game.c" 6796
@@ -447,7 +447,7 @@ extern void dobonus(char bonusonly);
 //#line "game.c" 7846
 extern void cameratext(short i);
 //#line "game.c" 7869
-extern void vglass(long x,long y,short a,short wn,short n);
+extern void vglass(int32_t x,int32_t y,short a,short wn,short n);
 //#line "game.c" 7882
 extern void lotsofglass(short i,short wallnum,short n);
 //#line "game.c" 7924
@@ -459,7 +459,7 @@ extern void lotsofcolourglass(short i,short wallnum,short n);
 //#line "game.c" 8004
 extern void SetupGameButtons(void );
 //#line "game.c" 8068
-extern long GetTime(void );
+extern int32_t GetTime(void );
 //#line "game.c" 8082
 extern void CenterCenter(void );
 //#line "game.c" 8095
@@ -521,17 +521,17 @@ extern byte *ANIM_GetPalette(void );
 //#line "actors.c" 7
 extern void updateinterpolations(void);
 //#line "actors.c" 15
-extern void setinterpolation(long *posptr);
+extern void setinterpolation(int32_t *posptr);
 //#line "actors.c" 27
-extern void stopinterpolation(long *posptr);
+extern void stopinterpolation(int32_t *posptr);
 //#line "actors.c" 41
-extern void dointerpolations(long smoothratio);
+extern void dointerpolations(int32_t smoothratio);
 //#line "actors.c" 55
 extern void restoreinterpolations(void);
 //#line "actors.c" 63
-extern long ceilingspace(short sectnum);
+extern int32_t ceilingspace(short sectnum);
 //#line "actors.c" 77
-extern long floorspace(short sectnum);
+extern int32_t floorspace(short sectnum);
 //#line "actors.c" 91
 extern void addammo(short weapon,struct player_struct *p,short amount);
 //#line "actors.c" 99
@@ -541,13 +541,13 @@ extern void checkavailinven(struct player_struct *p);
 //#line "actors.c" 152
 extern void checkavailweapon(struct player_struct *p);
 //#line "actors.c" 301
-extern long ifsquished(short i,short p);
+extern int32_t ifsquished(short i,short p);
 //#line "actors.c" 326
-extern void hitradius(short i,long r,long hp1,long hp2,long hp3,long hp4);
+extern void hitradius(short i,int32_t r,int32_t hp1,int32_t hp2,int32_t hp3,int32_t hp4);
 //#line "actors.c" 556
-extern int movesprite(short spritenum,long xchange,long ychange,long zchange,unsigned long cliptype);
+extern int movesprite(short spritenum,int32_t xchange,int32_t ychange,int32_t zchange,uint32_t cliptype);
 //#line "actors.c" 643
-extern short ssp(short i,unsigned long cliptype);
+extern short ssp(short i,uint32_t cliptype);
 //#line "actors.c" 658
 extern void insertspriteq(short i);
 //#line "actors.c" 666

@@ -16,7 +16,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
+aint32_t with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 Original Source: 1996 - Todd Replogle
@@ -37,7 +37,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 
 #define LOUDESTVOLUME 150
 
-long backflag,numenvsnds;
+int32_t backflag,numenvsnds;
 
 /*
 ===================
@@ -207,7 +207,7 @@ void MusicShutdown( void )
       }
    }
 
-int USRHOOKS_GetMem(char **ptr, unsigned long size )
+int USRHOOKS_GetMem(char **ptr, uint32_t size )
 {
    *ptr = malloc(size);
 
@@ -256,7 +256,7 @@ void playmusic(char *fn)
 {
 #if PLATFORM_DOS
     short      fp;
-    long        l;
+    int32_t        l;
 
     if(MusicToggle == 0) return;
     if(MusicDevice == NumSoundCards) return;
@@ -287,7 +287,7 @@ void playmusic(char *fn)
 
 char loadsound(unsigned short num)
 {
-    long   fp, l;
+    int32_t   fp, l;
 
     if(num >= NUM_SOUNDS || SoundToggle == 0) return 0;
     if (FXDevice == NumSoundCards) return 0;
@@ -305,15 +305,15 @@ char loadsound(unsigned short num)
 
     Sound[num].lock = 200;
 
-    allocache((long *)&Sound[num].ptr,l,(unsigned char *)&Sound[num].lock);
+    allocache((int32_t *)&Sound[num].ptr,l,(unsigned char *)&Sound[num].lock);
     kread( fp, Sound[num].ptr , l);
     kclose( fp );
     return 1;
 }
 
-int xyzsound(short num,short i,long x,long y,long z)
+int xyzsound(short num,short i,int32_t x,int32_t y,int32_t z)
 {
-    long sndist, cx, cy, cz, j,k;
+    int32_t sndist, cx, cy, cz, j,k;
     short pitche,pitchs,cs;
     int voice, sndang, ca, pitch;
 
@@ -459,7 +459,7 @@ void sound(short num)
 {
     short pitch,pitche,pitchs,cx;
     int voice;
-    long start;
+    int32_t start;
 
     if (FXDevice == NumSoundCards) return;
     if(SoundToggle==0) return;
@@ -547,7 +547,7 @@ void stopenvsound(short num,short i)
 
 void pan3dsound(void)
 {
-    long sndist, sx, sy, sz, cx, cy, cz;
+    int32_t sndist, sx, sy, sz, cx, cy, cz;
     short sndang,ca,j,k,i,cs;
 
     numenvsnds = 0;
@@ -625,7 +625,7 @@ void pan3dsound(void)
     }
 }
 
-void TestCallBack(long num)
+void TestCallBack(int32_t num)
 {
     short tempi,tempj,tempk;
 
@@ -665,7 +665,7 @@ void TestCallBack(long num)
 
 
 // no idea if this is right. I added this function.  --ryan.
-void testcallback(unsigned long num)
+void testcallback(uint32_t num)
 {
 //    STUBBED("wtf?");
     TestCallBack(num);
@@ -674,7 +674,7 @@ void testcallback(unsigned long num)
 
 void clearsoundlocks(void)
 {
-    long i;
+    int32_t i;
 
     for(i=0;i<NUM_SOUNDS;i++)
         if(Sound[i].lock >= 200)

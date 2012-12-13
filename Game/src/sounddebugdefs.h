@@ -1,8 +1,8 @@
 #ifndef _SOUND_DEBUG_DEFS_H_
 #define _SOUND_DEBUG_DEFS_H_
 
-extern unsigned long sounddebugActiveSounds;
-extern unsigned long sounddebugAllocateSoundCalls;
-extern unsigned long sounddebugDeallocateSoundCalls;
+extern uint32_t sounddebugActiveSounds;
+extern uint32_t sounddebugAllocateSoundCalls;
+extern uint32_t sounddebugDeallocateSoundCalls;
 
 #endif

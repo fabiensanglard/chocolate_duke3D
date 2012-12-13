@@ -16,7 +16,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
+aint32_t with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 Original Source: 1996 - Todd Replogle
@@ -26,6 +26,9 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 
 #ifndef _types_public
 #define _types_public
+
+#include <inttypes.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -53,7 +56,7 @@ typedef int32                   fixed;
 typedef char                    boolean;
 typedef float                   float32;
 typedef double                  float64;
-typedef long double             float128;
+typedef int64_t                 float128;
 typedef float64                 appfloat;
 
 #define MAXINT32                0x7fffffff

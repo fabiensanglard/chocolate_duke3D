@@ -12,7 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
+aint32_t with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
@@ -185,7 +185,7 @@ DWORD Windows_MidiOut::thread_main()
 
 	// List all the midi devices.
 	MIDIOUTCAPS caps;
-	signed long dev_count = (signed long) midiOutGetNumDevs(); 
+	signed int32_t dev_count = (signed long) midiOutGetNumDevs(); 
 	std::cout << dev_count << " Midi Devices Detected" << endl;
 	std::cout << "Listing midi devices:" << endl;
 
@@ -1168,7 +1168,7 @@ void PlayMusic(char *fn)
 	//extern void GetOnlyNameOfFile(char *fn);
 
 	short      fp;
-    long        l;
+    int32_t        l;
 	char *cfn;
 	char *buffer;
 	char fpath[19] = {'\0'};
@@ -1224,13 +1224,13 @@ int MUSIC_GetContext(void)
 } // MUSIC_GetContext
 
 
-void MUSIC_SetSongTick(unsigned long PositionInTicks)
+void MUSIC_SetSongTick(unsigned int32_t PositionInTicks)
 {
     musdebug("STUB ... MUSIC_SetSongTick().\n");
 } // MUSIC_SetSongTick
 
 
-void MUSIC_SetSongTime(unsigned long milliseconds)
+void MUSIC_SetSongTime(unsigned int32_t milliseconds)
 {
     musdebug("STUB ... MUSIC_SetSongTime().\n");
 }// MUSIC_SetSongTime

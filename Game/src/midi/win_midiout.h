@@ -12,7 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
+aint32_t with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
@@ -109,34 +109,34 @@ public:
 	void reset_channel (int i);
 
 	// Microsecond Clock
-	unsigned long start;
-	unsigned long sfx_start;
+	unsigned int32_t start;
+	unsigned int32_t sfx_start;
 
 	inline void wmoInitClock ()
 	{ start = GetTickCount()*6; }
 
-	inline void wmoAddOffset (unsigned long offset)
+	inline void wmoAddOffset (unsigned int32_t offset)
 	{ start += offset; }
 
-	inline unsigned long wmoGetTime ()
+	inline unsigned int32_t wmoGetTime ()
 	{ return GetTickCount()*6 - start; }
 
-	inline unsigned long wmoGetStart ()
+	inline unsigned int32_t wmoGetStart ()
 	{ return start; }
 
-	inline unsigned long wmoGetRealTime ()
+	inline unsigned int32_t wmoGetRealTime ()
 	{ return GetTickCount()*6; }
 
 	inline void wmoInitSFXClock ()
 	{ sfx_start = GetTickCount()*6; }
 
-	inline void wmoAddSFXOffset (unsigned long offset)
+	inline void wmoAddSFXOffset (unsigned int32_t offset)
 	{ sfx_start += offset; }
 
-	inline unsigned long wmoGetSFXTime ()
+	inline unsigned int32_t wmoGetSFXTime ()
 	{ return GetTickCount()*6 - sfx_start; }
 
-	inline unsigned long wmoGetSFXStart ()
+	inline unsigned int32_t wmoGetSFXStart ()
 	{ return sfx_start; }
 };
 

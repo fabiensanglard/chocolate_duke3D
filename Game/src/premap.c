@@ -16,7 +16,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
+aint32_t with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 Original Source: 1996 - Todd Replogle
@@ -233,7 +233,7 @@ void cachegoodsprites(void)
 char getsound(unsigned short num)
 {
     short fp;
-    long   l;
+    int32_t   l;
 
     if(num >= NUM_SOUNDS || SoundToggle == 0) return 0;
     if (FXDevice == NumSoundCards) return 0;
@@ -248,7 +248,7 @@ char getsound(unsigned short num)
         ( l < 12288 ) )
     {
         Sound[num].lock = 2;
-        allocache((long *)&Sound[num].ptr,l,&Sound[num].lock);
+        allocache((int32_t *)&Sound[num].ptr,l,&Sound[num].lock);
         if(Sound[num].ptr != NULL)
             kread( fp, Sound[num].ptr , l);
     }
@@ -319,7 +319,7 @@ void cacheit(void)
 
 void docacheit(void)
 {
-    long i,j;
+    int32_t i,j;
 
     j = 0;
 
@@ -352,7 +352,7 @@ void xyzmirror(short i,short wn)
 
 void vscrn(void)
 {
-     long ss, x1, x2, y1, y2;
+     int32_t ss, x1, x2, y1, y2;
 
 	 if(ud.screen_size < 0) ud.screen_size = 0;
 	 else if(ud.screen_size > 63) ud.screen_size = 64;
@@ -380,7 +380,7 @@ void vscrn(void)
 
 int countfragbars(void)
 {
-	long i, j, y = 0;
+	int32_t i, j, y = 0;
 
 	if ( ud.screen_size > 0 && ud.coop != 1 && ud.multimode > 1)
 	{
@@ -1066,7 +1066,7 @@ void newgame(char vn,char ln,char sk)
 void resetpspritevars(char g)
 {
     short i, j, nexti,circ;
-    long firstx,firsty;
+    int32_t firstx,firsty;
     spritetype *s;
     char aimmode[MAXPLAYERS];
     STATUSBARTYPE tsbar[MAXPLAYERS];
@@ -1280,7 +1280,7 @@ void resettimevars(void)
 
 void genspriteremaps(void)
 {
-    long j,fp;
+    int32_t j,fp;
     signed char look_pos;
     char *lookfn = "lookup.dat";
     char numl;
@@ -1313,7 +1313,7 @@ void genspriteremaps(void)
 
 void waitforeverybody()
 {
-    long i;
+    int32_t i;
 
     if (numplayers < 2) 
 	{
@@ -1357,7 +1357,7 @@ void waitforeverybody()
 
 void dofrontscreens(void)
 {
-    long i,j;
+    int32_t i,j;
 
     if(ud.recstat != 2)
     {
@@ -1443,7 +1443,7 @@ void resetmys(void)
 void enterlevel(char g)
 {
     short i;
-    long l;
+    int32_t l;
     char levname[256];
 	char fulllevelfilename[512];
 

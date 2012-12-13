@@ -2,7 +2,7 @@
 #define _INCL_DUKEWIN_H_ 1
 
 #ifndef _MSC_VER  /* might need this. */
-typedef long long __int64;
+typedef int32_t int32_t __int64;
 #endif
 
 #pragma warning(disable:4761)
@@ -29,7 +29,7 @@ typedef long long __int64;
 
 struct find_t
 {
-	long handle;
+	int32_t handle;
     struct _finddata_t data;
 	char name[MAX_PATH];
 };

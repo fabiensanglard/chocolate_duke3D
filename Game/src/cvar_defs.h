@@ -1,6 +1,8 @@
 #ifndef _CVARDEFS_H_
 #define _CVARDEFS_H_
 
+#include <inttypes.h>
+
 void CVARDEFS_Init();
 void CVARDEFS_Render();
 //
@@ -27,9 +29,9 @@ int g_CV_TransConsole;
 int g_CV_DebugJoystick;
 int g_CV_DebugSound;
 int g_CV_DebugFileAccess;
-unsigned long sounddebugActiveSounds;
-unsigned long sounddebugAllocateSoundCalls;
-unsigned long sounddebugDeallocateSoundCalls;
+uint32_t sounddebugActiveSounds;
+uint32_t sounddebugAllocateSoundCalls;
+uint32_t sounddebugDeallocateSoundCalls;
 
 
 int g_CV_CubicInterpolation;

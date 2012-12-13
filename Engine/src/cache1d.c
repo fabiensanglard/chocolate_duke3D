@@ -34,12 +34,12 @@
  *   To use this module, here's all you need to do:
  *
  *   Step 1: Allocate a nice BIG buffer, like from 1MB-4MB and
- *           Call initcache(long cachestart, long cachesize) where
+ *           Call initcache(int32_t cachestart, int32_t cachesize) where
  *
  *              cachestart = (long)(pointer to start of BIG buffer)
  *              cachesize = length of BIG buffer
  *
- *   Step 2: Call allocache(long *bufptr, long bufsiz, char *lockptr)
+ *   Step 2: Call allocache(int32_t *bufptr, int32_t bufsiz, char *lockptr)
  *              whenever you need to allocate a buffer, where:
  *
  *              *bufptr = pointer to 4-byte pointer to buffer
@@ -61,20 +61,20 @@
 
 #define MAXCACHEOBJECTS 9216
 
-static long cachesize = 0;
-long cachecount = 0;
+static int32_t cachesize = 0;
+int32_t cachecount = 0;
 unsigned char zerochar = 0;
-long cachestart = 0, cacnum = 0, agecount = 0;
-typedef struct { long *hand, leng; unsigned char *lock; } cactype;
+int32_t cachestart = 0, cacnum = 0, agecount = 0;
+typedef struct { int32_t *hand, leng; unsigned char *lock; } cactype;
 cactype cac[MAXCACHEOBJECTS];
-long lockrecip[200];
+int32_t lockrecip[200];
 
 // TC game directory
 char game_dir[512] = { '\0' };
 
-void initcache(long dacachestart, long dacachesize)
+void initcache(int32_t dacachestart, int32_t dacachesize)
 {
-	long i;
+	int32_t i;
 
 	for(i=1;i<200;i++) lockrecip[i] = (1<<28)/(200-i);
 
@@ -86,9 +86,9 @@ void initcache(long dacachestart, long dacachesize)
 	cacnum = 1;
 }
 
-void allocache (long *newhandle, long newbytes, unsigned char *newlockptr)
+void allocache (int32_t *newhandle, int32_t newbytes, unsigned char *newlockptr)
 {
-	long i, z, zz, bestz=0, daval, bestval, besto=0, o1, o2, sucklen, suckz;
+	int32_t i, z, zz, bestz=0, daval, bestval, besto=0, o1, o2, sucklen, suckz;
 
 	newbytes = ((newbytes+15)&0xfffffff0);
 
@@ -163,9 +163,9 @@ void allocache (long *newhandle, long newbytes, unsigned char *newlockptr)
 	cac[bestz].lock = &zerochar;
 }
 
-void suckcache (long *suckptr)
+void suckcache (int32_t *suckptr)
 {
-	long i;
+	int32_t i;
 
 		/* Can't exit early, because invalid pointer might be same even though lock = 0 */
 	for(i=0;i<cacnum;i++)
@@ -191,7 +191,7 @@ void suckcache (long *suckptr)
 
 void agecache(void)
 {
-	long cnt;
+	int32_t cnt;
 	char ch;
 
 	if (agecount >= cacnum) agecount = cacnum-1;
@@ -209,7 +209,7 @@ void agecache(void)
 
 void reportandexit(char *errormessage)
 {
-	long i, j;
+	int32_t i, j;
 
 	setvmode(0x3);
 	j = 0;
@@ -249,18 +249,18 @@ unsigned char toupperlookup[256] =
 	0xf0,0xf1,0xf2,0xf3,0xf4,0xf5,0xf6,0xf7,0xf8,0xf9,0xfa,0xfb,0xfc,0xfd,0xfe,0xff,
 };
 
-long numgroupfiles = 0;			// number of GRP files actually used.
-long gnumfiles[MAXGROUPFILES];	// number of files on grp
-long groupfil[MAXGROUPFILES] = {-1,-1,-1,-1}; // grp file handles
-long groupfilpos[MAXGROUPFILES];
+int32_t numgroupfiles = 0;			// number of GRP files actually used.
+int32_t gnumfiles[MAXGROUPFILES];	// number of files on grp
+int32_t groupfil[MAXGROUPFILES] = {-1,-1,-1,-1}; // grp file handles
+int32_t groupfilpos[MAXGROUPFILES];
 char *gfilelist[MAXGROUPFILES];	// name list + size list of all the files in grp
-long *gfileoffs[MAXGROUPFILES];	// offset of the files
+int32_t *gfileoffs[MAXGROUPFILES];	// offset of the files
 char *groupfil_memory[MAXGROUPFILES]; // addresses of raw GRP files in memory
-long groupefil_crc32[MAXGROUPFILES];
+int32_t groupefil_crc32[MAXGROUPFILES];
 
 unsigned char filegrp[MAXOPENFILES];
-long filepos[MAXOPENFILES];
-long filehan[MAXOPENFILES] =
+int32_t filepos[MAXOPENFILES];
+int32_t filehan[MAXOPENFILES] =
 {
 	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
 	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
@@ -283,7 +283,7 @@ static PHYSFS_file *filehan[MAXOPENFILES] =
 #endif
 
 
-long initgroupfile(const char *filename)
+int32_t initgroupfile(const char *filename)
 {
 #if (defined USE_PHYSICSFS)
     static int initted_physfs = 0;
@@ -309,7 +309,7 @@ long initgroupfile(const char *filename)
     return(1); /* uhh...? */
 #else
 	char buf[16];
-	long i, j, k;
+	int32_t i, j, k;
 
 	printf("Loading %s ...\n", filename);
 
@@ -341,11 +341,11 @@ long initgroupfile(const char *filename)
 		//group file is just the raw data packed one after the other in the same order as the list 
 		//of files. - ken
 
-		gnumfiles[numgroupfiles] = BUILDSWAP_INTEL32(*((long *)&buf[12]));
+		gnumfiles[numgroupfiles] = BUILDSWAP_INTEL32(*((int32_t *)&buf[12]));
 
 		if ((gfilelist[numgroupfiles] = (char *)kmalloc(gnumfiles[numgroupfiles]<<4)) == 0)
 			{ Error(EXIT_FAILURE, "Not enough memory for file grouping system\n"); }
-		if ((gfileoffs[numgroupfiles] = (long *)kmalloc((gnumfiles[numgroupfiles]+1)<<2)) == 0)
+		if ((gfileoffs[numgroupfiles] = (int32_t *)kmalloc((gnumfiles[numgroupfiles]+1)<<2)) == 0)
 			{ Error(EXIT_FAILURE, "Not enough memory for file grouping system\n"); }
 
 		// load index (name+size)
@@ -354,7 +354,7 @@ long initgroupfile(const char *filename)
 		j = 0;
 		for(i=0;i<gnumfiles[numgroupfiles];i++)
 		{
-			k = BUILDSWAP_INTEL32(*((long *)&gfilelist[numgroupfiles][(i<<4)+12])); // get size
+			k = BUILDSWAP_INTEL32(*((int32_t *)&gfilelist[numgroupfiles][(i<<4)+12])); // get size
 			gfilelist[numgroupfiles][(i<<4)+12] = 0;
 			gfileoffs[numgroupfiles][i] = j; // absolute offset list of all files. 0 for 1st file
 			j += k;
@@ -393,7 +393,7 @@ void uninitgroupfile(void)
     PHYSFS_deinit();
     memset(filehan, '\0', sizeof (filehan));
 #else
-	long i;
+	int32_t i;
 
 	for(i=numgroupfiles-1;i>=0;i--)
 		if (groupfil[i] != -1)
@@ -555,7 +555,7 @@ unsigned short crc16(char *data_p, unsigned short length)
       return (crc);
 }
 
-long kopen4load(const char *filename, int readfromGRP)
+int32_t kopen4load(const char *filename, int readfromGRP)
 { // FIX_00072: all files are now 1st searched in Duke's root folder and then in the GRP.
 #if (defined USE_PHYSICSFS)
     int i;
@@ -582,7 +582,7 @@ long kopen4load(const char *filename, int readfromGRP)
     PHYSFS_close(rc);  /* oh well. */
     return(-1);
 #else
-	long i, j, k, fil, newhandle;
+	int32_t i, j, k, fil, newhandle;
 	unsigned char bad;
 	char *gfileptr;
 
@@ -634,13 +634,13 @@ long kopen4load(const char *filename, int readfromGRP)
 #endif
 }
 
-long kread(long handle, void *buffer, long leng)
+int32_t kread(int32_t handle, void *buffer, int32_t leng)
 {
 #if (defined USE_PHYSICSFS)
     return(PHYSFS_read(filehan[handle], buffer, 1, leng));
 return(leng);
 #else
-	long i, filenum, groupnum;
+	int32_t i, filenum, groupnum;
 
 	filenum = filehan[handle];
 	groupnum = filegrp[handle];
@@ -669,7 +669,7 @@ return(leng);
 #endif
 }
 
-int kread16(long handle, short *buffer)
+int kread16(int32_t handle, short *buffer)
 {
     if (kread(handle, buffer, 2) != 2)
         return(0);
@@ -678,7 +678,7 @@ int kread16(long handle, short *buffer)
     return(1);
 }
 
-int kread32(long handle, long *buffer)
+int kread32(int32_t handle, int32_t *buffer)
 {
     if (kread(handle, buffer, 4) != 4)
         return(0);
@@ -687,7 +687,7 @@ int kread32(long handle, long *buffer)
     return(1);
 }
 
-int kread8(long handle, char *buffer)
+int kread8(int32_t handle, char *buffer)
 {
     if (kread(handle, buffer, 1) != 1)
         return(0);
@@ -695,7 +695,7 @@ int kread8(long handle, char *buffer)
     return(1);
 }
 
-long klseek(long handle, long offset, long whence)
+int32_t klseek(int32_t handle, int32_t offset, int32_t whence)
 {
 #if (defined USE_PHYSICSFS)
     if (whence == SEEK_END)  /* !!! FIXME: You can try PHYSFS_filelength(). */
@@ -711,7 +711,7 @@ long klseek(long handle, long offset, long whence)
 
     return(offset);
 #else
-	long i, groupnum;
+	int32_t i, groupnum;
 
 	groupnum = filegrp[handle];
 
@@ -733,7 +733,7 @@ long klseek(long handle, long offset, long whence)
 }
 
 #ifdef __APPLE__
-long filelength(long fd)
+int32_t filelength(int32_t fd)
 {
     struct stat stats;
     fstat(fd, &stats);
@@ -741,12 +741,12 @@ long filelength(long fd)
 }
 #endif
 
-long kfilelength(long handle)
+int32_t kfilelength(int32_t handle)
 {
 #if (defined USE_PHYSICSFS)
     return(PHYSFS_fileLength(filehan[handle]));
 #else
-	long i, groupnum;
+	int32_t i, groupnum;
 
 	groupnum = filegrp[handle];
 	if (groupnum == 255) return(filelength(filehan[handle]));
@@ -755,7 +755,7 @@ long kfilelength(long handle)
 #endif
 }
 
-void kclose(long handle)
+void kclose(int32_t handle)
 {
 #if (defined USE_PHYSICSFS)
     if (filehan[handle] != NULL)
@@ -779,19 +779,19 @@ static char *lzwbuf1, *lzwbuf4, *lzwbuf5;
 static unsigned char lzwbuflock[5];
 static short *lzwbuf2, *lzwbuf3;
 
-void kdfread(void *buffer, size_t dasizeof, size_t count, long fil)
+void kdfread(void *buffer, size_t dasizeof, size_t count, int32_t fil)
 {
 	size_t i, j;
-	long k, kgoal;
+	int32_t k, kgoal;
 	short leng;
 	char *ptr;
 
 	lzwbuflock[0] = lzwbuflock[1] = lzwbuflock[2] = lzwbuflock[3] = lzwbuflock[4] = 200;
-	if (lzwbuf1 == NULL) allocache((long *)&lzwbuf1,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[0]);
-	if (lzwbuf2 == NULL) allocache((long *)&lzwbuf2,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[1]);
-	if (lzwbuf3 == NULL) allocache((long *)&lzwbuf3,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[2]);
-	if (lzwbuf4 == NULL) allocache((long *)&lzwbuf4,LZWSIZE,&lzwbuflock[3]);
-	if (lzwbuf5 == NULL) allocache((long *)&lzwbuf5,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[4]);
+	if (lzwbuf1 == NULL) allocache((int32_t *)&lzwbuf1,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[0]);
+	if (lzwbuf2 == NULL) allocache((int32_t *)&lzwbuf2,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[1]);
+	if (lzwbuf3 == NULL) allocache((int32_t *)&lzwbuf3,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[2]);
+	if (lzwbuf4 == NULL) allocache((int32_t *)&lzwbuf4,LZWSIZE,&lzwbuflock[3]);
+	if (lzwbuf5 == NULL) allocache((int32_t *)&lzwbuf5,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[4]);
 
 	if (dasizeof > LZWSIZE) { count *= dasizeof; dasizeof = 1; }
 	ptr = (char *)buffer;
@@ -820,16 +820,16 @@ void kdfread(void *buffer, size_t dasizeof, size_t count, long fil)
 void dfread(void *buffer, size_t dasizeof, size_t count, FILE *fil)
 {
 	size_t i, j;
-	long k, kgoal;
+	int32_t k, kgoal;
 	short leng;
 	char *ptr;
 
 	lzwbuflock[0] = lzwbuflock[1] = lzwbuflock[2] = lzwbuflock[3] = lzwbuflock[4] = 200;
-	if (lzwbuf1 == NULL) allocache((long *)&lzwbuf1,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[0]);
-	if (lzwbuf2 == NULL) allocache((long *)&lzwbuf2,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[1]);
-	if (lzwbuf3 == NULL) allocache((long *)&lzwbuf3,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[2]);
-	if (lzwbuf4 == NULL) allocache((long *)&lzwbuf4,LZWSIZE,&lzwbuflock[3]);
-	if (lzwbuf5 == NULL) allocache((long *)&lzwbuf5,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[4]);
+	if (lzwbuf1 == NULL) allocache((int32_t *)&lzwbuf1,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[0]);
+	if (lzwbuf2 == NULL) allocache((int32_t *)&lzwbuf2,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[1]);
+	if (lzwbuf3 == NULL) allocache((int32_t *)&lzwbuf3,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[2]);
+	if (lzwbuf4 == NULL) allocache((int32_t *)&lzwbuf4,LZWSIZE,&lzwbuflock[3]);
+	if (lzwbuf5 == NULL) allocache((int32_t *)&lzwbuf5,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[4]);
 
 	if (dasizeof > LZWSIZE) { count *= dasizeof; dasizeof = 1; }
 	ptr = (char *)buffer;
@@ -861,11 +861,11 @@ void dfwrite(void *buffer, size_t dasizeof, size_t count, FILE *fil)
 	char *ptr;
 
 	lzwbuflock[0] = lzwbuflock[1] = lzwbuflock[2] = lzwbuflock[3] = lzwbuflock[4] = 200;
-	if (lzwbuf1 == NULL) allocache((long *)&lzwbuf1,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[0]);
-	if (lzwbuf2 == NULL) allocache((long *)&lzwbuf2,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[1]);
-	if (lzwbuf3 == NULL) allocache((long *)&lzwbuf3,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[2]);
-	if (lzwbuf4 == NULL) allocache((long *)&lzwbuf4,LZWSIZE,&lzwbuflock[3]);
-	if (lzwbuf5 == NULL) allocache((long *)&lzwbuf5,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[4]);
+	if (lzwbuf1 == NULL) allocache((int32_t *)&lzwbuf1,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[0]);
+	if (lzwbuf2 == NULL) allocache((int32_t *)&lzwbuf2,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[1]);
+	if (lzwbuf3 == NULL) allocache((int32_t *)&lzwbuf3,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[2]);
+	if (lzwbuf4 == NULL) allocache((int32_t *)&lzwbuf4,LZWSIZE,&lzwbuflock[3]);
+	if (lzwbuf5 == NULL) allocache((int32_t *)&lzwbuf5,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[4]);
 
 	if (dasizeof > LZWSIZE) { count *= dasizeof; dasizeof = 1; }
 	ptr = (char *)buffer;
@@ -898,10 +898,10 @@ void dfwrite(void *buffer, size_t dasizeof, size_t count, FILE *fil)
 	lzwbuflock[0] = lzwbuflock[1] = lzwbuflock[2] = lzwbuflock[3] = lzwbuflock[4] = 1;
 }
 
-long compress(char *lzwinbuf, long uncompleng, char *lzwoutbuf)
+int32_t compress(char *lzwinbuf, int32_t uncompleng, char *lzwoutbuf)
 {
-	long i, addr, newaddr, addrcnt, zx, *longptr;
-	long bytecnt1, bitcnt, numbits, oneupnumbits;
+	int32_t i, addr, newaddr, addrcnt, zx, *longptr;
+	int32_t bytecnt1, bitcnt, numbits, oneupnumbits;
 	short *shortptr;
 
 	for(i=255;i>=0;i--) { lzwbuf1[i] = (char) i; lzwbuf3[i] = (short) ((i+1)&255); }
@@ -932,7 +932,7 @@ long compress(char *lzwinbuf, long uncompleng, char *lzwoutbuf)
 		lzwbuf2[addrcnt] = -1;
 		lzwbuf3[addrcnt] = -1;
 
-		longptr = (long *)&lzwoutbuf[bitcnt>>3];
+		longptr = (int32_t *)&lzwoutbuf[bitcnt>>3];
 		longptr[0] |= (addr<<(bitcnt&7));
 		bitcnt += numbits;
 		if ((addr&((oneupnumbits>>1)-1)) > ((addrcnt-1)&((oneupnumbits>>1)-1)))
@@ -942,7 +942,7 @@ long compress(char *lzwinbuf, long uncompleng, char *lzwoutbuf)
 		if (addrcnt > oneupnumbits) { numbits++; oneupnumbits <<= 1; }
 	} while ((bytecnt1 < uncompleng) && (bitcnt < (uncompleng<<3)));
 
-	longptr = (long *)&lzwoutbuf[bitcnt>>3];
+	longptr = (int32_t *)&lzwoutbuf[bitcnt>>3];
 	longptr[0] |= (addr<<(bitcnt&7));
 	bitcnt += numbits;
 	if ((addr&((oneupnumbits>>1)-1)) > ((addrcnt-1)&((oneupnumbits>>1)-1)))
@@ -960,10 +960,10 @@ long compress(char *lzwinbuf, long uncompleng, char *lzwoutbuf)
 	return(uncompleng+4);
 }
 
-long uncompress(char *lzwinbuf, long compleng, char *lzwoutbuf)
+int32_t uncompress(char *lzwinbuf, int32_t compleng, char *lzwoutbuf)
 {
-	long strtot, currstr, numbits, oneupnumbits;
-	long i, dat, leng, bitcnt, outbytecnt, *longptr;
+	int32_t strtot, currstr, numbits, oneupnumbits;
+	int32_t i, dat, leng, bitcnt, outbytecnt, *longptr;
 	short *shortptr;
 
 	shortptr = (short *)lzwinbuf;
@@ -978,7 +978,7 @@ long uncompress(char *lzwinbuf, long compleng, char *lzwoutbuf)
 	numbits = 8; oneupnumbits = (1<<8);
 	do
 	{
-		longptr = (long *)&lzwinbuf[bitcnt>>3];
+		longptr = (int32_t *)&lzwinbuf[bitcnt>>3];
 		dat = ((longptr[0]>>(bitcnt&7)) & (oneupnumbits-1));
 		bitcnt += numbits;
 		if ((dat&((oneupnumbits>>1)-1)) > ((currstr-1)&((oneupnumbits>>1)-1)))
@@ -1000,10 +1000,10 @@ long uncompress(char *lzwinbuf, long compleng, char *lzwoutbuf)
 }
 
 
-long TCkopen4load(const char *filename, int readfromGRP)
+int32_t TCkopen4load(const char *filename, int readfromGRP)
 {
 	char fullfilename[512];
-	long result = 0;
+	int32_t result = 0;
  
 	if(game_dir[0] != '\0' && !readfromGRP)
 	{

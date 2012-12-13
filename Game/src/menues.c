@@ -16,7 +16,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
+aint32_t with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 Original Source: 1996 - Todd Replogle
@@ -94,7 +94,7 @@ void dummymess(int i,char *c)
 /*
 void TENtext(void)
 {
-    long dacount,dalastcount;
+    int32_t dacount,dalastcount;
 
     puts("\nDuke Nukem 3D has been licensed exclusively to TEN (Total");
     puts("Entertainment Network) for wide-area networked (WAN) multiplayer");
@@ -146,7 +146,7 @@ void cmenu(short cm)
 }
 
 
-void savetemp(char *fn,long daptr,long dasiz)
+void savetemp(char *fn,int32_t daptr,int32_t dasiz)
 {
     int fp;
 
@@ -179,8 +179,8 @@ int loadpheader(char spot,int32 *vn,int32 *ln,int32 *psk,int32 *nump)
 {
 
     char fn[] = "game0.sav";
-    long fil;
-    long bv;
+    int32_t fil;
+    int32_t bv;
 
          fn[4] = spot+'0';
 
@@ -219,7 +219,7 @@ int loadplayer(signed char spot)
      char fn[] = "game0.sav";
      char mpfn[] = "gameA_00.sav";
      char *fnptr, scriptptrs[MAXSCRIPTSIZE];
-     long fil, bv, i, j, x;
+     int32_t fil, bv, i, j, x;
      int32 nump;
 
      if(spot < 0)
@@ -366,7 +366,7 @@ int loadplayer(signed char spot)
          if(actorscrptr[i])
      {
         j = (long)actorscrptr[i]+(long)&script[0];
-        actorscrptr[i] = (long *)j;
+        actorscrptr[i] = (int32_t *)j;
      }
 
      kdfread(&scriptptrs[0],1,MAXSPRITES,fil);
@@ -387,7 +387,7 @@ int loadplayer(signed char spot)
          kdfread(&animatecnt,sizeof(animatecnt),1,fil);
          kdfread(&animatesect[0],2,MAXANIMATES,fil);
          kdfread(&animateptr[0],4,MAXANIMATES,fil);
-     for(i = animatecnt-1;i>=0;i--) animateptr[i] = (long *)((long)animateptr[i]+(long)(&sector[0]));
+     for(i = animatecnt-1;i>=0;i--) animateptr[i] = (int32_t *)((long)animateptr[i]+(long)(&sector[0]));
          kdfread(&animategoal[0],4,MAXANIMATES,fil);
          kdfread(&animatevel[0],4,MAXANIMATES,fil);
 
@@ -541,12 +541,12 @@ int loadplayer(signed char spot)
 
 int saveplayer(signed char spot)
 {
-     long i, j;
+     int32_t i, j;
          char fn[] = "game0.sav";
      char mpfn[] = "gameA_00.sav";
      char *fnptr,scriptptrs[MAXSCRIPTSIZE];
          FILE *fil;
-     long bv = BYTEVERSION;
+     int32_t bv = BYTEVERSION;
 	 char fullpathsavefilename[16];
 
      if(spot < 0)
@@ -662,14 +662,14 @@ int saveplayer(signed char spot)
          if(actorscrptr[i])
      {
         j = (long)actorscrptr[i]-(long)&script[0];
-        actorscrptr[i] = (long *)j;
+        actorscrptr[i] = (int32_t *)j;
      }
      dfwrite(&actorscrptr[0],4,MAXTILES,fil);
      for(i=0;i<MAXTILES;i++)
          if(actorscrptr[i])
      {
          j = (long)actorscrptr[i]+(long)&script[0];
-         actorscrptr[i] = (long *)j;
+         actorscrptr[i] = (int32_t *)j;
      }
 
      for(i=0;i<MAXSPRITES;i++)
@@ -718,9 +718,9 @@ int saveplayer(signed char spot)
      dfwrite(&pskyoff[0],sizeof(pskyoff[0]),MAXPSKYTILES,fil);
          dfwrite(&animatecnt,sizeof(animatecnt),1,fil);
          dfwrite(&animatesect[0],2,MAXANIMATES,fil);
-         for(i = animatecnt-1;i>=0;i--) animateptr[i] = (long *)((long)animateptr[i]-(long)(&sector[0]));
+         for(i = animatecnt-1;i>=0;i--) animateptr[i] = (int32_t *)((long)animateptr[i]-(long)(&sector[0]));
          dfwrite(&animateptr[0],4,MAXANIMATES,fil);
-         for(i = animatecnt-1;i>=0;i--) animateptr[i] = (long *)((long)animateptr[i]+(long)(&sector[0]));
+         for(i = animatecnt-1;i>=0;i--) animateptr[i] = (int32_t *)((long)animateptr[i]+(long)(&sector[0]));
          dfwrite(&animategoal[0],4,MAXANIMATES,fil);
          dfwrite(&animatevel[0],4,MAXANIMATES,fil);
 
@@ -780,15 +780,15 @@ int probe(int x,int y,int i,int n)
 	return( probeXduke(x, y, i, n, 65536L) );
 }
 
-int probeXduke(int x,int y,int i,int n, long spriteSize)
+int probeXduke(int x,int y,int i,int n, int32_t spriteSize)
 {
     short centre;
 	int32 mouseSens;
 
-	static long delay_counter_up = 0, delay_counter_down = 0, delay_up = 50, delay_down = 50;
-	static long mi = 0;
+	static int32_t delay_counter_up = 0, delay_counter_down = 0, delay_up = 50, delay_down = 50;
+	static int32_t mi = 0;
 
-	// FIX_00075: Bad Sensitivity along Y axis when using mouse in menu (Thanks to Turrican)
+	// FIX_00075: Bad Sensitivity aint32_t Y axis when using mouse in menu (Thanks to Turrican)
 	mouseSens = CONTROL_GetMouseSensitivity_Y();
 	mouseSens = mouseSens ? mouseSens : 1;
 
@@ -1364,7 +1364,7 @@ int getfilenames(char kind[6])
 void sortfilenames()
 {
         char sortbuffer[17];
-        long i, j, k;
+        int32_t i, j, k;
 
         for(i=1;i<menunamecnt;i++)
                 for(j=0;j<i;j++)
@@ -1381,7 +1381,7 @@ void sortfilenames()
                 }
 }
 
-long quittimer = 0;
+int32_t quittimer = 0;
 
 void gameexitanycase(void)
 {
@@ -1415,7 +1415,7 @@ void gameexitanycase(void)
 void menus(void)
 {
     short c,x;
-    volatile long l;
+    volatile int32_t l;
 	int i,j;
 
 	static int lastkeysetup = 0;
@@ -1490,7 +1490,7 @@ void menus(void)
             gametext(160,59-8,"VERSION OF DUKE NUKEM 3D.  WHILE",0,2+8+16);
             gametext(160,68-8,"THIS VERSION IS REALLY COOL, YOU",0,2+8+16);
             gametext(160,77-8,"ARE MISSING OVER 75% OF THE TOTAL",0,2+8+16);
-            gametext(160,86-8,"GAME, ALONG WITH OTHER GREAT EXTRAS",0,2+8+16);
+            gametext(160,86-8,"GAME, Aint32_t WITH OTHER GREAT EXTRAS",0,2+8+16);
             gametext(160,95-8,"AND GAMES, WHICH YOU'LL GET WHEN",0,2+8+16);
             gametext(160,104-8,"YOU ORDER THE COMPLETE VERSION AND",0,2+8+16);
             gametext(160,113-8,"GET THE FINAL TWO EPISODES.",0,2+8+16);
@@ -2358,8 +2358,8 @@ else
 				// Draw USER MAP background
 				{
 					int y, x1;
-					long xPos, xPos2;
-					long yPos, yPos2;
+					int32_t xPos, xPos2;
+					int32_t yPos, yPos2;
 
 					xPos =  ( xdim *32) / 320;
 					yPos =  ( ydim *30) / 200;
@@ -4171,7 +4171,7 @@ else
     }
 }
 
-void palto(char r,char g,char b,long e)
+void palto(char r,char g,char b,int32_t e)
 {
     int i;
     char temparray[768];
@@ -4197,12 +4197,12 @@ void palto(char r,char g,char b,long e)
 }
 
 
-void drawoverheadmap(long cposx, long cposy, long czoom, short cang)
+void drawoverheadmap(int32_t cposx, int32_t cposy, int32_t czoom, short cang)
 {
-        long i, j, k, l, x1, y1, x2, y2, x3, y3, x4, y4, ox, oy, xoff, yoff;
-        long dax, day, cosang, sinang, xspan, yspan, sprx, spry;
-        long xrepeat, yrepeat, z1, z2, startwall, endwall, tilenum, daang;
-        long xvect, yvect, xvect2, yvect2;
+        int32_t i, j, k, l, x1, y1, x2, y2, x3, y3, x4, y4, ox, oy, xoff, yoff;
+        int32_t dax, day, cosang, sinang, xspan, yspan, sprx, spry;
+        int32_t xrepeat, yrepeat, z1, z2, startwall, endwall, tilenum, daang;
+        int32_t xvect, yvect, xvect2, yvect2;
         short p;
         char col;
         walltype *wal, *wal2;
@@ -4446,7 +4446,7 @@ void drawoverheadmap(long cposx, long cposy, long czoom, short cang)
 
 
 
-void endanimsounds(long fr)
+void endanimsounds(int32_t fr)
 {
     switch(ud.volume_number)
     {
@@ -4510,7 +4510,7 @@ void endanimsounds(long fr)
     }
 }
 
-void logoanimsounds(long fr)
+void logoanimsounds(int32_t fr)
 {
     switch(fr)
     {
@@ -4523,7 +4523,7 @@ void logoanimsounds(long fr)
     }
 }
 
-void intro4animsounds(long fr)
+void intro4animsounds(int32_t fr)
 {
     switch(fr)
     {
@@ -4540,7 +4540,7 @@ void intro4animsounds(long fr)
     }
 }
 
-void first4animsounds(long fr)
+void first4animsounds(int32_t fr)
 {
     switch(fr)
     {
@@ -4559,7 +4559,7 @@ void first4animsounds(long fr)
     }
 }
 
-void intro42animsounds(long fr)
+void intro42animsounds(int32_t fr)
 {
     switch(fr)
     {
@@ -4572,7 +4572,7 @@ void intro42animsounds(long fr)
 
 
 
-void endanimvol41(long fr)
+void endanimvol41(int32_t fr)
 {
     switch(fr)
     {
@@ -4585,7 +4585,7 @@ void endanimvol41(long fr)
     }
 }
 
-void endanimvol42(long fr)
+void endanimvol42(int32_t fr)
 {
     switch(fr)
     {
@@ -4604,7 +4604,7 @@ void endanimvol42(long fr)
     }
 }
 
-void endanimvol43(long fr)
+void endanimvol43(int32_t fr)
 {
     switch(fr)
     {
@@ -4622,11 +4622,11 @@ void endanimvol43(long fr)
 }
 
 
-long lastanimhack=0;
+int32_t lastanimhack=0;
 void playanm(char *fn,char t)
 {
         char *animbuf, *palptr;
-    long i, j, k, length=0, numframes=0;
+    int32_t i, j, k, length=0, numframes=0;
     int32 handle=-1;
 
 //    return;
@@ -4647,7 +4647,7 @@ void playanm(char *fn,char t)
     walock[MAXTILES-3-t] = 219+t;
 
     if(anim == 0 || lastanimhack != (MAXTILES-3-t))
-        allocache((long *)&anim,length+sizeof(anim_t),&walock[MAXTILES-3-t]);
+        allocache((int32_t *)&anim,length+sizeof(anim_t),&walock[MAXTILES-3-t]);
 
     animbuf = (char *)(FP_OFF(anim)+sizeof(anim_t));
 

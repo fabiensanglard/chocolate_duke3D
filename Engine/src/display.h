@@ -71,22 +71,22 @@ extern int _argc;
 extern char **_argv;
 
 /* !!! gads, look at all the namespace polution... */
-extern long xres, yres, bytesperline, imageSize, maxpages;
+extern int32_t xres, yres, bytesperline, imageSize, maxpages;
 extern char *screen, vesachecked;
-extern long buffermode, origbuffermode, linearmode;
+extern int32_t buffermode, origbuffermode, linearmode;
 extern char permanentupdate, vgacompatible;
 extern char moustat;
-extern long *horizlookup, *horizlookup2, horizycent;
-extern long oxdimen, oviewingrange, oxyaspect;
-extern long curbrightness;
-extern long qsetmode;
-extern long frameplace, frameoffset, pageoffset, ydim16;
+extern int32_t *horizlookup, *horizlookup2, horizycent;
+extern int32_t oxdimen, oviewingrange, oxyaspect;
+extern int32_t curbrightness;
+extern int32_t qsetmode;
+extern int32_t frameplace, frameoffset, pageoffset, ydim16;
 extern char textfont[1024], smalltextfont[1024];
 extern char pow2char[8];
-extern volatile long stereomode, visualpage, activepage, whiteband, blackband;
-extern long searchx, searchy;
-extern long wx1, wy1, wx2, wy2, ydimen;
-extern long xdimen, xdimenrecip, halfxdimen, xdimenscale, xdimscale;
+extern volatile int32_t stereomode, visualpage, activepage, whiteband, blackband;
+extern int32_t searchx, searchy;
+extern int32_t wx1, wy1, wx2, wy2, ydimen;
+extern int32_t xdimen, xdimenrecip, halfxdimen, xdimenscale, xdimscale;
 
 /*
  * !!! used to be static. If we ever put the original setgamemode() back, this
@@ -96,8 +96,8 @@ extern long xdimen, xdimenrecip, halfxdimen, xdimenscale, xdimscale;
 extern unsigned char permanentlock;
 
 // defined in the game project:
-extern long BFullScreen;  // defined in Game\src\config.c
-extern long ScreenMode;
+extern int32_t BFullScreen;  // defined in Game\src\config.c
+extern int32_t ScreenMode;
 
 
 /* these need to be implemented by YOUR driver. */
@@ -120,26 +120,26 @@ int _joystick_button(int button);
  * VESA replacement code: The Unix (not-actually-VESA) version of this is
  *  originally using SDL (Simple Directmedia Layer: http://www.libsdl.org/),
  *  and is stored in sdl_driver.c, but there's no reason another driver
- *  couldn't be dropped in, so long as it implements these functions. Please
+ *  couldn't be dropped in, so int32_t as it implements these functions. Please
  *  reference sdl_driver.c and ves2.h (the original code) for all the nuances
  *  and global variables that need to get set up correctly.
  */
 void getvalidvesamodes(void);
-int VBE_getPalette(long start, long num, char *dapal);
-int VBE_setPalette(long start, long num, char *palettebuffer);
-int setvesa(long x, long y);
+int VBE_getPalette(int32_t start, int32_t num, char *dapal);
+int VBE_setPalette(int32_t start, int32_t num, char *palettebuffer);
+int setvesa(int32_t x, int32_t y);
 void uninitvesa(void);
 void setvmode(int mode);
-unsigned char readpixel(long offset);
-void drawpixel(long offset, Uint8 pixel);
-void drawpixels(long offset, Uint16 pixels);
-void drawpixelses(long offset, Uint32 pixelses);
-void drawpixel16(long offset);
-void fillscreen16 (long input1, long input2, long input3);
+unsigned char readpixel(int32_t offset);
+void drawpixel(int32_t offset, Uint8 pixel);
+void drawpixels(int32_t offset, Uint16 pixels);
+void drawpixelses(int32_t offset, Uint32 pixelses);
+void drawpixel16(int32_t offset);
+void fillscreen16 (int32_t input1, int32_t input2, int32_t input3);
 void limitrate(void);
-void setactivepage(long dapagenum);
+void setactivepage(int32_t dapagenum);
 void clear2dscreen(void);
-void _updateScreenRect(long x, long y, long w, long h);
+void _updateScreenRect(int32_t x, int32_t y, int32_t w, int32_t h);
 
 /* mouse/keystuff stuff. Also implemented in sdl_driver.c ... */
 int setupmouse(void);
@@ -156,11 +156,11 @@ void uninittimer(void);
 void __interrupt __far timerhandler(void);
 
 /* resolution inits. sdl_driver.c ... */
-int _setgamemode(char davidoption, long daxdim, long daydim);
+int32_t _setgamemode(char davidoption, int32_t daxdim, int32_t daydim);
 
-unsigned long getticks();
+uint32_t getticks();
 
-void drawline16(long XStart, long YStart, long XEnd, long YEnd, char Color);
+void drawline16(int32_t XStart, int32_t YStart, int32_t XEnd, int32_t YEnd, char Color);
 void setcolor16(int i1);
 
 int using_opengl(void);
