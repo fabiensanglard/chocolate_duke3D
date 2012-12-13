@@ -260,7 +260,7 @@ typedef struct
 {
 	int32_t sx, sy, z;
 	short a, picnum;
-	signed char dashade;
+	int8_t dashade;
 	uint8_t  dapalnum, dastat, pagesleft;
 	int32_t cx1, cy1, cx2, cy2;
 } permfifotype;
@@ -3140,7 +3140,7 @@ static int clippoly4(int32_t cx1, int32_t cy1, int32_t cx2, int32_t cy2)
 
 
 static void dorotatesprite (int32_t sx, int32_t sy, int32_t z, short a, short picnum,
-	signed char dashade, uint8_t  dapalnum, char dastat, int32_t cx1,
+	int8_t dashade, uint8_t  dapalnum, char dastat, int32_t cx1,
 	int32_t cy1, int32_t cx2, int32_t cy2)
 {
 	int32_t cosang, sinang, v, nextv, dax1, dax2, oy, bx, by, ny1, ny2;
@@ -4183,7 +4183,7 @@ static void ceilspritescan (int32_t x1, int32_t x2)
 #ifdef SUPERBUILD
 static void drawvox(int32_t dasprx, int32_t daspry, int32_t dasprz, int32_t dasprang,
 		  int32_t daxscale, int32_t dayscale, uint8_t  daindex,
-		  signed char dashade, uint8_t  dapal, int32_t *daumost, int32_t *dadmost)
+		  int8_t dashade, uint8_t  dapal, int32_t *daumost, int32_t *dadmost)
 {
 	int32_t i, j, k, x, y, syoff, ggxstart, ggystart, nxoff;
 	int32_t cosang, sinang, sprcosang, sprsinang, backx, backy, gxinc, gyinc;
@@ -7431,7 +7431,7 @@ void flushperms(void)
 
 
 void rotatesprite(int32_t sx, int32_t sy, int32_t z, short a, short picnum,
-                  signed char dashade, char dapalnum, char dastat,
+                  int8_t dashade, char dapalnum, char dastat,
                   int32_t cx1, int32_t cy1, int32_t cx2, int32_t cy2)
 {
 	int32_t i;
@@ -7551,8 +7551,8 @@ static int getclosestcol(int32_t r, int32_t g, int32_t b)
 }
 
 
-void makepalookup(int32_t palnum, char *remapbuf, signed char r,
-                  signed char g, signed char b, char dastat)
+void makepalookup(int32_t palnum, char *remapbuf, int8_t r,
+                  int8_t g, int8_t b, char dastat)
 {
 	int32_t i, j, dist, palscale;
 	char *ptr, *ptr2;

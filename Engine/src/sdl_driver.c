@@ -331,7 +331,7 @@ char permanentupdate = 0, vgacompatible;
 
 SDL_Surface *surface = NULL; /* This isn't static so that we can use it elsewhere AH */
 static int debug_hall_of_mirrors = 0;
-static Uint32 sdl_flags = SDL_HWPALETTE;
+static uint32_t sdl_flags = SDL_HWPALETTE;
 static int32_t mouse_relative_x = 0;
 static int32_t mouse_relative_y = 0;
 static short mouse_buttons = 0;
@@ -339,14 +339,14 @@ static unsigned int lastkey = 0;
 /* so we can make use of setcolor16()... - DDOI */
 static uint8_t  drawpixel_color=0;
 
-static unsigned int scancodes[SDLK_LAST];
+static uint32_t scancodes[SDLK_LAST];
 
 static int32_t last_render_ticks = 0;
 int32_t total_render_time = 1;
 int32_t total_rendered_frames = 0;
 
-static char *title = NULL;
-static char *titleshort = NULL;
+static uint8_t *title = NULL;
+static uint8_t *titleshort = NULL;
 
 void restore256_palette (void);
 void set16color_palette (void);

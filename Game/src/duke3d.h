@@ -339,7 +339,7 @@ enum USRHOOKS_Errors
 
 typedef struct
 {
-    signed char avel, horz;
+    int8_t avel, horz;
     short fvel, svel;
     uint32_t bits;
 } input;
@@ -663,7 +663,7 @@ extern char gamequit;
 
 extern char pus,pub,camerashitable,freezerhurtowner,lasermode;
 extern char syncstat, syncval[MAXPLAYERS][MOVEFIFOSIZ];
-extern signed char multiwho, multipos, multiwhat, multiflag;
+extern int8_t multiwho, multipos, multiwhat, multiflag;
 extern int32_t syncvalhead[MAXPLAYERS], syncvaltail, syncvaltottail;
 extern int32_t numfreezebounces,rpgblastradius,pipebombblastradius,tripbombblastradius,shrinkerblastradius,morterblastradius,bouncemineblastradius,seenineblastradius;
 // CTW - MODIFICATION

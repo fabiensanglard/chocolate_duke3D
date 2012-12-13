@@ -213,7 +213,7 @@ int loadpheader(char spot,int32 *vn,int32 *ln,int32 *psk,int32 *nump)
 }
 
 
-int loadplayer(signed char spot)
+int loadplayer(int8_t spot)
 {
      short k,music_changed;
      char fn[] = "game0.sav";
@@ -539,7 +539,7 @@ int loadplayer(signed char spot)
      return(0);
 }
 
-int saveplayer(signed char spot)
+int saveplayer(int8_t spot)
 {
      int32_t i, j;
          char fn[] = "game0.sav";

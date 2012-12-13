@@ -1391,7 +1391,7 @@ short badguypic(short pn)
 
 
 
-void myos(int32_t x, int32_t y, short tilenum, signed char shade, char orientation)
+void myos(int32_t x, int32_t y, short tilenum, int8_t shade, char orientation)
 {
     char p;
     short a;
@@ -1404,7 +1404,7 @@ void myos(int32_t x, int32_t y, short tilenum, signed char shade, char orientati
     rotatesprite(x<<16,y<<16,65536L,a,tilenum,shade,p,2|orientation,windowx1,windowy1,windowx2,windowy2);
 }
 
-void myospal(int32_t x, int32_t y, short tilenum, signed char shade, char orientation, char p)
+void myospal(int32_t x, int32_t y, short tilenum, int8_t shade, char orientation, char p)
 {
     char fp;
     short a;
@@ -3441,7 +3441,7 @@ short LocateTheLocator(short n,short sn)
     return -1;
 }
 
-short EGS(short whatsect,int32_t s_x,int32_t s_y,int32_t s_z,short s_pn,signed char s_s,signed char s_xr,signed char s_yr,short s_a,short s_ve,int32_t s_zv,short s_ow,signed char s_ss)
+short EGS(short whatsect,int32_t s_x,int32_t s_y,int32_t s_z,short s_pn,int8_t s_s,int8_t s_xr,int8_t s_yr,short s_a,short s_ve,int32_t s_zv,short s_ow,int8_t s_ss)
 {
     short i;
     spritetype *s;

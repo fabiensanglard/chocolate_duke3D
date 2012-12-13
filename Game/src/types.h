@@ -42,7 +42,7 @@ extern "C" {
 
 typedef uint8_t            uint8;
 typedef uint8                   byte;
-typedef signed char             int8;
+typedef int8_t             int8;
 
 typedef unsigned short int      uint16;
 typedef uint16                  word;

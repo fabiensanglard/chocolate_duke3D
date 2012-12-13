@@ -193,7 +193,7 @@ short myhoriz, omyhoriz, myhorizoff, omyhorizoff;
 short myang, omyang, mycursectnum, myjumpingcounter,frags[MAXPLAYERS][MAXPLAYERS];
 
 char myjumpingtoggle, myonground, myhardlanding, myreturntocenter;
-signed char multiwho, multipos, multiwhat, multiflag;
+int8_t multiwho, multipos, multiwhat, multiflag;
 
 int32_t fakemovefifoplc,movefifoplc;
 int32_t myxbak[MOVEFIFOSIZ], myybak[MOVEFIFOSIZ], myzbak[MOVEFIFOSIZ];

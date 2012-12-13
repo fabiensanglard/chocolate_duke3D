@@ -120,7 +120,7 @@ void loadpage (uint16 pagenumber, uint16 *pagepointer)
 
 void CPlayRunSkipDump (byte *srcP, byte *dstP)
    {
-   signed char cnt;
+   int8_t cnt;
    uint16 wordCnt;
    byte pixel;
 

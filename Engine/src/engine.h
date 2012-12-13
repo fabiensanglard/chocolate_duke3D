@@ -131,10 +131,10 @@ int krand(void);
 #endif
 void flushperms(void);
 void rotatesprite(int32_t sx, int32_t sy, int32_t z, short a, short picnum,
-                  signed char dashade, char dapalnum, char dastat,
+                  int8_t dashade, char dapalnum, char dastat,
                   int32_t cx1, int32_t cy1, int32_t cx2, int32_t cy2);
-void makepalookup(int32_t palnum, char *remapbuf, signed char r,
-                  signed char g, signed char b, char dastat);
+void makepalookup(int32_t palnum, char *remapbuf, int8_t r,
+                  int8_t g, int8_t b, char dastat);
 void drawmapview(int32_t dax, int32_t day, int32_t zoome, short ang);
 void setview(int32_t x1, int32_t y1, int32_t x2, int32_t y2);
 void setviewtotile(short tilenume, int32_t xsiz, int32_t ysiz);

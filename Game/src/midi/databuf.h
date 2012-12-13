@@ -31,7 +31,7 @@ typedef uint8_t  uint8;
 typedef unsigned short uint16;
 typedef uint32_t uint32;
 
-typedef signed char sint8;
+typedef int8_t sint8;
 typedef signed short sint16;
 typedef int32_t sint32;
 

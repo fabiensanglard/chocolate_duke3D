@@ -1281,7 +1281,7 @@ void resettimevars(void)
 void genspriteremaps(void)
 {
     int32_t j,fp;
-    signed char look_pos;
+    int8_t look_pos;
     char *lookfn = "lookup.dat";
     char numl;
 
@@ -1293,7 +1293,7 @@ void genspriteremaps(void)
 
     for(j=0;j < numl;j++)
     {
-        kread(fp,(signed char *)&look_pos,1);
+        kread(fp,(int8_t *)&look_pos,1);
         kread(fp,tempbuf,256);
         makepalookup((long)look_pos,tempbuf,0,0,0,1);
     }

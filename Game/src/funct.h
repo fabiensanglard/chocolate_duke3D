@@ -234,9 +234,9 @@ extern void getangplayers(short snum);
 //#line "menues.c" 67
 extern int loadpheader(char spot,int32 *vn,int32 *ln,int32 *psk,int32 *numplr);
 //#line "menues.c" 105
-extern int loadplayer(signed char spot);
+extern int loadplayer(int8_t spot);
 //#line "menues.c" 276
-extern int saveplayer(signed char spot);
+extern int saveplayer(int8_t spot);
 //#line "menues.c" 421
 extern void sendgameinfo(void );
 //#line "menues.c" 434
@@ -304,7 +304,7 @@ extern char parse(void );
 //#line "gamedef.c" 2699
 extern void execute(short i,short p,int32_t x);
 //#line "game.c" 63
-extern void overwritesprite(int32_t thex,int32_t they,short tilenum,signed char shade,char stat,char dapalnum);
+extern void overwritesprite(int32_t thex,int32_t they,short tilenum,int8_t shade,char stat,char dapalnum);
 //#line "game.c" 70
 extern void timerhandler(void);
 //#line "game.c" 75
@@ -338,9 +338,9 @@ extern short badguy(spritetype *s);
 //#line "game.c" 924
 extern short badguypic(short pn);
 //#line "game.c" 963
-extern void myos(int32_t x,int32_t y,short tilenum,signed char shade,char orientation);
+extern void myos(int32_t x,int32_t y,short tilenum,int8_t shade,char orientation);
 //#line "game.c" 976
-extern void myospal(int32_t x,int32_t y,short tilenum,signed char shade,char orientation,char p);
+extern void myospal(int32_t x,int32_t y,short tilenum,int8_t shade,char orientation,char p);
 //#line "game.c" 991
 extern void invennum(int32_t x,int32_t y,char num1,char ha,char sbits);
 //#line "game.c" 1021
@@ -391,7 +391,7 @@ extern void displayrooms(short snum,int32_t smoothratio);
 //#line "game.c" 2445
 extern short LocateTheLocator(short n,short sn);
 //#line "game.c" 2459
-extern short EGS(short whatsect,int32_t s_x,int32_t s_y,int32_t s_z,short s_pn,signed char s_s,signed char s_xr,signed char s_yr,short s_a,short s_ve,int32_t s_zv,short s_ow,signed char s_ss);
+extern short EGS(short whatsect,int32_t s_x,int32_t s_y,int32_t s_z,short s_pn,int8_t s_s,int8_t s_xr,int8_t s_yr,short s_a,short s_ve,int32_t s_zv,short s_ow,int8_t s_ss);
 //#line "game.c" 2537
 extern char wallswitchcheck(short i);
 //#line "game.c" 2588

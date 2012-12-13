@@ -69,10 +69,10 @@ typedef struct
 	int32_t ceilingz, floorz;
 	short ceilingstat, floorstat;
 	short ceilingpicnum, ceilingheinum;
-	signed char ceilingshade;
+	int8_t ceilingshade;
 	uint8_t  ceilingpal, ceilingxpanning, ceilingypanning;
 	short floorpicnum, floorheinum;
-	signed char floorshade;
+	int8_t floorshade;
 	uint8_t  floorpal, floorxpanning, floorypanning;
 	uint8_t  visibility, filler;
 	short lotag, hitag, extra;
@@ -99,7 +99,7 @@ typedef struct
 	int32_t x, y;
 	short point2, nextwall, nextsector, cstat;
 	short picnum, overpicnum;
-	signed char shade;
+	int8_t shade;
 	char pal, xrepeat, yrepeat, xpanning, ypanning;
 	short lotag, hitag, extra;
 } walltype;
@@ -127,10 +127,10 @@ typedef struct
 {
 	int32_t x, y, z;
 	short cstat, picnum;
-	signed char shade;
+	int8_t shade;
 	uint8_t  pal, clipdist, filler;
 	uint8_t  xrepeat, yrepeat;
-	signed char xoffset, yoffset;
+	int8_t xoffset, yoffset;
 	short sectnum, statnum;
 	short ang, owner, xvel, yvel, zvel;
 	short lotag, hitag, extra;

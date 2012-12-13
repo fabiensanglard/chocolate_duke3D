@@ -1298,7 +1298,7 @@ void displayweapon(short snum)
     int32_t gun_pos, looking_arc, cw;
     int32_t weapon_xoffset, i, j;
     char o,pal;
-    signed char gs;
+    int8_t gs;
     struct player_struct *p;
     short *kb;
 
@@ -1644,7 +1644,7 @@ void displayweapon(short snum)
 
 				case HANDREMOTE_WEAPON:
 				{
-						signed char remote_frames[] = {0,1,1,2,1,1,0,0,0,0,0};
+						int8_t remote_frames[] = {0,1,1,2,1,1,0,0,0,0,0};
 						if(sprite[p->i].pal == 1)
 							pal = 1;
 						else

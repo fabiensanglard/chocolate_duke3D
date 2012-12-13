@@ -774,7 +774,7 @@ void guts(spritetype *s,short gtype, short n, short p)
     int32_t gutz,floorz;
     short i,a,j;
     char sx,sy;
-    signed char pal;
+    int8_t pal;
 
     if(badguy(s) && s->xrepeat < 16)
         sx = sy = 8;
