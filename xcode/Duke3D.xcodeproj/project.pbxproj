@@ -99,7 +99,6 @@
 		2D7B621A1678885A00E35E54 /* pragmas.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pragmas.c; path = ../../Engine/src/pragmas.c; sourceTree = "<group>"; };
 		2D7B621B1678885A00E35E54 /* pragmas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pragmas.h; path = ../../Engine/src/pragmas.h; sourceTree = "<group>"; };
 		2D7B621C1678885A00E35E54 /* sdl_driver.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sdl_driver.c; path = ../../Engine/src/sdl_driver.c; sourceTree = "<group>"; };
-		2D7B622E1678887600E35E54 /* win32_compat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = win32_compat.h; path = ../../Engine/src/win32_compat.h; sourceTree = "<group>"; };
 		2D7B622F1678895A00E35E54 /* macos_compat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = macos_compat.h; path = ../../Engine/src/macos_compat.h; sourceTree = "<group>"; };
 		2D7B623016788A9B00E35E54 /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = /Library/Frameworks/SDL.framework; sourceTree = "<absolute>"; };
 		2D7B623216788AAB00E35E54 /* SDL_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_mixer.framework; path = /Library/Frameworks/SDL_mixer.framework; sourceTree = "<absolute>"; };
@@ -227,7 +226,6 @@
 				2D7B621A1678885A00E35E54 /* pragmas.c */,
 				2D7B621B1678885A00E35E54 /* pragmas.h */,
 				2D7B621C1678885A00E35E54 /* sdl_driver.c */,
-				2D7B622E1678887600E35E54 /* win32_compat.h */,
 				2D7B622F1678895A00E35E54 /* macos_compat.h */,
 				2D7B630016791C0200E35E54 /* dummy_multi.c */,
 			);

@@ -228,7 +228,10 @@ long globalzd, globalbufplc, globalyscale, globalorientation;
 long globalx1, globaly1, globalx2, globaly2, globalx3, globaly3, globalzx;
 long globalx, globaly, globalz;
 
+//Those two variables are using during portal flooding:
+// sectorBorder is the stack and sectorbordercnt is the stack counter.
 static short sectorborder[256], sectorbordercnt;
+
 static char tablesloaded = 0;
 long pageoffset, ydim16, qsetmode = 0;
 long startposx, startposy, startposz;
@@ -339,7 +342,10 @@ unsigned int _swap32(unsigned int D)
 	return((D<<24)|((D<<8)&0x00FF0000)|((D>>8)&0x0000FF00)|(D>>24));
 }
 
-
+/*
+     FCS: Scan through sectors using portals (a portal is wall with a nextwall attribute != -1).
+          Flood is prevented if a portal does not face the POV.
+ */
 static void scansector (short sectnum)
 {
 	walltype *wal, *wal2;
@@ -357,6 +363,7 @@ static void scansector (short sectnum)
 	{
 		sectnum = sectorborder[--sectorbordercnt];
 
+        //Add every script in the current sector as potentially visible.
 		for(z=headspritesect[sectnum];z>=0;z=nextspritesect[z])
 		{
 			spr = &sprite[z];
@@ -373,6 +380,7 @@ static void scansector (short sectnum)
 			}
 		}
 
+        //Mark the current sector as "visited"
 		gotsector[sectnum>>3] |= pow2char[sectnum&7];
 
 		bunchfrst = numbunches;
@@ -386,35 +394,53 @@ static void scansector (short sectnum)
 			nextsectnum = wal->nextsector;
 
 			wal2 = &wall[wal->point2];
+            
+            // In camera space the center is the player.
+            // Make the camrea the center of the world: Wall coordinates
 			x1 = wal->x-globalposx; y1 = wal->y-globalposy;
 			x2 = wal2->x-globalposx; y2 = wal2->y-globalposy;
 
+            // If this is a portal...
 			if ((nextsectnum >= 0) && ((wal->cstat&32) == 0))
+                //If this portal has not been visited.
 				if ((gotsector[nextsectnum>>3]&pow2char[nextsectnum&7]) == 0)
 				{
 					templong = x1*y2-x2*y1;
+                    
+                    // Using cross product, determine if the portal is facing us or not.
+                    // If it is: Add it to the stack and bump the stack counter.
 					if (((unsigned)templong+262144) < 524288)
 						if (mulscale5(templong,templong) <= (x2-x1)*(x2-x1)+(y2-y1)*(y2-y1))
 							sectorborder[sectorbordercnt++] = nextsectnum;
 				}
 
+            // Rotate the wall endpoint position according to the player orientation.
+            // This is a regular rotation matrix using [29.3] fixed point.
 			if ((z == startwall) || (wall[z-1].point2 != z))
 			{
+                //If this is the first endpoint of the bunch, rotate
 				xp1 = dmulscale6(y1,cosglobalang,-x1,singlobalang);
 				yp1 = dmulscale6(x1,cosviewingrangeglobalang,y1,sinviewingrangeglobalang);
 			}
 			else
 			{
+                //If this is NOT the first endpoint, Save the coordinate for next loop.
 				xp1 = xp2;
 				yp1 = yp2;
 			}
-			xp2 = dmulscale6(y2,cosglobalang,-x2,singlobalang);
-			yp2 = dmulscale6(x2,cosviewingrangeglobalang,y2,sinviewingrangeglobalang);
+			    xp2 = dmulscale6(y2,cosglobalang,-x2,singlobalang);
+			    yp2 = dmulscale6(x2,cosviewingrangeglobalang,y2,sinviewingrangeglobalang);
+            
+            
+            
+            // No idea what this is.
 			if ((yp1 < 256) && (yp2 < 256)) goto skipitaddwall;
 
-				/* If wall's NOT facing you */
+            /* If wall's NOT facing you */
 			if (dmulscale32(xp1,yp2,-xp2,yp1) >= 0) goto skipitaddwall;
 
+            // The wall is still not eligible for rendition: Let's do some more Frustrum culling !!
+            
 			if (xp1 >= -yp1)
 			{
 				if ((xp1 > yp1) || (yp1 == 0)) goto skipitaddwall;
@@ -463,15 +489,18 @@ skipitaddwall:
 				p2[numscans-1] = scanfirst, scanfirst = numscans;
 		}
 
+        //FCS: TODO rename this p2[]. This name is an abomination
 		for(z=numscansbefore;z<numscans;z++)
 			if ((wall[thewall[z]].point2 != thewall[p2[z]]) || (xb2[z] >= xb1[p2[z]]))
 				bunchfirst[numbunches++] = p2[z], p2[z] = -1;
 
+        //For each bunch, cache the last wall of the bunch in bunchlast.
 		for(z=bunchfrst;z<numbunches;z++)
 		{
 			for(zz=bunchfirst[z];p2[zz]>=0;zz=p2[zz]);
 			bunchlast[z] = zz;
 		}
+    
 	} while (sectorbordercnt > 0);
 }
 
@@ -2395,6 +2424,7 @@ void drawrooms(long daposx, long daposy, long daposz,
 			if (j == 0) tempbuf[closest] = 1, closest = i, i = 0;
 		}
 
+        //Draw every solid walls in the bunch "closest"
 		drawalls(closest);
 
 		if (automapping)
@@ -3917,11 +3947,17 @@ int inside(long x, long y, short sectnum)
 	i = sector[sectnum].wallnum;
 	do
 	{
-		y1 = wal->y-y; y2 = wall[wal->point2].y-y;
+		y1 = wal->y-y;
+        y2 = wall[wal->point2].y-y;
 		if ((y1^y2) < 0)
 		{
-			x1 = wal->x-x; x2 = wall[wal->point2].x-x;
-			if ((x1^x2) >= 0) cnt ^= x1; else cnt ^= (x1*y2-x2*y1)^y2;
+			x1 = wal->x-x;
+            x2 = wall[wal->point2].x-x;
+            
+			if ((x1^x2) >= 0)
+                cnt ^= x1;
+            else
+                cnt ^= (x1*y2-x2*y1)^y2;
 		}
 		wal++; i--;
 	} while (i);
@@ -6718,7 +6754,18 @@ int pushmove(long *x, long *y, long *z, short *sectnum,
 	return(bad);
 }
 
-
+/*
+   FCS:  x and y are the new position of the entity.
+         sectnum is an hint (the last known sector number of the entity)
+ 
+   Thanks to the "hint", the algorithm check:
+   1. Is (x,y) inside sectors[sectnum].
+   2. Flood in sectnum portal and check again if (x,y) is inside.
+   3. Do a linear search on sectors[sectnum] from 0 to numSectors.
+  
+   Note: Inside uses cross_product and return as soon as the point switch
+         from one side to the other.
+ */
 void updatesector(long x, long y, short *sectnum)
 {
 	walltype *wal;

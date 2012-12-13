@@ -201,7 +201,7 @@ long prevlineasm1(long i1, long i2, long i3, long i4, long i5, long i6)
     if (i3 == 0)
     {
 		if (!RENDER_DRAW_TOP_AND_BOTTOM_COLUMN)
-		return;
+		return 0;
 
 	    i1 += i4;
         //FCS
@@ -226,7 +226,7 @@ long vlineasm1(long vince, long palookupoffse, long i3, long vplce, long bufplce
     unsigned char *dest = (unsigned char *)i6;
 
     if (!RENDER_DRAW_WALL_BORDERS)
-		return;
+		return vplce;
 
     i3++;
     while (i3)
