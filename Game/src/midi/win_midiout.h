@@ -74,8 +74,8 @@ public:
 	};
 
 	static const unsigned short	centre_value;
-	static const unsigned char	fine_value;
-	static const unsigned char	coarse_value;
+	static const uint8_t 	fine_value;
+	static const uint8_t 	coarse_value;
 	static const unsigned short	combined_value;
 
 	signed int	dev_num;

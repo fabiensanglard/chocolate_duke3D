@@ -882,7 +882,7 @@ void XMIDI::AdjustTimings(uint32 ppqn)
 	}
 
 	//std::cout << "Max Polyphony: " << notes.GetMaxPolyphony() << std::endl;
-	static const unsigned char tempo_buf[5] = { 0x51, 0x03, 0x07, 0xA1, 0x20 };
+	static const uint8_t  tempo_buf[5] = { 0x51, 0x03, 0x07, 0xA1, 0x20 };
 	BufferDataSource ds((char *)tempo_buf, 5);
 	current = list;
 	ConvertSystemMessage (0, 0xFF,&ds);
@@ -901,7 +901,7 @@ void XMIDI::AdjustTimings(uint32 ppqn)
 // ConvertSystemMessage is used for SysEx events and Meta events
 // ConvertEvent is used for everything else
 
-int XMIDI::ConvertEvent (const int time, unsigned char status, DataSource *source, const int size, first_state &fs)
+int XMIDI::ConvertEvent (const int time, uint8_t  status, DataSource *source, const int size, first_state &fs)
 {
 	int	data;
 
@@ -1030,7 +1030,7 @@ int XMIDI::ConvertEvent (const int time, unsigned char status, DataSource *sourc
 	return 2;
 }
 
-int XMIDI::ConvertNote (const int time, const unsigned char status, DataSource *source, const int size)
+int XMIDI::ConvertNote (const int time, const uint8_t  status, DataSource *source, const int size)
 {
 	uint32	delta = 0;
 	int	data;
@@ -1071,7 +1071,7 @@ int XMIDI::ConvertNote (const int time, const unsigned char status, DataSource *
 }
 
 // Simple routine to convert system messages
-int XMIDI::ConvertSystemMessage (const int time, const unsigned char status, DataSource *source)
+int XMIDI::ConvertSystemMessage (const int time, const uint8_t  status, DataSource *source)
 {
 	int i=0;
 	
@@ -1093,7 +1093,7 @@ int XMIDI::ConvertSystemMessage (const int time, const unsigned char status, Dat
 		return i;
 	}
 	
-	current->buffer = Malloc<unsigned char>(current->len);
+	current->buffer = Malloc<uint8_t >(current->len);
 
 	source->read (reinterpret_cast<char *>(current->buffer), current->len);
 
@@ -1265,7 +1265,7 @@ int XMIDI::ExtractTracksFromXmi (DataSource *source)
 		ApplyFirstState(fs, chan_mask);
 
 		// Add tempo
-		static const unsigned char tempo_buf[5] = { 0x51, 0x03, 0x07, 0xA1, 0x20 };
+		static const uint8_t  tempo_buf[5] = { 0x51, 0x03, 0x07, 0xA1, 0x20 };
 		BufferDataSource ds((char *)tempo_buf, 5);
 		current = list;
 		ConvertSystemMessage (0, 0xFF,&ds);
@@ -1649,7 +1649,7 @@ uint32 XMIDIEventList::ConvertListToMTrk (DataSource *dest)
 	int lasttime = 0;
 	midi_event	*event;
 	uint32	delta;
-	unsigned char	last_status = 0;
+	uint8_t 	last_status = 0;
 	uint32 	i = 8;
 	uint32 	j;
 	uint32	size_pos=0;

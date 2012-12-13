@@ -21,14 +21,14 @@
 #define MAXOPENFILES 64     /* Warning: Fix filehan if this is changed  */
 
 void initcache(int32_t dacachestart, int32_t dacachesize);
-void allocache (int32_t *newhandle, int32_t newbytes, unsigned char *newlockptr);
+void allocache (int32_t *newhandle, int32_t newbytes, uint8_t  *newlockptr);
 void suckcache (int32_t *suckptr);
 void agecache(void);
 void reportandexit(char *errormessage);
 int32_t initgroupfile(const char *filename);
 void uninitgroupfile(void);
 unsigned short crc16(char *data_p, unsigned short length);
-unsigned int crc32_update(unsigned char *buf, unsigned int length, unsigned int crc_to_update);
+unsigned int crc32_update(uint8_t  *buf, unsigned int length, unsigned int crc_to_update);
 int32_t kopen4load(const char *filename, int readfromGRP);
 int32_t kread(int32_t handle, void *buffer, int32_t leng);
 int kread8(int32_t handle, char *buffer);

@@ -71,8 +71,8 @@ int loadpics(char *filename, char* gamedir);
 int saveboard(char *filename, int32_t *daposx, int32_t *daposy, int32_t *daposz,
                          short *daang, short *dacursectnum);
 void plotpixel(int32_t x, int32_t y, char col);
-unsigned char getpixel(int32_t x, int32_t y);
-void setbrightness(char dabrightness, unsigned char *dapal);
+uint8_t  getpixel(int32_t x, int32_t y);
+void setbrightness(char dabrightness, uint8_t  *dapal);
 int screencapture(char *filename, char inverseit);
 void getmousevalues(short *mousx, short *mousy, short *bstatus);
 int clipmove (int32_t *x, int32_t *y, int32_t *z, short *sectnum, int32_t xvect,
@@ -113,7 +113,7 @@ int rintersect(int32_t x1, int32_t y1, int32_t z1, int32_t vx, int32_t vy, int32
                int32_t x3, int32_t y3, int32_t x4, int32_t y4, int32_t *intx,
                int32_t *inty, int32_t *intz);
 int allocatepermanenttile(short tilenume, int32_t xsiz, int32_t ysiz);
-void drawline256 (int32_t x1, int32_t y1, int32_t x2, int32_t y2, unsigned char col);
+void drawline256 (int32_t x1, int32_t y1, int32_t x2, int32_t y2, uint8_t  col);
 void copytilepiece(int32_t tilenume1, int32_t sx1, int32_t sy1, int32_t xsiz, int32_t ysiz,
                    int32_t tilenume2, int32_t sx2, int32_t sy2);
 int nextsectorneighborz(short sectnum, int32_t thez,

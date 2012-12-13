@@ -46,8 +46,8 @@ crc32_t crc32lookup[] = {
 		{ 0,							"HACK/UNKNOWN  ", 0}
 	};
 
-unsigned char conVersion = 13;
-unsigned char grpVersion = 0;
+uint8_t  conVersion = 13;
+uint8_t  grpVersion = 0;
 
 // FIX_00015: Backward compliance with older demos (down to demos v27, 28, 116 and 117 only)
 
@@ -91,7 +91,7 @@ short cyclers[MAXCYCLERS][6],numcyclers;
 
 char fta_quotes[NUMOFFIRSTTIMEACTIVE][64];
 
-unsigned char tempbuf[2048], packbuf[576];
+uint8_t  tempbuf[2048], packbuf[576];
 
 char buf[80];
 

@@ -305,7 +305,7 @@ char loadsound(unsigned short num)
 
     Sound[num].lock = 200;
 
-    allocache((int32_t *)&Sound[num].ptr,l,(unsigned char *)&Sound[num].lock);
+    allocache((int32_t *)&Sound[num].ptr,l,(uint8_t  *)&Sound[num].lock);
     kread( fp, Sound[num].ptr , l);
     kclose( fp );
     return 1;

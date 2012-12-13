@@ -857,14 +857,14 @@ void CONFIG_WriteSetup( void )
 	// FIX_00016: Build in Keyboard/mouse setup. Mouse now faster.
 	for(i=0; i<MAXMOUSEBUTTONS; i++)
 	{
-		sprintf((char*)tempbuf, "MouseButton%ld", i);
+		sprintf((char*)tempbuf, "MouseButton%d", i);
 		SCRIPT_PutString(scripthandle, "Controls", (char*)tempbuf, 
 			(MouseMapping[i]!=-1)?CONFIG_FunctionNumToName(MouseMapping[i]):"");
 	}
 
 	for (i=0;i<MAXMOUSEAXES*2;i++)
 	{
-		sprintf((char*)tempbuf, "MouseDigitalAxes%ld_%ld", i>>1, i&1);
+		sprintf((char*)tempbuf, "MouseDigitalAxes%ld_%d", i>>1, i&1);
 		SCRIPT_PutString(scripthandle, "Controls", (char*)tempbuf, 
 			(MouseDigitalAxeMapping[i>>1][i&1]!=-1)?CONFIG_FunctionNumToName(MouseDigitalAxeMapping[i>>1][i&1]):"");
 	}

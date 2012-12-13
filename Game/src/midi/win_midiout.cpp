@@ -65,14 +65,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define W32MO_THREAD_COM_EXIT			-1
 
 const unsigned short Windows_MidiOut::centre_value = 0x2000;
-const unsigned char Windows_MidiOut::fine_value = centre_value & 127;
-const unsigned char Windows_MidiOut::coarse_value = centre_value >> 7;
+const uint8_t  Windows_MidiOut::fine_value = centre_value & 127;
+const uint8_t  Windows_MidiOut::coarse_value = centre_value >> 7;
 const unsigned short Windows_MidiOut::combined_value = (coarse_value << 8) | fine_value;
 
 #define MUSIC_STATUS_IDLE    0
 #define MUSIC_STATUS_PLAYING 1
 
-unsigned char nMusicState = MUSIC_STATUS_IDLE;
+uint8_t  nMusicState = MUSIC_STATUS_IDLE;
 
 Mix_Music *music;
 
@@ -1053,7 +1053,7 @@ int MUSIC_StopSong(void)
 } // MUSIC_StopSong
 
 
-int MUSIC_PlaySong(unsigned char *song, int loopflag)
+int MUSIC_PlaySong(uint8_t  *song, int loopflag)
 {
     //SDL_RWops *rw;
 
@@ -1206,7 +1206,7 @@ void PlayMusic(char *fn)
 
 		kread( fp, MusicPtr, l);
 		kclose( fp );
-		MUSIC_PlaySong( (unsigned char*)MusicPtr, MUSIC_LoopSong );
+		MUSIC_PlaySong( (uint8_t *)MusicPtr, MUSIC_LoopSong );
 	}
 }
 
@@ -1280,7 +1280,7 @@ void MUSIC_RerouteMidiChannel(int channel, int cdecl ( *function )( int event, i
 } // MUSIC_RerouteMidiChannel
 
 
-void MUSIC_RegisterTimbreBank(unsigned char *timbres)
+void MUSIC_RegisterTimbreBank(uint8_t  *timbres)
 {
     musdebug("STUB ... MUSIC_RegisterTimbreBank().\n");
 } // MUSIC_RegisterTimbreBank

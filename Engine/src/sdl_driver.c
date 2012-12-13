@@ -337,7 +337,7 @@ static int32_t mouse_relative_y = 0;
 static short mouse_buttons = 0;
 static unsigned int lastkey = 0;
 /* so we can make use of setcolor16()... - DDOI */
-static unsigned char drawpixel_color=0;
+static uint8_t  drawpixel_color=0;
 
 static unsigned int scancodes[SDLK_LAST];
 
@@ -612,7 +612,7 @@ static void init_new_res_vars(int32_t davidoption)
     //	clearallviews(0L);
     //} /* if */
 
-	setbrightness((char) curbrightness, (unsigned char *) &palette[0]);
+	setbrightness((char) curbrightness, (uint8_t  *) &palette[0]);
 
 	if (searchx < 0) { searchx = halfxdimen; searchy = (ydimen>>1); }
 } /* init_new_res_vars */
@@ -1002,7 +1002,7 @@ int _joystick_button(int button)
 } /* _joystick_button */
 
 
-unsigned char _readlastkeyhit(void)
+uint8_t  _readlastkeyhit(void)
 {
     return(lastkey);
 } /* _readlastkeyhit */
@@ -1910,7 +1910,7 @@ void readmousebstatus(short *bstatus)
 } /* readmousebstatus */
 
 
-static unsigned char mirrorcolor = 0;
+static uint8_t  mirrorcolor = 0;
 
 void _updateScreenRect(int32_t x, int32_t y, int32_t w, int32_t h)
 {
@@ -1963,14 +1963,14 @@ void _nextpage(void)
 } /* _nextpage */
 
 
-unsigned char readpixel(int32_t offset)
+uint8_t  readpixel(int32_t offset)
 {
-    return( *((unsigned char *) offset) );
+    return( *((uint8_t  *) offset) );
 } /* readpixel */
 
-void drawpixel(int32_t offset, unsigned char pixel)
+void drawpixel(int32_t offset, uint8_t  pixel)
 {
-    *((unsigned char *) offset) = pixel;
+    *((uint8_t  *) offset) = pixel;
 } /* drawpixel */
 
 

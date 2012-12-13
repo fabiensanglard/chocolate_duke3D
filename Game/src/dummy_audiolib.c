@@ -132,7 +132,7 @@ int MUSIC_StopSong(void)
 	return 0;
 }
 
-int MUSIC_PlaySong(unsigned char *song, int loopflag)
+int MUSIC_PlaySong(uint8_t  *song, int loopflag)
 {
 	return 0;
 }
@@ -185,7 +185,7 @@ void MUSIC_RerouteMidiChannel(int channel, int cdecl function( int event, int c1
 {
 }
 
-void MUSIC_RegisterTimbreBank(unsigned char *timbres)
+void MUSIC_RegisterTimbreBank(uint8_t  *timbres)
 {
 }
 

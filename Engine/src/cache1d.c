@@ -36,7 +36,7 @@
  *   Step 1: Allocate a nice BIG buffer, like from 1MB-4MB and
  *           Call initcache(int32_t cachestart, int32_t cachesize) where
  *
- *              cachestart = (long)(pointer to start of BIG buffer)
+ *              cachestart = (int32_t )(pointer to start of BIG buffer)
  *              cachesize = length of BIG buffer
  *
  *   Step 2: Call allocache(int32_t *bufptr, int32_t bufsiz, char *lockptr)
@@ -63,9 +63,9 @@
 
 static int32_t cachesize = 0;
 int32_t cachecount = 0;
-unsigned char zerochar = 0;
+uint8_t  zerochar = 0;
 int32_t cachestart = 0, cacnum = 0, agecount = 0;
-typedef struct { int32_t *hand, leng; unsigned char *lock; } cactype;
+typedef struct { int32_t *hand, leng; uint8_t  *lock; } cactype;
 cactype cac[MAXCACHEOBJECTS];
 int32_t lockrecip[200];
 
@@ -86,7 +86,7 @@ void initcache(int32_t dacachestart, int32_t dacachesize)
 	cacnum = 1;
 }
 
-void allocache (int32_t *newhandle, int32_t newbytes, unsigned char *newlockptr)
+void allocache (int32_t *newhandle, int32_t newbytes, uint8_t  *newlockptr)
 {
 	int32_t i, z, zz, bestz=0, daval, bestval, besto=0, o1, o2, sucklen, suckz;
 
@@ -116,7 +116,7 @@ void allocache (int32_t *newhandle, int32_t newbytes, unsigned char *newlockptr)
 		{
 			if (*cac[zz].lock == 0) continue;
 			if (*cac[zz].lock >= 200) { daval = 0x7fffffff; break; }
-			daval += (long) mulscale32(cac[zz].leng+65536,lockrecip[*cac[zz].lock]);
+			daval += (int32_t ) mulscale32(cac[zz].leng+65536,lockrecip[*cac[zz].lock]);
 			if (daval >= bestval) break;
 		}
 		if (daval < bestval)
@@ -169,7 +169,7 @@ void suckcache (int32_t *suckptr)
 
 		/* Can't exit early, because invalid pointer might be same even though lock = 0 */
 	for(i=0;i<cacnum;i++)
-		if ((long)(*cac[i].hand) == (long)suckptr)
+		if ((int32_t )(*cac[i].hand) == (int32_t )suckptr)
 		{
 			if (*cac[i].lock) *cac[i].hand = 0;
 			cac[i].lock = &zerochar;
@@ -201,7 +201,7 @@ void agecache(void)
 	{
 		ch = (*cac[agecount].lock);
 		if (((ch-2)&255) < 198)
-			(*cac[agecount].lock) = (unsigned char) (ch-1);
+			(*cac[agecount].lock) = (uint8_t ) (ch-1);
 
 		agecount--; if (agecount < 0) agecount = cacnum-1;
 	}
@@ -229,7 +229,7 @@ void reportandexit(char *errormessage)
 }
 
 #if (!defined USE_PHYSICSFS)
-unsigned char toupperlookup[256] =
+uint8_t  toupperlookup[256] =
 {
 	0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0a,0x0b,0x0c,0x0d,0x0e,0x0f,
 	0x10,0x11,0x12,0x13,0x14,0x15,0x16,0x17,0x18,0x19,0x1a,0x1b,0x1c,0x1d,0x1e,0x1f,
@@ -258,7 +258,7 @@ int32_t *gfileoffs[MAXGROUPFILES];	// offset of the files
 char *groupfil_memory[MAXGROUPFILES]; // addresses of raw GRP files in memory
 int32_t groupefil_crc32[MAXGROUPFILES];
 
-unsigned char filegrp[MAXOPENFILES];
+uint8_t  filegrp[MAXOPENFILES];
 int32_t filepos[MAXOPENFILES];
 int32_t filehan[MAXOPENFILES] =
 {
@@ -376,7 +376,7 @@ int32_t initgroupfile(const char *filename)
 	groupfil_memory[numgroupfiles] = malloc(i);
 	while((j=read(groupfil[numgroupfiles], groupfil_memory[numgroupfiles], i)))
 	{
-		groupefil_crc32[numgroupfiles] = crc32_update((unsigned char*)groupfil_memory[numgroupfiles], j, groupefil_crc32[numgroupfiles]);
+		groupefil_crc32[numgroupfiles] = crc32_update((uint8_t *)groupfil_memory[numgroupfiles], j, groupefil_crc32[numgroupfiles]);
 	}
 
 	free(groupfil_memory[numgroupfiles]);  
@@ -494,7 +494,7 @@ void crc32_table_gen(unsigned int* crc32_table) /* build CRC32 table */
     }
 }
 
-unsigned int crc32(unsigned char *buf, unsigned int length)
+unsigned int crc32(uint8_t  *buf, unsigned int length)
 {
 	unsigned int initial_crc;
 
@@ -502,7 +502,7 @@ unsigned int crc32(unsigned char *buf, unsigned int length)
 	return(crc32_update(buf, length, initial_crc));
 }
 
-unsigned int crc32_update(unsigned char *buf, unsigned int length, unsigned int crc_to_update)
+unsigned int crc32_update(uint8_t  *buf, unsigned int length, unsigned int crc_to_update)
 {
 	unsigned int crc32_table[256];
 
@@ -530,7 +530,7 @@ unsigned int crc32_update(unsigned char *buf, unsigned int length, unsigned int 
 
 unsigned short crc16(char *data_p, unsigned short length)
 {
-      unsigned char i;
+      uint8_t  i;
       unsigned int data;
       unsigned int crc = 0xffff;
 
@@ -583,7 +583,7 @@ int32_t kopen4load(const char *filename, int readfromGRP)
     return(-1);
 #else
 	int32_t i, j, k, fil, newhandle;
-	unsigned char bad;
+	uint8_t  bad;
 	char *gfileptr;
 
 	newhandle = MAXOPENFILES-1;
@@ -623,7 +623,7 @@ int32_t kopen4load(const char *filename, int readfromGRP)
 				}
 				if (bad) continue;
 
-				filegrp[newhandle] = (unsigned char) k;
+				filegrp[newhandle] = (uint8_t ) k;
 				filehan[newhandle] = i;
 				filepos[newhandle] = 0;
 				return(newhandle);
@@ -715,7 +715,7 @@ int32_t klseek(int32_t handle, int32_t offset, int32_t whence)
 
 	groupnum = filegrp[handle];
 
-	if (groupnum == 255) return((long)lseek(filehan[handle],offset,whence));
+	if (groupnum == 255) return((int32_t )lseek(filehan[handle],offset,whence));
 	if (groupfil[groupnum] != -1)
 	{
 		switch(whence)
@@ -737,7 +737,7 @@ int32_t filelength(int32_t fd)
 {
     struct stat stats;
     fstat(fd, &stats);
-    return (long)stats.st_size;
+    return (int32_t )stats.st_size;
 }
 #endif
 
@@ -776,7 +776,7 @@ void kclose(int32_t handle)
 	/* Internal LZW variables */
 #define LZWSIZE 16384           /* Watch out for shorts! */
 static char *lzwbuf1, *lzwbuf4, *lzwbuf5;
-static unsigned char lzwbuflock[5];
+static uint8_t  lzwbuflock[5];
 static short *lzwbuf2, *lzwbuf3;
 
 void kdfread(void *buffer, size_t dasizeof, size_t count, int32_t fil)
@@ -796,21 +796,21 @@ void kdfread(void *buffer, size_t dasizeof, size_t count, int32_t fil)
 	if (dasizeof > LZWSIZE) { count *= dasizeof; dasizeof = 1; }
 	ptr = (char *)buffer;
 
-	kread(fil,&leng,2); kread(fil,lzwbuf5,(long)leng);
+	kread(fil,&leng,2); kread(fil,lzwbuf5,(int32_t )leng);
 	k = 0;
-	kgoal = uncompress(lzwbuf5,(long)leng,lzwbuf4);
+	kgoal = uncompress(lzwbuf5,(int32_t )leng,lzwbuf4);
 
-	copybufbyte(lzwbuf4,ptr,(long)dasizeof);
-	k += (long)dasizeof;
+	copybufbyte(lzwbuf4,ptr,(int32_t )dasizeof);
+	k += (int32_t )dasizeof;
 
 	for(i=1;i<count;i++)
 	{
 		if (k >= kgoal)
 		{
-			kread(fil,&leng,2); kread(fil,lzwbuf5,(long)leng);
-			k = 0; kgoal = uncompress(lzwbuf5,(long)leng,lzwbuf4);
+			kread(fil,&leng,2); kread(fil,lzwbuf5,(int32_t )leng);
+			k = 0; kgoal = uncompress(lzwbuf5,(int32_t )leng,lzwbuf4);
 		}
-		for(j=0;j<dasizeof;j++) ptr[j+dasizeof] = (unsigned char) ((ptr[j]+lzwbuf4[j+k])&255);
+		for(j=0;j<dasizeof;j++) ptr[j+dasizeof] = (uint8_t ) ((ptr[j]+lzwbuf4[j+k])&255);
 		k += dasizeof;
 		ptr += dasizeof;
 	}
@@ -834,20 +834,20 @@ void dfread(void *buffer, size_t dasizeof, size_t count, FILE *fil)
 	if (dasizeof > LZWSIZE) { count *= dasizeof; dasizeof = 1; }
 	ptr = (char *)buffer;
 
-	fread(&leng,2,1,fil); fread(lzwbuf5,(long)leng,1,fil);
-	k = 0; kgoal = uncompress(lzwbuf5,(long)leng,lzwbuf4);
+	fread(&leng,2,1,fil); fread(lzwbuf5,(int32_t )leng,1,fil);
+	k = 0; kgoal = uncompress(lzwbuf5,(int32_t )leng,lzwbuf4);
 
-	copybufbyte(lzwbuf4,ptr,(long)dasizeof);
-	k += (long)dasizeof;
+	copybufbyte(lzwbuf4,ptr,(int32_t )dasizeof);
+	k += (int32_t )dasizeof;
 
 	for(i=1;i<count;i++)
 	{
 		if (k >= kgoal)
 		{
-			fread(&leng,2,1,fil); fread(lzwbuf5,(long)leng,1,fil);
-			k = 0; kgoal = uncompress(lzwbuf5,(long)leng,lzwbuf4);
+			fread(&leng,2,1,fil); fread(lzwbuf5,(int32_t )leng,1,fil);
+			k = 0; kgoal = uncompress(lzwbuf5,(int32_t )leng,lzwbuf4);
 		}
-		for(j=0;j<dasizeof;j++) ptr[j+dasizeof] = (unsigned char) ((ptr[j]+lzwbuf4[j+k])&255);
+		for(j=0;j<dasizeof;j++) ptr[j+dasizeof] = (uint8_t ) ((ptr[j]+lzwbuf4[j+k])&255);
 		k += dasizeof;
 		ptr += dasizeof;
 	}
@@ -870,30 +870,30 @@ void dfwrite(void *buffer, size_t dasizeof, size_t count, FILE *fil)
 	if (dasizeof > LZWSIZE) { count *= dasizeof; dasizeof = 1; }
 	ptr = (char *)buffer;
 
-	copybufbyte(ptr,lzwbuf4,(long)dasizeof);
+	copybufbyte(ptr,lzwbuf4,(int32_t )dasizeof);
 	k = dasizeof;
 
 	if (k > LZWSIZE-dasizeof)
 	{
 		leng = (short)compress(lzwbuf4,k,lzwbuf5); k = 0;
-		fwrite(&leng,2,1,fil); fwrite(lzwbuf5,(long)leng,1,fil);
+		fwrite(&leng,2,1,fil); fwrite(lzwbuf5,(int32_t )leng,1,fil);
 	}
 
 	for(i=1;i<count;i++)
 	{
-		for(j=0;j<dasizeof;j++) lzwbuf4[j+k] = (unsigned char) ((ptr[j+dasizeof]-ptr[j])&255);
+		for(j=0;j<dasizeof;j++) lzwbuf4[j+k] = (uint8_t ) ((ptr[j+dasizeof]-ptr[j])&255);
 		k += dasizeof;
 		if (k > LZWSIZE-dasizeof)
 		{
 			leng = (short)compress(lzwbuf4,k,lzwbuf5); k = 0;
-			fwrite(&leng,2,1,fil); fwrite(lzwbuf5,(long)leng,1,fil);
+			fwrite(&leng,2,1,fil); fwrite(lzwbuf5,(int32_t )leng,1,fil);
 		}
 		ptr += dasizeof;
 	}
 	if (k > 0)
 	{
 		leng = (short)compress(lzwbuf4,k,lzwbuf5);
-		fwrite(&leng,2,1,fil); fwrite(lzwbuf5,(long)leng,1,fil);
+		fwrite(&leng,2,1,fil); fwrite(lzwbuf5,(int32_t )leng,1,fil);
 	}
 	lzwbuflock[0] = lzwbuflock[1] = lzwbuflock[2] = lzwbuflock[3] = lzwbuflock[4] = 1;
 }
@@ -967,11 +967,11 @@ int32_t uncompress(char *lzwinbuf, int32_t compleng, char *lzwoutbuf)
 	short *shortptr;
 
 	shortptr = (short *)lzwinbuf;
-	strtot = (long)shortptr[1];
+	strtot = (int32_t )shortptr[1];
 	if (strtot == 0)
 	{
 		copybuf((void *)(FP_OFF(lzwinbuf)+4),(void *)(FP_OFF(lzwoutbuf)),((compleng-4)+3)>>2);
-		return((long)shortptr[0]); /* uncompleng */
+		return((int32_t )shortptr[0]); /* uncompleng */
 	}
 	for(i=255;i>=0;i--) { lzwbuf2[i] = (short) i; lzwbuf3[i] = (short) i; }
 	currstr = 256; bitcnt = (4<<3); outbytecnt = 0;
@@ -996,7 +996,7 @@ int32_t uncompress(char *lzwinbuf, int32_t compleng, char *lzwoutbuf)
 		currstr++;
 		if (currstr > oneupnumbits) { numbits++; oneupnumbits <<= 1; }
 	} while (currstr < strtot);
-	return((long)shortptr[0]); /* uncompleng */
+	return((int32_t )shortptr[0]); /* uncompleng */
 }
 
 

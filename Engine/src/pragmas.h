@@ -10,13 +10,13 @@
 
 #include "platform.h" //for __int64
 
-static __inline void swapchar(unsigned char *p1, unsigned char *p2)
-{ unsigned char tmp = *p1; *p1 = *p2; *p2 = tmp; }
+static __inline void swapchar(uint8_t  *p1, uint8_t  *p2)
+{ uint8_t  tmp = *p1; *p1 = *p2; *p2 = tmp; }
 static __inline void swapshort(short *p1, short *p2)
 { short tmp = *p1; *p1 = *p2; *p2 = tmp; }
 static __inline void swaplong(int32_t *p1, int32_t *p2)
 { int32_t tmp = *p1; *p1 = *p2; *p2 = tmp; }
-static __inline void swapchar2(unsigned char *p1, unsigned char *p2, int xsiz)
+static __inline void swapchar2(uint8_t  *p1, uint8_t  *p2, int xsiz)
 {
     swapchar(p1, p2);
     swapchar(p1 + 1, p2 + xsiz);

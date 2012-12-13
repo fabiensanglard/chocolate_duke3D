@@ -83,8 +83,8 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 //  FIX_00022: Automatically recognize the shareware grp (v1.3) + full version (1.3d) +
 //             atomic (1.4/1.5 grp) and the con files version (either 1.3 or 1.4) (JonoF's idea)
 
-extern unsigned char conVersion;
-extern unsigned char grpVersion;
+extern uint8_t  conVersion;
+extern uint8_t  grpVersion;
 extern int32_t groupefil_crc32[MAXGROUPFILES];
 
 #define RANCID_ID 1
@@ -509,7 +509,7 @@ struct player_struct
 	char fakeplayer;
 };
 
-extern unsigned char tempbuf[2048], packbuf[576];
+extern uint8_t  tempbuf[2048], packbuf[576];
 
 extern int32_t gc,max_player_health,max_armour_amount,max_ammo_amount[MAX_WEAPONS];
 
@@ -684,7 +684,7 @@ extern int32_t stereomode, stereowidth, stereopixelwidth;
 
 extern int32_t myaimmode, myaimstat, omyaimstat;
 
-extern unsigned char nHostForceDisableAutoaim;
+extern uint8_t  nHostForceDisableAutoaim;
 
 #endif  // include-once header.
 

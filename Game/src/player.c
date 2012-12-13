@@ -314,7 +314,7 @@ void shoot(short i,short atwith)
 {
     short sect, hitsect, hitspr, hitwall, l, sa, p, j, k, scount;
     int32_t sx, sy, sz, vel, zvel, hitx, hity, hitz, x, oldzvel, dal;
-    unsigned char sizx,sizy;
+    uint8_t  sizx,sizy;
     spritetype *s;
 
     s = &sprite[i];

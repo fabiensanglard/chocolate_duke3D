@@ -74,12 +74,12 @@ template <class T> class GammaTable;
 struct midi_event
 {
 	int				time;
-	unsigned char	status;
+	uint8_t 	status;
 
-	unsigned char	data[2];
+	uint8_t 	data[2];
 
 	uint32			len;		// Length of SysEx Data
-	unsigned char	*buffer;	// SysEx Data
+	uint8_t 	*buffer;	// SysEx Data
 	int				duration;	// Duration of note (120 Hz)
 	midi_event		*next_note;	// The next note on the stack
 	uint32			note_time;	// Time note stops playing (6000th of second)
@@ -292,9 +292,9 @@ private:
 	void AdjustTimings(uint32 ppqn);	// This is used by Midi's ONLY!
 	void ApplyFirstState(first_state &fs, int chan_mask);
 
-	int ConvertNote (const int time, const unsigned char status, DataSource *source, const int size);
-	int ConvertEvent (const int time, unsigned char status, DataSource *source, const int size, first_state& fs);
-	int ConvertSystemMessage (const int time, const unsigned char status, DataSource *source);
+	int ConvertNote (const int time, const uint8_t  status, DataSource *source, const int size);
+	int ConvertEvent (const int time, uint8_t  status, DataSource *source, const int size, first_state& fs);
+	int ConvertSystemMessage (const int time, const uint8_t  status, DataSource *source);
 
 	int ConvertFiletoList (DataSource *source, const bool is_xmi, first_state& fs);
 

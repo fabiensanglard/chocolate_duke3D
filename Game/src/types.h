@@ -40,7 +40,7 @@ extern "C" {
 //
 //***************************************************************************
 
-typedef unsigned char           uint8;
+typedef uint8_t            uint8;
 typedef uint8                   byte;
 typedef signed char             int8;
 

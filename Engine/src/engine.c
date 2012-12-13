@@ -117,7 +117,7 @@ int32_t curbrightness = 0;
 static char globalpolytype;
 static short *dotp1[MAXYDIM], *dotp2[MAXYDIM];
 
-static unsigned char tempbuf[MAXWALLS];
+static uint8_t  tempbuf[MAXWALLS];
 
 int32_t ebpbak, espbak;
 int32_t slopalookup[16384];
@@ -126,7 +126,7 @@ int32_t slopalookup[16384];
  * !!! used to be static. If we ever put the original setgamemode() back, this
  * !!! can be made static again.  --ryan.
  */
-unsigned char permanentlock = 255;
+uint8_t  permanentlock = 255;
 int32_t artversion, mapversion;
 char *pic = NULL;
 char picsiz[MAXTILES], tilefilenum[MAXTILES];
@@ -261,7 +261,7 @@ typedef struct
 	int32_t sx, sy, z;
 	short a, picnum;
 	signed char dashade;
-	unsigned char dapalnum, dastat, pagesleft;
+	uint8_t  dapalnum, dastat, pagesleft;
 	int32_t cx1, cy1, cx2, cy2;
 } permfifotype;
 static permfifotype permfifo[MAXPERMS];
@@ -597,7 +597,7 @@ static void hline (int32_t xr, int32_t yp)
 	r = horizlookup2[yp-globalhoriz+horizycent];
 	asm1 = globalx1*r;
 	asm2 = globaly2*r;
-	s = ((long)getpalookup((long)mulscale16(r,globvis),globalshade)<<8);
+	s = ((int32_t)getpalookup((int32_t)mulscale16(r,globvis),globalshade)<<8);
 
 	hlineasm4(xr-xl,0L,s,globalx2*r+globalypanning,globaly1*r+globalxpanning,
 		ylookup[yp]+xr+frameoffset);
@@ -626,7 +626,7 @@ static void slowhline (int32_t xr, int32_t yp)
 }
 
 
-static int animateoffs(short tilenum, short fakevar)
+static int animateoffs(int16_t tilenum, int16_t fakevar)
 {
 	int32_t i, k, offs;
 
@@ -680,7 +680,7 @@ static void ceilscan (int32_t x1, int32_t x2, int32_t sectnum)
 
 	globalshade = (long)sec->ceilingshade;
 	globvis = globalcisibility;
-	if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((unsigned char)(sec->visibility+16)));
+	if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((uint8_t )(sec->visibility+16)));
 	globalorientation = (long)sec->ceilingstat;
 
 
@@ -848,7 +848,7 @@ static void florscan (int32_t x1, int32_t x2, int32_t sectnum)
 
 	globalshade = (long)sec->floorshade;
 	globvis = globalcisibility;
-	if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((unsigned char)(sec->visibility+16)));
+	if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((uint8_t )(sec->visibility+16)));
 	globalorientation = (long)sec->floorstat;
 
 
@@ -1015,7 +1015,7 @@ static void florscan (int32_t x1, int32_t x2, int32_t sectnum)
  *  --ryan.
  */
 static void wallscan(int32_t x1, int32_t x2,
-                     short *uwal, short *dwal,
+                     int16_t *uwal, int16_t *dwal,
                      int32_t *swal, int32_t *lwal)
 {
 	int32_t i, x, xnice, ynice, fpalookup;
@@ -1299,7 +1299,7 @@ static void parascan(int32_t dax1, int32_t dax2, int32_t sectnum,
 		globalhoriz = mulscale16(globalhoriz-(ydimen>>1),parallaxyscale) + (ydimen>>1);
 	globvis = globalpisibility;
 	/* globalorientation = 0L; */
-	if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((unsigned char)(sec->visibility+16)));
+	if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((uint8_t )(sec->visibility+16)));
 
 	if (dastat == 0)
 	{
@@ -1533,7 +1533,7 @@ static void grouscan (int32_t dax1, int32_t dax2, int32_t sectnum, char dastat)
 	asm1 = -(globalzd>>(16-BITSOFPRECISION));
 
 	globvis = globalvisibility;
-	if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((unsigned char)(sec->visibility+16)));
+	if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((uint8_t )(sec->visibility+16)));
 	globvis = mulscale13(globvis,daz);
 	globvis = mulscale16(globvis,xdimscale);
 	j =(long) FP_OFF(palookup[globalpal]);
@@ -1935,7 +1935,7 @@ static void drawalls(int32_t bunch)
 					if (picanm[globalpicnum]&192) globalpicnum += animateoffs(globalpicnum,(short)(wallnum+16384));
 					globalshade = (long)wal->shade;
 					globvis = globalvisibility;
-					if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((unsigned char)(sec->visibility+16)));
+					if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((uint8_t )(sec->visibility+16)));
 					globalpal = (long)wal->pal;
 					globalyscale = (wal->yrepeat<<(globalshiftval-19));
 					if ((globalorientation&4) == 0)
@@ -2038,7 +2038,7 @@ static void drawalls(int32_t bunch)
 						globalpal = (long)wal->pal;
 					}
 					globvis = globalvisibility;
-					if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((unsigned char)(sec->visibility+16)));
+					if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((uint8_t )(sec->visibility+16)));
 					globalshiftval = (picsiz[globalpicnum]>>4);
 					if (pow2long[globalshiftval] != tilesizy[globalpicnum]) globalshiftval++;
 					globalshiftval = 32-globalshiftval;
@@ -2128,7 +2128,7 @@ static void drawalls(int32_t bunch)
 			if (picanm[globalpicnum]&192) globalpicnum += animateoffs(globalpicnum,(short)(wallnum+16384));
 			globalshade = (long)wal->shade;
 			globvis = globalvisibility;
-			if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((unsigned char)(sec->visibility+16)));
+			if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((uint8_t )(sec->visibility+16)));
 			globalpal = (long)wal->pal;
 			globalshiftval = (picsiz[globalpicnum]>>4);
 			if (pow2long[globalshiftval] != tilesizy[globalpicnum]) globalshiftval++;
@@ -3140,7 +3140,7 @@ static int clippoly4(int32_t cx1, int32_t cy1, int32_t cx2, int32_t cy2)
 
 
 static void dorotatesprite (int32_t sx, int32_t sy, int32_t z, short a, short picnum,
-	signed char dashade, unsigned char dapalnum, char dastat, int32_t cx1,
+	signed char dashade, uint8_t  dapalnum, char dastat, int32_t cx1,
 	int32_t cy1, int32_t cx2, int32_t cy2)
 {
 	int32_t cosang, sinang, v, nextv, dax1, dax2, oy, bx, by, ny1, ny2;
@@ -3625,7 +3625,7 @@ void loadtile(short tilenume)
 	if (waloff[tilenume] == 0)
 	{
 		walock[tilenume] = 199;
-		allocache(&waloff[tilenume],dasiz,(unsigned char *) &walock[tilenume]);
+		allocache(&waloff[tilenume],dasiz,(uint8_t  *) &walock[tilenume]);
 	}
 
 	if (artfilplc != tilefileoffs[tilenume])
@@ -3650,7 +3650,7 @@ int allocatepermanenttile(short tilenume, int32_t xsiz, int32_t ysiz)
 	dasiz = xsiz*ysiz;
 
 	walock[tilenume] = 255;
-	allocache(&waloff[tilenume],dasiz,(unsigned char *) &walock[tilenume]);
+	allocache(&waloff[tilenume],dasiz,(uint8_t  *) &walock[tilenume]);
 
 	tilesizx[tilenume] = xsiz;
 	tilesizy[tilenume] = ysiz;
@@ -3794,7 +3794,7 @@ void qloadkvx(int32_t voxindex, char *filename)
 
 			/* Must store filenames to use cacheing system :( */
 		voxlock[voxindex][i] = 200;
-		allocache(&voxoff[voxindex][i],dasiz,(unsigned char *)&voxlock[voxindex][i]);
+		allocache(&voxoff[voxindex][i],dasiz,(uint8_t  *)&voxlock[voxindex][i]);
 		ptr = (char *)voxoff[voxindex][i];
 		kread(fil,ptr,dasiz);
 
@@ -3859,7 +3859,7 @@ static int clipinsideboxline(int32_t x, int32_t y, int32_t x1, int32_t y1, int32
 }
 
 
-void drawline256 (int32_t x1, int32_t y1, int32_t x2, int32_t y2, unsigned char col)
+void drawline256 (int32_t x1, int32_t y1, int32_t x2, int32_t y2, uint8_t  col)
 {
 	int32_t dx, dy, i, j, p, inc, plc, daend;
 
@@ -3987,7 +3987,7 @@ int ksqrt(int32_t num)
 void copytilepiece(int32_t tilenume1, int32_t sx1, int32_t sy1, int32_t xsiz, int32_t ysiz,
                    int32_t tilenume2, int32_t sx2, int32_t sy2)
 {
-	unsigned char *ptr1, *ptr2, dat;
+	uint8_t  *ptr1, *ptr2, dat;
 	int32_t xsiz1, ysiz1, xsiz2, ysiz2, i, j, x1, y1, x2, y2;
 
 	xsiz1 = tilesizx[tilenume1]; ysiz1 = tilesizy[tilenume1];
@@ -4007,8 +4007,8 @@ void copytilepiece(int32_t tilenume1, int32_t sx1, int32_t sy1, int32_t xsiz, in
 				y2 = sy2+j;
 				if ((x2 >= 0) && (y2 >= 0) && (x2 < xsiz2) && (y2 < ysiz2))
 				{
-					ptr1 = (unsigned char *) (waloff[tilenume1] + x1*ysiz1 + y1);
-					ptr2 = (unsigned char *) (waloff[tilenume2] + x2*ysiz2 + y2);
+					ptr1 = (uint8_t  *) (waloff[tilenume1] + x1*ysiz1 + y1);
+					ptr2 = (uint8_t  *) (waloff[tilenume2] + x2*ysiz2 + y2);
 					dat = *ptr1;
 					if (dat != 255)
 						*ptr2 = *ptr1;
@@ -4051,7 +4051,7 @@ static void drawmaskwall(short damaskwallcnt)
 	if (picanm[globalpicnum]&192) globalpicnum += animateoffs(globalpicnum,(short)(thewall[z]+16384));
 	globalshade = (long)wal->shade;
 	globvis = globalvisibility;
-	if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((unsigned char)(sec->visibility+16)));
+	if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((uint8_t )(sec->visibility+16)));
 	globalpal = (long)wal->pal;
 	globalshiftval = (picsiz[globalpicnum]>>4);
 	if (pow2long[globalshiftval] != tilesizy[globalpicnum]) globalshiftval++;
@@ -4182,8 +4182,8 @@ static void ceilspritescan (int32_t x1, int32_t x2)
 
 #ifdef SUPERBUILD
 static void drawvox(int32_t dasprx, int32_t daspry, int32_t dasprz, int32_t dasprang,
-		  int32_t daxscale, int32_t dayscale, unsigned char daindex,
-		  signed char dashade, unsigned char dapal, int32_t *daumost, int32_t *dadmost)
+		  int32_t daxscale, int32_t dayscale, uint8_t  daindex,
+		  signed char dashade, uint8_t  dapal, int32_t *daumost, int32_t *dadmost)
 {
 	int32_t i, j, k, x, y, syoff, ggxstart, ggystart, nxoff;
 	int32_t cosang, sinang, sprcosang, sprsinang, backx, backy, gxinc, gyinc;
@@ -4580,7 +4580,7 @@ static void drawsprite (int32_t snum)
 		globalxpanning = 0L;
 		globalypanning = 0L;
 		globvis = globalvisibility;
-		if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((unsigned char)(sec->visibility+16)));
+		if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((uint8_t )(sec->visibility+16)));
 		globalshiftval = (picsiz[globalpicnum]>>4);
 		if (pow2long[globalshiftval] != tilesizy[globalpicnum]) globalshiftval++;
 		globalshiftval = 32-globalshiftval;
@@ -4723,7 +4723,7 @@ static void drawsprite (int32_t snum)
 		globalxpanning = 0L;
 		globalypanning = 0L;
 		globvis = globalvisibility;
-		if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((unsigned char)(sec->visibility+16)));
+		if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((uint8_t )(sec->visibility+16)));
 		globalshiftval = (picsiz[globalpicnum]>>4);
 		if (pow2long[globalshiftval] != tilesizy[globalpicnum]) globalshiftval++;
 		globalshiftval = 32-globalshiftval;
@@ -5132,7 +5132,7 @@ static void drawsprite (int32_t snum)
 		globalbufplc = waloff[globalpicnum];
 
 		globvis = mulscale16(globalhisibility,viewingrange);
-		if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((unsigned char)(sec->visibility+16)));
+		if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((uint8_t )(sec->visibility+16)));
 
 		x = picsiz[globalpicnum]; y = ((x>>4)&15); x &= 15;
 		if (pow2long[x] != xspan)
@@ -5227,7 +5227,7 @@ static void drawsprite (int32_t snum)
 		tspr->z -= ((yoff*tspr->yrepeat)<<2);
 
 		globvis = globalvisibility;
-		if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((unsigned char)(sec->visibility+16)));
+		if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((uint8_t )(sec->visibility+16)));
 
 		if ((searchit >= 1) && (yp > (4<<8)) && (searchy >= lwall[searchx]) && (searchy < swall[searchx]))
 		{
@@ -7608,7 +7608,7 @@ void makepalookup(int32_t palnum, char *remapbuf, signed char r,
 }
 
 
-void setbrightness(char dabrightness, unsigned char *dapal)
+void setbrightness(char dabrightness, uint8_t  *dapal)
 {
 	int32_t i, j, k;
 
@@ -8025,7 +8025,7 @@ void drawmapview(int32_t dax, int32_t day, int32_t zoome, short ang)
 			globalbufplc = waloff[globalpicnum];
 			globalshade = max(min(sec->floorshade,numpalookups-1),0);
 			globvis = globalhisibility;
-			if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((unsigned char)(sec->visibility+16)));
+			if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((uint8_t )(sec->visibility+16)));
 			globalpolytype = 0;
 			if ((globalorientation&64) == 0)
 			{
@@ -8164,7 +8164,7 @@ void drawmapview(int32_t dax, int32_t day, int32_t zoome, short ang)
 			globalshade = max(min(globalshade+spr->shade+6,numpalookups-1),0);
 			asm3 = (long) FP_OFF(palookup[spr->pal]+(globalshade<<8));
 			globvis = globalhisibility;
-			if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((unsigned char)(sec->visibility+16)));
+			if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((uint8_t )(sec->visibility+16)));
 			globalpolytype = ((spr->cstat&2)>>1)+1;
 
 				/* relative alignment stuff */
@@ -8264,7 +8264,7 @@ void plotpixel(int32_t x, int32_t y, char col)
 }
 
 
-unsigned char getpixel(int32_t x, int32_t y)
+uint8_t  getpixel(int32_t x, int32_t y)
 {
 	return(readpixel(ylookup[y]+x+frameplace));
 }
@@ -8323,7 +8323,7 @@ void setviewback(void)
 void squarerotatetile(short tilenume)
 {
 	int32_t i, j, k, xsiz, ysiz;
-	unsigned char *ptr1, *ptr2;
+	uint8_t  *ptr1, *ptr2;
 
 	xsiz = tilesizx[tilenume]; ysiz = tilesizy[tilenume];
 
@@ -8333,7 +8333,7 @@ void squarerotatetile(short tilenume)
 		k = (xsiz<<1);
 		for(i=xsiz-1;i>=0;i--)
 		{
-			ptr1 = (unsigned char *) (waloff[tilenume]+i*(xsiz+1));
+			ptr1 = (uint8_t  *) (waloff[tilenume]+i*(xsiz+1));
             ptr2 = ptr1;
 			if ((i&1) != 0) { ptr1--; ptr2 -= xsiz; swapchar(ptr1,ptr2); }
 			for(j=(i>>1)-1;j>=0;j--)

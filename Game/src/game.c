@@ -77,7 +77,7 @@ char eightytwofifty = 0;
 char playerswhenstarted;
 char qe,cp;
 
-unsigned char nHostForceDisableAutoaim = 0;
+uint8_t  nHostForceDisableAutoaim = 0;
 
 // Game play speed
 int g_iTickRate = 120;
@@ -422,7 +422,7 @@ char *grpVersion2char_from_crc(unsigned int crc32_grp_to_identify)
 	return(id);
 }
 
-char *grpVersion2char(unsigned char grp_to_identify)
+char *grpVersion2char(uint8_t  grp_to_identify)
 {
 	char *id;
 

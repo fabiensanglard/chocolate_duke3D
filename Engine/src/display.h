@@ -93,7 +93,7 @@ extern int32_t xdimen, xdimenrecip, halfxdimen, xdimenscale, xdimscale;
  * !!! can be made static again.  --ryan.
  * !!! (Actually, most of these extern declarations used to be static...rcg.)
  */
-extern unsigned char permanentlock;
+extern uint8_t  permanentlock;
 
 // defined in the game project:
 extern int32_t BFullScreen;  // defined in Game\src\config.c
@@ -130,7 +130,7 @@ int VBE_setPalette(int32_t start, int32_t num, char *palettebuffer);
 int setvesa(int32_t x, int32_t y);
 void uninitvesa(void);
 void setvmode(int mode);
-unsigned char readpixel(int32_t offset);
+uint8_t  readpixel(int32_t offset);
 void drawpixel(int32_t offset, Uint8 pixel);
 void drawpixels(int32_t offset, Uint16 pixels);
 void drawpixelses(int32_t offset, Uint32 pixelses);
@@ -146,7 +146,7 @@ int setupmouse(void);
 void readmousexy(short *x, short *y);
 void readmousebstatus(short *bstatus);
 void __interrupt __far keyhandler(void);
-unsigned char _readlastkeyhit(void);
+uint8_t  _readlastkeyhit(void);
 
 /* timer krap. */
 int inittimer(int);

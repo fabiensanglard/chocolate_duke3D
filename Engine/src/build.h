@@ -70,11 +70,11 @@ typedef struct
 	short ceilingstat, floorstat;
 	short ceilingpicnum, ceilingheinum;
 	signed char ceilingshade;
-	unsigned char ceilingpal, ceilingxpanning, ceilingypanning;
+	uint8_t  ceilingpal, ceilingxpanning, ceilingypanning;
 	short floorpicnum, floorheinum;
 	signed char floorshade;
-	unsigned char floorpal, floorxpanning, floorypanning;
-	unsigned char visibility, filler;
+	uint8_t  floorpal, floorxpanning, floorypanning;
+	uint8_t  visibility, filler;
 	short lotag, hitag, extra;
 } sectortype;
 
@@ -128,8 +128,8 @@ typedef struct
 	int32_t x, y, z;
 	short cstat, picnum;
 	signed char shade;
-	unsigned char pal, clipdist, filler;
-	unsigned char xrepeat, yrepeat;
+	uint8_t  pal, clipdist, filler;
+	uint8_t  xrepeat, yrepeat;
 	signed char xoffset, yoffset;
 	short sectnum, statnum;
 	short ang, owner, xvel, yvel, zvel;
@@ -163,7 +163,7 @@ EXTERN short numsectors, numwalls;
 EXTERN volatile int32_t totalclock;
 EXTERN int32_t numframes, randomseed;
 EXTERN short sintable[2048];
-EXTERN unsigned char palette[768];
+EXTERN uint8_t  palette[768];
 EXTERN short numpalookups;
 EXTERN char *palookup[MAXPALOOKUPS];
 EXTERN char parallaxtype, showinvisibility;

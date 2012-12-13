@@ -54,9 +54,9 @@ void hlineasm4(int32_t _count, uint32_t unused_source, int32_t _shade, uint32_t 
     uint32_t source;
     int32_t shade = _shade & 0xffffff00;
     int32_t count = _count + 1;
-    register unsigned char bits = machxbits_bl;
-    register unsigned char *lookup = (uint8_t *) machxbits_ecx;
-    register unsigned char *pal = (uint8_t *) pal_eax;
+    register uint8_t  bits = machxbits_bl;
+    register uint8_t  *lookup = (uint8_t *) machxbits_ecx;
+    register uint8_t  *pal = (uint8_t *) pal_eax;
     int32_t _asm1 = asm1;
     int32_t _asm2 = asm2;
 
@@ -146,8 +146,8 @@ void rmhlineasm4(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int
 	    else i2 -= rmmach_ecx;
 	    ebp &= rmmach_esi;
 	    if ((i3&0xff) != 255) {
-		    i1 = ((i1&0xffffff00)|(((unsigned char *)i3)[rmmach_edx]));
-		    ((unsigned char *)rmach6b)[i6] = (i1&0xff);
+		    i1 = ((i1&0xffffff00)|(((uint8_t  *)i3)[rmmach_edx]));
+		    ((uint8_t  *)rmach6b)[i6] = (i1&0xff);
 	    }
 	    i2 -= ebp;
 	    i6--;
@@ -185,13 +185,13 @@ void fixtransluscence(int32_t i1)
 int32_t vlineasm1(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6);
 
 /* #pragma aux prevlineasm1 parm [eax][ebx][ecx][edx][esi][edi] */
-static unsigned char mach3_al;
+static uint8_t  mach3_al;
 
 //FCS:  RENDER TOP AND BOTTOM COLUMN
 int32_t prevlineasm1(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6)
 {
-    unsigned char *source = (unsigned char *)i5;
-    unsigned char *dest = (unsigned char *)i6;
+    uint8_t  *source = (uint8_t  *)i5;
+    uint8_t  *dest = (uint8_t  *)i6;
 
 	
 
@@ -205,7 +205,7 @@ int32_t prevlineasm1(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5,
         //((uint32_t)i4) >>= mach3_al;
         i4 = ((uint32_t)i4) >> mach3_al;
 	    i4 = (i4&0xffffff00) | (source[i4]&0xff);
-	    *dest = ((unsigned char*)i2)[i4];
+	    *dest = ((uint8_t *)i2)[i4];
 	    return i1;
     } else {
 	    return vlineasm1(i1,i2,i3,i4,i5,i6);
@@ -213,14 +213,14 @@ int32_t prevlineasm1(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5,
 } /* prevlineasm1 */
 
 //FCS:Debug
-//extern unsigned char * get_framebuffer(void);
+//extern uint8_t  * get_framebuffer(void);
 
 /* #pragma aux vlineasm1 parm [eax][ebx][ecx][edx][esi][edi] */
 //FCS: This is used to draw wall border vertical lines
 int32_t vlineasm1(int32_t vince, int32_t palookupoffse, int32_t i3, int32_t vplce, int32_t bufplce, int32_t i6)
 {
     uint32_t temp;
-    unsigned char *dest = (unsigned char *)i6;
+    uint8_t  *dest = (uint8_t  *)i6;
 
     if (!RENDER_DRAW_WALL_BORDERS)
 		return vplce;
@@ -230,9 +230,9 @@ int32_t vlineasm1(int32_t vince, int32_t palookupoffse, int32_t i3, int32_t vplc
     {
 	    temp = ((unsigned)vplce) >> mach3_al;
         
-	    temp = ((unsigned char *)bufplce)[temp];
+	    temp = ((uint8_t  *)bufplce)[temp];
       
-        *dest = ((unsigned char*)palookupoffse)[temp];
+        *dest = ((uint8_t *)palookupoffse)[temp];
 	    vplce += vince;
 	    dest += fixchain;
 	    i3--;
@@ -241,7 +241,7 @@ int32_t vlineasm1(int32_t vince, int32_t palookupoffse, int32_t i3, int32_t vplc
 } /* vlineasm1 */
 
 /* #pragma aux setuptvlineasm parm [eax] */
-static unsigned char transmach3_al = 32;
+static uint8_t  transmach3_al = 32;
 void setuptvlineasm(int32_t i1)
 {
     transmach3_al = (i1 & 0x1f);
@@ -251,8 +251,8 @@ void setuptvlineasm(int32_t i1)
 static int transrev = 0;
 int32_t tvlineasm1(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6)
 {
-	unsigned char *source = (unsigned char *)i5;
-	unsigned char *dest = (unsigned char *)i6;
+	uint8_t  *source = (uint8_t  *)i5;
+	uint8_t  *dest = (uint8_t  *)i6;
 
 	i3++;
 	while (i3)
@@ -263,10 +263,10 @@ int32_t tvlineasm1(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, i
 		if (temp != 255)
 		{
 			unsigned short val;
-			val = ((unsigned char *)i2)[temp];
+			val = ((uint8_t  *)i2)[temp];
 			val |= ((*dest)<<8);
 			if (transrev) val = ((val>>8)|(val<<8));
-			*dest = ((unsigned char *)tmach)[val];
+			*dest = ((uint8_t  *)tmach)[val];
 		}
 		i4 += i1;
 		dest += fixchain;
@@ -276,7 +276,7 @@ int32_t tvlineasm1(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, i
 } /* tvlineasm1 */
 
 /* #pragma aux setuptvlineasm2 parm [eax][ebx][ecx] */
-static unsigned char tran2shr;
+static uint8_t  tran2shr;
 static uint32_t tran2pal_ebx;
 static uint32_t tran2pal_ecx;
 void setuptvlineasm2(int32_t i1, int32_t i2, int32_t i3)
@@ -304,37 +304,37 @@ void tvlineasm2(uint32_t i1, uint32_t i2, uint32_t i3, uint32_t i4, uint32_t i5,
 		i2 = ebp >> tran2shr;
 		i5 += tran2inca;
 		ebp += tran2incb;
-		i3 = ((unsigned char *)tran2bufa)[i1];
-		i4 = ((unsigned char *)tran2bufb)[i2];
+		i3 = ((uint8_t  *)tran2bufa)[i1];
+		i4 = ((uint8_t  *)tran2bufb)[i2];
 		if (i3 == 255) { // skipdraw1
 			if (i4 != 255) { // skipdraw3
 				unsigned short val;
-				val = ((unsigned char *)tran2pal_ecx)[i4];
-				val |= (((unsigned char *)i6)[tran2edi1]<<8);
+				val = ((uint8_t  *)tran2pal_ecx)[i4];
+				val |= (((uint8_t  *)i6)[tran2edi1]<<8);
 				if (transrev) val = ((val>>8)|(val<<8));
-				((unsigned char *)i6)[tran2edi1] =
-					((unsigned char *)tmach)[val];
+				((uint8_t  *)i6)[tran2edi1] =
+					((uint8_t  *)tmach)[val];
 			}
 		} else if (i4 == 255) { // skipdraw2
 			unsigned short val;
-			val = ((unsigned char *)tran2pal_ebx)[i3];
-			val |= (((unsigned char *)i6)[tran2edi]<<8);
+			val = ((uint8_t  *)tran2pal_ebx)[i3];
+			val |= (((uint8_t  *)i6)[tran2edi]<<8);
 			if (transrev) val = ((val>>8)|(val<<8));
-			((unsigned char *)i6)[tran2edi] =
-				((unsigned char *)tmach)[val];
+			((uint8_t  *)i6)[tran2edi] =
+				((uint8_t  *)tmach)[val];
 		} else {
-			unsigned short l = ((unsigned char *)i6)[tran2edi]<<8;
-			unsigned short r = ((unsigned char *)i6)[tran2edi1]<<8;
-			l |= ((unsigned char *)tran2pal_ebx)[i3];
-			r |= ((unsigned char *)tran2pal_ecx)[i4];
+			unsigned short l = ((uint8_t  *)i6)[tran2edi]<<8;
+			unsigned short r = ((uint8_t  *)i6)[tran2edi1]<<8;
+			l |= ((uint8_t  *)tran2pal_ebx)[i3];
+			r |= ((uint8_t  *)tran2pal_ecx)[i4];
 			if (transrev) {
 				l = ((l>>8)|(l<<8));
 				r = ((r>>8)|(r<<8));
 			}
-			((unsigned char *)i6)[tran2edi] =
-				((unsigned char *)tmach)[l];
-			((unsigned char *)i6)[tran2edi1] =
-				((unsigned char *)tmach)[r];
+			((uint8_t  *)i6)[tran2edi] =
+				((uint8_t  *)tmach)[l];
+			((uint8_t  *)i6)[tran2edi1] =
+				((uint8_t  *)tmach)[r];
 		}
 		i6 += fixchain;
 	} while (i6 > i6 - fixchain);
@@ -344,18 +344,18 @@ void tvlineasm2(uint32_t i1, uint32_t i2, uint32_t i3, uint32_t i4, uint32_t i5,
 
 
 /* #pragma aux mvlineasm1 parm [eax][ebx][ecx][edx][esi][edi] */
-static unsigned char machmv;
+static uint8_t  machmv;
 int32_t mvlineasm1(int32_t vince, int32_t palookupoffse, int32_t i3, int32_t vplce, int32_t bufplce, int32_t i6)
 {
     uint32_t temp;
-    unsigned char *dest = (unsigned char *)i6;
+    uint8_t  *dest = (uint8_t  *)i6;
 
 	// FIX_00087: 1024x768 mode being slow. Undone FIX_00070 and fixed font issue again
     for(;i3>=0;i3--)
     {
 	    temp = ((unsigned)vplce) >> machmv;
-	    temp = ((unsigned char *)bufplce)[temp];
-	    if (temp != 255) *dest = ((unsigned char*)palookupoffse)[temp];
+	    temp = ((uint8_t  *)bufplce)[temp];
+	    if (temp != 255) *dest = ((uint8_t *)palookupoffse)[temp];
 	    vplce += vince;
 	    dest += fixchain;
     }
@@ -381,7 +381,7 @@ static void vlineasm4_altivec(int32_t i1, int32_t i2)
 
     uint32_t temp[4];
     uint32_t index = (i2 + ylookup[i1]);
-    unsigned char *dest = (unsigned char*)(-ylookup[i1]);
+    uint8_t  *dest = (uint8_t *)(-ylookup[i1]);
 
     uint32_t vec_temp;
     int32_t vec_vplce;
@@ -389,10 +389,10 @@ static void vlineasm4_altivec(int32_t i1, int32_t i2)
     int32_t vec_bufplce;
     uint32_t vec_shifter;
 
-    unsigned char *pal0 = (unsigned char *) palookupoffse[0];
-    unsigned char *pal1 = (unsigned char *) palookupoffse[1];
-    unsigned char *pal2 = (unsigned char *) palookupoffse[2];
-    unsigned char *pal3 = (unsigned char *) palookupoffse[3];
+    uint8_t  *pal0 = (uint8_t  *) palookupoffse[0];
+    uint8_t  *pal1 = (uint8_t  *) palookupoffse[1];
+    uint8_t  *pal2 = (uint8_t  *) palookupoffse[2];
+    uint8_t  *pal3 = (uint8_t  *) palookupoffse[3];
 
     vec_shifter = vec_ld(0, mach_array);
     vec_vplce = vec_ld(0, vplce);
@@ -404,10 +404,10 @@ static void vlineasm4_altivec(int32_t i1, int32_t i2)
         vec_temp = ( uint32_t) vec_add(vec_bufplce, (vector signed int) vec_temp);
         vec_st(vec_temp, 0x00, temp);
         vec_vplce = vec_add(vec_vplce, vec_vince);
-	    dest[index] = pal0[*((unsigned char *) temp[0])];
-	    dest[index+1] = pal1[*((unsigned char *) temp[1])];
-	    dest[index+2] = pal2[*((unsigned char *) temp[2])];
-	    dest[index+3] = pal3[*((unsigned char *) temp[3])];
+	    dest[index] = pal0[*((uint8_t  *) temp[0])];
+	    dest[index+1] = pal1[*((uint8_t  *) temp[1])];
+	    dest[index+2] = pal2[*((uint8_t  *) temp[2])];
+	    dest[index+3] = pal3[*((uint8_t  *) temp[3])];
         dest += fixchain;
     } while (((unsigned)dest - fixchain) < ((unsigned)dest));
 
@@ -433,13 +433,13 @@ void vlineasm4(int32_t i1, int32_t i2)
         int i;
         uint32_t temp;
         uint32_t index = (i2 + ylookup[i1]);
-        unsigned char *dest = (unsigned char*)(-ylookup[i1]);
+        uint8_t  *dest = (uint8_t *)(-ylookup[i1]);
         do {
             for (i = 0; i < 4; i++)
             {
         	    temp = ((unsigned)vplce[i]) >> mach3_al;
-        	    temp = (((unsigned char*)(bufplce[i]))[temp]);
-        	    dest[index+i] = ((unsigned char*)(palookupoffse[i]))[temp];
+        	    temp = (((uint8_t *)(bufplce[i]))[temp]);
+        	    dest[index+i] = ((uint8_t *)(palookupoffse[i]))[temp];
 	            vplce[i] += vince[i];
             }
             dest += fixchain;
@@ -459,15 +459,15 @@ void mvlineasm4(int32_t i1, int32_t i2)
     int i;
     uint32_t temp;
     uint32_t index = (i2 + ylookup[i1]);
-    unsigned char *dest = (unsigned char*)(-ylookup[i1]);
+    uint8_t  *dest = (uint8_t *)(-ylookup[i1]);
 
     do {
         for (i = 0; i < 4; i++)
         {
 	    temp = ((unsigned)vplce[i]) >> machmv;
-	    temp = (((unsigned char*)(bufplce[i]))[temp]);
+	    temp = (((uint8_t *)(bufplce[i]))[temp]);
 	    if (temp != 255)
-		    dest[index+i] = ((unsigned char*)(palookupoffse[i]))[temp];
+		    dest[index+i] = ((uint8_t *)(palookupoffse[i]))[temp];
 	    vplce[i] += vince[i];
         }
         dest += fixchain;
@@ -492,8 +492,8 @@ void setupspritevline(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5
 /* #pragma aux spritevline parm [eax][ebx][ecx][edx][esi][edi] */
 void spritevline(int32_t i1, uint32_t i2, int32_t i3, uint32_t i4, int32_t i5, int32_t i6)
 {
-    unsigned char *source = (unsigned char *)i5;
-    unsigned char *dest = (unsigned char *)i6;
+    uint8_t  *source = (uint8_t  *)i5;
+    uint8_t  *dest = (uint8_t  *)i6;
 
 dumblabel1:
     i2 += smach_eax;
@@ -501,7 +501,7 @@ dumblabel1:
     if ((i2 - smach_eax) > i2) source += smach2_eax + 1;
     else source += smach2_eax;
 dumblabel2:
-    i1 = (i1&0xffffff00) | (((unsigned char *)spal_eax)[i1]&0xff);
+    i1 = (i1&0xffffff00) | (((uint8_t  *)spal_eax)[i1]&0xff);
     *dest = i1;
     dest += fixchain;
 
@@ -535,8 +535,8 @@ void msetupspritevline(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i
 /* #pragma aux mspritevline parm [eax][ebx][ecx][edx][esi][edi] */
 void mspritevline(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6)
 {
-    unsigned char *source = (unsigned char *)i5;
-    unsigned char *dest = (unsigned char *)i6;
+    uint8_t  *source = (uint8_t  *)i5;
+    uint8_t  *dest = (uint8_t  *)i6;
 
 msdumblabel1:
     i2 += smach_eax;
@@ -546,7 +546,7 @@ msdumblabel1:
 msdumblabel2:
     if ((i1&0xff) != 255)
     {
-	    i1 = (i1&0xffffff00) | (((unsigned char *)spal_eax)[i1]&0xff);
+	    i1 = (i1&0xffffff00) | (((uint8_t  *)spal_eax)[i1]&0xff);
 	    *dest = i1;
     }
     dest += fixchain;
@@ -589,7 +589,7 @@ void tspritevline(int32_t i1, int32_t i2, int32_t i3, uint32_t i4, int32_t i5, i
 			uint32_t adder = tsmach_eax2;
 			i4 += tsmach_ecx;
 			if (i4 < (i4 - tsmach_ecx)) adder = tsmach_eax3;
-			i1 = *((unsigned char *)i5);
+			i1 = *((uint8_t  *)i5);
 			i2 += tsmach_eax1;
 			if (i2 < (i2 - tsmach_eax1)) i5++;
 			i5 += adder;
@@ -597,11 +597,11 @@ void tspritevline(int32_t i1, int32_t i2, int32_t i3, uint32_t i4, int32_t i5, i
 			if (i1 != 0xff)
 			{
 				unsigned short val;
-				val = ((unsigned char*)tspal)[i1];
-				val |= ((*((unsigned char *)i6))<<8);
+				val = ((uint8_t *)tspal)[i1];
+				val |= ((*((uint8_t  *)i6))<<8);
 				if (transrev) val = ((val>>8)|(val<<8));
-				i1 = ((unsigned char *)tmach)[val];
-				*((unsigned char *)i6) = (i1&0xff);
+				i1 = ((uint8_t  *)tmach)[val];
+				*((uint8_t  *)i6) = (i1&0xff);
 			}
 			i6 += fixchain;
 		}
@@ -624,8 +624,8 @@ void mhline(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t 
 } /* mhline */
 
 /* #pragma aux mhlineskipmodify parm [eax][ebx][ecx][edx][esi][edi] */
-static unsigned char mshift_al = 26;
-static unsigned char mshift_bl = 6;
+static uint8_t  mshift_al = 26;
+static uint8_t  mshift_bl = 6;
 void mhlineskipmodify(int32_t i1, uint32_t i2, uint32_t i3, int32_t i4, int32_t i5, int32_t i6)
 {
     uint32_t ebx;
@@ -634,9 +634,9 @@ void mhlineskipmodify(int32_t i1, uint32_t i2, uint32_t i3, int32_t i4, int32_t 
     {
 	    ebx = i2 >> mshift_al;
 	    ebx = shld (ebx, (unsigned)i5, mshift_bl);
-	    i1 = ((unsigned char *)mmach_eax)[ebx];
+	    i1 = ((uint8_t  *)mmach_eax)[ebx];
 	    if ((i1&0xff) != 0xff)
-		    *((unsigned char *)i6) = (((unsigned char*)mmach_asm3)[i1]);
+		    *((uint8_t  *)i6) = (((uint8_t *)mmach_asm3)[i1]);
 
 	    i2 += mmach_asm1;
 	    i5 += mmach_asm2;
@@ -669,8 +669,8 @@ void thline(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t 
 } /* thline */
 
 /* #pragma aux thlineskipmodify parm [eax][ebx][ecx][edx][esi][edi] */
-static unsigned char tshift_al = 26;
-static unsigned char tshift_bl = 6;
+static uint8_t  tshift_al = 26;
+static uint8_t  tshift_bl = 6;
 void thlineskipmodify(int32_t i1, uint32_t i2, uint32_t i3, int32_t i4, int32_t i5, int32_t i6)
 {
     uint32_t ebx;
@@ -679,13 +679,13 @@ void thlineskipmodify(int32_t i1, uint32_t i2, uint32_t i3, int32_t i4, int32_t 
     {
 	    ebx = i2 >> tshift_al;
 	    ebx = shld (ebx, (unsigned)i5, tshift_bl);
-	    i1 = ((unsigned char *)tmach_eax)[ebx];
+	    i1 = ((uint8_t  *)tmach_eax)[ebx];
 	    if ((i1&0xff) != 0xff)
 	    {
-		    unsigned short val = (((unsigned char*)tmach_asm3)[i1]);
-		    val |= (*((unsigned char *)i6)<<8);
+		    unsigned short val = (((uint8_t *)tmach_asm3)[i1]);
+		    val |= (*((uint8_t  *)i6)<<8);
 		    if (transrev) val = ((val>>8)|(val<<8));
-		    *((unsigned char *)i6) = (((unsigned char*)tmach)[val]);
+		    *((uint8_t  *)i6) = (((uint8_t *)tmach)[val]);
 	    }
 
 	    i2 += tmach_asm1;
@@ -707,8 +707,8 @@ void tsethlineshift(int32_t i1, int32_t i2)
 static int32_t slopemach_ebx;
 static int32_t slopemach_ecx;
 static int32_t slopemach_edx;
-static unsigned char slopemach_ah1;
-static unsigned char slopemach_ah2;
+static uint8_t  slopemach_ah1;
+static uint8_t  slopemach_ah2;
 static float asm2_f;
 typedef union { unsigned int i; float f; } bitwisef2i;
 void setupslopevlin(int32_t i1, int32_t i2, int32_t i3)
@@ -750,7 +750,7 @@ void slopevlin(int32_t i1, uint32_t i2, int32_t i3, int32_t i4, int32_t i5, int3
 	    // All this is calculating a fixed point approx. of 1/a
 	    c.f = a;
 	    fpuasm = eax = c.i;
-	    edx = (((long)eax) < 0) ? 0xffffffff : 0;
+	    edx = (((int32_t)eax) < 0) ? 0xffffffff : 0;
 	    eax = eax << 1;
 	    ecx = (eax>>24);	//  exponent
 	    eax = ((eax&0xffe000)>>11);
@@ -780,18 +780,18 @@ void slopevlin(int32_t i1, uint32_t i2, int32_t i3, int32_t i4, int32_t i5, int3
 		    ebx &= slopemach_edx;
 		    edi += eax;
 		    i1 += slopemach_ecx;
-		    edx = ((edx&0xffffff00)|((((unsigned char *)(ebx+edx))[slopemach_ebx])));
+		    edx = ((edx&0xffffff00)|((((uint8_t  *)(ebx+edx))[slopemach_ebx])));
 		    ebx = *((uint32_t*)i3); // register trickery
 		    i3 -= 4;
-		    eax = ((eax&0xffffff00)|(*((unsigned char *)(ebx+edx))));
+		    eax = ((eax&0xffffff00)|(*((uint8_t  *)(ebx+edx))));
 		    ebx = esi;
-		    *((unsigned char *)i1) = (eax&0xff);
+		    *((uint8_t  *)i1) = (eax&0xff);
 		    edx = edi;
 		    ecx = ((ecx&0xffffff00)|((ecx-1)&0xff));
 	    }
 	    ebx = asm4;
 	    ebx -= 8;	// BITSOFPRECISIONPOW
-    } while ((long)ebx > 0);
+    } while ((int32_t)ebx > 0);
 } /* slopevlin */
 
 /* #pragma aux settransnormal parm */

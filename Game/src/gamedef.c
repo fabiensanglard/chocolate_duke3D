@@ -757,7 +757,7 @@ char parsecommand(int readfromGRP)
 
 				kread(fp,(char *)textptr,j);
 				kclose(fp);
-				ud.conCRC[0] = crc32_update((unsigned char *)textptr, j, ud.conCRC[0]);
+				ud.conCRC[0] = crc32_update((uint8_t  *)textptr, j, ud.conCRC[0]);
 
 				do
 					done = parsecommand(readfromGRP);
@@ -1574,7 +1574,7 @@ void loadefs(char *filenam, char *mptr, int readfromGRP)
         kread(fp,(char *)textptr,fs);
         kclose(fp);
 		ud.conCRC[0]=0;
-		ud.conCRC[0] = crc32_update((unsigned char *)textptr, fs, ud.conCRC[0]);
+		ud.conCRC[0] = crc32_update((uint8_t  *)textptr, fs, ud.conCRC[0]);
     }
 
 #ifdef PLATFORM_UNIX
