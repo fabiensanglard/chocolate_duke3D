@@ -2485,13 +2485,14 @@ void uninitkeys(void)
 
 #if PLATFORM_WIN32
 
-int TIMER_GetPlatformTicksInOneSecond(int64_t* t);
+int TIMER_GetPlatformTicksInOneSecond(int64_t* t)
 {
     QueryPerformanceFrequency((LARGE_INTEGER*)t);
     return 1;
 }
 
-void TIMER_GetPlatformTicks(int64_t* t){
+void TIMER_GetPlatformTicks(int64_t* t)
+{
     QueryPerformanceCounter((LARGE_INTEGER*)t);
 }
 #else

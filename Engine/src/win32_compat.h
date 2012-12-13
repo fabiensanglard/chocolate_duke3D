@@ -129,6 +129,8 @@ int _kinp_handler(int port, char *source_file, int source_line);
 #define S_IRDWR _S_IRDWR
 #endif /* defined _MSC_VER */
 
+#define snprintf _snprintf
+
 #endif
 
 /* end of win32_compat.h ... */

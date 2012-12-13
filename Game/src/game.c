@@ -8063,7 +8063,10 @@ void findGRPToUse(char* game_dir,char* baseDir,char* groupfilefullpath)
 {
     WIN32_FIND_DATA FindFileData;
 	HANDLE hFind =  INVALID_HANDLE_VALUE;
-    
+    int i=0,kbdKey ;
+	char groupfile[9][512];
+	int grpID ;
+
 	if(game_dir[0] != '\0')
 	{
 		sprintf(groupfilefullpath, "%s\\%s", game_dir, baseDir);
@@ -8078,11 +8081,11 @@ void findGRPToUse(char* game_dir,char* baseDir,char* groupfilefullpath)
 	else
 		sprintf(groupfilefullpath, "%s", baseDir);
     
-	printf("Searching duke3d*.grp:\n\n");
+	printf("Searching '%d':\n\n",groupfilefullpath);
 	hFind = FindFirstFile(groupfilefullpath,&FindFileData);
     
 	if ( hFind==INVALID_HANDLE_VALUE )
-		Error(EXIT_SUCCESS, "Can't find %s\n", groupfilefullpath);
+		Error(EXIT_SUCCESS, "Can't find '%s'\n", groupfilefullpath);
     
 	do
 	{
@@ -8092,7 +8095,7 @@ void findGRPToUse(char* game_dir,char* baseDir,char* groupfilefullpath)
 	} while ( FindNextFile(hFind, &FindFileData) && i < 9 );
     
 	if(i==1)
-		sprintf(groupfilefullpath, "%s", groupfile[0]);
+		grpID = 0;
 	else
 	{
 		printf("\n-> Choose a base GRP file from 1 to %c: ",'0' + i);
@@ -8100,10 +8103,15 @@ void findGRPToUse(char* game_dir,char* baseDir,char* groupfilefullpath)
 			kbdKey = getch();
 		while(kbdKey < '1' || kbdKey > ('0' + i));
 		printf("%c\n", kbdKey);
-		sprintf(groupfilefullpath, "%s", groupfile[kbdKey-'1']);
+		grpID =  groupfile[kbdKey-'1'];
+		
 	}
 	
-	FindClose(hFind);sprintf(groupfilefullpath, "%s\\%s", game_dir, grpName);
+	FindClose(hFind);
+	if (strlen(game_dir) == 0)
+		 sprintf(groupfilefullpath, "./%s", groupfile[grpID]);
+	else
+	   sprintf(groupfilefullpath, "%s//%s", game_dir, groupfile[grpID]);
 }
 
 #else
@@ -8121,12 +8129,12 @@ void findGRPToUse(char* game_dir,char* baseDir,char* groupfilefullpath){
 static int load_duke3d_groupfile(void)
 {
 	// FIX_00032: Added multi base GRP manager. Use duke3d*.grp to handle multiple grp.
-    char groupfile[9][512];
+    
 	char groupfilefullpath[512];
-	int kbdKey, i = 0;
+	int i = 0;
 
 	char *baseDir="duke3d*.grp";
-    
+	//char *baseDir="DUKE3D.GRP";
     
     findGRPToUse(game_dir,baseDir,groupfilefullpath);
 	

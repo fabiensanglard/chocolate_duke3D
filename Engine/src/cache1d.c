@@ -362,6 +362,8 @@ long initgroupfile(const char *filename)
     else
     {
         printf("Unable to find GRP file %s.\n",filename);
+		//Let user see the message
+		getchar();
         exit(0);
     }
 
