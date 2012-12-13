@@ -18,10 +18,6 @@
 		2D7B62251678885A00E35E54 /* unix.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B620D1678885A00E35E54 /* unix.c */; };
 		2D7B62261678885A00E35E54 /* win32.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B620E1678885A00E35E54 /* win32.c */; };
 		2D7B62271678885A00E35E54 /* engine.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62101678885A00E35E54 /* engine.c */; };
-		2D7B62281678885A00E35E54 /* mmulti_stable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62131678885A00E35E54 /* mmulti_stable.cpp */; };
-		2D7B62291678885A00E35E54 /* mmulti.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62161678885A00E35E54 /* mmulti.c */; };
-		2D7B622A1678885A00E35E54 /* mmulti.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62171678885A00E35E54 /* mmulti.cpp */; };
-		2D7B622B1678885A00E35E54 /* multi.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62181678885A00E35E54 /* multi.c */; };
 		2D7B622C1678885A00E35E54 /* pragmas.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B621A1678885A00E35E54 /* pragmas.c */; };
 		2D7B622D1678885A00E35E54 /* sdl_driver.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B621C1678885A00E35E54 /* sdl_driver.c */; };
 		2D7B623616788ACE00E35E54 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D7B623416788AB200E35E54 /* Cocoa.framework */; };
@@ -47,6 +43,10 @@
 		2D7B627F16788F9B00E35E54 /* scriplib.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B626516788F9B00E35E54 /* scriplib.c */; };
 		2D7B628016788F9B00E35E54 /* sector.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B626716788F9B00E35E54 /* sector.c */; };
 		2D7B628116788F9B00E35E54 /* sounds.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B626A16788F9B00E35E54 /* sounds.c */; };
+		2D7B62FF16790E8100E35E54 /* dummy_audiolib.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62FE16790E8000E35E54 /* dummy_audiolib.c */; };
+		2D7B630116791C0300E35E54 /* dummy_multi.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B630016791C0200E35E54 /* dummy_multi.c */; };
+		2D7B7AEE16792D6700DB503A /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B7AED16792D6700DB503A /* SDLMain.m */; };
+		2D7B7B121679325D00DB503A /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D7B7B111679325D00DB503A /* CoreFoundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -95,12 +95,6 @@
 		2D7B62101678885A00E35E54 /* engine.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = engine.c; path = ../../Engine/src/engine.c; sourceTree = "<group>"; };
 		2D7B62111678885A00E35E54 /* engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = engine.h; path = ../../Engine/src/engine.h; sourceTree = "<group>"; };
 		2D7B62121678885A00E35E54 /* icon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = icon.h; path = ../../Engine/src/icon.h; sourceTree = "<group>"; };
-		2D7B62131678885A00E35E54 /* mmulti_stable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mmulti_stable.cpp; path = ../../Engine/src/mmulti_stable.cpp; sourceTree = "<group>"; };
-		2D7B62141678885A00E35E54 /* mmulti_stable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mmulti_stable.h; path = ../../Engine/src/mmulti_stable.h; sourceTree = "<group>"; };
-		2D7B62151678885A00E35E54 /* mmulti_unstable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mmulti_unstable.h; path = ../../Engine/src/mmulti_unstable.h; sourceTree = "<group>"; };
-		2D7B62161678885A00E35E54 /* mmulti.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mmulti.c; path = ../../Engine/src/mmulti.c; sourceTree = "<group>"; };
-		2D7B62171678885A00E35E54 /* mmulti.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mmulti.cpp; path = ../../Engine/src/mmulti.cpp; sourceTree = "<group>"; };
-		2D7B62181678885A00E35E54 /* multi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = multi.c; path = ../../Engine/src/multi.c; sourceTree = "<group>"; };
 		2D7B62191678885A00E35E54 /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = platform.h; path = ../../Engine/src/platform.h; sourceTree = "<group>"; };
 		2D7B621A1678885A00E35E54 /* pragmas.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pragmas.c; path = ../../Engine/src/pragmas.c; sourceTree = "<group>"; };
 		2D7B621B1678885A00E35E54 /* pragmas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pragmas.h; path = ../../Engine/src/pragmas.h; sourceTree = "<group>"; };
@@ -162,6 +156,11 @@
 		2D7B626C16788F9B00E35E54 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = types.h; path = ../../Game/src/types.h; sourceTree = "<group>"; };
 		2D7B626D16788F9B00E35E54 /* util_lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = util_lib.h; path = ../../Game/src/util_lib.h; sourceTree = "<group>"; };
 		2D7B62FD167905C400E35E54 /* dukeunix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = dukeunix.h; path = ../../Game/src/dukeunix.h; sourceTree = "<group>"; };
+		2D7B62FE16790E8000E35E54 /* dummy_audiolib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = dummy_audiolib.c; path = ../../Game/src/dummy_audiolib.c; sourceTree = "<group>"; };
+		2D7B630016791C0200E35E54 /* dummy_multi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = dummy_multi.c; path = ../../Engine/src/dummy_multi.c; sourceTree = "<group>"; };
+		2D7B7AED16792D6700DB503A /* SDLMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDLMain.m; sourceTree = "<group>"; };
+		2D7B7AEF16792D8900DB503A /* SDLMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDLMain.h; sourceTree = "<group>"; };
+		2D7B7B111679325D00DB503A /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,6 +168,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D7B7B121679325D00DB503A /* CoreFoundation.framework in Frameworks */,
 				2D7B623816788AF800E35E54 /* SDL.framework in Frameworks */,
 				2D7B623716788AE200E35E54 /* SDL_mixer.framework in Frameworks */,
 				2D7B623616788ACE00E35E54 /* Cocoa.framework in Frameworks */,
@@ -181,6 +181,7 @@
 		2D7B61D3167886FB00E35E54 = {
 			isa = PBXGroup;
 			children = (
+				2D7B7B111679325D00DB503A /* CoreFoundation.framework */,
 				2D7B61E1167886FB00E35E54 /* Duke3D */,
 				2D7B61DF167886FB00E35E54 /* Products */,
 			);
@@ -202,6 +203,8 @@
 				2D7B623216788AAB00E35E54 /* SDL_mixer.framework */,
 				2D7B623016788A9B00E35E54 /* SDL.framework */,
 				2D7B61F01678884400E35E54 /* Engine */,
+				2D7B7AED16792D6700DB503A /* SDLMain.m */,
+				2D7B7AEF16792D8900DB503A /* SDLMain.h */,
 			);
 			path = Duke3D;
 			sourceTree = "<group>";
@@ -220,18 +223,13 @@
 				2D7B62101678885A00E35E54 /* engine.c */,
 				2D7B62111678885A00E35E54 /* engine.h */,
 				2D7B62121678885A00E35E54 /* icon.h */,
-				2D7B62131678885A00E35E54 /* mmulti_stable.cpp */,
-				2D7B62141678885A00E35E54 /* mmulti_stable.h */,
-				2D7B62151678885A00E35E54 /* mmulti_unstable.h */,
-				2D7B62161678885A00E35E54 /* mmulti.c */,
-				2D7B62171678885A00E35E54 /* mmulti.cpp */,
-				2D7B62181678885A00E35E54 /* multi.c */,
 				2D7B62191678885A00E35E54 /* platform.h */,
 				2D7B621A1678885A00E35E54 /* pragmas.c */,
 				2D7B621B1678885A00E35E54 /* pragmas.h */,
 				2D7B621C1678885A00E35E54 /* sdl_driver.c */,
 				2D7B622E1678887600E35E54 /* win32_compat.h */,
 				2D7B622F1678895A00E35E54 /* macos_compat.h */,
+				2D7B630016791C0200E35E54 /* dummy_multi.c */,
 			);
 			name = Engine;
 			sourceTree = "<group>";
@@ -325,6 +323,7 @@
 				2D7B626C16788F9B00E35E54 /* types.h */,
 				2D7B626D16788F9B00E35E54 /* util_lib.h */,
 				2D7B62FD167905C400E35E54 /* dukeunix.h */,
+				2D7B62FE16790E8000E35E54 /* dummy_audiolib.c */,
 			);
 			name = Game;
 			sourceTree = "<group>";
@@ -404,10 +403,6 @@
 				2D7B62251678885A00E35E54 /* unix.c in Sources */,
 				2D7B62261678885A00E35E54 /* win32.c in Sources */,
 				2D7B62271678885A00E35E54 /* engine.c in Sources */,
-				2D7B62281678885A00E35E54 /* mmulti_stable.cpp in Sources */,
-				2D7B62291678885A00E35E54 /* mmulti.c in Sources */,
-				2D7B622A1678885A00E35E54 /* mmulti.cpp in Sources */,
-				2D7B622B1678885A00E35E54 /* multi.c in Sources */,
 				2D7B622C1678885A00E35E54 /* pragmas.c in Sources */,
 				2D7B622D1678885A00E35E54 /* sdl_driver.c in Sources */,
 				2D7B626E16788F9B00E35E54 /* actors.c in Sources */,
@@ -430,6 +425,9 @@
 				2D7B627F16788F9B00E35E54 /* scriplib.c in Sources */,
 				2D7B628016788F9B00E35E54 /* sector.c in Sources */,
 				2D7B628116788F9B00E35E54 /* sounds.c in Sources */,
+				2D7B62FF16790E8100E35E54 /* dummy_audiolib.c in Sources */,
+				2D7B630116791C0300E35E54 /* dummy_multi.c in Sources */,
+				2D7B7AEE16792D6700DB503A /* SDLMain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -440,7 +438,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
@@ -469,7 +467,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;

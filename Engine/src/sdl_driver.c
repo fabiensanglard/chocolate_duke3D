@@ -55,6 +55,28 @@ void (*genericmultifunction)(long other, char *bufptr, long messleng, long comma
 */
 /**/
 
+
+// NATIVE TIMER FUNCTION DECLARATION
+/*
+ FCS: The timer section sadly uses Native high precision calls to implement timer functions.
+ QueryPerformanceFrequency and QueryPerformanceCounter
+ it seems SDL precision was not good enough (or rather using unaccurate OS functions) to replicate
+ a DOS timer.
+ */
+
+int TIMER_GetPlatformTicksInOneSecond(int64_t* t);
+void TIMER_GetPlatformTicks(int64_t* t);
+
+//END // NATIVE TIMER FUNCTION DECLARATION
+
+
+
+
+// NETWORK STUFF
+#ifdef __APPLE__
+  #define USER_DUMMY_NETWORK 1
+#endif 
+
 void Setup_UnstableNetworking();
 void Setup_StableNetworking();
 
@@ -67,6 +89,7 @@ int nNetMode = 0;
 // This mess shouldn't even be in this file. /slap /slap
 void callcommit(void)
 {
+#ifndef USER_DUMMY_NETWORK
 	switch(nNetMode)
 	{
 	case 0:		
@@ -76,9 +99,11 @@ void callcommit(void)
 		stable_callcommit();
 		break;		
 	}
+#endif
 }
 void initcrc(void)
 {
+    #ifndef USER_DUMMY_NETWORK
 	switch(nNetMode)
 	{
 	case 0:	
@@ -88,9 +113,11 @@ void initcrc(void)
 		stable_initcrc();
 		break;
 	}
+#endif
 }
 long getcrc(char *buffer, short bufleng)
 {
+    #ifndef USER_DUMMY_NETWORK
 	switch(nNetMode)
 	{
 	case 0:
@@ -98,11 +125,12 @@ long getcrc(char *buffer, short bufleng)
 	case 1:
 		return stable_getcrc(buffer, bufleng);
 	}
-
+#endif
 	return 0;
 }
 void initmultiplayers(char damultioption, char dacomrateoption, char dapriority)
 {
+#ifndef USER_DUMMY_NETWORK
 	switch(nNetMode)
 	{
 	case 0:
@@ -112,9 +140,11 @@ void initmultiplayers(char damultioption, char dacomrateoption, char dapriority)
 		stable_initmultiplayers(damultioption, dacomrateoption, dapriority);
 		break;
 	}
+#endif
 }
 void sendpacket(long other, char *bufptr, long messleng)
 {
+#ifndef USER_DUMMY_NETWORK
 	switch(nNetMode)
 	{
 	case 0:
@@ -124,9 +154,11 @@ void sendpacket(long other, char *bufptr, long messleng)
 		stable_sendpacket(other, bufptr, messleng);
 		break;
 	}
+#endif
 }
 void setpackettimeout(long datimeoutcount, long daresendagaincount)
 {
+#ifndef USER_DUMMY_NETWORK
 	switch(nNetMode)
 	{
 	case 0:
@@ -136,10 +168,11 @@ void setpackettimeout(long datimeoutcount, long daresendagaincount)
 		stable_setpackettimeout(datimeoutcount, daresendagaincount);
 		break;
 	}
-
+#endif
 }
 void uninitmultiplayers(void)
 {
+    #ifndef USER_DUMMY_NETWORK
 	switch(nNetMode)
 	{
 	case 0:
@@ -149,9 +182,11 @@ void uninitmultiplayers(void)
 		stable_uninitmultiplayers();
 		break;
 	}
+#endif
 }
 void sendlogon(void)
 {
+    #ifndef USER_DUMMY_NETWORK
 	switch(nNetMode)
 	{
 	case 0:
@@ -161,9 +196,11 @@ void sendlogon(void)
 		unstable_sendlogon();
 		break;
 	}
+#endif
 }
 void sendlogoff(void)
 {
+    #ifndef USER_DUMMY_NETWORK
 	switch(nNetMode)
 	{
 	case 0:
@@ -173,9 +210,11 @@ void sendlogoff(void)
 		stable_sendlogoff();
 		break;
 	}
+#endif
 }
 int  getoutputcirclesize(void)
 {
+    #ifndef USER_DUMMY_NETWORK
 	switch(nNetMode)
 	{
 	case 0:
@@ -183,11 +222,12 @@ int  getoutputcirclesize(void)
 	case 1:
 		return stable_getoutputcirclesize();		
 	}
-
+#endif
 	return 0;
 }
 void setsocket(short newsocket)
 {
+    #ifndef USER_DUMMY_NETWORK
 	switch(nNetMode)
 	{
 	case 0:
@@ -197,9 +237,11 @@ void setsocket(short newsocket)
 		stable_setsocket(newsocket);
 		break;
 	}
+#endif
 }
 short getpacket(short *other, char *bufptr)
 {
+#ifndef USER_DUMMY_NETWORK
 	switch(nNetMode)
 	{
 	case 0:
@@ -207,11 +249,12 @@ short getpacket(short *other, char *bufptr)
 	case 1:
 		return stable_getpacket(other, bufptr);
 	}
-
+#endif
 	return 0;
 }
 void flushpackets(void)
 {
+    #ifndef USER_DUMMY_NETWORK
 	switch(nNetMode)
 	{
 	case 0:
@@ -221,9 +264,11 @@ void flushpackets(void)
 		stable_flushpackets();
 		break;
 	}
+#endif
 }
 void genericmultifunction(long other, char *bufptr, long messleng, long command)
 {
+    #ifndef USER_DUMMY_NETWORK
 	switch(nNetMode)
 	{
 	case 0:
@@ -233,6 +278,7 @@ void genericmultifunction(long other, char *bufptr, long messleng, long command)
 		stable_genericmultifunction(other, bufptr, messleng, command);
 		break;
 	}
+#endif
 }
 
 #if (defined USE_OPENGL)
@@ -451,7 +497,7 @@ static void output_driver_info(void)
 } /* output_driver_info */
 
 
-static Uint8 *get_framebuffer(void)
+Uint8 *get_framebuffer(void)
 {
     assert(renderer != RENDERER_OPENGL3D);
 
@@ -723,7 +769,7 @@ void fullscreen_toggle_and_change_driver(void)
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 	_platform_init(0, NULL, "Duke Nukem 3D", "Duke3D");
 	_setgamemode(ScreenMode,x,y);
-	vscrn();
+	//vscrn();
 
 	return;
 }
@@ -1047,25 +1093,13 @@ static char *string_dupe(const char *str)
 void set_sdl_renderer(void)
 {
     const char *envr = getenv(BUILD_RENDERER);
-
+    char buffer[256];
 #ifdef USE_OPENGL
     int need_opengl_lib = 0;
 #endif
 
     if ((envr == NULL) || (strcmp(envr, ENVRSTR_RENDERER_SOFTWARE) == 0))
         renderer = RENDERER_SOFTWARE;
-
-#ifdef USE_OPENGL
-#if 0
-    else if (strcmp(envr, ENVRSTR_RENDERER_OPENGL3D) == 0)
-    {
-        renderer = RENDERER_OPENGL3D;
-        need_opengl_lib = 1;
-    } /* else if */
-#endif
-
-#endif
-
     else
     {
         fprintf(stderr,
@@ -1074,7 +1108,11 @@ void set_sdl_renderer(void)
         _exit(1);
     } /* else */
 
-    if (SDL_Init(SDL_INIT_VIDEO |SDL_INIT_NOPARACHUTE) == -1)
+#ifdef __APPLE__
+    SDL_putenv("SDL_VIDEODRIVER=Quartz");
+#endif
+    
+    if (SDL_Init(SDL_INIT_VIDEO) == -1)
     {
 		Error(EXIT_FAILURE, "BUILDSDL: SDL_Init() failed!\n"
 							"BUILDSDL: SDL_GetError() says \"%s\".\n", SDL_GetError());
@@ -1164,7 +1202,7 @@ void _platform_init(int argc, char **argv, const char *title, const char *icon)
     _argv = argv;
 
 	// FIX_00061: "ERROR: Two players have the same random ID" too frequent cuz of internet windows times
-    QueryPerformanceCounter(&timeElapsed);
+    TIMER_GetPlatformTicks(&timeElapsed);
 	srand(timeElapsed&0xFFFFFFFF);
 
 	Setup_UnstableNetworking();
@@ -2276,15 +2314,7 @@ void limitrate(void)
 //  TIMER
 //=================================================================================================
 
-/*
- FCS: The timer section sadly uses Native high precision calls to implement timer functions.
- QueryPerformanceFrequency and QueryPerformanceCounter
- it seems SDL precision was not good enough (or rather using unaccurate OS functions) to replicate
- a DOS timer.
- */
 
-int TIMER_GetPlatformTicksInOneSecond(int64_t* t);
-void TIMER_GetPlatformTicks(int64_t* t);
 
 
 // FIX_00007: game speed corrected. The game speed is now as the real

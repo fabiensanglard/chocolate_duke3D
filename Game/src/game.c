@@ -26,6 +26,8 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 
 #ifdef _WIN32
   #include <windows.h>
+#elif defined(__APPLE__)
+  #include "SDL.h"
 #endif
 
 #include "types.h"
@@ -349,7 +351,14 @@ int minitextshade(int x,int y,char *str,char s,char p,char sb)
 void gamenumber(long x,long y,long n,char s)
 {
     char b[10];
-    ltoa(n,b,10);
+    
+    
+    //
+    // char * ltoa(long l, char * buffer, int radix);
+    // is NON-STANDARD and equivalent to STANDARD
+    // (void) sprintf(buffer, "%ld", l);
+    //ltoa(n,b,10);
+    sprintf(b,"%ld",n);
     gametext(x,y,b,s,2+8+16);
 }
 
@@ -1195,6 +1204,7 @@ void checksync(void)
           //printext256(4L,138L,31,0,"RUN DN3DHELP.EXE for information.",0);
           minitext(21,30+35+30, "Missed Network packet!", COLOR_ON,2+8+16);
       }
+ 
 }
 
 
@@ -1637,7 +1647,13 @@ void digitalnumber(long x,long y,long n,char s,char cs)
     short i, j, k, p, c;
     char b[10];
 
-    ltoa(n,b,10);
+    //
+    // char * ltoa(long l, char * buffer, int radix);
+    // is NON-STANDARD and equivalent to STANDARD
+    // (void) sprintf(buffer, "%ld", l);
+    //ltoa(n,b,10);
+    sprintf(b,"%ld",n);
+    
     i = strlen(b);
     j = 0;
 
@@ -8087,15 +8103,16 @@ void findGRPToUse(char* game_dir,char* baseDir,char* groupfilefullpath)
 		sprintf(groupfilefullpath, "%s", groupfile[kbdKey-'1']);
 	}
 	
-	FindClose(hFind);
+	FindClose(hFind);sprintf(groupfilefullpath, "%s\\%s", game_dir, grpName);
 }
 
 #else
 
 void findGRPToUse(char* game_dir,char* baseDir,char* groupfilefullpath){
     
-    char *grpName="DUKE3D.GRP";
-    sprintf(groupfilefullpath, "%s\\%s", game_dir, grpName);
+    //char *grpName="DUKE3D.GRP";
+    //sprintf(groupfilefullpath, "%s\\%s", game_dir, grpName);
+    sprintf(groupfilefullpath, "%s","/Users/fabiensanglard/Desktop/DUKE3D.GRP");
     printf("The ONLY GRP location for this port is '%s'.\n",groupfilefullpath);
 }
 
@@ -10723,7 +10740,7 @@ void takescreenshot(void)
 	char score[20];
 	time_t time4file;
 	struct tm *tmHMS;
-	
+    
 
 	// xduke: Build a nice name w/ date and players name if in multi mode.
 	time(&time4file);
@@ -10752,7 +10769,8 @@ void takescreenshot(void)
 			if(ud.m_coop==0 || ud.m_coop==2)  // if DM or DM No spawn. Add Score as well
 			{
 				strcat(tempbuf, "(");
-				strcat(tempbuf, itoa(ps[i].frag-ps[i].fraggedself, score, 10));
+                snprintf(ps[i].frag-ps[i].fraggedself, sizeof(ps[i].frag-ps[i].fraggedself), "%d", score);
+				strcat(tempbuf, ps[i].frag-ps[i].fraggedself);
 				strcat(tempbuf, ") vs ");
 			}
 			else

@@ -6,3 +6,4 @@ DerivedData
 .xcuserstate
 *.xcuserdatad
 .DS_Store
+xcshareddata

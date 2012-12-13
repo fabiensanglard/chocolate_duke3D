@@ -98,4 +98,6 @@ void _dos_getdate(struct dosdate_t *date);
 // Giving all access is ugly but it is just game OK !
 #define mkdir(X) mkdir(X,0777)
 
+#define getch getchar
+
 #endif

@@ -359,6 +359,11 @@ long initgroupfile(const char *filename)
 		}
 		gfileoffs[numgroupfiles][gnumfiles[numgroupfiles]] = j;
 	}
+    else
+    {
+        printf("Unable to find GRP file %s.\n",filename);
+        exit(0);
+    }
 
 	// Compute CRC32 of thw whole grp and implicitely caches the GRP in memory through windows
 	lseek(groupfil[numgroupfiles], 0, SEEK_SET);
@@ -722,6 +727,15 @@ long klseek(long handle, long offset, long whence)
 	return(-1);
 #endif
 }
+
+#ifdef __APPLE__
+long filelength(long fd)
+{
+    struct stat stats;
+    fstat(fd, &stats);
+    return stats.st_size;
+}
+#endif
 
 long kfilelength(long handle)
 {

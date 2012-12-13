@@ -65,7 +65,7 @@ int32 ReverseStereo;
 
 int32 ControllerType;
 int32 MouseAiming = 0;
-int32 BFullScreen = 1;
+int32 BFullScreen = 0;
 
 //
 // Screen variables

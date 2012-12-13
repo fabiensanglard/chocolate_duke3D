@@ -47,6 +47,12 @@
 #define IP_RECVERR  SO_BROADCAST
 
 #define stricmp strcasecmp
+#define strcmpi strcasecmp
 
+#include <assert.h>
+
+#include <sys/types.h>
+#include <sys/uio.h>
+#include <unistd.h>
 
 #endif

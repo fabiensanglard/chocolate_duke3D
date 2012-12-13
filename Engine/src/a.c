@@ -189,10 +189,12 @@ long prevlineasm1(long i1, long i2, long i3, long i4, long i5, long i6)
     {
 	    i1 += i4;
         
+        //FCS
         //((unsigned long)i4) >>= mach3_al;
-        unsigned long tmp = i4;
-	    tmp >>= mach3_al;
-        i4 = tmp;
+        i4 = ((unsigned long)i4) >> mach3_al;
+        //unsigned long tmp = i4;
+	    //tmp >>= mach3_al;
+        //i4 = tmp;
         
 	    i4 = (i4&0xffffff00) | (source[i4]&0xff);
 	    *dest = ((unsigned char*)i2)[i4];
@@ -202,18 +204,26 @@ long prevlineasm1(long i1, long i2, long i3, long i4, long i5, long i6)
     }
 } /* prevlineasm1 */
 
+//FCS:Debug
+//extern unsigned char * get_framebuffer(void);
+
 /* #pragma aux vlineasm1 parm [eax][ebx][ecx][edx][esi][edi] */
 long vlineasm1(long vince, long palookupoffse, long i3, long vplce, long bufplce, long i6)
 {
     unsigned long temp;
     unsigned char *dest = (unsigned char *)i6;
 
+    
     i3++;
     while (i3)
     {
 	    temp = ((unsigned)vplce) >> mach3_al;
+        
 	    temp = ((unsigned char *)bufplce)[temp];
-	    *dest = ((unsigned char*)palookupoffse)[temp];
+        //temp = ((unsigned int *)bufplce)[temp];
+        
+    //    if (dest < (get_framebuffer()+(640*480)))
+        *dest = ((unsigned char*)palookupoffse)[temp];
 	    vplce += vince;
 	    dest += fixchain;
 	    i3--;

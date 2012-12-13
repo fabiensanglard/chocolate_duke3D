@@ -1023,8 +1023,18 @@ static void wallscan(long x1, long x2,
 		palookupoffse[0] = fpalookup+(getpalookup((long)mulscale16(swal[x],globvis),globalshade)<<8);
 
 		bufplce[0] = lwal[x] + globalxpanning;
-		if (bufplce[0] >= tsizx) { if (xnice == 0) bufplce[0] %= tsizx; else bufplce[0] &= tsizx; }
-		if (ynice == 0) bufplce[0] *= tsizy; else bufplce[0] <<= tsizy;
+		if (bufplce[0] >= tsizx)
+        {
+            if (xnice == 0)
+                bufplce[0] %= tsizx;
+            else
+                bufplce[0] &= tsizx;
+        }
+        
+		if (ynice == 0)
+            bufplce[0] *= tsizy;
+        else
+            bufplce[0] <<= tsizy;
 
 		vince[0] = swal[x]*globalyscale;
 		vplce[0] = globalzd + vince[0]*(y1ve[0]-globalhoriz+1);
@@ -1038,7 +1048,12 @@ static void wallscan(long x1, long x2,
 		{
 			y1ve[z] = max(uwal[x+z],umost[x+z]);
 			y2ve[z] = min(dwal[x+z],dmost[x+z])-1;
-			if (y2ve[z] < y1ve[z]) { bad += pow2char[z]; continue; }
+            
+			if (y2ve[z] < y1ve[z])
+            {
+                bad += pow2char[z];
+                continue;
+            }
 
 			i = lwal[x+z] + globalxpanning;
 			if (i >= tsizx) { if (xnice == 0) i %= tsizx; else i &= tsizx; }
@@ -1048,6 +1063,7 @@ static void wallscan(long x1, long x2,
 			vince[z] = swal[x+z]*globalyscale;
 			vplce[z] = globalzd + vince[z]*(y1ve[z]-globalhoriz+1);
 		}
+        
 		if (bad == 15) continue;
 
 		palookupoffse[0] = fpalookup+(getpalookup((long)mulscale16(swal[x],globvis),globalshade)<<8);
