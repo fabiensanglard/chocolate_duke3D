@@ -303,14 +303,7 @@ const char *renderer_name[RENDERER_TOTAL];
 
 static sdl_renderer_type renderer = RENDERER_SOFTWARE;
 
-/* !!! ugh. Clean this up. */
-#if (!defined __WATCOMC__)
 #include "a.h"
-#else
-extern long setvlinebpl(long);
-#pragma aux setvlinebpl parm [eax];
-#endif  /* __WATCOMC__ */
-
 #include "cache1d.h"
 
 

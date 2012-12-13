@@ -651,7 +651,7 @@ void SafeWriteString (int handle, char * buffer)
 			Error (EXIT_FAILURE, "File write string failure writing %s\n",buffer);
 }
 
-void *SafeMalloc (long size)
+void *SafeMalloc (int32_t size)
 {
 	void *ptr;
 
@@ -770,7 +770,7 @@ short	KeepShort (short l)
 }
 
 
-long	SwapLong (long l)
+int32_t	SwapLong (int32_t l)
 {
 	byte	b1,b2,b3,b4;
 
@@ -782,7 +782,7 @@ long	SwapLong (long l)
 	return ((long)b1<<24) + ((long)b2<<16) + ((long)b3<<8) + b4;
 }
 
-long	KeepLong (long l)
+int32_t	KeepLong (int32_t l)
 {
 	return l;
 }

@@ -30,6 +30,8 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 //
 //***************************************************************************
 
+#include <inttypes.h>
+
 #ifndef _util_lib_public
 #define _util_lib_public
 #ifdef __cplusplus
@@ -56,8 +58,8 @@ int32  ParseHex (char *hex);
 int32  ParseNum (char *str);
 int16  MotoShort (int16 l);
 int16  IntelShort (int16 l);
-int32  MotoLong (int32 l);
-int32  IntelLong (int32 l);
+int32_t  MotoLong (int32_t l);
+int32_t  IntelLong (int32_t l);
 
 void HeapSort(char * base, int32 nel, int32 width, int32 (*compare)(), void (*switcher)());
 
