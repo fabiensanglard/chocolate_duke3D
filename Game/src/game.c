@@ -73,9 +73,9 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 #define TIMERUPDATESIZ 32
 
 int32_t cameradist = 0, cameraclock = 0;
-char eightytwofifty = 0;
-char playerswhenstarted;
-char qe,cp;
+uint8_t  eightytwofifty = 0;
+uint8_t  playerswhenstarted;
+uint8_t  qe,cp;
 
 uint8_t  nHostForceDisableAutoaim = 0;
 
@@ -89,9 +89,9 @@ int32 CommandMusicToggleOff = 0;
 // For addfaz's stun server. use /stun to activate
 unsigned short g_bStun = 0;
 
-char confilename[128] = {"GAME.CON"},boardfilename[128] = {0};
-char waterpal[768], slimepal[768], titlepal[768], drealms[768], endingpal[768];
-char firstdemofile[80] = { '\0' };
+uint8_t  confilename[128] = {"GAME.CON"},boardfilename[128] = {0};
+uint8_t  waterpal[768], slimepal[768], titlepal[768], drealms[768], endingpal[768];
+uint8_t  firstdemofile[80] = { '\0' };
 
 #define patchstatusbar(x1,y1,x2,y2)                                        \
 {                                                                          \
@@ -103,17 +103,17 @@ char firstdemofile[80] = { '\0' };
 void __interrupt __far newint24( int errval, int ax, int bp, int si );
 
 int recfilep,totalreccnt;
-char debug_on = 0,actor_tog = 0,*rtsptr,memorycheckoveride=0;
+uint8_t  debug_on = 0,actor_tog = 0,*rtsptr,memorycheckoveride=0;
 
 
 
-extern char syncstate;
+extern uint8_t  syncstate;
 extern int32 numlumps;
 
 FILE *frecfilep = (FILE *)NULL;
 void pitch_test( void );
 
-char restorepalette,screencapt,nomorelogohack;
+uint8_t  restorepalette,screencapt,nomorelogohack;
 int sendmessagecommand = -1;
 
 #if PLATFORM_DOS
@@ -149,10 +149,10 @@ void timerhandler(void)
 }
 #endif
 
-int gametext(int x,int y,char *t,char s,short dabits)
+int gametext(int x,int y,uint8_t  *t,uint8_t  s,short dabits)
 {
     short ac,newx;
-    char centre, *oldt;
+    uint8_t  centre, *oldt;
 
     centre = ( x == (320>>1) );
     newx = 0;
@@ -197,10 +197,10 @@ int gametext(int x,int y,char *t,char s,short dabits)
     return (x);
 }
 
-int gametextpal(int x,int y,char *t,char s,char p)
+int gametextpal(int x,int y,uint8_t  *t,uint8_t  s,uint8_t  p)
 {
     short ac,newx;
-    char centre, *oldt;
+    uint8_t  centre, *oldt;
 
     centre = ( x == (320>>1) );
     newx = 0;
@@ -244,10 +244,10 @@ int gametextpal(int x,int y,char *t,char s,char p)
     return (x);
 }
 
-int gametextpart(int x,int y,char *t,char s,short p)
+int gametextpart(int x,int y,uint8_t  *t,uint8_t  s,short p)
 {
     short ac,newx, cnt;
-    char centre, *oldt;
+    uint8_t  centre, *oldt;
 
     centre = ( x == (320>>1) );
     newx = 0;
@@ -300,11 +300,11 @@ int gametextpart(int x,int y,char *t,char s,short p)
     return (x);
 }
 
-int minitext(int x,int y,char *str,char p,char sb)
+int minitext(int x,int y,uint8_t  *str,uint8_t  p,uint8_t  sb)
 {
     short ac;
-    char buf[128];
-    char *t;
+    uint8_t  buf[128];
+    uint8_t  *t;
 
     strncpy (buf, str, 128);
     buf[127] = 0;
@@ -324,11 +324,11 @@ int minitext(int x,int y,char *str,char p,char sb)
     return (x);
 }
 
-int minitextshade(int x,int y,char *str,char s,char p,char sb)
+int minitextshade(int x,int y,uint8_t  *str,uint8_t  s,uint8_t  p,uint8_t  sb)
 {
     short ac;
-    char buf[128];
-    char *t;
+    uint8_t  buf[128];
+    uint8_t  *t;
 
     strncpy (buf, str, 128);
     buf[127] = 0;
@@ -348,13 +348,13 @@ int minitextshade(int x,int y,char *str,char s,char p,char sb)
     return (x);
 }
 
-void gamenumber(int32_t x,int32_t y,int32_t n,char s)
+void gamenumber(int32_t x,int32_t y,int32_t n,uint8_t  s)
 {
-    char b[10];
+    uint8_t  b[10];
     
     
     //
-    // char * ltoa(int32_t l, char * buffer, int radix);
+    // uint8_t  * ltoa(int32_t l, uint8_t  * buffer, int radix);
     // is NON-STANDARD and equivalent to STANDARD
     // (void) sprintf(buffer, "%ld", l);
     //ltoa(n,b,10);
@@ -363,7 +363,7 @@ void gamenumber(int32_t x,int32_t y,int32_t n,char s)
 }
 
 
-char recbuf[80];
+uint8_t  recbuf[80];
 void allowtimetocorrecterrorswhenquitting(void)
 {
      int32_t i, j, oldtotalclock;
@@ -389,10 +389,10 @@ void allowtimetocorrecterrorswhenquitting(void)
 #define MAXUSERQUOTES 4
 int32_t quotebot, quotebotgoal;
 short user_quote_time[MAXUSERQUOTES];
-char user_quote[MAXUSERQUOTES][128];
-// char typebuflen,typebuf[41];
+uint8_t  user_quote[MAXUSERQUOTES][128];
+// uint8_t  typebuflen,typebuf[41];
 
-static void adduserquote(char *daquote)
+static void adduserquote(uint8_t  *daquote)
 {
     int32_t i;
 
@@ -406,9 +406,9 @@ static void adduserquote(char *daquote)
     pub = NUMPAGES;
 }
 
-char *grpVersion2char_from_crc(unsigned int crc32_grp_to_identify)
+uint8_t  *grpVersion2char_from_crc(unsigned int crc32_grp_to_identify)
 {
-	char *id;
+	uint8_t  *id;
 	int i=0;
 
 	id = crc32lookup[MAX_KNOWN_GRP].name; // unknown version
@@ -422,9 +422,9 @@ char *grpVersion2char_from_crc(unsigned int crc32_grp_to_identify)
 	return(id);
 }
 
-char *grpVersion2char(uint8_t  grp_to_identify)
+uint8_t  *grpVersion2char(uint8_t  grp_to_identify)
 {
-	char *id;
+	uint8_t  *id;
 
 	switch(grp_to_identify)
 	{
@@ -504,7 +504,7 @@ void getpackets(void)
                     {
                         if (playerquitflag[i] == 0) continue;
                         if (i == myconnectindex)
-                            otherminlag = (long)((signed char)packbuf[j]);
+                            otherminlag = (long)((int8_t  )packbuf[j]);
                         j++;
                     }
 
@@ -525,12 +525,12 @@ void getpackets(void)
                     copybufbyte(&osyn[i],&nsyn[i],sizeof(input));
                     if (l&1)   nsyn[i].fvel = packbuf[j]+((short)packbuf[j+1]<<8), j += 2;
                     if (l&2)   nsyn[i].svel = packbuf[j]+((short)packbuf[j+1]<<8), j += 2;
-                    if (l&4)   nsyn[i].avel = (signed char)packbuf[j++];
+                    if (l&4)   nsyn[i].avel = (int8_t  )packbuf[j++];
                     if (l&8)   nsyn[i].bits = ((nsyn[i].bits&0xffffff00)|((long)packbuf[j++]));
                     if (l&16)  nsyn[i].bits = ((nsyn[i].bits&0xffff00ff)|((long)packbuf[j++])<<8);
                     if (l&32)  nsyn[i].bits = ((nsyn[i].bits&0xff00ffff)|((long)packbuf[j++])<<16);
                     if (l&64)  nsyn[i].bits = ((nsyn[i].bits&0x00ffffff)|((long)packbuf[j++])<<24);
-                    if (l&128) nsyn[i].horz = (signed char)packbuf[j++];
+                    if (l&128) nsyn[i].horz = (int8_t  )packbuf[j++];
 
                     if (nsyn[i].bits&(1<<26)) playerquitflag[i] = 0;
                     movefifoend[i]++;
@@ -567,12 +567,12 @@ void getpackets(void)
                 copybufbyte(&osyn[other],&nsyn[other],sizeof(input));
                 if (k&1)   nsyn[other].fvel = packbuf[j]+((short)packbuf[j+1]<<8), j += 2;
                 if (k&2)   nsyn[other].svel = packbuf[j]+((short)packbuf[j+1]<<8), j += 2;
-                if (k&4)   nsyn[other].avel = (signed char)packbuf[j++];
+                if (k&4)   nsyn[other].avel = (int8_t  )packbuf[j++];
                 if (k&8)   nsyn[other].bits = ((nsyn[other].bits&0xffffff00)|((long)packbuf[j++]));
                 if (k&16)  nsyn[other].bits = ((nsyn[other].bits&0xffff00ff)|((long)packbuf[j++])<<8);
                 if (k&32)  nsyn[other].bits = ((nsyn[other].bits&0xff00ffff)|((long)packbuf[j++])<<16);
                 if (k&64)  nsyn[other].bits = ((nsyn[other].bits&0x00ffffff)|((long)packbuf[j++])<<24);
-                if (k&128) nsyn[other].horz = (signed char)packbuf[j++];
+                if (k&128) nsyn[other].horz = (int8_t  )packbuf[j++];
                 movefifoend[other]++;
 
                 while (j != packbufleng)
@@ -651,7 +651,7 @@ void getpackets(void)
 
                 if (SoundToggle == 0 || ud.lockout == 1 || FXDevice == NumSoundCards)
                     break;
-                rtsptr = (char *)RTS_GetSound(packbuf[1]-1);
+                rtsptr = (uint8_t  *)RTS_GetSound(packbuf[1]-1);
                 if (*rtsptr == 'C')
                     FX_PlayVOC3D(rtsptr,0,0,0,255,-packbuf[1]);
                 else
@@ -696,7 +696,7 @@ void getpackets(void)
                         {
                             if (i == myconnectindex)
 							{
-								otherminlag = (long)((signed char)packbuf[j]);
+								otherminlag = (long)((int8_t  )packbuf[j]);
 							}
 							
                             j++;
@@ -709,12 +709,12 @@ void getpackets(void)
                 k = packbuf[j++];
                 if (k&1)   nsyn[other].fvel = packbuf[j]+((short)packbuf[j+1]<<8), j += 2;
                 if (k&2)   nsyn[other].svel = packbuf[j]+((short)packbuf[j+1]<<8), j += 2;
-                if (k&4)   nsyn[other].avel = (signed char)packbuf[j++];
+                if (k&4)   nsyn[other].avel = (int8_t  )packbuf[j++];
                 if (k&8)   nsyn[other].bits = ((nsyn[other].bits&0xffffff00)|((long)packbuf[j++]));
                 if (k&16)  nsyn[other].bits = ((nsyn[other].bits&0xffff00ff)|((long)packbuf[j++])<<8);
                 if (k&32)  nsyn[other].bits = ((nsyn[other].bits&0xff00ffff)|((long)packbuf[j++])<<16);
                 if (k&64)  nsyn[other].bits = ((nsyn[other].bits&0x00ffffff)|((long)packbuf[j++])<<24);
-                if (k&128) nsyn[other].horz = (signed char)packbuf[j++];
+                if (k&128) nsyn[other].horz = (int8_t  )packbuf[j++];
                 movefifoend[other]++;
 
                 for(i=1;i<movesperpacket;i++)
@@ -902,19 +902,19 @@ void faketimerhandler()
 
         if (nsyn[0].fvel != osyn[0].fvel)
         {
-            packbuf[j++] = (char)nsyn[0].fvel;
-            packbuf[j++] = (char)(nsyn[0].fvel>>8);
+            packbuf[j++] = (uint8_t )nsyn[0].fvel;
+            packbuf[j++] = (uint8_t )(nsyn[0].fvel>>8);
             packbuf[k] |= 1;
         }
         if (nsyn[0].svel != osyn[0].svel)
         {
-            packbuf[j++] = (char)nsyn[0].svel;
-            packbuf[j++] = (char)(nsyn[0].svel>>8);
+            packbuf[j++] = (uint8_t )nsyn[0].svel;
+            packbuf[j++] = (uint8_t )(nsyn[0].svel>>8);
             packbuf[k] |= 2;
         }
         if (nsyn[0].avel != osyn[0].avel)
         {
-            packbuf[j++] = (signed char)nsyn[0].avel;
+            packbuf[j++] = (int8_t  )nsyn[0].avel;
             packbuf[k] |= 4;
         }
         if ((nsyn[0].bits^osyn[0].bits)&0x000000ff) packbuf[j++] = (nsyn[0].bits&255), packbuf[k] |= 8;
@@ -923,7 +923,7 @@ void faketimerhandler()
         if ((nsyn[0].bits^osyn[0].bits)&0xff000000) packbuf[j++] = ((nsyn[0].bits>>24)&255), packbuf[k] |= 64;
         if (nsyn[0].horz != osyn[0].horz)
         {
-            packbuf[j++] = (char)nsyn[0].horz;
+            packbuf[j++] = (uint8_t )nsyn[0].horz;
             packbuf[k] |= 128;
         }
 
@@ -963,19 +963,19 @@ void faketimerhandler()
 
         if (nsyn[0].fvel != osyn[0].fvel)
         {
-            packbuf[j++] = (char)nsyn[0].fvel;
-            packbuf[j++] = (char)(nsyn[0].fvel>>8);
+            packbuf[j++] = (uint8_t )nsyn[0].fvel;
+            packbuf[j++] = (uint8_t )(nsyn[0].fvel>>8);
             packbuf[1] |= 1;
         }
         if (nsyn[0].svel != osyn[0].svel)
         {
-            packbuf[j++] = (char)nsyn[0].svel;
-            packbuf[j++] = (char)(nsyn[0].svel>>8);
+            packbuf[j++] = (uint8_t )nsyn[0].svel;
+            packbuf[j++] = (uint8_t )(nsyn[0].svel>>8);
             packbuf[1] |= 2;
         }
         if (nsyn[0].avel != osyn[0].avel)
         {
-            packbuf[j++] = (signed char)nsyn[0].avel;
+            packbuf[j++] = (int8_t  )nsyn[0].avel;
             packbuf[1] |= 4;
         }
         if ((nsyn[0].bits^osyn[0].bits)&0x000000ff) packbuf[j++] = (nsyn[0].bits&255), packbuf[1] |= 8;
@@ -984,7 +984,7 @@ void faketimerhandler()
         if ((nsyn[0].bits^osyn[0].bits)&0xff000000) packbuf[j++] = ((nsyn[0].bits>>24)&255), packbuf[1] |= 64;
         if (nsyn[0].horz != osyn[0].horz)
         {
-            packbuf[j++] = (char)nsyn[0].horz;
+            packbuf[j++] = (uint8_t )nsyn[0].horz;
             packbuf[1] |= 128;
         }
 
@@ -1040,19 +1040,19 @@ void faketimerhandler()
             packbuf[k] = 0;
             if (nsyn[i].fvel != osyn[i].fvel)
             {
-                packbuf[j++] = (char)nsyn[i].fvel;
-                packbuf[j++] = (char)(nsyn[i].fvel>>8);
+                packbuf[j++] = (uint8_t )nsyn[i].fvel;
+                packbuf[j++] = (uint8_t )(nsyn[i].fvel>>8);
                 packbuf[k] |= 1;
             }
             if (nsyn[i].svel != osyn[i].svel)
             {
-                packbuf[j++] = (char)nsyn[i].svel;
-                packbuf[j++] = (char)(nsyn[i].svel>>8);
+                packbuf[j++] = (uint8_t )nsyn[i].svel;
+                packbuf[j++] = (uint8_t )(nsyn[i].svel>>8);
                 packbuf[k] |= 2;
             }
             if (nsyn[i].avel != osyn[i].avel)
             {
-                packbuf[j++] = (signed char)nsyn[i].avel;
+                packbuf[j++] = (int8_t  )nsyn[i].avel;
                 packbuf[k] |= 4;
             }
             if ((nsyn[i].bits^osyn[i].bits)&0x000000ff) packbuf[j++] = (nsyn[i].bits&255), packbuf[k] |= 8;
@@ -1061,7 +1061,7 @@ void faketimerhandler()
             if ((nsyn[i].bits^osyn[i].bits)&0xff000000) packbuf[j++] = ((nsyn[i].bits>>24)&255), packbuf[k] |= 64;
             if (nsyn[i].horz != osyn[i].horz)
             {
-                packbuf[j++] = (char)nsyn[i].horz;
+                packbuf[j++] = (uint8_t )nsyn[i].horz;
                 packbuf[k] |= 128;
             }
             k++;
@@ -1086,7 +1086,7 @@ void faketimerhandler()
 }
 
 extern int32_t cacnum;
-typedef struct { int32_t *hand, leng; char *lock; } cactype;
+typedef struct { int32_t *hand, leng; uint8_t  *lock; } cactype;
 extern cactype cac[];
 
 void caches(void)
@@ -1391,9 +1391,9 @@ short badguypic(short pn)
 
 
 
-void myos(int32_t x, int32_t y, short tilenum, int8_t shade, char orientation)
+void myos(int32_t x, int32_t y, short tilenum, int8_t shade, uint8_t  orientation)
 {
-    char p;
+    uint8_t  p;
     short a;
 
     if(orientation&4)
@@ -1404,9 +1404,9 @@ void myos(int32_t x, int32_t y, short tilenum, int8_t shade, char orientation)
     rotatesprite(x<<16,y<<16,65536L,a,tilenum,shade,p,2|orientation,windowx1,windowy1,windowx2,windowy2);
 }
 
-void myospal(int32_t x, int32_t y, short tilenum, int8_t shade, char orientation, char p)
+void myospal(int32_t x, int32_t y, short tilenum, int8_t shade, uint8_t  orientation, uint8_t  p)
 {
-    char fp;
+    uint8_t  fp;
     short a;
 
     if(orientation&4)
@@ -1419,9 +1419,9 @@ void myospal(int32_t x, int32_t y, short tilenum, int8_t shade, char orientation
 
 }
 
-void invennum(int32_t x,int32_t y,char num1,char ha,char sbits)
+void invennum(int32_t x,int32_t y,uint8_t  num1,uint8_t  ha,uint8_t  sbits)
 {
-    char dabuf[80] = {0};
+    uint8_t  dabuf[80] = {0};
     sprintf(dabuf,"%ld",num1);
     if(num1 > 99)
     {
@@ -1438,7 +1438,7 @@ void invennum(int32_t x,int32_t y,char num1,char ha,char sbits)
         rotatesprite((x+4)<<16,y<<16,65536L,0,THREEBYFIVE+dabuf[0]-'0',ha,0,sbits,0,0,xdim-1,ydim-1);
 }
 
-void orderweaponnum(short ind,int32_t x,int32_t y,int32_t num1, int32_t num2,char ha)
+void orderweaponnum(short ind,int32_t x,int32_t y,int32_t num1, int32_t num2,uint8_t  ha)
 {
     rotatesprite((x-7)<<16,y<<16,65536L,0,THREEBYFIVE+ind+1,ha-10,7,10+128,0,0,xdim-1,ydim-1);
     rotatesprite((x-3)<<16,y<<16,65536L,0,THREEBYFIVE+10,ha,0,10+128,0,0,xdim-1,ydim-1);
@@ -1446,9 +1446,9 @@ void orderweaponnum(short ind,int32_t x,int32_t y,int32_t num1, int32_t num2,cha
     minitextshade(x+1,y-4,"ORDER",26,6,2+8+16+128);
 }
 
-void weaponnum(short ind,int32_t x,int32_t y,int32_t num1, int32_t num2,char ha)
+void weaponnum(short ind,int32_t x,int32_t y,int32_t num1, int32_t num2,uint8_t  ha)
 {
-    char dabuf[80] = {0};
+    uint8_t  dabuf[80] = {0};
 
     rotatesprite((x-7)<<16,y<<16,65536L,0,THREEBYFIVE+ind+1,ha-10,7,10+128,0,0,xdim-1,ydim-1);
     rotatesprite((x-3)<<16,y<<16,65536L,0,THREEBYFIVE+10,ha,0,10+128,0,0,xdim-1,ydim-1);
@@ -1474,9 +1474,9 @@ void weaponnum(short ind,int32_t x,int32_t y,int32_t num1, int32_t num2,char ha)
     else rotatesprite((x+13)<<16,y<<16,65536L,0,THREEBYFIVE+dabuf[0]-'0',ha,0,10+128,0,0,xdim-1,ydim-1);
 }
 
-void weaponnum999(char ind,int32_t x,int32_t y,int32_t num1, int32_t num2,char ha)
+void weaponnum999(uint8_t  ind,int32_t x,int32_t y,int32_t num1, int32_t num2,uint8_t  ha)
 {
-    char dabuf[80] = {0};
+    uint8_t  dabuf[80] = {0};
 
     rotatesprite((x-7)<<16,y<<16,65536L,0,THREEBYFIVE+ind+1,ha-10,7,10+128,0,0,xdim-1,ydim-1);
     rotatesprite((x-4)<<16,y<<16,65536L,0,THREEBYFIVE+10,ha,0,10+128,0,0,xdim-1,ydim-1);
@@ -1641,13 +1641,13 @@ void weapon_amounts(struct player_struct *p,int32_t x,int32_t y,int32_t u)
      }
 }
 
-void digitalnumber(int32_t x,int32_t y,int32_t n,char s,char cs)
+void digitalnumber(int32_t x,int32_t y,int32_t n,uint8_t  s,uint8_t  cs)
 {
     short i, j, k, p, c;
-    char b[10];
+    uint8_t  b[10];
 
     //
-    // char * ltoa(int32_t l, char * buffer, int radix);
+    // uint8_t  * ltoa(int32_t l, uint8_t  * buffer, int radix);
     // is NON-STANDARD and equivalent to STANDARD
     // (void) sprintf(buffer, "%ld", l);
     //ltoa(n,b,10);
@@ -1674,7 +1674,7 @@ void digitalnumber(int32_t x,int32_t y,int32_t n,char s,char cs)
 
 /*
 
-void scratchmarks(int32_t x,int32_t y,int32_t n,char s,char p)
+void scratchmarks(int32_t x,int32_t y,int32_t n,uint8_t  s,uint8_t  p)
 {
     int32_t i, ni;
 
@@ -1875,7 +1875,7 @@ void coolgaugetext(short snum)
 {
     struct player_struct *p;
     int32_t i, j, o, ss, u;
-    char permbit;
+    uint8_t  permbit;
 	short offx = 3, offy = 3, stepx=60, stepy=6;
 
     p = &ps[snum];
@@ -1983,7 +1983,7 @@ void coolgaugetext(short snum)
 					case 6: i = ((p->scuba_amount+63)>>6); break;
 					case 7: i = (p->boot_amount>>1); break;
 				}
-				invennum(284-30-o,200-6,(char)i,0,10+permbit);
+				invennum(284-30-o,200-6,(uint8_t )i,0,10+permbit);
 				if (j > 0) minitext(288-30-o,180,"ON",0,10+16+permbit);
 				else if (j != 0x80000000) minitext(284-30-o,180,"OFF",2,10+16+permbit);
 				if (p->inven_icon >= 6) minitext(284-35-o,180,"AUTO",2,10+16+permbit);
@@ -2139,7 +2139,7 @@ void coolgaugetext(short snum)
                     case 6: i = ((p->scuba_amount+63)>>6); break;
                     case 7: i = (p->boot_amount>>1); break;
                 }
-                invennum(284-30-o,200-6,(char)i,0,10+permbit);
+                invennum(284-30-o,200-6,(uint8_t )i,0,10+permbit);
             }
         }
     }
@@ -2152,7 +2152,7 @@ static int32_t frameval[AVERAGEFRAMES], framecnt = 0;
 void tics(short offx, short offy, short color)
 {
     int32_t i;
-	char fps[512], mapname[512];
+	uint8_t  fps[512], mapname[512];
 	int32_t currentFps;
 	static int32_t fpsAvg = 0, savedFps = 0;
 	static boolean toggle = true;
@@ -2367,20 +2367,20 @@ void binscreen(void)
 	    fil = kopen4load("duke3d.bin",1);
 
 	if(fil == -1) return;
-    kread(fil,(char *)0xb8000,4000);
+    kread(fil,(uint8_t  *)0xb8000,4000);
     kclose(fil);
 #endif
 }
 
 
-void gameexit(char *msg)
+void gameexit(uint8_t  *msg)
 {
     short i;
-    char t[256];
+    uint8_t  t[256];
     
     strncpy(t,msg,256); t[255] = 0;
 
-    if(*t != 0) ps[myconnectindex].palette = (char *) &palette[0];
+    if(*t != 0) ps[myconnectindex].palette = (uint8_t  *) &palette[0];
 
     if(numplayers > 1)
         allowtimetocorrecterrorswhenquitting();
@@ -2467,7 +2467,7 @@ void gameexit(char *msg)
 
 
 short inputloc = 0;
-short strget(short x,short y,char *t,short dalen,short c)
+short strget(short x,short y,uint8_t  *t,short dalen,short c)
 {
     short ch,sc;
 
@@ -2521,7 +2521,7 @@ short strget(short x,short y,char *t,short dalen,short c)
     if( c == 999 ) return(0);
     if( c == 998 )
     {
-        char b[41],ii;
+        uint8_t  b[41],ii;
         for(ii=0;ii<inputloc;ii++)
             b[ii] = '*';
         b[ii] = 0;
@@ -3521,7 +3521,7 @@ short EGS(short whatsect,int32_t s_x,int32_t s_y,int32_t s_z,short s_pn,int8_t s
     return(i);
 }
 
-char wallswitchcheck(short i)
+uint8_t  wallswitchcheck(short i)
 {
     switch(PN)
     {
@@ -5766,7 +5766,7 @@ void animatesprites(int32_t x,int32_t y,short a,int32_t smoothratio)
                 {
                     l = s->z-hittype[ps[p].i].floorz+(3<<8);
                     if( l > 1024 && s->yrepeat > 32 && s->extra > 0 )
-                        s->yoffset = (signed char)(l/(s->yrepeat<<2));
+                        s->yoffset = (int8_t  )(l/(s->yrepeat<<2));
                     else s->yoffset=0;
                 }
 
@@ -6092,7 +6092,7 @@ void animatesprites(int32_t x,int32_t y,short a,int32_t smoothratio)
 
 
 #define NUMCHEATCODES 26
-char cheatquotes[NUMCHEATCODES][14] = {
+uint8_t  cheatquotes[NUMCHEATCODES][14] = {
     {"cornholio"},	// 0
     {"stuff"},		// 1
     {"scotty###"},	// 2
@@ -6123,7 +6123,7 @@ char cheatquotes[NUMCHEATCODES][14] = {
 };
 
 
-char cheatbuf[10],cheatbuflen;
+uint8_t  cheatbuf[10],cheatbuflen;
 void cheats(void)
 {
     short ch, i, j, k, keystate, weapon;
@@ -6754,7 +6754,7 @@ void nonsharedkeys(void)
             if(ud.lockout == 0)
                 if(SoundToggle && ALT_IS_PRESSED && ( RTS_NumSounds() > 0 ) && rtsplaying == 0 && VoiceToggle )
             {
-                rtsptr = (char *)RTS_GetSound (i-1);
+                rtsptr = (uint8_t  *)RTS_GetSound (i-1);
                 if(*rtsptr == 'C')
                     FX_PlayVOC3D( rtsptr,0,0,0,255,-i);
                 else FX_PlayWAV3D( rtsptr,0,0,0,255,-i);
@@ -7062,7 +7062,7 @@ void nonsharedkeys(void)
 
 
 
-void comlinehelp(char **argv)
+void comlinehelp(uint8_t  **argv)
 {
     printf("Command line help.  %s [/flags...]\n",argv[0]);
     puts(" ?, /?         This help message");
@@ -7091,11 +7091,11 @@ void comlinehelp(char **argv)
     printf("\n");
 }
 
-void checkcommandline(int argc,char **argv)
+void checkcommandline(int argc,uint8_t  **argv)
 {
     short i, j;
-    char *c;
-	char kbdKey;
+    uint8_t  *c;
+	uint8_t  kbdKey;
 
     ud.fta_on = 1;
     ud.god = 0;
@@ -7225,7 +7225,7 @@ void checkcommandline(int argc,char **argv)
                         c++;
                         if(*c)
                         {
-							char fullpathgrpfile[16]; // 16 not enough
+							uint8_t  fullpathgrpfile[16]; // 16 not enough
 							memset(fullpathgrpfile, 0, 16);
 
                             if( strchr(c,'.') == 0)
@@ -7451,9 +7451,9 @@ void checkcommandline(int argc,char **argv)
 
 
 
-void printstr(short x, short y, char string[81], char attribute)
+void printstr(short x, short y, uint8_t  string[81], uint8_t  attribute)
 {
-        char character;
+        uint8_t  character;
         short i, pos;
 
         pos = (y*80+x)<<1;
@@ -7632,13 +7632,13 @@ void Logo(void)
 
 void loadtmb(void)
 {
-    char tmb[8000];
+    uint8_t  tmb[8000];
     int32_t fil, l;
 
     fil = kopen4load("d3dtimbr.tmb",0);
     if(fil == -1) return;
     l = kfilelength(fil);
-    kread(fil,(char *)tmb,l);
+    kread(fil,(uint8_t  *)tmb,l);
     MUSIC_RegisterTimbreBank(tmb);
     kclose(fil);
 }
@@ -7663,9 +7663,9 @@ void ShutDown( void )
     CONSOLE_Term();
 }
 
-static char todd[] = "Duke Nukem 3D(tm) Copyright 1989, 1996 Todd Replogle and 3D Realms Entertainment";
-static char trees[] = "I want to make a game with trees";
-static char sixteen[] = "16 Possible Dukes";
+static uint8_t  todd[] = "Duke Nukem 3D(tm) Copyright 1989, 1996 Todd Replogle and 3D Realms Entertainment";
+static uint8_t  trees[] = "I want to make a game with trees";
+static uint8_t  sixteen[] = "16 Possible Dukes";
 
 /*
 ===================
@@ -7677,11 +7677,11 @@ static char sixteen[] = "16 Possible Dukes";
 
 void compilecons(void)
 {
-	char userconfilename[512];
+	uint8_t  userconfilename[512];
 
-   mymembuf = (char *)&hittype[0];
+   mymembuf = (uint8_t  *)&hittype[0];
    labelcode = (int32_t *)&sector[0];
-   label = (char *)&sprite[0];
+   label = (uint8_t  *)&sprite[0];
 
 	sprintf(userconfilename, "%s", confilename);
 
@@ -7746,7 +7746,7 @@ void Startup(void)
    if(numplayers > 1)
     puts("Multiplayer initialized.");
 
-   ps[myconnectindex].palette = (char *) &palette[0];
+   ps[myconnectindex].palette = (uint8_t  *) &palette[0];
    SetupGameButtons();
 
    if(networkmode == 255)
@@ -7774,7 +7774,7 @@ void Startup(void)
 }
 
 
-void sendscore(char *s)
+void sendscore(uint8_t  *s)
 {
     if(numplayers > 1)
       genericmultifunction(-1,s,strlen(s)+1,5);
@@ -7850,7 +7850,7 @@ void getnames(void)
         for(i=0;i<10;i++)
         {
             ud.wchoice[myconnectindex][i] = ud.mywchoice[i];
-            buf[l] = (char) ud.mywchoice[i];
+            buf[l] = (uint8_t ) ud.mywchoice[i];
             l++;
         }
 
@@ -7965,7 +7965,7 @@ void writestring(int32_t a1,int32_t a2,int32_t a3,short a4,int32_t vx,int32_t vy
 }
 
 
-char testcd( char *fn )
+uint8_t  testcd( uint8_t  *fn )
 {
 #if PLATFORM_DOS
  short drive_count, drive;
@@ -8031,7 +8031,7 @@ char testcd( char *fn )
 void copyprotect(void)
 {
     FILE *fp;
-    char idfile[256];
+    uint8_t  idfile[256];
 
     return;
 
@@ -8058,12 +8058,12 @@ void copyprotect(void)
 
 #ifdef _WIN32
 
-void findGRPToUse(char* game_dir,char* baseDir,char* groupfilefullpath)
+void findGRPToUse(uint8_t * game_dir,uint8_t * baseDir,uint8_t * groupfilefullpath)
 {
     WIN32_FIND_DATA FindFileData;
 	HANDLE hFind =  INVALID_HANDLE_VALUE;
     int i=0,kbdKey ;
-	char groupfile[9][512];
+	uint8_t  groupfile[9][512];
 	int grpID ;
 
 	if(game_dir[0] != '\0')
@@ -8115,9 +8115,9 @@ void findGRPToUse(char* game_dir,char* baseDir,char* groupfilefullpath)
 
 #else
 
-void findGRPToUse(char* game_dir,char* baseDir,char* groupfilefullpath){
+void findGRPToUse(uint8_t * game_dir,uint8_t * baseDir,uint8_t * groupfilefullpath){
     
-    //char *grpName="DUKE3D.GRP";
+    //uint8_t  *grpName="DUKE3D.GRP";
     //sprintf(groupfilefullpath, "%s\\%s", game_dir, grpName);
     sprintf(groupfilefullpath, "%s","/Users/fabiensanglard/Desktop/DUKE3D.GRP");
     printf("The ONLY GRP location for this port is '%s'.\n",groupfilefullpath);
@@ -8129,10 +8129,10 @@ static int load_duke3d_groupfile(void)
 {
 	// FIX_00032: Added multi base GRP manager. Use duke3d*.grp to handle multiple grp.
     
-	char groupfilefullpath[512];
+	uint8_t  groupfilefullpath[512];
 
-	char *baseDir="duke3d*.grp";
-	//char *baseDir="DUKE3D.GRP";
+	uint8_t  *baseDir="duke3d*.grp";
+	//uint8_t  *baseDir="DUKE3D.GRP";
     
     findGRPToUse(game_dir,baseDir,groupfilefullpath);
 	
@@ -8142,15 +8142,15 @@ static int load_duke3d_groupfile(void)
 	return(initgroupfile(groupfilefullpath) != -1);
 }
 
-int main(int argc,char **argv)
+int main(int argc,char  **argv)
 {
     int32_t i, j;
 	int32 iScriptHandle;
 	int32_t filehandle;
 
-	char HEAD[2048], HEAD2[2048], HEADA[2048];
-	char kbdKey;
-	char *exe;
+	uint8_t  HEAD[2048], HEAD2[2048], HEADA[2048];
+	uint8_t  kbdKey;
+	uint8_t  *exe;
 
 
 	//printf(	"This is a debug version 19.7.1 only Based on 19.7\n"
@@ -8296,7 +8296,7 @@ int main(int argc,char **argv)
 	if(game_dir[0] != '\0')
 	{
 		//FILE *fp = NULL;
-		char setupfilename[128];
+		uint8_t  setupfilename[128];
 
 	   //Yes
 		sprintf(setupfilename, "%s\\%s", game_dir, SETUPFILENAME);	
@@ -8702,13 +8702,13 @@ int main(int argc,char **argv)
 	return(0);
 }
 
-char opendemoread(char which_demo) // 0 = mine
+uint8_t  opendemoread(uint8_t  which_demo) // 0 = mine
 {
-    char d[] = "demo_.dmo";
-    char *fname = d;
-    char ver;
+    uint8_t  d[] = "demo_.dmo";
+    uint8_t  *fname = d;
+    uint8_t  ver;
     short i,j;
-	char firstdemofile_[512];
+	uint8_t  firstdemofile_[512];
 	int32 dummy;
 	int32_t groupefil_crc32_from_demo[MAXGROUPFILES];
 
@@ -8736,7 +8736,7 @@ char opendemoread(char which_demo) // 0 = mine
 	 }
 
      kread(recfilep,&ud.reccnt,sizeof(long));
-     kread(recfilep,&ver,sizeof(char));
+     kread(recfilep,&ver,sizeof(uint8_t ));
 	
 	 printf("%s has version = %d\n", fname, ver);
 
@@ -8787,21 +8787,21 @@ char opendemoread(char which_demo) // 0 = mine
 
 	 ud.playing_demo_rev = ver;
 
-	 kread(recfilep,(char *)&ud.volume_number,sizeof(char));
-     kread(recfilep,(char *)&ud.level_number,sizeof(char));
-     kread(recfilep,(char *)&ud.player_skill,sizeof(char));
-     kread(recfilep,(char *)&ud.m_coop,sizeof(char));
-     kread(recfilep,(char *)&ud.m_ffire,sizeof(char));
+	 kread(recfilep,(uint8_t  *)&ud.volume_number,sizeof(uint8_t ));
+     kread(recfilep,(uint8_t  *)&ud.level_number,sizeof(uint8_t ));
+     kread(recfilep,(uint8_t  *)&ud.player_skill,sizeof(uint8_t ));
+     kread(recfilep,(uint8_t  *)&ud.m_coop,sizeof(uint8_t ));
+     kread(recfilep,(uint8_t  *)&ud.m_ffire,sizeof(uint8_t ));
      kread(recfilep,(short *)&ud.multimode,sizeof(short));
      kread(recfilep,(short *)&ud.m_monsters_off,sizeof(short));
      kread(recfilep,(int32 *)&ud.m_respawn_monsters,sizeof(int32));
      kread(recfilep,(int32 *)&ud.m_respawn_items,sizeof(int32));
      kread(recfilep,(int32 *)&ud.m_respawn_inventory,sizeof(int32));
      kread(recfilep,(int32 *)&ud.playerai,sizeof(int32));
-     kread(recfilep,(char *)&ud.user_name[0][0],sizeof(ud.user_name));
+     kread(recfilep,(uint8_t  *)&ud.user_name[0][0],sizeof(ud.user_name));
 	 // FIX_00034: Demos do not turn your run mode off anymore:
      kread(recfilep,(int32 *)&dummy /*ud.auto_run*/,sizeof(int32)); // not needed and would affect autorun status in duke3d.cfg when quitting duke from a demo
-     kread(recfilep,(char *)boardfilename,sizeof(boardfilename));
+     kread(recfilep,(uint8_t  *)boardfilename,sizeof(boardfilename));
      if( boardfilename[0] != 0 )
      {
         ud.m_level_number = 7;
@@ -8810,7 +8810,7 @@ char opendemoread(char which_demo) // 0 = mine
 
      for(i=0;i<ud.multimode;i++)
 	 {
-        kread(recfilep,(int32 *)&ps[i].aim_mode,sizeof(char));
+        kread(recfilep,(int32 *)&ps[i].aim_mode,sizeof(uint8_t ));
 		
 		// FIX_00080: Out Of Synch in demos. Tries recovering OOS in old demos v27/28/29/116/117/118. New: v30/v119.
 		if(ver==BYTEVERSION) 
@@ -8829,11 +8829,11 @@ char opendemoread(char which_demo) // 0 = mine
 
 void opendemowrite(void)
 {
-    char d[] = "demo1.dmo";
+    uint8_t  d[] = "demo1.dmo";
     int32_t dummylong = 0;
-    char ver;
+    uint8_t  ver;
     short i;
-	char fullpathdemofilename[16];
+	uint8_t  fullpathdemofilename[16];
 
     if(ud.recstat == 2) kclose(recfilep);
 
@@ -8856,27 +8856,27 @@ void opendemowrite(void)
     if ((frecfilep = fopen(fullpathdemofilename,"wb")) == NULL) return;
 // CTW END - MODIFICATION
     fwrite(&dummylong,4,1,frecfilep);
-    fwrite(&ver,sizeof(char),1,frecfilep);
+    fwrite(&ver,sizeof(uint8_t ),1,frecfilep);
 	// FIX_00062: Better support and identification for GRP and CON files for 1.3/1.3d/1.4/1.5
 	fwrite((int32_t *)groupefil_crc32,sizeof(groupefil_crc32),1,frecfilep);
-    fwrite((char *)&ud.volume_number,sizeof(char),1,frecfilep);
-    fwrite((char *)&ud.level_number,sizeof(char),1,frecfilep);
-    fwrite((char *)&ud.player_skill,sizeof(char),1,frecfilep);
-    fwrite((char *)&ud.m_coop,sizeof(char),1,frecfilep);
-    fwrite((char *)&ud.m_ffire,sizeof(char),1,frecfilep);
+    fwrite((uint8_t  *)&ud.volume_number,sizeof(uint8_t ),1,frecfilep);
+    fwrite((uint8_t  *)&ud.level_number,sizeof(uint8_t ),1,frecfilep);
+    fwrite((uint8_t  *)&ud.player_skill,sizeof(uint8_t ),1,frecfilep);
+    fwrite((uint8_t  *)&ud.m_coop,sizeof(uint8_t ),1,frecfilep);
+    fwrite((uint8_t  *)&ud.m_ffire,sizeof(uint8_t ),1,frecfilep);
     fwrite((short *)&ud.multimode,sizeof(short),1,frecfilep);
     fwrite((short *)&ud.m_monsters_off,sizeof(short),1,frecfilep);
     fwrite((int32 *)&ud.m_respawn_monsters,sizeof(int32),1,frecfilep);
     fwrite((int32 *)&ud.m_respawn_items,sizeof(int32),1,frecfilep);
     fwrite((int32 *)&ud.m_respawn_inventory,sizeof(int32),1,frecfilep);
     fwrite((int32 *)&ud.playerai,sizeof(int32),1,frecfilep);
-    fwrite((char *)&ud.user_name[0][0],sizeof(ud.user_name),1,frecfilep);
+    fwrite((uint8_t  *)&ud.user_name[0][0],sizeof(ud.user_name),1,frecfilep);
     fwrite((int32 *)&ud.auto_run,sizeof(int32),1,frecfilep);
-    fwrite((char *)boardfilename,sizeof(boardfilename),1,frecfilep);
+    fwrite((uint8_t  *)boardfilename,sizeof(boardfilename),1,frecfilep);
 
     for(i=0;i<ud.multimode;i++)
 	{    
-		fwrite((int32 *)&ps[i].aim_mode,sizeof(char),1,frecfilep); // seems wrong; prolly not needed anyway
+		fwrite((int32 *)&ps[i].aim_mode,sizeof(uint8_t ),1,frecfilep); // seems wrong; prolly not needed anyway
 		// FIX_00080: Out Of Synch in demos. Tries recovering OOS in old demos v27/28/29/116/117/118. New: v30/v119.
 		fwrite(ud.wchoice[i],sizeof(ud.wchoice[0]),1,frecfilep);
 	}
@@ -8935,16 +8935,16 @@ void closedemowrite(void)
 // Seems to happen when player input starts being simulated, but just guessing.
 // This change effectively disables it. The related code is still enabled.
 // (This is working on Linux, so I flipped it back to '1'. --ryan.)
- char which_demo = 1;
+ uint8_t  which_demo = 1;
 // CTW END - MODIFICATION
 
-char in_menu = 0;
+uint8_t  in_menu = 0;
 
 // extern int32_t syncs[];
 int32_t playback(void)
 {
     int32_t i,j,k,l,t;
-    char foundemo;
+    uint8_t  foundemo;
 #ifdef DBGRECORD
 	FILE * pFile;
 #endif
@@ -9141,7 +9141,7 @@ int32_t playback(void)
     return 1;
 }
 
-char moveloop()
+uint8_t  moveloop()
 {
     int32_t i;
 
@@ -9206,7 +9206,7 @@ void fakedomovethings(void)
         int32_t i, j, k, doubvel, fz, cz, hz, lz, x, y;
         uint32_t sb_snum;
         short psect, psectlotag, tempsect, backcstat;
-        char shrunk, spritebridge;
+        uint8_t  shrunk, spritebridge;
 
         syn = (input *)&inputfifo[fakemovefifoplc&(MOVEFIFOSIZ-1)][myconnectindex];
 
@@ -9638,10 +9638,10 @@ ENDFAKEPROCESSINPUT:
 }
 
 
-char domovethings(void)
+uint8_t  domovethings(void)
 {
     short i, j;
-    char ch;
+    uint8_t  ch;
 
 #ifdef DBGRECORD
 	FILE *pFile;
@@ -9780,7 +9780,7 @@ char domovethings(void)
 
       if ((numplayers >= 2) && ((movefifoplc&7) == 7))
       {
-            ch = (char)(randomseed&255);
+            ch = (uint8_t )(randomseed&255);
             for(i=connecthead;i>=0;i=connectpoint2[i])
                  ch += ((ps[i].posx+ps[i].posy+ps[i].posz+ps[i].ang+ps[i].horiz)&255);
             syncval[myconnectindex][syncvalhead[myconnectindex]&(MOVEFIFOSIZ-1)] = ch;
@@ -9883,7 +9883,7 @@ void doorders(void)
     totalclock = 0;while( !KB_KeyWaiting() ) getpackets();
 }
 
-void dobonus(char bonusonly)
+void dobonus(uint8_t  bonusonly)
 {
     short t, tinc,gfx_offset;
     int32_t i, y,xfragtotal,yfragtotal;
@@ -10437,7 +10437,7 @@ void dobonus(char bonusonly)
 
 void cameratext(short i)
 {
-    char flipbits;
+    uint8_t  flipbits;
     int32_t x , y;
 
     if(!T1)
@@ -10740,9 +10740,9 @@ void CenterRudder(void)
 //            makes smaller files. Doesn't freeze or lag the game anymore.
 void takescreenshot(void)
 {
-	char szFilename[256];
+	uint8_t  szFilename[256];
 	int i;
-	char score[20];
+	uint8_t  score[20];
 	time_t time4file;
 	struct tm *tmHMS;
     
@@ -10763,7 +10763,7 @@ void takescreenshot(void)
 
 	if(ud.multimode>1) // if more than 1 player, we add name. Then add score if DM
 	{
-		strcat((char*)tempbuf, " [");
+		strcat((uint8_t *)tempbuf, " [");
 		for(i=connecthead;i>=0;i=connectpoint2[i])
 		{
 			if(!ud.user_name[i][0])

@@ -33,13 +33,13 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 
 typedef struct
    {
-   char name[8];
+   uint8_t  name[8];
    int32 handle,position,size;
    } lumpinfo_t;
 
 typedef struct
    {
-   char identification[4];              // should be IWAD
+   uint8_t  identification[4];              // should be IWAD
    int32 numlumps;
    int32 infotableofs;
    } wadinfo_t;
@@ -48,7 +48,7 @@ typedef struct
    {
    int32 filepos;
    int32 size;
-   char name[8];
+   uint8_t  name[8];
    } filelump_t;
 
 #endif

@@ -55,7 +55,7 @@ static boolean Anim_Started = false;
 //
 //****************************************************************************
 
-void CheckAnimStarted ( char * funcname )
+void CheckAnimStarted ( uint8_t  * funcname )
    {
    if (!Anim_Started)
       Error(EXIT_FAILURE, "ANIMLIB_%s: Anim has not been initialized\n",funcname);
@@ -126,7 +126,7 @@ void CPlayRunSkipDump (byte *srcP, byte *dstP)
 
 
 nextOp:
-   cnt = (signed char) *srcP++;
+   cnt = (int8_t ) *srcP++;
    if (cnt > 0)
       goto dump;
    if (cnt == 0)

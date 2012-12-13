@@ -67,7 +67,7 @@ enet_time_set (enet_uint32 newTimeBase)
 }
 
 int
-enet_address_set_host (ENetAddress * address, const char * name)
+enet_address_set_host (ENetAddress * address, const uint8_t  * name)
 {
     struct hostent * hostEntry;
 
@@ -82,14 +82,14 @@ enet_address_set_host (ENetAddress * address, const char * name)
 }
 
 int
-enet_address_get_host (const ENetAddress * address, char * name, size_t nameLength)
+enet_address_get_host (const ENetAddress * address, uint8_t  * name, size_t nameLength)
 {
     struct in_addr in;
     struct hostent * hostEntry;
     
     in.s_addr = address -> host;
     
-    hostEntry = gethostbyaddr ((char *) & in, sizeof (struct in_addr), AF_INET);
+    hostEntry = gethostbyaddr ((uint8_t  *) & in, sizeof (struct in_addr), AF_INET);
     if (hostEntry == NULL)
       return -1;
 
@@ -113,7 +113,7 @@ enet_socket_create (ENetSocketType type, const ENetAddress * address)
     {
         ioctlsocket (newSocket, FIONBIO, & nonBlocking);
 
-        setsockopt (newSocket, SOL_SOCKET, SO_RCVBUF, (char *) & receiveBufferSize, sizeof (int));
+        setsockopt (newSocket, SOL_SOCKET, SO_RCVBUF, (uint8_t  *) & receiveBufferSize, sizeof (int));
     }
 
     memset (& sin, 0, sizeof (struct sockaddr_in));

@@ -53,7 +53,7 @@ typedef int                    int32;
 typedef uint32                  dword;
 
 typedef int32                   fixed;
-typedef char                    boolean;
+typedef uint8_t                     boolean;
 typedef float                   float32;
 typedef double                  float64;
 typedef int64_t                 float128;

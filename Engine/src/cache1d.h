@@ -24,14 +24,14 @@ void initcache(int32_t dacachestart, int32_t dacachesize);
 void allocache (int32_t *newhandle, int32_t newbytes, uint8_t  *newlockptr);
 void suckcache (int32_t *suckptr);
 void agecache(void);
-void reportandexit(char *errormessage);
-int32_t initgroupfile(const char *filename);
+void reportandexit(uint8_t  *errormessage);
+int32_t initgroupfile(const uint8_t  *filename);
 void uninitgroupfile(void);
-unsigned short crc16(char *data_p, unsigned short length);
+unsigned short crc16(uint8_t  *data_p, unsigned short length);
 unsigned int crc32_update(uint8_t  *buf, unsigned int length, unsigned int crc_to_update);
-int32_t kopen4load(const char *filename, int readfromGRP);
+int32_t kopen4load(const uint8_t  *filename, int readfromGRP);
 int32_t kread(int32_t handle, void *buffer, int32_t leng);
-int kread8(int32_t handle, char *buffer);
+int kread8(int32_t handle, uint8_t  *buffer);
 int kread16(int32_t handle, short *buffer);
 int kread32(int32_t handle, int32_t *buffer);
 int32_t klseek(int32_t handle, int32_t offset, int32_t whence);
@@ -40,11 +40,11 @@ void kclose(int32_t handle);
 void kdfread(void *buffer, size_t dasizeof, size_t count, int32_t fil);
 void dfread(void *buffer, size_t dasizeof, size_t count, FILE *fil);
 void dfwrite(void *buffer, size_t dasizeof, size_t count, FILE *fil);
-int32_t compress(char *lzwinbuf, int32_t uncompleng, char *lzwoutbuf);
-int32_t uncompress(char *lzwinbuf, int32_t compleng, char *lzwoutbuf);
+int32_t compress(uint8_t  *lzwinbuf, int32_t uncompleng, uint8_t  *lzwoutbuf);
+int32_t uncompress(uint8_t  *lzwinbuf, int32_t compleng, uint8_t  *lzwoutbuf);
 
-extern char game_dir[512];
-extern int32_t TCkopen4load(const char *filename, int readfromGRP);
+extern uint8_t  game_dir[512];
+extern int32_t TCkopen4load(const uint8_t  *filename, int readfromGRP);
 
 #endif  /* !defined _INCLUDE_CACHE1D_H_ */
 

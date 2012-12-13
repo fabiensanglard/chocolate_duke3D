@@ -36,7 +36,7 @@ void faketimerhandler(void);
  *  information on using these functions that may or may not be accurate. :)
  */
 int initmouse(void);
-int setgamemode(char davidoption, int32_t daxdim, int32_t daydim);
+int setgamemode(uint8_t  davidoption, int32_t daxdim, int32_t daydim);
 int getceilzofslope(short sectnum, int32_t dax, int32_t day);
 int getflorzofslope(short sectnum, int32_t dax, int32_t day);
 void getzsofslope(short sectnum, int32_t dax, int32_t day, int32_t *ceilz, int32_t *florz);
@@ -58,22 +58,22 @@ int getmmxoverlay(void);
 void nextpage(void);
 void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,
                short daang, int32_t dahoriz, short dacursectnum);
-int loadboard(char *filename, int32_t *daposx, int32_t *daposy,
+int loadboard(uint8_t  *filename, int32_t *daposx, int32_t *daposy,
 			  int32_t *daposz, short *daang, short *dacursectnum);
 void drawmasks(void);
 void printext256(int32_t xpos, int32_t ypos, short col, short backcol,
-			char name[82], char fontsize);
+			uint8_t  name[82], uint8_t  fontsize);
 void printext256_noupdate(int32_t xpos, int32_t ypos, short col, short backcol,
-			char name[82], char fontsize);
+			uint8_t  name[82], uint8_t  fontsize);
 void initengine(void);
 void uninitengine(void);
-int loadpics(char *filename, char* gamedir);
-int saveboard(char *filename, int32_t *daposx, int32_t *daposy, int32_t *daposz,
+int loadpics(uint8_t  *filename, uint8_t * gamedir);
+int saveboard(uint8_t  *filename, int32_t *daposx, int32_t *daposy, int32_t *daposz,
                          short *daang, short *dacursectnum);
-void plotpixel(int32_t x, int32_t y, char col);
+void plotpixel(int32_t x, int32_t y, uint8_t  col);
 uint8_t  getpixel(int32_t x, int32_t y);
-void setbrightness(char dabrightness, uint8_t  *dapal);
-int screencapture(char *filename, char inverseit);
+void setbrightness(uint8_t  dabrightness, uint8_t  *dapal);
+int screencapture(uint8_t  *filename, uint8_t  inverseit);
 void getmousevalues(short *mousx, short *mousy, short *bstatus);
 int clipmove (int32_t *x, int32_t *y, int32_t *z, short *sectnum, int32_t xvect,
 			int32_t yvect, int32_t walldist, int32_t ceildist,
@@ -120,21 +120,21 @@ int nextsectorneighborz(short sectnum, int32_t thez,
                         short topbottom, short direction);
 int neartag(int32_t xs, int32_t ys, int32_t zs, short sectnum, short ange,
             short *neartagsector, short *neartagwall, short *neartagsprite,
-            int32_t *neartaghitdist, int32_t neartagrange, char tagsearch);
+            int32_t *neartaghitdist, int32_t neartagrange, uint8_t  tagsearch);
 int pushmove(int32_t *x, int32_t *y, int32_t *z, short *sectnum,
              int32_t walldist, int32_t ceildist, int32_t flordist,
              uint32_t  cliptype);
 #ifdef DBGRECORD
-int krand(int line, char* file);
+int krand(int line, uint8_t * file);
 #else
 int krand(void);
 #endif
 void flushperms(void);
 void rotatesprite(int32_t sx, int32_t sy, int32_t z, short a, short picnum,
-                  int8_t dashade, char dapalnum, char dastat,
+                  int8_t dashade, uint8_t  dapalnum, uint8_t  dastat,
                   int32_t cx1, int32_t cy1, int32_t cx2, int32_t cy2);
-void makepalookup(int32_t palnum, char *remapbuf, int8_t r,
-                  int8_t g, int8_t b, char dastat);
+void makepalookup(int32_t palnum, uint8_t  *remapbuf, int8_t r,
+                  int8_t g, int8_t b, uint8_t  dastat);
 void drawmapview(int32_t dax, int32_t day, int32_t zoome, short ang);
 void setview(int32_t x1, int32_t y1, int32_t x2, int32_t y2);
 void setviewtotile(short tilenume, int32_t xsiz, int32_t ysiz);
@@ -148,7 +148,7 @@ void completemirror(void);
 int clipinsidebox(int32_t x, int32_t y, short wallnum, int32_t walldist);
 
 #ifdef SUPERBUILD
-void qloadkvx(int32_t voxindex, char *filename);
+void qloadkvx(int32_t voxindex, uint8_t  *filename);
 #endif
 
 #ifdef __cplusplus

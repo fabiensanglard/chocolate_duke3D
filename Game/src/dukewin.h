@@ -31,9 +31,9 @@ struct find_t
 {
 	int32_t handle;
     struct _finddata_t data;
-	char name[MAX_PATH];
+	uint8_t  name[MAX_PATH];
 };
-int _dos_findfirst(char *filename, int x, struct find_t *f);
+int _dos_findfirst(uint8_t  *filename, int x, struct find_t *f);
 int _dos_findnext(struct find_t *f);
 
 struct dosdate_t
@@ -62,7 +62,7 @@ void _dos_getdate(struct dosdate_t *date);
 // 64 megs should be enough for anybody.  :)  --ryan.
 #define Z_AvailHeap() ((64 * 1024) * 1024)
 
-#define printchrasm(x,y,ch) printf("%c", (char) (ch & 0xFF))
+#define printchrasm(x,y,ch) printf("%c", (uint8_t ) (ch & 0xFF))
 
 #define cdecl
 

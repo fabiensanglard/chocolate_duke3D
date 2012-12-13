@@ -29,7 +29,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 // PRIMITIVE
 
 
-char haltsoundhack;
+uint8_t  haltsoundhack;
 short callsound(short sn,short whatsprite)
 {
     short i;
@@ -121,7 +121,7 @@ short check_activator_motion( short lotag )
     return( 0 );
 }
 
-char isadoorwall(short dapic)
+uint8_t  isadoorwall(short dapic)
 {
     switch(dapic)
     {
@@ -153,7 +153,7 @@ char isadoorwall(short dapic)
 }
 
 
-char isanunderoperator(short lotag)
+uint8_t  isanunderoperator(short lotag)
 {
     switch(lotag&0xff)
     {
@@ -169,7 +169,7 @@ char isanunderoperator(short lotag)
     return 0;
 }
 
-char isanearoperator(short lotag)
+uint8_t  isanearoperator(short lotag)
 {
     switch(lotag&0xff)
     {
@@ -498,7 +498,7 @@ void animatewalls(void)
     }
 }
 
-char activatewarpelevators(short s,short d) //Parm = sectoreffectornum
+uint8_t  activatewarpelevators(short s,short d) //Parm = sectoreffectornum
 {
     short i, sn;
 
@@ -550,7 +550,7 @@ void operatesectors(short sn,short ii)
 {
     int32_t j=0, l, q, startwall, endwall;
     short i;
-    char sect_error;
+    uint8_t  sect_error;
     sectortype *sptr;
 
     sect_error = 0;
@@ -1158,9 +1158,9 @@ void operateforcefields(short s, short low)
 }
 
 
-char checkhitswitch(short snum,int32_t w,char switchtype)
+uint8_t  checkhitswitch(short snum,int32_t w,uint8_t  switchtype)
 {
-    char switchpal;
+    uint8_t  switchpal;
     short i, x, lotag,hitag,picnum,correctdips,numdips;
     int32_t sx,sy;
 
@@ -1869,7 +1869,7 @@ void checkplayerhurt(struct player_struct *p,short j)
 }
 
 
-char checkhitceiling(short sn)
+uint8_t  checkhitceiling(short sn)
 {
     short i, j;
 
@@ -2414,10 +2414,10 @@ void allignwarpelevators(void)
 void cheatkeys(short snum)
 {
     short i, k;
-    char dainv;
+    uint8_t  dainv;
     uint32_t sb_snum, j;
     struct player_struct *p;
-	char playing_old_demo = 0;
+	uint8_t  playing_old_demo = 0;
 
     sb_snum = sync[snum].bits;
     p = &ps[snum];

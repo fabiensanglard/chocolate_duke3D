@@ -9,8 +9,8 @@
 #include "audiolib/fx_man.h"
 #include <inttypes.h>
 
-char *FX_ErrorString( int ErrorNumber ){
-   static char nope = '\0';
+uint8_t  *FX_ErrorString( int ErrorNumber ){
+   static uint8_t  nope = '\0';
     return &nope;
 }
 
@@ -37,35 +37,35 @@ int FX_SetPan( int handle, int vol, int left, int right ){return 1;}
 int FX_SetPitch( int handle, int pitchoffset ){return 1;}
 int FX_SetFrequency( int handle, int frequency ){return 1;}
 
-int FX_PlayVOC( char *ptr, int pitchoffset, int vol, int left, int right,
+int FX_PlayVOC( uint8_t  *ptr, int pitchoffset, int vol, int left, int right,
                int priority, uint32_t callbackval ){return 1;}
-int FX_PlayLoopedVOC( char *ptr, int32_t loopstart, int32_t loopend,
+int FX_PlayLoopedVOC( uint8_t  *ptr, int32_t loopstart, int32_t loopend,
                      int pitchoffset, int vol, int left, int right, int priority,
                      uint32_t callbackval ){return 1;}
-int FX_PlayWAV( char *ptr, int pitchoffset, int vol, int left, int right,
+int FX_PlayWAV( uint8_t  *ptr, int pitchoffset, int vol, int left, int right,
                int priority, uint32_t callbackval ){return 1;}
-int FX_PlayLoopedWAV( char *ptr, int32_t loopstart, int32_t loopend,
+int FX_PlayLoopedWAV( uint8_t  *ptr, int32_t loopstart, int32_t loopend,
                      int pitchoffset, int vol, int left, int right, int priority,
                      uint32_t callbackval ){return 1;}
-int FX_PlayVOC3D( char *ptr, int pitchoffset, int angle, int distance,
+int FX_PlayVOC3D( uint8_t  *ptr, int pitchoffset, int angle, int distance,
                  int priority, uint32_t callbackval ){return 1;}
-int FX_PlayWAV3D( char *ptr, int pitchoffset, int angle, int distance,
+int FX_PlayWAV3D( uint8_t  *ptr, int pitchoffset, int angle, int distance,
                  int priority, uint32_t callbackval ){return 1;}
-int FX_PlayRaw( char *ptr, uint32_t length, unsigned rate,
+int FX_PlayRaw( uint8_t  *ptr, uint32_t length, unsigned rate,
                int pitchoffset, int vol, int left, int right, int priority,
                uint32_t callbackval ){return 1;}
-int FX_PlayLoopedRaw( char *ptr, uint32_t length, char *loopstart,
-                     char *loopend, unsigned rate, int pitchoffset, int vol, int left,
+int FX_PlayLoopedRaw( uint8_t  *ptr, uint32_t length, uint8_t  *loopstart,
+                     uint8_t  *loopend, unsigned rate, int pitchoffset, int vol, int left,
                      int right, int priority, uint32_t callbackval ){return 1;}
 int FX_Pan3D( int handle, int angle, int distance ){return 1;}
 int FX_SoundActive( int handle ){return 1;}
 int FX_SoundsPlaying( void ){return 0;}
 int FX_StopSound( int handle ){return 1;}
 int FX_StopAllSounds( void ){return 1;}
-int FX_StartDemandFeedPlayback( void ( *function )( char **ptr, uint32_t *length ),
+int FX_StartDemandFeedPlayback( void ( *function )( uint8_t  **ptr, uint32_t *length ),
                                int rate, int pitchoffset, int vol, int left, int right,
                                int priority, uint32_t callbackval ){return 1;}
-int  FX_StartRecording( int MixRate, void ( *function )( char *ptr, int length ) ){return 1;}
+int  FX_StartRecording( int MixRate, void ( *function )( uint8_t  *ptr, int length ) ){return 1;}
 void FX_StopRecord( void ){}
 
 
@@ -74,7 +74,7 @@ void FX_StopRecord( void ){}
 //Dummy music
 #include "audiolib/music.h"
 
-char *MUSIC_ErrorString(int ErrorNumber)
+uint8_t  *MUSIC_ErrorString(int ErrorNumber)
 {
 	return "";
 }

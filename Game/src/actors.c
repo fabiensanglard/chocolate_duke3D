@@ -27,7 +27,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 #include "duke3d.h"
 
 extern int32_t numenvsnds;
-char actor_tog;
+uint8_t  actor_tog;
 
 void updateinterpolations()  //Stick at beginning of domovethings
 {
@@ -406,7 +406,7 @@ void checkavailweapon( struct player_struct *p )
 int32_t ifsquished(short i, short p)
 {
     sectortype *sc;
-    char squishme;
+    uint8_t  squishme;
     int32_t floorceildist;
 
     if(PN == APLAYER && ud.clipping)
@@ -449,7 +449,7 @@ void hitradius( short i, int32_t  r, int32_t  hp1, int32_t  hp2, int32_t  hp3, i
     int32_t d, q, x1, y1;
     int32_t sectcnt, sectend, dasect, startwall, endwall, nextsect;
     short j,k,p,x,nextj,sect;
-    char statlist[] = {0,1,6,10,12,2,5};
+    uint8_t  statlist[] = {0,1,6,10,12,2,5};
     short *tempshort = (short *)tempbuf;
 
     s = &sprite[i];
@@ -627,7 +627,7 @@ int movesprite(short spritenum, int32_t xchange, int32_t ychange, int32_t zchang
 {
     int32_t daz,h, oldx, oldy;
     short retval, dasectnum, cd;
-    char bg;
+    uint8_t  bg;
 
     bg = badguy(&sprite[spritenum]);
 
@@ -773,7 +773,7 @@ void guts(spritetype *s,short gtype, short n, short p)
 {
     int32_t gutz,floorz;
     short i,a,j;
-    char sx,sy;
+    uint8_t  sx,sy;
     int8_t pal;
 
     if(badguy(s) && s->xrepeat < 16)
@@ -811,7 +811,7 @@ void gutsdir(spritetype *s,short gtype, short n, short p)
 {
     int32_t gutz,floorz;
     short i,a,j;
-    char sx,sy;
+    uint8_t  sx,sy;
 
     if(badguy(s) && s->xrepeat < 16)
         sx = sy = 8;
@@ -1097,7 +1097,7 @@ void movecyclers(void)
 {
     short q, j, x, t, s, *c;
     walltype *wal;
-    char cshade;
+    uint8_t  cshade;
 
     for(q=numcyclers-1;q>=0;q--)
     {
@@ -2796,7 +2796,7 @@ void moveweapons(void)
 
 void movetransports(void)
 {
-    char warpspriteto;
+    uint8_t  warpspriteto;
     short i, j, k, l, p, sect, sectlotag, nexti, nextj;
     int32_t ll,onfloorz,q;
 
@@ -5171,8 +5171,8 @@ void moveeffectors(void)   //STATNUM 3
 
                 if(s->owner == -1)
                 {
-                    sprintf((char*)tempbuf,"Could not find any locators for SE# 6 and 14 with a hitag of %ld.\n",t[3]);
-                    gameexit((char*)tempbuf);
+                    sprintf((uint8_t *)tempbuf,"Could not find any locators for SE# 6 and 14 with a hitag of %ld.\n",t[3]);
+                    gameexit((uint8_t *)tempbuf);
                 }
 
                 j = ldist(&sprite[s->owner],s);

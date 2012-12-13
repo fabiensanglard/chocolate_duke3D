@@ -81,7 +81,7 @@ int32 ScreenHeight = 480;
 int32 mouseSensitivity_X;
 int32 mouseSensitivity_Y;
 
-static char setupfilename[512];//={SETUPFILENAME};
+static uint8_t  setupfilename[512];//={SETUPFILENAME};
 static int32 scripthandle;
 static int32 setupread=0;
 /*
@@ -149,7 +149,7 @@ void CONFIG_GetSetupFilename( void )
 ===================
 */
 
-int32 CONFIG_FunctionNameToNum( char * func )
+int32 CONFIG_FunctionNameToNum( uint8_t  * func )
    {
    int32 i;
 
@@ -171,7 +171,7 @@ int32 CONFIG_FunctionNameToNum( char * func )
 ===================
 */
 
-char * CONFIG_FunctionNumToName( int32 func )
+uint8_t  * CONFIG_FunctionNumToName( int32 func )
 {
 	if (-1 < func && func < NUMGAMEFUNCTIONS)
 	{
@@ -192,7 +192,7 @@ char * CONFIG_FunctionNumToName( int32 func )
 */
 
 
-int32 CONFIG_AnalogNameToNum( char * func )
+int32 CONFIG_AnalogNameToNum( uint8_t  * func )
    {
 
    if (!stricmp(func,"analog_turning"))
@@ -295,8 +295,8 @@ void CONFIG_ReadKeys( void )
    int32 i;
    int32 numkeyentries;
    int32 function;
-   char keyname1[80];
-   char keyname2[80];
+   uint8_t  keyname1[80];
+   uint8_t  keyname2[80];
    kb_scancode key1,key2;
 
 	// set default keys in case duke3d.cfg was not found
@@ -356,8 +356,8 @@ void CONFIG_ReadKeys( void )
 void CONFIG_SetupMouse( int32 scripthandle )
    {
    int32 i;
-   char str[80];
-   char temp[80];
+   uint8_t  str[80];
+   uint8_t  temp[80];
    int32 function, scale;
 
    for (i=0;i<MAXMOUSEBUTTONS;i++)
@@ -424,8 +424,8 @@ void CONFIG_SetupMouse( int32 scripthandle )
 void CONFIG_SetupGamePad( int32 scripthandle )
    {
    int32 i;
-   char str[80];
-   char temp[80];
+   uint8_t  str[80];
+   uint8_t  temp[80];
    int32 function;
 
 
@@ -475,8 +475,8 @@ void CONFIG_SetupGamePad( int32 scripthandle )
 void CONFIG_SetupJoystick( int32 scripthandle )
 {
    int32 i, j;
-   char str[80];
-   char temp[80];
+   uint8_t  str[80];
+   uint8_t  temp[80];
    int32 function, deadzone;
    float scale;
 
@@ -554,9 +554,9 @@ void readsavenames(void)
 {
     int32_t dummy;
     short i;
-    char fn[] = "game_.sav";
+    uint8_t  fn[] = "game_.sav";
     FILE *fil;
-	char fullpathsavefilename[16];
+	uint8_t  fullpathsavefilename[16];
 
 
     for (i=0;i<10;i++)
@@ -605,7 +605,7 @@ void readsavenames(void)
 void CONFIG_ReadSetup( void )
 {
    int32 dummy;
-   char commmacro[] = COMMMACRO;
+   uint8_t  commmacro[] = COMMMACRO;
    FILE* setup_file_hdl;
 
    printf("CONFIG_ReadSetup...\n");
@@ -811,7 +811,7 @@ void CONFIG_ReadSetup( void )
 void CONFIG_WriteSetup( void )
    {
    int32 dummy, i;
-   char commmacro[] = COMMMACRO;
+   uint8_t  commmacro[] = COMMMACRO;
 
    if (!setupread) return;
 
@@ -857,15 +857,15 @@ void CONFIG_WriteSetup( void )
 	// FIX_00016: Build in Keyboard/mouse setup. Mouse now faster.
 	for(i=0; i<MAXMOUSEBUTTONS; i++)
 	{
-		sprintf((char*)tempbuf, "MouseButton%d", i);
-		SCRIPT_PutString(scripthandle, "Controls", (char*)tempbuf, 
+		sprintf((uint8_t *)tempbuf, "MouseButton%d", i);
+		SCRIPT_PutString(scripthandle, "Controls", (uint8_t *)tempbuf, 
 			(MouseMapping[i]!=-1)?CONFIG_FunctionNumToName(MouseMapping[i]):"");
 	}
 
 	for (i=0;i<MAXMOUSEAXES*2;i++)
 	{
-		sprintf((char*)tempbuf, "MouseDigitalAxes%ld_%d", i>>1, i&1);
-		SCRIPT_PutString(scripthandle, "Controls", (char*)tempbuf, 
+		sprintf((uint8_t *)tempbuf, "MouseDigitalAxes%ld_%d", i>>1, i&1);
+		SCRIPT_PutString(scripthandle, "Controls", (uint8_t *)tempbuf, 
 			(MouseDigitalAxeMapping[i>>1][i&1]!=-1)?CONFIG_FunctionNumToName(MouseDigitalAxeMapping[i>>1][i&1]):"");
 	}
 

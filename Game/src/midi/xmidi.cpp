@@ -83,7 +83,7 @@ inline void	Free(void *ptr)
 // The index is the MT32 Patch nubmer and the value is the GM Patch
 // This is only suitable for music that doesn'tdo timbre changes
 // XMIDIs that contain Timbre changes will not convert properly
-const char XMIDI::mt32asgm[128] = {
+const uint8_t  XMIDI::mt32asgm[128] = {
 	0,	// 0	Piano 1
 	1,	// 1	Piano 2
 	2,	// 2	Piano 3 (synth)
@@ -216,7 +216,7 @@ const char XMIDI::mt32asgm[128] = {
 
 // Same as above, except include patch changes
 // so GS instruments can be used
-const char XMIDI::mt32asgs[256] = {
+const uint8_t  XMIDI::mt32asgs[256] = {
 	0, 0,	// 0	Piano 1
 	1, 0,	// 1	Piano 2
 	2, 0,	// 2	Piano 3 (synth)
@@ -883,7 +883,7 @@ void XMIDI::AdjustTimings(uint32 ppqn)
 
 	//std::cout << "Max Polyphony: " << notes.GetMaxPolyphony() << std::endl;
 	static const uint8_t  tempo_buf[5] = { 0x51, 0x03, 0x07, 0xA1, 0x20 };
-	BufferDataSource ds((char *)tempo_buf, 5);
+	BufferDataSource ds((uint8_t  *)tempo_buf, 5);
 	current = list;
 	ConvertSystemMessage (0, 0xFF,&ds);
 }
@@ -1095,7 +1095,7 @@ int XMIDI::ConvertSystemMessage (const int time, const uint8_t  status, DataSour
 	
 	current->buffer = Malloc<uint8_t >(current->len);
 
-	source->read (reinterpret_cast<char *>(current->buffer), current->len);
+	source->read (reinterpret_cast<uint8_t  *>(current->buffer), current->len);
 
 	return i+current->len;
 }
@@ -1229,7 +1229,7 @@ int XMIDI::ExtractTracksFromXmi (DataSource *source)
 {
 	int				num = 0;
 	uint32			len = 0;
-	char			buf[32];
+	uint8_t 			buf[32];
 
 	first_state	fs;
 
@@ -1266,7 +1266,7 @@ int XMIDI::ExtractTracksFromXmi (DataSource *source)
 
 		// Add tempo
 		static const uint8_t  tempo_buf[5] = { 0x51, 0x03, 0x07, 0xA1, 0x20 };
-		BufferDataSource ds((char *)tempo_buf, 5);
+		BufferDataSource ds((uint8_t  *)tempo_buf, 5);
 		current = list;
 		ConvertSystemMessage (0, 0xFF,&ds);
 
@@ -1288,7 +1288,7 @@ int XMIDI::ExtractTracksFromMid (DataSource *source, const uint32 ppqn, const in
 {
 	int			num = 0;
 	uint32		len = 0;
-	char		buf[32];
+	uint8_t 		buf[32];
 	int			chan_mask = 0;
 
 	first_state	fs;
@@ -1345,7 +1345,7 @@ int XMIDI::ExtractTracks (DataSource *source)
 	uint32		len;
 	uint32		chunk_len;
 	int 		count;
-	char		buf[32];
+	uint8_t 		buf[32];
 
 	string s;
 	
@@ -1570,7 +1570,7 @@ int XMIDI::ExtractTracks (DataSource *source)
 //
 // XMIDIEventList stuff
 //
-int	XMIDIEventList::Write (const char *filename)
+int	XMIDIEventList::Write (const uint8_t  *filename)
 {
 //	FILE *file = fopen (filename, "wb"); // DARKE FIXME
 //	FileDataSource ds(file);

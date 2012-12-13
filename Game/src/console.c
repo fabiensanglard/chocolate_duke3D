@@ -16,19 +16,19 @@
 
 typedef struct console_element
 {
-    char text[MAX_CONSOLE_STRING_LENGTH];
+    uint8_t  text[MAX_CONSOLE_STRING_LENGTH];
     void* prev;
     void* next;
 }CONSOLEELEMENT;
 
 // Private member functions
-void CONSOLE_InsertUsedCommand(const char* szUsedCommand);
+void CONSOLE_InsertUsedCommand(const uint8_t * szUsedCommand);
 void CONSOLE_ClearUsedCommandList();
 void CONSOLE_RecalculateDirtyBuffer();
 
 // console argument tracker
 int argc;
-char argv[MAX_CVAR_ARGS][MAX_CONSOLE_STRING_LENGTH];
+uint8_t  argv[MAX_CVAR_ARGS][MAX_CONSOLE_STRING_LENGTH];
 // Console entries, prepending linked list
 CONSOLEELEMENT *console_buffer = NULL;
 // Current viewed setion of the console
@@ -39,7 +39,7 @@ CONSOLEELEMENT *console_used_command_list = NULL;
 CONSOLEELEMENT *console_used_command_list_current = NULL;
 
 // dirty buffer
-char dirty_buffer[MAX_CONSOLE_STRING_LENGTH];
+uint8_t  dirty_buffer[MAX_CONSOLE_STRING_LENGTH];
 
 // dirty buffer control vars
 int console_cursor_pos = 0; //without spaces
@@ -92,14 +92,14 @@ void CONSOLE_Term()
 void CONSOLE_ParseStartupScript()
 {
 	// FIX_00017: heavy autoexec.cfg not needed anymore.
-    char *sStartupScript = "startup.cfg";
+    uint8_t  *sStartupScript = "startup.cfg";
 
     FILE* fp = fopen(sStartupScript, "r");
 
     // If the file exists
     if(NULL != fp)
     {
-        char line[128];
+        uint8_t  line[128];
         memset(line, 0, 128);
 
         while(fgets(line ,128-1, fp) != NULL)
@@ -114,7 +114,7 @@ void CONSOLE_ParseStartupScript()
 
 void CONSOLE_HandleInput()
 {
-    char* lastKey;
+    uint8_t * lastKey;
     int tmp;
 
     if(g_CV_classic)
@@ -441,10 +441,10 @@ void CONSOLE_Render()
     }
 }
 
-void CONSOLE_ParseCommand(char* command)
+void CONSOLE_ParseCommand(uint8_t * command)
 {
-    char *cvar;
-    char *token;
+    uint8_t  *cvar;
+    uint8_t  *token;
     int i, numCvars;
     argc = 0;
 
@@ -486,7 +486,7 @@ void CONSOLE_ParseCommand(char* command)
 }
 
 
-void CONSOLE_InsertUsedCommand(const char* szUsedCommand)
+void CONSOLE_InsertUsedCommand(const uint8_t * szUsedCommand)
 {
     //create a new element in the list, and add it to the front
     CONSOLEELEMENT *pElement = (CONSOLEELEMENT*)malloc(sizeof(CONSOLEELEMENT));
@@ -558,11 +558,11 @@ void CONSOLE_RecalculateDirtyBuffer()
 }
 
 
-void CONSOLE_Printf(const char *newmsg, ...)
+void CONSOLE_Printf(const uint8_t  *newmsg, ...)
 {
     CONSOLEELEMENT *pElement;
     va_list		argptr;
-    char		msg[512];//[MAX_CONSOLE_STRING_LENGTH];
+    uint8_t 		msg[512];//[MAX_CONSOLE_STRING_LENGTH];
     va_start (argptr,newmsg);
     vsprintf (msg, newmsg, argptr);
     va_end (argptr);
@@ -608,7 +608,7 @@ int CONSOLE_GetArgc()
 }
 
 // Get the current list of args for this keyword
-char* CONSOLE_GetArgv(unsigned int var)
+uint8_t * CONSOLE_GetArgv(unsigned int var)
 {
     return argv[var];
 }

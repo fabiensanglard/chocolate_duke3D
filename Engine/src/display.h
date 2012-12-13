@@ -68,21 +68,21 @@
 
 /* set these in your _platform_init() implementation. */
 extern int _argc;
-extern char **_argv;
+extern uint8_t  **_argv;
 
 /* !!! gads, look at all the namespace polution... */
 extern int32_t xres, yres, bytesperline, imageSize, maxpages;
-extern char *screen, vesachecked;
+extern uint8_t  *screen, vesachecked;
 extern int32_t buffermode, origbuffermode, linearmode;
-extern char permanentupdate, vgacompatible;
-extern char moustat;
+extern uint8_t  permanentupdate, vgacompatible;
+extern uint8_t  moustat;
 extern int32_t *horizlookup, *horizlookup2, horizycent;
 extern int32_t oxdimen, oviewingrange, oxyaspect;
 extern int32_t curbrightness;
 extern int32_t qsetmode;
 extern int32_t frameplace, frameoffset, pageoffset, ydim16;
-extern char textfont[1024], smalltextfont[1024];
-extern char pow2char[8];
+extern uint8_t  textfont[1024], smalltextfont[1024];
+extern uint8_t  pow2char[8];
 extern volatile int32_t stereomode, visualpage, activepage, whiteband, blackband;
 extern int32_t searchx, searchy;
 extern int32_t wx1, wy1, wx2, wy2, ydimen;
@@ -101,7 +101,7 @@ extern int32_t ScreenMode;
 
 
 /* these need to be implemented by YOUR driver. */
-void _platform_init(int argc, char **argv, const char *title, const char *icon);
+void _platform_init(int argc, uint8_t  **argv, const uint8_t  *title, const uint8_t  *icon);
 void _idle(void);
 void _handle_events(void);
 void *_getVideoBase(void);
@@ -125,8 +125,8 @@ int _joystick_button(int button);
  *  and global variables that need to get set up correctly.
  */
 void getvalidvesamodes(void);
-int VBE_getPalette(int32_t start, int32_t num, char *dapal);
-int VBE_setPalette(int32_t start, int32_t num, char *palettebuffer);
+int VBE_getPalette(int32_t start, int32_t num, uint8_t  *dapal);
+int VBE_setPalette(int32_t start, int32_t num, uint8_t  *palettebuffer);
 int setvesa(int32_t x, int32_t y);
 void uninitvesa(void);
 void setvmode(int mode);
@@ -156,11 +156,11 @@ void uninittimer(void);
 void __interrupt __far timerhandler(void);
 
 /* resolution inits. sdl_driver.c ... */
-int32_t _setgamemode(char davidoption, int32_t daxdim, int32_t daydim);
+int32_t _setgamemode(uint8_t  davidoption, int32_t daxdim, int32_t daydim);
 
 uint32_t getticks();
 
-void drawline16(int32_t XStart, int32_t YStart, int32_t XEnd, int32_t YEnd, char Color);
+void drawline16(int32_t XStart, int32_t YStart, int32_t XEnd, int32_t YEnd, uint8_t  Color);
 void setcolor16(int i1);
 
 int using_opengl(void);

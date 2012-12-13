@@ -37,7 +37,7 @@ extern OSErr	CPSSetFrontProcess( CPSProcessSerNum *psn);
 #endif /* SDL_USE_CPS */
 
 static int    gArgc;
-static char  **gArgv;
+static uint8_t   **gArgv;
 static BOOL   gFinderLaunch;
 static BOOL   gCalledAppMainline = FALSE;
 
@@ -86,7 +86,7 @@ static NSString *getApplicationName(void)
 {
     if (shouldChdir)
     {
-        char parentdir[MAXPATHLEN];
+        uint8_t  parentdir[MAXPATHLEN];
 		CFURLRef url = CFBundleCopyBundleURL(CFBundleGetMainBundle());
 		CFURLRef url2 = CFURLCreateCopyDeletingLastPathComponent(0, url);
 		if (CFURLGetFileSystemRepresentation(url2, true, (UInt8 *)parentdir, MAXPATHLEN)) {
@@ -197,7 +197,7 @@ static void setupWindowMenu(void)
 }
 
 /* Replacement for NSApplicationMain */
-static void CustomApplicationMain (int argc, char **argv)
+static void CustomApplicationMain (int argc, uint8_t  **argv)
 {
     NSAutoreleasePool	*pool = [[NSAutoreleasePool alloc] init];
     SDLMain				*sdlMain;
@@ -252,10 +252,10 @@ static void CustomApplicationMain (int argc, char **argv)
  */
 - (BOOL)application:(NSApplication *)theApplication openFile:(NSString *)filename
 {
-    const char *temparg;
+    const uint8_t  *temparg;
     size_t arglen;
-    char *arg;
-    char **newargv;
+    uint8_t  *arg;
+    uint8_t  **newargv;
     
     if (!gFinderLaunch)  /* MacOS is passing command line args. */
         return FALSE;
@@ -265,11 +265,11 @@ static void CustomApplicationMain (int argc, char **argv)
     
     temparg = [filename UTF8String];
     arglen = SDL_strlen(temparg) + 1;
-    arg = (char *) SDL_malloc(arglen);
+    arg = (uint8_t  *) SDL_malloc(arglen);
     if (arg == NULL)
         return FALSE;
     
-    newargv = (char **) realloc(gArgv, sizeof (char *) * (gArgc + 2));
+    newargv = (uint8_t  **) realloc(gArgv, sizeof (uint8_t  *) * (gArgc + 2));
     if (newargv == NULL)
     {
         SDL_free(arg);
@@ -354,12 +354,12 @@ static void CustomApplicationMain (int argc, char **argv)
 
 
 /* Main entry point to executable - should *not* be SDL_main! */
-int main (int argc, char **argv)
+int main (int argc, char  **argv)
 {
     /* Copy the arguments into a global variable */
     /* This is passed if we are launched by double-clicking */
     if ( argc >= 2 && strncmp (argv[1], "-psn", 4) == 0 ) {
-        gArgv = (char **) SDL_malloc(sizeof (char *) * 2);
+        gArgv = (uint8_t  **) SDL_malloc(sizeof (uint8_t  *) * 2);
         gArgv[0] = argv[0];
         gArgv[1] = NULL;
         gArgc = 1;
@@ -367,7 +367,7 @@ int main (int argc, char **argv)
     } else {
         int i;
         gArgc = argc;
-        gArgv = (char **) SDL_malloc(sizeof (char *) * (argc+1));
+        gArgv = (uint8_t  **) SDL_malloc(sizeof (uint8_t  *) * (argc+1));
         for (i = 0; i <= argc; i++)
             gArgv[i] = argv[i];
         gFinderLaunch = NO;

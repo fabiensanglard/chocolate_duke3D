@@ -43,25 +43,25 @@ extern  int16    _argc;
 #else
 extern  int32    _argc;
 #endif
-extern  char **  _argv;
+extern  uint8_t  **  _argv;
 
 void RegisterShutdownFunction( void (* shutdown) (void) );
-void   Error (int errorType, char *error, ...);
+void   Error (int errorType, uint8_t  *error, ...);
 
-char   CheckParm (char *check);
+uint8_t    CheckParm (uint8_t  *check);
 
 void   *SafeMalloc (int32 size);
 int32  SafeMallocSize (void * ptr);
 void   SafeFree (void * ptr);
 void   SafeRealloc (void ** ptr, int32 newsize);
-int32  ParseHex (char *hex);
-int32  ParseNum (char *str);
+int32  ParseHex (uint8_t  *hex);
+int32  ParseNum (uint8_t  *str);
 int16  MotoShort (int16 l);
 int16  IntelShort (int16 l);
 int32_t  Motoint32_t (int32_t l);
 int32_t  Intelint32_t (int32_t l);
 
-void HeapSort(char * base, int32 nel, int32 width, int32 (*compare)(), void (*switcher)());
+void HeapSort(uint8_t  * base, int32 nel, int32 width, int32 (*compare)(), void (*switcher)());
 
 #ifdef __cplusplus
 };

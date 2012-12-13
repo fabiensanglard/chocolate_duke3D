@@ -7,7 +7,7 @@ the library may clean up any used resources.
 i.e.
 
 int 
-main (int argc, char ** argv) 
+main (int argc, uint8_t  ** argv) 
 {
     if (enet_initialize () != 0)
     {

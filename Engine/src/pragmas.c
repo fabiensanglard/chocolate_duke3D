@@ -17,12 +17,12 @@ void clearbuf(void *d, int32_t c, int32_t a)
 
 void clearbufbyte(void *D, int32_t c, int32_t a)
 { // Cringe City
-	char *p = (char*)D;
+	uint8_t  *p = (uint8_t *)D;
 	int32_t m[4] = { 0xffl,0xff00l,0xff0000l,0xff000000l };
 	int32_t n[4] = { 0,8,16,24 };
 	int32_t z=0;
 	while ((c--) > 0) {
-		*(p++) = (char)((a & m[z])>>n[z]);
+		*(p++) = (uint8_t )((a & m[z])>>n[z]);
 		z=(z+1)&3;
 	}
 }
@@ -35,13 +35,13 @@ void copybuf(void *s, void *d, int32_t c)
 
 void copybufbyte(void *S, void *D, int32_t c)
 {
-	char *p = (char*)S, *q = (char*)D;
+	uint8_t  *p = (uint8_t *)S, *q = (uint8_t *)D;
 	while((c--) > 0) *(q++) = *(p++);
 }
 
 void copybufreverse(void *S, void *D, int32_t c)
 {
-	char *p = (char*)S, *q = (char*)D;
+	uint8_t  *p = (uint8_t *)S, *q = (uint8_t *)D;
 	while((c--) > 0) *(q++) = *(p--);
 }
 

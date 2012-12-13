@@ -42,7 +42,7 @@
 
 int32_t stereowidth = 23040, stereopixelwidth = 28, ostereopixelwidth = -1;
 volatile int32_t stereomode = 0, visualpage, activepage, whiteband, blackband;
-volatile char oa1, o3c2, ortca, ortcb, overtbits, laststereoint;
+volatile uint8_t  oa1, o3c2, ortca, ortcb, overtbits, laststereoint;
 
 #include "display.h"
 
@@ -103,7 +103,7 @@ static uint32_t  distrecip[16384];
 #endif
 
 /* used to be static. --ryan. */
-char moustat = 0;
+uint8_t  moustat = 0;
 
 int32_t transarea = 0, totalarea = 0, beforedrawrooms = 1;
 
@@ -114,7 +114,7 @@ int32_t oxdimen = -1, oviewingrange = -1, oxyaspect = -1;
 int32_t curbrightness = 0;
 
 	/* Textured Map variables */
-static char globalpolytype;
+static uint8_t  globalpolytype;
 static short *dotp1[MAXYDIM], *dotp2[MAXYDIM];
 
 static uint8_t  tempbuf[MAXWALLS];
@@ -128,8 +128,8 @@ int32_t slopalookup[16384];
  */
 uint8_t  permanentlock = 255;
 int32_t artversion, mapversion;
-char *pic = NULL;
-char picsiz[MAXTILES], tilefilenum[MAXTILES];
+uint8_t  *pic = NULL;
+uint8_t  picsiz[MAXTILES], tilefilenum[MAXTILES];
 int32_t lastageclock;
 int32_t tilefileoffs[MAXTILES];
 
@@ -137,7 +137,7 @@ int32_t artsize = 0, cachesize = 0;
 
 static short radarang[1280], radarang2[MAXXDIM+1];
 static unsigned short sqrtable[4096], shlookup[4096+256];
-char pow2char[8] = {1,2,4,8,16,32,64,-128};
+uint8_t  pow2char[8] = {1,2,4,8,16,32,64,-128};
 int32_t pow2long[32] =
 {
 	1L,2L,4L,8L,
@@ -151,7 +151,7 @@ int32_t pow2long[32] =
 };
 int32_t reciptable[2048], fpuasm;
 
-char kensmessage[128];
+uint8_t  kensmessage[128];
 
 
 
@@ -172,8 +172,8 @@ char kensmessage[128];
 #define SYM_dmval      "dmval"
 #endif
 
-char britable[16][64];
-char textfont[1024], smalltextfont[1024];
+uint8_t  britable[16][64];
+uint8_t  textfont[1024], smalltextfont[1024];
 
 static int32_t xb1[MAXWALLSB], yb1[MAXWALLSB], xb2[MAXWALLSB], yb2[MAXWALLSB];
 static int32_t rx1[MAXWALLSB], ry1[MAXWALLSB], rx2[MAXWALLSB], ry2[MAXWALLSB];
@@ -183,7 +183,7 @@ static short bunchfirst[MAXWALLSB], bunchlast[MAXWALLSB];
 
 static short smost[MAXYSAVES], smostcnt;
 static short smoststart[MAXWALLSB];
-static char smostwalltype[MAXWALLSB];
+static uint8_t  smostwalltype[MAXWALLSB];
 static int32_t smostwall[MAXWALLSB], smostwallcnt = -1L;
 
 static short maskwall[MAXWALLSB], maskwallcnt;
@@ -212,16 +212,16 @@ int32_t globalposx, globalposy, globalposz, globalhoriz;
 short globalang, globalcursectnum;
 int32_t globalpal, cosglobalang, singlobalang;
 int32_t cosviewingrangeglobalang, sinviewingrangeglobalang;
-char *globalpalwritten;
+uint8_t  *globalpalwritten;
 int32_t globaluclip, globaldclip, globvis = 0;
 int32_t globalvisibility, globalhisibility, globalpisibility, globalcisibility;
-char globparaceilclip, globparaflorclip;
+uint8_t  globparaceilclip, globparaflorclip;
 
 int32_t xyaspect, viewingrangerecip;
 
 int32_t asm1, asm2, asm3, asm4;
 int32_t vplce[4], vince[4], palookupoffse[4], bufplce[4];
-char globalxshift, globalyshift;
+uint8_t  globalxshift, globalyshift;
 int32_t globalxpanning, globalypanning, globalshade;
 short globalpicnum, globalshiftval;
 int32_t globalzd, globalbufplc, globalyscale, globalorientation;
@@ -232,20 +232,20 @@ int32_t globalx, globaly, globalz;
 // sectorBorder is the stack and sectorbordercnt is the stack counter.
 static short sectorborder[256], sectorbordercnt;
 
-static char tablesloaded = 0;
+static uint8_t  tablesloaded = 0;
 int32_t pageoffset, ydim16, qsetmode = 0;
 int32_t startposx, startposy, startposz;
 short startang, startsectnum;
 short pointhighlight, linehighlight, highlightcnt;
 static int32_t lastx[MAXYDIM];
-char *transluc = NULL, paletteloaded = 0;
+uint8_t  *transluc = NULL, paletteloaded = 0;
 
 #define FASTPALGRIDSIZ 8
 static int32_t rdist[129], gdist[129], bdist[129];
-static char colhere[((FASTPALGRIDSIZ+2)*(FASTPALGRIDSIZ+2)*(FASTPALGRIDSIZ+2))>>3];
-static char colhead[(FASTPALGRIDSIZ+2)*(FASTPALGRIDSIZ+2)*(FASTPALGRIDSIZ+2)];
+static uint8_t  colhere[((FASTPALGRIDSIZ+2)*(FASTPALGRIDSIZ+2)*(FASTPALGRIDSIZ+2))>>3];
+static uint8_t  colhead[(FASTPALGRIDSIZ+2)*(FASTPALGRIDSIZ+2)*(FASTPALGRIDSIZ+2)];
 static int32_t colnext[256];
-static char coldist[8] = {0,1,2,3,4,3,2,1};
+static uint8_t  coldist[8] = {0,1,2,3,4,3,2,1};
 static int32_t colscan[27];
 
 static short clipnum, hitwalls[4];
@@ -274,10 +274,10 @@ short searchit;
 int32_t searchx = -1, searchy;                     /* search input  */
 short searchsector, searchwall, searchstat;     /* search output */
 
-static char artfilename[20];
+static uint8_t  artfilename[20];
 static int32_t numtilefiles, artfil = -1, artfilnum, artfilplc;
 
-static char inpreparemirror = 0;
+static uint8_t  inpreparemirror = 0;
 static int32_t mirrorsx1, mirrorsy1, mirrorsx2, mirrorsy2;
 
 int32_t totalclocklock;
@@ -1020,7 +1020,7 @@ static void wallscan(int32_t x1, int32_t x2,
 {
 	int32_t i, x, xnice, ynice, fpalookup;
 	int32_t y1ve[4], y2ve[4], u4, d4, z, tsizx, tsizy;
-	char bad;
+	uint8_t  bad;
 
 	tsizx = tilesizx[globalpicnum];
 	tsizy = tilesizy[globalpicnum];
@@ -1162,7 +1162,7 @@ static void maskwallscan(int32_t x1, int32_t x2,
 {
 	int32_t i, x, startx, xnice, ynice, fpalookup;
 	int32_t y1ve[4], y2ve[4], u4, d4, dax, z, p, tsizx, tsizy;
-	char bad;
+	uint8_t  bad;
 
 	tsizx = tilesizx[globalpicnum];
 	tsizy = tilesizy[globalpicnum];
@@ -1286,7 +1286,7 @@ static void maskwallscan(int32_t x1, int32_t x2,
 
 /* renders parallaxed skies/floors  --ryan. */
 static void parascan(int32_t dax1, int32_t dax2, int32_t sectnum,
-                     char dastat, int32_t bunch)
+                     uint8_t  dastat, int32_t bunch)
 {
 	sectortype *sec;
 	int32_t j, k, l, m, n, x, z, wallnum, nextsectnum, globalhorizbak;
@@ -1426,7 +1426,7 @@ static void parascan(int32_t dax1, int32_t dax2, int32_t sectnum,
 
 
 #define BITSOFPRECISION 3  /* Don't forget to change this in A.ASM also! */
-static void grouscan (int32_t dax1, int32_t dax2, int32_t sectnum, char dastat)
+static void grouscan (int32_t dax1, int32_t dax2, int32_t sectnum, uint8_t  dastat)
 {
 	int32_t i, j, l, x, y, dx, dy, wx, wy, y1, y2, daz;
 	int32_t daslope, dasqr;
@@ -1659,7 +1659,7 @@ static int owallmost(short *mostbuf, int32_t w, int32_t z)
 }
 
 
-static int wallmost(short *mostbuf, int32_t w, int32_t sectnum, char dastat)
+static int wallmost(short *mostbuf, int32_t w, int32_t sectnum, uint8_t  dastat)
 {
 	int32_t bad, i, j, t, y, z, inty, intz, xcross, yinc, fw;
 	int32_t x1, y1, z1, x2, y2, z2, xv, yv, dx, dy, dasqr, oz1, oz2;
@@ -1818,7 +1818,7 @@ static void drawalls(int32_t bunch)
 	int32_t i, x, x1, x2, cz[5], fz[5];
 	int32_t z, wallnum, sectnum, nextsectnum;
 	int32_t startsmostwallcnt, startsmostcnt, gotswall;
-	char andwstat1, andwstat2;
+	uint8_t  andwstat1, andwstat2;
 
 	z = bunchfirst[bunch];
 	sectnum = thesector[z]; sec = &sector[sectnum];
@@ -1826,8 +1826,8 @@ static void drawalls(int32_t bunch)
 	andwstat1 = 0xff; andwstat2 = 0xff;
 	for(;z>=0;z=p2[z])  /* uplc/dplc calculation */
 	{
-		andwstat1 &= wallmost(uplc,z,sectnum,(char)0);
-		andwstat2 &= wallmost(dplc,z,sectnum,(char)1);
+		andwstat1 &= wallmost(uplc,z,sectnum,(uint8_t )0);
+		andwstat2 &= wallmost(dplc,z,sectnum,(uint8_t )1);
 	}
 
 	if ((andwstat1&3) != 3)     /* draw ceilings */
@@ -1913,7 +1913,7 @@ static void drawalls(int32_t bunch)
 				}
 				else
 				{
-					wallmost(dwall,z,nextsectnum,(char)0);
+					wallmost(dwall,z,nextsectnum,(uint8_t )0);
 					if ((cz[2] > fz[0]) || (cz[3] > fz[1]))
 						for(i=x1;i<=x2;i++) if (dwall[i] > dplc[i]) dwall[i] = dplc[i];
 
@@ -2001,7 +2001,7 @@ static void drawalls(int32_t bunch)
 				}
 				else
 				{
-					wallmost(uwall,z,nextsectnum,(char)1);
+					wallmost(uwall,z,nextsectnum,(uint8_t )1);
 					if ((fz[2] < cz[0]) || (fz[3] < cz[1]))
 						for(i=x1;i<=x2;i++) if (uwall[i] < uplc[i]) uwall[i] = uplc[i];
 
@@ -2567,7 +2567,7 @@ static void transmaskwallscan(int32_t x1, int32_t x2)
 	faketimerhandler();
 }
 
-int loadboard(char *filename, int32_t *daposx, int32_t *daposy,
+int loadboard(uint8_t  *filename, int32_t *daposx, int32_t *daposy,
               int32_t *daposz, short *daang, short *dacursectnum)
 {
     int x;
@@ -2581,7 +2581,7 @@ int loadboard(char *filename, int32_t *daposx, int32_t *daposy,
 	// FIX_00058: Save/load game crash in both single and multiplayer
 	// We have to reset those arrays since the same
 	// arrays are used as temporary space in the 
-	// compilecons() function like "label = (char *)&sprite[0];"
+	// compilecons() function like "label = (uint8_t  *)&sprite[0];"
 	// to save memory space I guess. 
 	// Not reseting the array will leave dumps fooling 
 	// the function saveplayer(), eg at if(actorscrptr[PN] == 0)
@@ -2619,18 +2619,18 @@ int loadboard(char *filename, int32_t *daposx, int32_t *daposy,
 		kread16(fil,&sect->floorstat);
 		kread16(fil,&sect->ceilingpicnum);
 		kread16(fil,&sect->ceilingheinum);
-        kread8(fil,(char*)&sect->ceilingshade);
-        kread8(fil,(char*)&sect->ceilingpal);
-        kread8(fil,(char*)&sect->ceilingxpanning);
-        kread8(fil,(char*)&sect->ceilingypanning);
+        kread8(fil,(uint8_t *)&sect->ceilingshade);
+        kread8(fil,(uint8_t *)&sect->ceilingpal);
+        kread8(fil,(uint8_t *)&sect->ceilingxpanning);
+        kread8(fil,(uint8_t *)&sect->ceilingypanning);
 		kread16(fil,&sect->floorpicnum);
 		kread16(fil,&sect->floorheinum);
-        kread8(fil,(char*)&sect->floorshade);
-        kread8(fil,(char*)&sect->floorpal);
-        kread8(fil,(char*)&sect->floorxpanning);
-        kread8(fil,(char*)&sect->floorypanning);
-        kread8(fil,(char*)&sect->visibility);
-        kread8(fil,(char*)&sect->filler);
+        kread8(fil,(uint8_t *)&sect->floorshade);
+        kread8(fil,(uint8_t *)&sect->floorpal);
+        kread8(fil,(uint8_t *)&sect->floorxpanning);
+        kread8(fil,(uint8_t *)&sect->floorypanning);
+        kread8(fil,(uint8_t *)&sect->visibility);
+        kread8(fil,(uint8_t *)&sect->filler);
 		kread16(fil,&sect->lotag);
 		kread16(fil,&sect->hitag);
 		kread16(fil,&sect->extra);
@@ -2647,7 +2647,7 @@ int loadboard(char *filename, int32_t *daposx, int32_t *daposy,
 		kread16(fil,&w->cstat);
 		kread16(fil,&w->picnum);
 		kread16(fil,&w->overpicnum);
-		 kread8(fil,(char*)&w->shade);
+		 kread8(fil,(uint8_t *)&w->shade);
 		 kread8(fil,&w->pal);
 		 kread8(fil,&w->xrepeat);
 		 kread8(fil,&w->yrepeat);
@@ -2666,14 +2666,14 @@ int loadboard(char *filename, int32_t *daposx, int32_t *daposy,
 		kread32(fil,&s->z);
 		kread16(fil,&s->cstat);
 		kread16(fil,&s->picnum);
-		 kread8(fil,(char*)&s->shade);
-		 kread8(fil,(char*)&s->pal);
- 		 kread8(fil,(char*)&s->clipdist);
-		 kread8(fil,(char*)&s->filler);
-		 kread8(fil,(char*)&s->xrepeat);
-		 kread8(fil,(char*)&s->yrepeat);
-		 kread8(fil,(char*)&s->xoffset);
-		 kread8(fil,(char*)&s->yoffset);
+		 kread8(fil,(uint8_t *)&s->shade);
+		 kread8(fil,(uint8_t *)&s->pal);
+ 		 kread8(fil,(uint8_t *)&s->clipdist);
+		 kread8(fil,(uint8_t *)&s->filler);
+		 kread8(fil,(uint8_t *)&s->xrepeat);
+		 kread8(fil,(uint8_t *)&s->yrepeat);
+		 kread8(fil,(uint8_t *)&s->xoffset);
+		 kread8(fil,(uint8_t *)&s->yoffset);
 		kread16(fil,&s->sectnum);
 		kread16(fil,&s->statnum);
 		kread16(fil,&s->ang);
@@ -2697,9 +2697,9 @@ int loadboard(char *filename, int32_t *daposx, int32_t *daposy,
 
 	// FIX_00009: Show map CRC and GRP file version of each player in case of Out Of Synch
 
-	mapCRC = crc16((char*)sector, numsectors*sizeof(sectortype));
-	mapCRC += crc16((char*)wall, numwalls*sizeof(walltype));
-	mapCRC += crc16((char*)sprite, numsprites*sizeof(spritetype));
+	mapCRC = crc16((uint8_t *)sector, numsectors*sizeof(sectortype));
+	mapCRC += crc16((uint8_t *)wall, numwalls*sizeof(walltype));
+	mapCRC += crc16((uint8_t *)sprite, numsprites*sizeof(spritetype));
 
 	return(0);
 }
@@ -2717,13 +2717,13 @@ static void write16(int f, short val)
     write(f, &val, 2);
 }
 
-static void write8(int f, char val)
+static void write8(int f, uint8_t  val)
 {
     write(f, &val, 1);
 }
 
 
-int saveboard(char *filename, int32_t *daposx, int32_t *daposy,
+int saveboard(uint8_t  *filename, int32_t *daposx, int32_t *daposy,
               int32_t *daposz, short *daang, short *dacursectnum)
 {
 	int fil;
@@ -2902,7 +2902,7 @@ static void loadtables(void)
 static void initfastcolorlookup(int32_t rscale, int32_t gscale, int32_t bscale)
 {
 	int32_t i, j, x, y, z;
-	char *pal1;
+	uint8_t  *pal1;
 
 	j = 0;
 	for(i=64;i>=0;i--)
@@ -2917,7 +2917,7 @@ static void initfastcolorlookup(int32_t rscale, int32_t gscale, int32_t bscale)
 	clearbufbyte((void *)FP_OFF(colhere),sizeof(colhere),0L);
 	clearbufbyte((void *)FP_OFF(colhead),sizeof(colhead),0L);
 
-	pal1 = (char *)&palette[768-3];
+	pal1 = (uint8_t  *)&palette[768-3];
 	for(i=255;i>=0;i--,pal1-=3)
 	{
 		j = (pal1[0]>>3)*FASTPALGRIDSIZ*FASTPALGRIDSIZ+(pal1[1]>>3)*FASTPALGRIDSIZ+(pal1[2]>>3)+FASTPALGRIDSIZ*FASTPALGRIDSIZ+FASTPALGRIDSIZ+1;
@@ -2938,7 +2938,7 @@ static void initfastcolorlookup(int32_t rscale, int32_t gscale, int32_t bscale)
 static void loadpalette(void)
 {
 	int32_t i, j, k, dist, fil;
-	char *ptr;
+	uint8_t  *ptr;
 
 	if (paletteloaded != 0) return;
 	if ((fil = TCkopen4load("palette.dat",0)) == -1) return;
@@ -2946,9 +2946,9 @@ static void loadpalette(void)
 	kread(fil,palette,768);
 	kread16(fil,&numpalookups);
 
-	if ((palookup[0] = (char *)kkmalloc(numpalookups<<8)) == NULL)
+	if ((palookup[0] = (uint8_t  *)kkmalloc(numpalookups<<8)) == NULL)
 		allocache((int32_t *)&palookup[0],numpalookups<<8,&permanentlock);
-	if ((transluc = (char *)kkmalloc(65536L)) == NULL)
+	if ((transluc = (uint8_t  *)kkmalloc(65536L)) == NULL)
 		allocache((int32_t *)&transluc,65536,&permanentlock);
 
 	globalpalwritten = palookup[0]; globalpal = 0;
@@ -2976,9 +2976,9 @@ static void loadpalette(void)
 				for(i=0;i<256;i++)
 				{
 					dist = palette[i*3]*3+palette[i*3+1]*5+palette[i*3+2]*2;
-					ptr = (char *)(FP_OFF(palookup[k])+i);
+					ptr = (uint8_t  *)(FP_OFF(palookup[k])+i);
 					for(j=0;j<32;j++)
-						ptr[j<<8] = (char)min(max(mulscale10(dist,32-j),0),15);
+						ptr[j<<8] = (uint8_t )min(max(mulscale10(dist,32-j),0),15);
 				}
 
 		if (transluc != NULL)
@@ -2992,7 +2992,7 @@ static void loadpalette(void)
 
 
 
-int setgamemode(char davidoption, int32_t daxdim, int32_t daydim)
+int setgamemode(uint8_t  davidoption, int32_t daxdim, int32_t daydim)
 {
 	strcpy(kensmessage,"!!!! BUILD engine&tools programmed by Ken Silverman of E.G. RI.  (c) Copyright 1995 Ken Silverman.  Summary:  BUILD = Ken. !!!!");
 	if (getkensmessagecrc(FP_OFF(kensmessage)) != 0x56c764d4)
@@ -3140,21 +3140,21 @@ static int clippoly4(int32_t cx1, int32_t cy1, int32_t cx2, int32_t cy2)
 
 
 static void dorotatesprite (int32_t sx, int32_t sy, int32_t z, short a, short picnum,
-	int8_t dashade, uint8_t  dapalnum, char dastat, int32_t cx1,
+	int8_t dashade, uint8_t  dapalnum, uint8_t  dastat, int32_t cx1,
 	int32_t cy1, int32_t cx2, int32_t cy2)
 {
 	int32_t cosang, sinang, v, nextv, dax1, dax2, oy, bx, by, ny1, ny2;
 	int32_t i, x, y, x1, y1, x2, y2, gx1, gy1, p, bufplc, palookupoffs;
 	int32_t xsiz, ysiz, xoff, yoff, npoints, yplc, yinc, lx, rx, xx, xend;
 	int32_t xv, yv, xv2, yv2, obuffermode=0, qlinemode=0, y1ve[4], y2ve[4], u4, d4;
-	char bad;
+	uint8_t  bad;
 
 	xsiz = tilesizx[picnum]; ysiz = tilesizy[picnum];
 	if (dastat&16) { xoff = 0; yoff = 0; }
 	else
 	{
-		xoff = (long)((signed char)((picanm[picnum]>>8)&255))+(xsiz>>1);
-		yoff = (long)((signed char)((picanm[picnum]>>16)&255))+(ysiz>>1);
+		xoff = (int32_t)((int8_t )((picanm[picnum]>>8)&255))+(xsiz>>1);
+		yoff = (int32_t)((int8_t )((picanm[picnum]>>16)&255))+(ysiz>>1);
 	}
 
 	if (dastat&4) yoff = ysiz-yoff;
@@ -3541,7 +3541,7 @@ void nextpage(void)
 	/* int32_t j,k; */
 
 #if 0
-	char snotbuf[32];
+	uint8_t  snotbuf[32];
 	j = 0; k = 0;
 	for(i=0;i<4096;i++)
 	   if (waloff[i] != 0)
@@ -3597,7 +3597,7 @@ void nextpage(void)
 
 void loadtile(short tilenume)
 {
-	char *ptr;
+	uint8_t  *ptr;
 	int32_t i, dasiz;
 
 	if ((unsigned)tilenume >= (unsigned)MAXTILES) return;
@@ -3633,7 +3633,7 @@ void loadtile(short tilenume)
 		klseek(artfil,tilefileoffs[tilenume]-artfilplc,SEEK_CUR);
 		faketimerhandler();
 	}
-	ptr = (char *)waloff[tilenume];
+	ptr = (uint8_t  *)waloff[tilenume];
 	kread(artfil,ptr,dasiz);
 	faketimerhandler();
 	artfilplc = tilefileoffs[tilenume]+dasiz;
@@ -3657,19 +3657,19 @@ int allocatepermanenttile(short tilenume, int32_t xsiz, int32_t ysiz)
 	picanm[tilenume] = 0;
 
 	j = 15; while ((j > 1) && (pow2long[j] > xsiz)) j--;
-	picsiz[tilenume] = ((char)j);
+	picsiz[tilenume] = ((uint8_t )j);
 	j = 15; while ((j > 1) && (pow2long[j] > ysiz)) j--;
-	picsiz[tilenume] += ((char)(j<<4));
+	picsiz[tilenume] += ((uint8_t )(j<<4));
 
 	return(waloff[tilenume]);
 }
 
 
-int loadpics(char *filename, char* gamedir)
+int loadpics(uint8_t  *filename, uint8_t * gamedir)
 {
 	int32_t offscount, localtilestart, localtileend, dasiz;
 	short fil, i, j, k;
-	//char fullpathartfilename[512];
+	//uint8_t  fullpathartfilename[512];
 
 	strcpy(artfilename,filename);
 
@@ -3753,7 +3753,7 @@ int loadpics(char *filename, char* gamedir)
 	/* try dpmi_DETERMINEMAXREALALLOC! */
 
 	cachesize = max(artsize,1048576);
-	while ((pic = (char *)kkmalloc(cachesize)) == NULL)
+	while ((pic = (uint8_t  *)kkmalloc(cachesize)) == NULL)
 	{
 		cachesize -= 65536L;
 		if (cachesize < 65536) return(-1);
@@ -3764,10 +3764,10 @@ int loadpics(char *filename, char* gamedir)
 	{
 		j = 15;
 		while ((j > 1) && (pow2long[j] > tilesizx[i])) j--;
-		picsiz[i] = ((char)j);
+		picsiz[i] = ((uint8_t )j);
 		j = 15;
 		while ((j > 1) && (pow2long[j] > tilesizy[i])) j--;
-		picsiz[i] += ((char)(j<<4));
+		picsiz[i] += ((uint8_t )(j<<4));
 	}
 
 	artfil = -1;
@@ -3778,10 +3778,10 @@ int loadpics(char *filename, char* gamedir)
 }
 
 #ifdef SUPERBUILD
-void qloadkvx(int32_t voxindex, char *filename)
+void qloadkvx(int32_t voxindex, uint8_t  *filename)
 {
 	int32_t i, fil, dasiz, lengcnt, lengtot;
-	char *ptr;
+	uint8_t  *ptr;
 
 	if ((fil = kopen4load(filename,0)) == -1) return;
 
@@ -3795,7 +3795,7 @@ void qloadkvx(int32_t voxindex, char *filename)
 			/* Must store filenames to use cacheing system :( */
 		voxlock[voxindex][i] = 200;
 		allocache(&voxoff[voxindex][i],dasiz,(uint8_t  *)&voxlock[voxindex][i]);
-		ptr = (char *)voxoff[voxindex][i];
+		ptr = (uint8_t  *)voxoff[voxindex][i];
 		kread(fil,ptr,dasiz);
 
 		lengcnt += dasiz+4;
@@ -4035,11 +4035,11 @@ static void drawmaskwall(short damaskwallcnt)
 	z1 = max(nsec->ceilingz,sec->ceilingz);
 	z2 = min(nsec->floorz,sec->floorz);
 
-	wallmost(uwall,z,sectnum,(char)0);
-	wallmost(uplc,z,(long)wal->nextsector,(char)0);
+	wallmost(uwall,z,sectnum,(uint8_t )0);
+	wallmost(uplc,z,(long)wal->nextsector,(uint8_t )0);
 	for(x=xb1[z];x<=xb2[z];x++) if (uplc[x] > uwall[x]) uwall[x] = uplc[x];
-	wallmost(dwall,z,sectnum,(char)1);
-	wallmost(dplc,z,(long)wal->nextsector,(char)1);
+	wallmost(dwall,z,sectnum,(uint8_t )1);
+	wallmost(dplc,z,(long)wal->nextsector,(uint8_t )1);
 	for(x=xb1[z];x<=xb2[z];x++) if (dplc[x] < dwall[x]) dwall[x] = dplc[x];
 	prepwall(z,wal);
 
@@ -4193,7 +4193,7 @@ static void drawvox(int32_t dasprx, int32_t daspry, int32_t dasprz, int32_t dasp
 	int32_t lx, rx, nx, ny, x1=0, y1=0, z1, x2=0, y2=0, z2, yplc, yinc=0;
 	int32_t yoff, xs=0, ys=0, xe, ye, xi=0, yi=0, cbackx, cbacky, dagxinc, dagyinc;
 	short *shortptr;
-	char *voxptr, *voxend, *davoxptr, oand, oand16, oand32;
+	uint8_t  *voxptr, *voxend, *davoxptr, oand, oand16, oand32;
 
 	cosang = sintable[(globalang+512)&2047];
 	sinang = sintable[globalang&2047];
@@ -4212,7 +4212,7 @@ static void drawvox(int32_t dasprx, int32_t daspry, int32_t dasprz, int32_t dasp
 	}
 	if (k >= MAXVOXMIPS) i = MAXVOXMIPS-1;
 
-	davoxptr = (char *)voxoff[daindex][i]; if (!davoxptr) return;
+	davoxptr = (uint8_t  *)voxoff[daindex][i]; if (!davoxptr) return;
 
 	daxscale <<= (i+8); dayscale <<= (i+8);
 	odayscale = dayscale;
@@ -4331,8 +4331,8 @@ static void drawvox(int32_t dasprx, int32_t daspry, int32_t dasprz, int32_t dasp
 			for(y=ys;y!=ye;y+=yi,nx+=dagyinc,ny-=dagxinc)
 			{
 				if ((ny <= nytooclose) || (ny >= nytoofar)) continue;
-				voxptr = (char *)(shortptr[y]+slabxoffs);
-				voxend = (char *)(shortptr[y+1]+slabxoffs);
+				voxptr = (uint8_t  *)(shortptr[y]+slabxoffs);
+				voxend = (uint8_t  *)(shortptr[y+1]+slabxoffs);
 				if (voxptr == voxend) continue;
 
 				lx = mulscale32(nx>>3,distrecip[(ny+y1)>>14])+halfxdimen;
@@ -4404,7 +4404,7 @@ static void drawsprite (int32_t snum)
 	int32_t cosang, sinang, dax, day, lpoint, lmax, rpoint, rmax, dax1, dax2, y;
 	int32_t npoints, npoints2, zz, t, zsgn, zzsgn;
 	short tilenum, spritenum;
-	char swapped, daclip;
+	uint8_t  swapped, daclip;
 
     #ifdef SUPERBUILD
         int32_t *longptr;
@@ -4437,8 +4437,8 @@ static void drawsprite (int32_t snum)
 		if (cstat&512) settransreverse(); else settransnormal();
 	}
 
-	xoff = (long)((signed char)((picanm[tilenum]>>8)&255))+((long)tspr->xoffset);
-	yoff = (long)((signed char)((picanm[tilenum]>>16)&255))+((long)tspr->yoffset);
+	xoff = (long)((int8_t )((picanm[tilenum]>>8)&255))+((long)tspr->xoffset);
+	yoff = (long)((int8_t )((picanm[tilenum]>>16)&255))+((long)tspr->yoffset);
 
 	if ((cstat&48) == 0)
 	{
@@ -5223,7 +5223,7 @@ static void drawsprite (int32_t snum)
 			// crashes 2nd demo of atomic, when pig jumps in hole.
             tspr->z -= mulscale6(longptr[5],(long)tspr->yrepeat);
         }
-		yoff = (long)((signed char)((picanm[sprite[tspr->owner].picnum]>>16)&255))+((long)tspr->yoffset);
+		yoff = (long)((int8_t  )((picanm[sprite[tspr->owner].picnum]>>16)&255))+((long)tspr->yoffset);
 		tspr->z -= ((yoff*tspr->yrepeat)<<2);
 
 		globvis = globalvisibility;
@@ -5339,7 +5339,7 @@ void drawmasks(void)
 				spritesz[k] = tspriteptr[k]->z;
 				if ((tspriteptr[k]->cstat&48) != 32)
 				{
-					yoff = (long)((signed char)((picanm[tspriteptr[k]->picnum]>>16)&255))+((long)tspriteptr[k]->yoffset);
+					yoff = (long)((int8_t )((picanm[tspriteptr[k]->picnum]>>16)&255))+((long)tspriteptr[k]->yoffset);
 					spritesz[k] -= ((yoff*tspriteptr[k]->yrepeat)<<2);
 					yspan = (tilesizy[tspriteptr[k]->picnum]*tspriteptr[k]->yrepeat<<2);
 					if (!(tspriteptr[k]->cstat&128)) spritesz[k] -= (yspan>>1);
@@ -5794,7 +5794,7 @@ int hitscan(int32_t xs, int32_t ys, int32_t zs, short sectnum,
 	int32_t dawalclipmask, dasprclipmask;
 	short tempshortcnt, tempshortnum, dasector, startwall, endwall;
 	short nextsector;
-	char clipyou;
+	uint8_t  clipyou;
 
 	*hitsect = -1; *hitwall = -1; *hitsprite = -1;
 	if (sectnum < 0) return(-1);
@@ -5936,7 +5936,7 @@ int hitscan(int32_t xs, int32_t ys, int32_t zs, short sectnum,
 
 					i = (tilesizy[spr->picnum]*spr->yrepeat<<2);
 					if (cstat&128) z1 += (i>>1);
-					if (picanm[spr->picnum]&0x00ff0000) z1 -= ((long)((signed char)((picanm[spr->picnum]>>16)&255))*spr->yrepeat<<2);
+					if (picanm[spr->picnum]&0x00ff0000) z1 -= ((long)((int8_t )((picanm[spr->picnum]>>16)&255))*spr->yrepeat<<2);
 					if ((intz > z1) || (intz < z1-i)) continue;
 					topu = vx*(y1-ys) - vy*(x1-xs);
 
@@ -5959,7 +5959,7 @@ int hitscan(int32_t xs, int32_t ys, int32_t zs, short sectnum,
 						 * Given: (x1, y1) starts out as the center point
 						 */
 					tilenum = spr->picnum;
-					xoff = (long)((signed char)((picanm[tilenum]>>8)&255))+((long)spr->xoffset);
+					xoff = (long)((int8_t )((picanm[tilenum]>>8)&255))+((long)spr->xoffset);
 					if ((cstat&4) > 0) xoff = -xoff;
 					k = spr->ang; l = spr->xrepeat;
 					dax = sintable[k&2047]*l; day = sintable[(k+1536)&2047]*l;
@@ -5976,7 +5976,7 @@ int hitscan(int32_t xs, int32_t ys, int32_t zs, short sectnum,
 
 					k = ((tilesizy[spr->picnum]*spr->yrepeat)<<2);
 					if (cstat&128) daz = spr->z+(k>>1); else daz = spr->z;
-					if (picanm[spr->picnum]&0x00ff0000) daz -= ((long)((signed char)((picanm[spr->picnum]>>16)&255))*spr->yrepeat<<2);
+					if (picanm[spr->picnum]&0x00ff0000) daz -= ((long)((int8_t  )((picanm[spr->picnum]>>16)&255))*spr->yrepeat<<2);
 					if ((intz < daz) && (intz > daz-k))
 					{
 						*hitsect = dasector; *hitwall = -1; *hitsprite = z;
@@ -5996,8 +5996,8 @@ int hitscan(int32_t xs, int32_t ys, int32_t zs, short sectnum,
 					if (klabs(intx-xs)+klabs(inty-ys) > klabs((*hitx)-xs)+klabs((*hity)-ys)) continue;
 
 					tilenum = spr->picnum;
-					xoff = (long)((signed char)((picanm[tilenum]>>8)&255))+((long)spr->xoffset);
-					yoff = (long)((signed char)((picanm[tilenum]>>16)&255))+((long)spr->yoffset);
+					xoff = (long)((int8_t )((picanm[tilenum]>>8)&255))+((long)spr->xoffset);
+					yoff = (long)((int8_t )((picanm[tilenum]>>16)&255))+((long)spr->yoffset);
 					if ((cstat&4) > 0) xoff = -xoff;
 					if ((cstat&8) > 0) yoff = -yoff;
 
@@ -6054,7 +6054,7 @@ int hitscan(int32_t xs, int32_t ys, int32_t zs, short sectnum,
 
 int neartag(int32_t xs, int32_t ys, int32_t zs, short sectnum, short ange,
             short *neartagsector, short *neartagwall, short *neartagsprite,
-            int32_t *neartaghitdist, int32_t neartagrange, char tagsearch)
+            int32_t *neartaghitdist, int32_t neartagrange, uint8_t  tagsearch)
 {
 	walltype *wal, *wal2;
 	spritetype *spr;
@@ -6139,7 +6139,7 @@ int neartag(int32_t xs, int32_t ys, int32_t zs, short sectnum, short ange,
 						intz = zs+scale(vz,topt,bot);
 						i = tilesizy[spr->picnum]*spr->yrepeat;
 						if (spr->cstat&128) z1 += (i<<1);
-						if (picanm[spr->picnum]&0x00ff0000) z1 -= ((long)((signed char)((picanm[spr->picnum]>>16)&255))*spr->yrepeat<<2);
+						if (picanm[spr->picnum]&0x00ff0000) z1 -= ((long)((int8_t  )((picanm[spr->picnum]>>16)&255))*spr->yrepeat<<2);
 						if ((intz <= z1) && (intz >= z1-(i<<2)))
 						{
 							topu = vx*(y1-ys) - vy*(x1-xs);
@@ -6245,7 +6245,7 @@ int lastwall(short point)
 static void keepaway (int32_t *x, int32_t *y, int32_t w)
 {
 	int32_t dx, dy, ox, oy, x1, y1;
-	char first;
+	uint8_t  first;
 
 	x1 = clipit[w].x1; dx = clipit[w].x2-x1;
 	y1 = clipit[w].y1; dy = clipit[w].y2-y1;
@@ -6416,7 +6416,7 @@ int clipmove (int32_t *x, int32_t *y, int32_t *z, short *sectnum,
 					{
 						k = ((tilesizy[spr->picnum]*spr->yrepeat)<<2);
 						if (cstat&128) daz = spr->z+(k>>1); else daz = spr->z;
-						if (picanm[spr->picnum]&0x00ff0000) daz -= ((long)((signed char)((picanm[spr->picnum]>>16)&255))*spr->yrepeat<<2);
+						if (picanm[spr->picnum]&0x00ff0000) daz -= ((long)((int8_t )((picanm[spr->picnum]>>16)&255))*spr->yrepeat<<2);
 						if (((*z) < daz+ceildist) && ((*z) > daz-k-flordist))
 						{
 							bsz = (spr->clipdist<<2)+walldist; if (gx < 0) bsz = -bsz;
@@ -6429,7 +6429,7 @@ int clipmove (int32_t *x, int32_t *y, int32_t *z, short *sectnum,
 				case 16:
 					k = ((tilesizy[spr->picnum]*spr->yrepeat)<<2);
 					if (cstat&128) daz = spr->z+(k>>1); else daz = spr->z;
-					if (picanm[spr->picnum]&0x00ff0000) daz -= ((long)((signed char)((picanm[spr->picnum]>>16)&255))*spr->yrepeat<<2);
+					if (picanm[spr->picnum]&0x00ff0000) daz -= ((long)((int8_t  )((picanm[spr->picnum]>>16)&255))*spr->yrepeat<<2);
 					daz2 = daz-k;
 					daz += ceildist; daz2 -= flordist;
 					if (((*z) < daz) && ((*z) > daz2))
@@ -6439,7 +6439,7 @@ int clipmove (int32_t *x, int32_t *y, int32_t *z, short *sectnum,
 							 * Given: (x1, y1) starts out as the center point
                              */
                         tilenum = spr->picnum;
-						xoff = (long)((signed char)((picanm[tilenum]>>8)&255))+((long)spr->xoffset);
+						xoff = (long)((int8_t  )((picanm[tilenum]>>8)&255))+((long)spr->xoffset);
 						if ((cstat&4) > 0) xoff = -xoff;
 						k = spr->ang; l = spr->xrepeat;
 						dax = sintable[k&2047]*l; day = sintable[(k+1536)&2047]*l;
@@ -6478,8 +6478,8 @@ int clipmove (int32_t *x, int32_t *y, int32_t *z, short *sectnum,
 							if (((*z) > spr->z) == ((cstat&8)==0)) continue;
 
 						tilenum = spr->picnum;
-						xoff = (long)((signed char)((picanm[tilenum]>>8)&255))+((long)spr->xoffset);
-						yoff = (long)((signed char)((picanm[tilenum]>>16)&255))+((long)spr->yoffset);
+						xoff = (long)((int8_t  )((picanm[tilenum]>>8)&255))+((long)spr->xoffset);
+						yoff = (long)((int8_t  )((picanm[tilenum]>>16)&255))+((long)spr->yoffset);
 						if ((cstat&4) > 0) xoff = -xoff;
 						if ((cstat&8) > 0) yoff = -yoff;
 
@@ -6627,7 +6627,7 @@ int pushmove(int32_t *x, int32_t *y, int32_t *z, short *sectnum,
 	int32_t i, j, k, t, dx, dy, dax, day, daz, daz2, bad, dir;
 	int32_t dasprclipmask, dawalclipmask;
 	short startwall, endwall, clipsectcnt;
-	char bad2;
+	uint8_t  bad2;
 
 	if ((*sectnum) < 0) return(-1);
 
@@ -6659,7 +6659,7 @@ int pushmove(int32_t *x, int32_t *y, int32_t *z, short *sectnum,
 				{
 					t = ((tilesizy[spr->picnum]*spr->yrepeat)<<2);
 					if (spr->cstat&128) daz = spr->z+(t>>1); else daz = spr->z;
-					if (picanm[spr->picnum]&0x00ff0000) daz -= ((long)((signed char)((picanm[spr->picnum]>>16)&255))*spr->yrepeat<<2);
+					if (picanm[spr->picnum]&0x00ff0000) daz -= ((long)((int8_t  )((picanm[spr->picnum]>>16)&255))*spr->yrepeat<<2);
 					if (((*z) < daz+ceildist) && ((*z) > daz-t-flordist))
 					{
 						t = (spr->clipdist<<2)+walldist;
@@ -6831,7 +6831,7 @@ void getmousevalues(short *mousx, short *mousy, short *bstatus)
 void draw2dgrid(int32_t posxe, int32_t posye, short ange, int32_t zoome, short gride)
 {
 	int32_t i, xp1, yp1, xp2=0, yp2, tempy, tempint;
-	char mask;
+	uint8_t  mask;
 
 	if (gride > 0)
 	{
@@ -6910,7 +6910,7 @@ void draw2dscreen(int32_t posxe, int32_t posye, short ange, int32_t zoome, short
 {
 	walltype *wal;
 	int32_t i, j, xp1, yp1, xp2, yp2, tempint;
-	char col;
+	uint8_t  col;
 
 	if (qsetmode == 200) return;
 
@@ -7107,10 +7107,10 @@ void draw2dscreen(int32_t posxe, int32_t posye, short ange, int32_t zoome, short
  *  other cause flicker, so I have this function here so the shadow can
  *  be drawn with _noupdate, and the actual string is draw with an update.
  */
-static void __printext256(int32_t xpos, int32_t ypos, short col, short backcol, char name[82], char fontsize, int should_update)
+static void __printext256(int32_t xpos, int32_t ypos, short col, short backcol, uint8_t  name[82], uint8_t  fontsize, int should_update)
 {
 	int32_t stx, i, x, y, charxsiz;
-	char *fontptr, *letptr, *ptr;
+	uint8_t  *fontptr, *letptr, *ptr;
 
 	stx = xpos;
 
@@ -7120,15 +7120,15 @@ static void __printext256(int32_t xpos, int32_t ypos, short col, short backcol, 
 	for(i=0;name[i];i++)
 	{
 		letptr = &fontptr[name[i]<<3];
-		ptr = (char *)(ylookup[ypos+7]+(stx-fontsize)+frameplace);
+		ptr = (uint8_t  *)(ylookup[ypos+7]+(stx-fontsize)+frameplace);
 		for(y=7;y>=0;y--)
 		{
 			for(x=charxsiz-1;x>=0;x--)
 			{
 				if (letptr[y]&pow2char[7-fontsize-x])
-					ptr[x] = (char)col;
+					ptr[x] = (uint8_t )col;
 				else if (backcol >= 0)
-					ptr[x] = (char)backcol;
+					ptr[x] = (uint8_t )backcol;
 			}
 			ptr -= ylookup[1];
 		}
@@ -7140,23 +7140,23 @@ static void __printext256(int32_t xpos, int32_t ypos, short col, short backcol, 
 }
 
 
-void printext256(int32_t xpos, int32_t ypos, short col, short backcol, char name[82], char fontsize)
+void printext256(int32_t xpos, int32_t ypos, short col, short backcol, uint8_t  name[82], uint8_t  fontsize)
 {
     __printext256(xpos, ypos, col, backcol, name, fontsize, 1);
 }
 
 
-void printext256_noupdate(int32_t xpos, int32_t ypos, short col, short backcol, char name[82], char fontsize)
+void printext256_noupdate(int32_t xpos, int32_t ypos, short col, short backcol, uint8_t  name[82], uint8_t  fontsize)
 {
     __printext256(xpos, ypos, col, backcol, name, fontsize, 0);
 }
 
 
 #ifdef DBGRECORD
-int krand(int line, char* file)
+int krand(int line, uint8_t * file)
 {
 	int i, k=0;
-	char filename[2048];
+	uint8_t  filename[2048];
 	FILE *pFile;
 #else
 int krand()
@@ -7197,7 +7197,7 @@ void getzrange(int32_t x, int32_t y, int32_t z, short sectnum,
 	int32_t x1, y1, x2, y2, x3, y3, x4, y4, ang, cosang, sinang;
 	int32_t xspan, yspan, xrepeat, yrepeat, dasprclipmask, dawalclipmask;
 	short cstat;
-	char clipyou;
+	uint8_t  clipyou;
 
 	if (sectnum < 0)
 	{
@@ -7291,14 +7291,14 @@ void getzrange(int32_t x, int32_t y, int32_t z, short sectnum,
 							daz = spr->z;
 							k = ((tilesizy[spr->picnum]*spr->yrepeat)<<1);
 							if (cstat&128) daz += k;
-							if (picanm[spr->picnum]&0x00ff0000) daz -= ((long)((signed char)((picanm[spr->picnum]>>16)&255))*spr->yrepeat<<2);
+							if (picanm[spr->picnum]&0x00ff0000) daz -= ((long)((int8_t  )((picanm[spr->picnum]>>16)&255))*spr->yrepeat<<2);
 							daz2 = daz - (k<<1);
 							clipyou = 1;
 						}
 						break;
 					case 16:
 						tilenum = spr->picnum;
-						xoff = (long)((signed char)((picanm[tilenum]>>8)&255))+((long)spr->xoffset);
+						xoff = (long)((int8_t  )((picanm[tilenum]>>8)&255))+((long)spr->xoffset);
 						if ((cstat&4) > 0) xoff = -xoff;
 						k = spr->ang; l = spr->xrepeat;
 						dax = sintable[k&2047]*l; day = sintable[(k+1536)&2047]*l;
@@ -7309,7 +7309,7 @@ void getzrange(int32_t x, int32_t y, int32_t z, short sectnum,
 						{
 							daz = spr->z; k = ((tilesizy[spr->picnum]*spr->yrepeat)<<1);
 							if (cstat&128) daz += k;
-							if (picanm[spr->picnum]&0x00ff0000) daz -= ((long)((signed char)((picanm[spr->picnum]>>16)&255))*spr->yrepeat<<2);
+							if (picanm[spr->picnum]&0x00ff0000) daz -= ((long)((int8_t  )((picanm[spr->picnum]>>16)&255))*spr->yrepeat<<2);
 							daz2 = daz-(k<<1);
 							clipyou = 1;
 						}
@@ -7321,8 +7321,8 @@ void getzrange(int32_t x, int32_t y, int32_t z, short sectnum,
 							if ((z > daz) == ((cstat&8)==0)) continue;
 
 						tilenum = spr->picnum;
-						xoff = (long)((signed char)((picanm[tilenum]>>8)&255))+((long)spr->xoffset);
-						yoff = (long)((signed char)((picanm[tilenum]>>16)&255))+((long)spr->yoffset);
+						xoff = (long)((int8_t  )((picanm[tilenum]>>8)&255))+((long)spr->xoffset);
+						yoff = (long)((int8_t  )((picanm[tilenum]>>16)&255))+((long)spr->yoffset);
 						if ((cstat&4) > 0) xoff = -xoff;
 						if ((cstat&8) > 0) yoff = -yoff;
 
@@ -7431,7 +7431,7 @@ void flushperms(void)
 
 
 void rotatesprite(int32_t sx, int32_t sy, int32_t z, short a, short picnum,
-                  int8_t dashade, char dapalnum, char dastat,
+                  int8_t dashade, uint8_t  dapalnum, uint8_t  dastat,
                   int32_t cx1, int32_t cy1, int32_t cx2, int32_t cy2)
 {
 	int32_t i;
@@ -7506,7 +7506,7 @@ void rotatesprite(int32_t sx, int32_t sy, int32_t z, short a, short picnum,
 static int getclosestcol(int32_t r, int32_t g, int32_t b)
 {
 	int32_t i, j, k, dist, mindist, retcol;
-	char *pal1;
+	uint8_t  *pal1;
 
 	j = (r>>3)*FASTPALGRIDSIZ*FASTPALGRIDSIZ+(g>>3)*FASTPALGRIDSIZ+(b>>3)+FASTPALGRIDSIZ*FASTPALGRIDSIZ+FASTPALGRIDSIZ+1;
 	mindist = min(rdist[coldist[r&7]+64+8],gdist[coldist[g&7]+64+8]);
@@ -7522,7 +7522,7 @@ static int getclosestcol(int32_t r, int32_t g, int32_t b)
 		i = colhead[i];
 		do
 		{
-			pal1 = (char *)&palette[i*3];
+			pal1 = (uint8_t  *)&palette[i*3];
 			dist = gdist[pal1[1]+g];
 			if (dist < mindist)
 			{
@@ -7539,7 +7539,7 @@ static int getclosestcol(int32_t r, int32_t g, int32_t b)
 	if (retcol >= 0) return(retcol);
 
 	mindist = 0x7fffffff;
-	pal1 = (char *)&palette[768-3];
+	pal1 = (uint8_t  *)&palette[768-3];
 	for(i=255;i>=0;i--,pal1-=3)
 	{
 		dist = gdist[pal1[1]+g]; if (dist >= mindist) continue;
@@ -7551,18 +7551,18 @@ static int getclosestcol(int32_t r, int32_t g, int32_t b)
 }
 
 
-void makepalookup(int32_t palnum, char *remapbuf, int8_t r,
-                  int8_t g, int8_t b, char dastat)
+void makepalookup(int32_t palnum, uint8_t  *remapbuf, int8_t r,
+                  int8_t g, int8_t b, uint8_t  dastat)
 {
 	int32_t i, j, dist, palscale;
-	char *ptr, *ptr2;
+	uint8_t  *ptr, *ptr2;
 
 	if (paletteloaded == 0) return;
 
 	if (palookup[palnum] == NULL)
 	{
 			/* Allocate palookup buffer */
-		if ((palookup[palnum] = (char *)kkmalloc(numpalookups<<8)) == NULL)
+		if ((palookup[palnum] = (uint8_t  *)kkmalloc(numpalookups<<8)) == NULL)
 			allocache((int32_t *)&palookup[palnum],numpalookups<<8,&permanentlock);
 	}
 
@@ -7573,21 +7573,21 @@ void makepalookup(int32_t palnum, char *remapbuf, int8_t r,
 	{
 		for(i=0;i<256;i++)
 		{
-			ptr = (char *)(FP_OFF(palookup[0])+remapbuf[i]);
-			ptr2 = (char *)(FP_OFF(palookup[palnum])+i);
+			ptr = (uint8_t  *)(FP_OFF(palookup[0])+remapbuf[i]);
+			ptr2 = (uint8_t  *)(FP_OFF(palookup[palnum])+i);
 			for(j=0;j<numpalookups;j++)
 				{ *ptr2 = *ptr; ptr += 256; ptr2 += 256; }
 		}
 	}
 	else
 	{
-		ptr2 = (char *)FP_OFF(palookup[palnum]);
+		ptr2 = (uint8_t  *)FP_OFF(palookup[palnum]);
 		for(i=0;i<numpalookups;i++)
 		{
 			palscale = divscale16(i,numpalookups);
 			for(j=0;j<256;j++)
 			{
-				ptr = (char *)&palette[remapbuf[j]*3];
+				ptr = (uint8_t  *)&palette[remapbuf[j]*3];
 				*ptr2++ = getclosestcol((long)ptr[0]+mulscale16(r-ptr[0],palscale),
 												(long)ptr[1]+mulscale16(g-ptr[1],palscale),
 												(long)ptr[2]+mulscale16(b-ptr[2],palscale));
@@ -7600,15 +7600,15 @@ void makepalookup(int32_t palnum, char *remapbuf, int8_t r,
 		for(i=0;i<256;i++)
 		{
 			dist = palette[i*3]*3+palette[i*3+1]*5+palette[i*3+2]*2;
-			ptr = (char *)(FP_OFF(palookup[palnum])+i);
+			ptr = (uint8_t  *)(FP_OFF(palookup[palnum])+i);
 			for(j=0;j<32;j++)
-				ptr[j<<8] = (char)min(max(mulscale10(dist,32-j),0),15);
+				ptr[j<<8] = (uint8_t )min(max(mulscale10(dist,32-j),0),15);
 		}
 	}
 }
 
 
-void setbrightness(char dabrightness, uint8_t  *dapal)
+void setbrightness(uint8_t  dabrightness, uint8_t  *dapal)
 {
 	int32_t i, j, k;
 
@@ -7637,7 +7637,7 @@ void setbrightness(char dabrightness, uint8_t  *dapal)
 		}
 	}
 
-	VBE_setPalette(0, 256, (char *) tempbuf);
+	VBE_setPalette(0, 256, (uint8_t  *) tempbuf);
 }
 
 
@@ -8094,8 +8094,8 @@ void drawmapview(int32_t dax, int32_t day, int32_t zoome, short ang)
 			npoints = 0;
 
 			tilenum = spr->picnum;
-			xoff = (long)((signed char)((picanm[tilenum]>>8)&255))+((long)spr->xoffset);
-			yoff = (long)((signed char)((picanm[tilenum]>>16)&255))+((long)spr->yoffset);
+			xoff = (long)((int8_t  )((picanm[tilenum]>>8)&255))+((long)spr->xoffset);
+			yoff = (long)((int8_t  )((picanm[tilenum]>>16)&255))+((long)spr->yoffset);
 			if ((spr->cstat&4) > 0) xoff = -xoff;
 			if ((spr->cstat&8) > 0) yoff = -yoff;
 
@@ -8258,7 +8258,7 @@ void clearallviews(int32_t dacol)
 }
 
 
-void plotpixel(int32_t x, int32_t y, char col)
+void plotpixel(int32_t x, int32_t y, uint8_t  col)
 {
 	drawpixel(ylookup[y]+x+frameplace,(long)col);
 }

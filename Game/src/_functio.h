@@ -37,7 +37,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 #ifdef __cplusplus
 extern "C" {
 #endif
-char * gamefunctions[] =
+uint8_t  * gamefunctions[] =
    {
    "Move_Forward",
    "Move_Backward",
@@ -102,9 +102,9 @@ char * gamefunctions[] =
 // if not found and use default keys.
 
 struct {
-	char* entryKey;
-	char* keyname1;
-	char* keyname2;
+	uint8_t * entryKey;
+	uint8_t * keyname1;
+	uint8_t * keyname2;
 } keydefaults[] = {
 	{ "Move_Forward", 	"Up", 		"Kpad8" }, 
 	{ "Move_Backward", 	"Down", 	"Kpad2" }, 

@@ -202,7 +202,7 @@ int32_t hitawall(struct player_struct *p,short *hitw)
 
 short aim(spritetype *s,short aang, short auto_aim)
 {
-    char gotshrinker,gotfreezer;
+    uint8_t  gotshrinker,gotfreezer;
     short i, j, a, k, cans;
     short aimstats[] = {10,13,1,2};
     int32_t dx1, dy1, dx2, dy2, dx3, dy3, smax, sdist;
@@ -1135,7 +1135,7 @@ void displayloogie(short snum)
     }
 }
 
-char animatefist(short gs,short snum)
+uint8_t  animatefist(short gs,short snum)
 {
     short looking_arc,fisti,fistpal;
     int32_t fistzoom, fistz;
@@ -1166,7 +1166,7 @@ char animatefist(short gs,short snum)
     return 1;
 }
 
-char animateknee(short gs,short snum)
+uint8_t  animateknee(short gs,short snum)
 {
     short knee_y[] = {0,-8,-16,-32,-64,-84,-108,-108,-108,-72,-32,-8};
     short looking_arc, pal;
@@ -1191,7 +1191,7 @@ char animateknee(short gs,short snum)
     return 1;
 }
 
-char animateknuckles(short gs,short snum)
+uint8_t  animateknuckles(short gs,short snum)
 {
     short knuckle_frames[] = {0,1,2,2,3,3,3,2,2,1,0};
     short looking_arc, pal;
@@ -1240,7 +1240,7 @@ void displaymasks(short snum)
 	 }
 }
 
-char animatetip(short gs,short snum)
+uint8_t  animatetip(short gs,short snum)
 {
     short p,looking_arc;
     short tip_y[] = {0,-8,-16,-32,-64,-84,-108,-108,-108,-108,-108,-108,-108,-108,-108,-108,-96,-72,-64,-32,-16};
@@ -1266,11 +1266,11 @@ char animatetip(short gs,short snum)
     return 1;
 }
 
-char animateaccess(short gs,short snum)
+uint8_t  animateaccess(short gs,short snum)
 {
     short access_y[] = {0,-8,-16,-32,-64,-84,-108,-108,-108,-108,-108,-108,-108,-108,-108,-108,-96,-72,-64,-32,-16};
     short looking_arc;
-    char p;
+    uint8_t  p;
 
     if(ps[snum].access_incs == 0 || sprite[ps[snum].i].extra <= 0) return 0;
 
@@ -1297,7 +1297,7 @@ void displayweapon(short snum)
 {
     int32_t gun_pos, looking_arc, cw;
     int32_t weapon_xoffset, i, j;
-    char o,pal;
+    uint8_t  o,pal;
     int8_t gs;
     struct player_struct *p;
     short *kb;
@@ -1625,7 +1625,7 @@ void displayweapon(short snum)
 
 					if((*kb))
 					{
-						char throw_frames[]
+						uint8_t  throw_frames[]
 							= {0,0,0,0,0,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2};
 
 						if((*kb) < 7)
@@ -1666,7 +1666,7 @@ void displayweapon(short snum)
 
 					if((*kb))
 					{
-						char cycloidy[] = {0,4,12,24,12,4,0};
+						uint8_t  cycloidy[] = {0,4,12,24,12,4,0};
 
 						i = sgn((*kb)>>2);
 
@@ -1696,7 +1696,7 @@ void displayweapon(short snum)
 
 					if((*kb))
 					{
-						char cat_frames[] = { 0,0,1,1,2,2 };
+						uint8_t  cat_frames[] = { 0,0,1,1,2,2 };
 
 						if(sprite[p->i].pal != 1)
 						{
@@ -2126,7 +2126,7 @@ void getinput(short snum)
 }
 
 
-char doincrements(struct player_struct *p)
+uint8_t  doincrements(struct player_struct *p)
 {
     int32_t snum;
 
@@ -2341,7 +2341,7 @@ void checkweapons(struct player_struct *p)
 void processinput(short snum)
 {
     int32_t j, i, k, doubvel, fz, cz, hz, lz, truefdist, x, y;
-    char shrunk;
+    uint8_t  shrunk;
     uint32_t sb_snum;
     short psect, psectlotag,*kb, tempsect, pi;
     struct player_struct *p;
@@ -4103,7 +4103,7 @@ static int32_t goalx[MAXPLAYERS], goaly[MAXPLAYERS], goalz[MAXPLAYERS];
 static int32_t goalsect[MAXPLAYERS], goalwall[MAXPLAYERS], goalsprite[MAXPLAYERS];
 static int32_t goalplayer[MAXPLAYERS], clipmovecount[MAXPLAYERS];
 short searchsect[MAXSECTORS], searchparent[MAXSECTORS];
-char dashow2dsector[(MAXSECTORS+7)>>3];
+uint8_t  dashow2dsector[(MAXSECTORS+7)>>3];
 void computergetinput(int32_t snum, input *syn)
 {
     int32_t i, j, k, l, x1, y1, z1, x2, y2, z2, x3, y3, z3, dx, dy;

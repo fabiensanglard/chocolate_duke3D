@@ -224,7 +224,7 @@ public:
 	midi_event		*events;
 
 	// Write this list to a file/buffer
-	int				Write (const char *filename);	
+	int				Write (const uint8_t  *filename);	
 	int				Write (DataSource *dest);	
 
 	// Increments the counter
@@ -246,8 +246,8 @@ private:
 	midi_event			*current;
 	midi_event			*notes_on;
 	
-	const static char	mt32asgm[128];
-	const static char	mt32asgs[256];
+	const static uint8_t 	mt32asgm[128];
+	const static uint8_t 	mt32asgs[256];
 	bool 				bank127[16];
 	int					convert_type;
 

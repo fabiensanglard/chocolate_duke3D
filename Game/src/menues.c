@@ -34,22 +34,22 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 extern SDL_Surface *surface;
 extern short inputloc;
 extern int recfilep;
-extern char vgacompatible;
+extern uint8_t  vgacompatible;
 short probey=0,lastprobey=0,last_menu,globalskillsound=-1;
 short sh,onbar,buttonstat,deletespot;
 short last_zero,last_fifty,last_threehundred = 0;
-static char fileselect = 1, menunamecnt, menuname[256][17];
+static uint8_t  fileselect = 1, menunamecnt, menuname[256][17];
 
 // File tree info
 //
-char szCurrentDirectory[1024] = {'\0'};
+uint8_t  szCurrentDirectory[1024] = {'\0'};
 
 #define FILETYPE_DIRECTORY 0
 #define FILETYPE_FILE      1
 
 typedef struct fileentry
 {
-	char filename[16];
+	uint8_t  filename[16];
 	int type;
 }FILEENTRY;
 
@@ -77,7 +77,7 @@ FILELIST m_Files;// = NULL;
 #define eTenBnBadTenInst 3805
 
 int  tenBnStart(void);
-void tenBnSetBrowseRtn(char *(*rtn)(char *str, int len));
+void tenBnSetBrowseRtn(uint8_t  *(*rtn)(uint8_t  *str, int len));
 void tenBnSetExitRtn(void (*rtn)(void));
 void tenBnSetEndRtn(void (*rtn)(void));*/
 // CTW END - REMOVED
@@ -86,7 +86,7 @@ void dummyfunc(void)
 {
 }
 
-void dummymess(int i,char *c)
+void dummymess(int i,uint8_t  *c)
 {
 }
 
@@ -146,13 +146,13 @@ void cmenu(short cm)
 }
 
 
-void savetemp(char *fn,int32_t daptr,int32_t dasiz)
+void savetemp(uint8_t  *fn,int32_t daptr,int32_t dasiz)
 {
     int fp;
 
     fp = open(fn,O_WRONLY|O_CREAT|O_TRUNC|O_BINARY,S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP);
 
-    write(fp,(char *)daptr,dasiz);
+    write(fp,(uint8_t  *)daptr,dasiz);
 
     close(fp);
 }
@@ -175,10 +175,10 @@ void getangplayers(short snum)
     }
 }
 
-int loadpheader(char spot,int32 *vn,int32 *ln,int32 *psk,int32 *nump)
+int loadpheader(uint8_t  spot,int32 *vn,int32 *ln,int32 *psk,int32 *nump)
 {
 
-    char fn[] = "game0.sav";
+    uint8_t  fn[] = "game0.sav";
     int32_t fil;
     int32_t bv;
 
@@ -205,7 +205,7 @@ int loadpheader(char spot,int32 *vn,int32 *ln,int32 *psk,int32 *nump)
 
      if (waloff[MAXTILES-3] == 0) allocache(&waloff[MAXTILES-3],160*100,&walock[MAXTILES-3]);
      tilesizx[MAXTILES-3] = 100; tilesizy[MAXTILES-3] = 160;
-     kdfread((char *)waloff[MAXTILES-3],160,100,fil);
+     kdfread((uint8_t  *)waloff[MAXTILES-3],160,100,fil);
 
          kclose(fil);
 
@@ -216,9 +216,9 @@ int loadpheader(char spot,int32 *vn,int32 *ln,int32 *psk,int32 *nump)
 int loadplayer(int8_t spot)
 {
      short k,music_changed;
-     char fn[] = "game0.sav";
-     char mpfn[] = "gameA_00.sav";
-     char *fnptr, scriptptrs[MAXSCRIPTSIZE];
+     uint8_t  fn[] = "game0.sav";
+     uint8_t  mpfn[] = "gameA_00.sav";
+     uint8_t  *fnptr, scriptptrs[MAXSCRIPTSIZE];
      int32_t fil, bv, i, j, x;
      int32 nump;
 
@@ -316,7 +316,7 @@ int loadplayer(int8_t spot)
      walock[MAXTILES-3] = 1;
      if (waloff[MAXTILES-3] == 0) allocache(&waloff[MAXTILES-3],160*100,&walock[MAXTILES-3]);
      tilesizx[MAXTILES-3] = 100; tilesizy[MAXTILES-3] = 160;
-     kdfread((char *)waloff[MAXTILES-3],160,100,fil);
+     kdfread((uint8_t  *)waloff[MAXTILES-3],160,100,fil);
 
          kdfread(&numwalls,2,1,fil);
      kdfread(&wall[0],sizeof(walltype),MAXWALLS,fil);
@@ -343,8 +343,8 @@ int loadplayer(int8_t spot)
          kdfread(&mirrorcnt,sizeof(short),1,fil);
          kdfread(&mirrorwall[0],sizeof(short),64,fil);
      kdfread(&mirrorsector[0],sizeof(short),64,fil);
-     kdfread(&show2dsector[0],sizeof(char),MAXSECTORS>>3,fil);
-     kdfread(&actortype[0],sizeof(char),MAXTILES,fil);
+     kdfread(&show2dsector[0],sizeof(uint8_t ),MAXSECTORS>>3,fil);
+     kdfread(&actortype[0],sizeof(uint8_t ),MAXTILES,fil);
      kdfread(&boardfilename[0],sizeof(boardfilename),1,fil);
 
      kdfread(&numclouds,sizeof(numclouds),1,fil);
@@ -542,12 +542,12 @@ int loadplayer(int8_t spot)
 int saveplayer(int8_t spot)
 {
      int32_t i, j;
-         char fn[] = "game0.sav";
-     char mpfn[] = "gameA_00.sav";
-     char *fnptr,scriptptrs[MAXSCRIPTSIZE];
+         uint8_t  fn[] = "game0.sav";
+     uint8_t  mpfn[] = "gameA_00.sav";
+     uint8_t  *fnptr,scriptptrs[MAXSCRIPTSIZE];
          FILE *fil;
      int32_t bv = BYTEVERSION;
-	 char fullpathsavefilename[16];
+	 uint8_t  fullpathsavefilename[16];
 
      if(spot < 0)
      {
@@ -601,7 +601,7 @@ int saveplayer(int8_t spot)
          dfwrite(&ud.volume_number,sizeof(ud.volume_number),1,fil);
      dfwrite(&ud.level_number,sizeof(ud.level_number),1,fil);
          dfwrite(&ud.player_skill,sizeof(ud.player_skill),1,fil);
-     dfwrite((char *)waloff[MAXTILES-1],160,100,fil);
+     dfwrite((uint8_t  *)waloff[MAXTILES-1],160,100,fil);
 
          dfwrite(&numwalls,2,1,fil);
      dfwrite(&wall[0],sizeof(walltype),MAXWALLS,fil);
@@ -628,8 +628,8 @@ int saveplayer(int8_t spot)
          dfwrite(&mirrorcnt,sizeof(short),1,fil);
          dfwrite(&mirrorwall[0],sizeof(short),64,fil);
          dfwrite(&mirrorsector[0],sizeof(short),64,fil);
-     dfwrite(&show2dsector[0],sizeof(char),MAXSECTORS>>3,fil);
-     dfwrite(&actortype[0],sizeof(char),MAXTILES,fil);
+     dfwrite(&show2dsector[0],sizeof(uint8_t ),MAXSECTORS>>3,fil);
+     dfwrite(&actortype[0],sizeof(uint8_t ),MAXTILES,fil);
      dfwrite(&boardfilename[0],sizeof(boardfilename),1,fil);
 
      dfwrite(&numclouds,sizeof(numclouds),1,fil);
@@ -903,7 +903,7 @@ int probeXduke(int x,int y,int i,int n, int32_t spriteSize)
     }
 }
 
-int menutext(int x,int y,short s,short p,char *t)
+int menutext(int x,int y,short s,short p,uint8_t  *t)
 {
     short i, ac, centre;
 
@@ -1018,7 +1018,7 @@ int menutext(int x,int y,short s,short p,char *t)
     return (x);
 }
 
-int menutextc(int x,int y,short s,short p,char *t)
+int menutextc(int x,int y,short s,short p,uint8_t  *t)
 {
     short i, ac, centre;
 
@@ -1121,10 +1121,10 @@ int menutextc(int x,int y,short s,short p,char *t)
 }
 
 
-void bar(int x,int y,short *p,short dainc,char damodify,short s, short pa)
+void bar(int x,int y,short *p,short dainc,uint8_t  damodify,short s, short pa)
 {
     short xloc;
-    char rev;
+    uint8_t  rev;
 
     if(dainc < 0) { dainc = -dainc; rev = 1; }
     else rev = 0;
@@ -1231,7 +1231,7 @@ void dispnames(void)
 //  We DO have a _dos_findfirst implementation now...maybe use that instead?
 //     --ryan.
 #if ORIGINAL_DUKE3D_GETFILENAMES
-int getfilenames(char kind[6])
+int getfilenames(uint8_t  kind[6])
 {
         short type;
         struct find_t fileinfo;
@@ -1266,7 +1266,7 @@ int getfilenames(char kind[6])
 
 #else
 
-int getfilenames(char kind[6])
+int getfilenames(uint8_t  kind[6])
 {
 /* !!! FIXME: Visual C? */
 #if (defined __WATCOMC__)
@@ -1304,7 +1304,7 @@ int getfilenames(char kind[6])
     struct dirent *dent;
     struct stat statbuf;
     int add_this;
-    char *ptr = NULL;
+    uint8_t  *ptr = NULL;
     int len = 0;
     int subdirs = 0;
 
@@ -1335,7 +1335,7 @@ int getfilenames(char kind[6])
                     len = strlen(dent->d_name);
                     if (len >= 5)
                     {
-                        ptr = ((char *) dent->d_name) + len;
+                        ptr = ((uint8_t  *) dent->d_name) + len;
                         ptr += strlen(ptr) - 4;
                         if (stricmp(ptr, ".MAP") == 0)
                     add_this = 1;
@@ -1363,7 +1363,7 @@ int getfilenames(char kind[6])
 
 void sortfilenames()
 {
-        char sortbuffer[17];
+        uint8_t  sortbuffer[17];
         int32_t i, j, k;
 
         for(i=1;i<menunamecnt;i++)
@@ -4171,10 +4171,10 @@ else
     }
 }
 
-void palto(char r,char g,char b,int32_t e)
+void palto(uint8_t  r,uint8_t  g,uint8_t  b,int32_t e)
 {
     int i;
-    char temparray[768];
+    uint8_t  temparray[768];
 
     for(i=0;i<768;i+=3)
     {
@@ -4204,7 +4204,7 @@ void drawoverheadmap(int32_t cposx, int32_t cposy, int32_t czoom, short cang)
         int32_t xrepeat, yrepeat, z1, z2, startwall, endwall, tilenum, daang;
         int32_t xvect, yvect, xvect2, yvect2;
         short p;
-        char col;
+        uint8_t  col;
         walltype *wal, *wal2;
         spritetype *spr;
 
@@ -4300,7 +4300,7 @@ void drawoverheadmap(int32_t cposx, int32_t cposy, int32_t czoom, short cang)
                         {
                             x1 = sprx; y1 = spry;
                             tilenum = spr->picnum;
-                            xoff = (long)((signed char)((picanm[tilenum]>>8)&255))+((long)spr->xoffset);
+                            xoff = (long)((int8_t  )((picanm[tilenum]>>8)&255))+((long)spr->xoffset);
                             if ((spr->cstat&4) > 0) xoff = -xoff;
                             k = spr->ang; l = spr->xrepeat;
                             dax = sintable[k&2047]*l; day = sintable[(k+1536)&2047]*l;
@@ -4325,8 +4325,8 @@ void drawoverheadmap(int32_t cposx, int32_t cposy, int32_t czoom, short cang)
                     case 32:
 
                                                 tilenum = spr->picnum;
-                                                xoff = (long)((signed char)((picanm[tilenum]>>8)&255))+((long)spr->xoffset);
-                                                yoff = (long)((signed char)((picanm[tilenum]>>16)&255))+((long)spr->yoffset);
+                                                xoff = (long)((int8_t  )((picanm[tilenum]>>8)&255))+((long)spr->xoffset);
+                                                yoff = (long)((int8_t  )((picanm[tilenum]>>16)&255))+((long)spr->yoffset);
                                                 if ((spr->cstat&4) > 0) xoff = -xoff;
                                                 if ((spr->cstat&8) > 0) yoff = -yoff;
 
@@ -4623,9 +4623,9 @@ void endanimvol43(int32_t fr)
 
 
 int32_t lastanimhack=0;
-void playanm(char *fn,char t)
+void playanm(uint8_t  *fn,uint8_t  t)
 {
-        char *animbuf, *palptr;
+        uint8_t  *animbuf, *palptr;
     int32_t i, j, k, length=0, numframes=0;
     int32 handle=-1;
 
@@ -4649,7 +4649,7 @@ void playanm(char *fn,char t)
     if(anim == 0 || lastanimhack != (MAXTILES-3-t))
         allocache((int32_t *)&anim,length+sizeof(anim_t),&walock[MAXTILES-3-t]);
 
-    animbuf = (char *)(FP_OFF(anim)+sizeof(anim_t));
+    animbuf = (uint8_t  *)(FP_OFF(anim)+sizeof(anim_t));
 
     lastanimhack = (MAXTILES-3-t);
 

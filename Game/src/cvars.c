@@ -9,7 +9,7 @@
 cvar_binding cvar_binding_list[MAX_CVARS];
 int num_cvar_bindings = 0;
 
-void CVAR_RegisterCvar(const char* varname, const char* varhelp, void* variable, function_t function)
+void CVAR_RegisterCvar(const uint8_t * varname, const uint8_t * varhelp, void* variable, function_t function)
 {
     if(NULL == function)
     {

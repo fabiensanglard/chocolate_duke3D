@@ -43,7 +43,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 ====================
 */
 
-void RTS_Init (char *filename);
+void RTS_Init (uint8_t  *filename);
 /*
 ====================
 =
@@ -72,7 +72,7 @@ int32 RTS_SoundLength (int32 lump);
 ====================
 */
 
-char * RTS_GetSoundName (int32 i);
+uint8_t  * RTS_GetSoundName (int32 i);
 /*
 ====================
 =

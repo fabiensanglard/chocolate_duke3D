@@ -208,7 +208,7 @@ DWORD Windows_MidiOut::thread_main()
 	giveinfo();
 	if (mmsys_err != MMSYSERR_NOERROR)
 	{
-		char buf[512];
+		uint8_t  buf[512];
 
 		giveinfo();
 		midiOutGetErrorText(mmsys_err, buf, 512);
@@ -742,7 +742,7 @@ bool Windows_MidiOut::is_playing(void)
 	return playing!=0;
 }
 
-const char *Windows_MidiOut::copyright(void)
+const uint8_t  *Windows_MidiOut::copyright(void)
 {
 	giveinfo();
 	return "Internal Win32 Midiout Midi Player for Pentagram. Version 1.2a";
@@ -810,10 +810,10 @@ extern "C"
 #include "../duke3d.h"
 #include "cache1d.h"
 
-static char warningMessage[80];
-static char errorMessage[80];
+static uint8_t  warningMessage[80];
+static uint8_t  errorMessage[80];
 
-char *MUSIC_ErrorString(int ErrorNumber)
+uint8_t  *MUSIC_ErrorString(int ErrorNumber)
 {
     switch (ErrorNumber)
     {
@@ -864,10 +864,10 @@ static int music_context = 0;
 static int music_loopflag = MUSIC_PlayOnce;
 static Windows_MidiOut *midi_device = NULL;
 
-extern void musdebug(const char *fmt, ...);
+extern void musdebug(const uint8_t  *fmt, ...);
 extern void init_debugging(void);
-extern void setWarningMessage(const char *msg);
-extern void setErrorMessage(const char *msg);
+extern void setWarningMessage(const uint8_t  *msg);
+extern void setErrorMessage(const uint8_t  *msg);
 extern int MUSIC_ErrorCode;
 #define __FX_TRUE  (1 == 1)
 #define __FX_FALSE (!__FX_TRUE)
@@ -875,7 +875,7 @@ extern int MUSIC_ErrorCode;
 #pragma message (" The win_midi code is temp until the SDL midi code functions properly ")
 
 #pragma message (" STUBBED musdebug ")
-void musdebug(const char *fmt, ...)
+void musdebug(const uint8_t  *fmt, ...)
 {
 #if 0
     va_list ap;
@@ -893,11 +893,11 @@ void musdebug(const char *fmt, ...)
 } // snddebug
 
 #pragma message (" STUBBED setErrorMessage ")
-static void setErrorMessage(const char *msg)
+static void setErrorMessage(const uint8_t  *msg)
 {
 #if 0
     strncpy(errorMessage, msg, sizeof (errorMessage));
-    // strncpy() doesn't add the null char if there isn't room...
+    // strncpy() doesn't add the null uint8_t  if there isn't room...
     errorMessage[sizeof (errorMessage) - 1] = '\0';
     snddebug("Error message set to [%s].", errorMessage);
 #endif
@@ -1078,7 +1078,7 @@ int MUSIC_PlaySong(uint8_t  *song, int loopflag)
 	if(midi_device)
 	midi_device->stop_stream(0);
 
-	BufferDataSource mid_data((char*)song, 1024 * 1024);
+	BufferDataSource mid_data((uint8_t *)song, 1024 * 1024);
 	XMIDI		midfile(&mid_data, XMIDI_CONVERT_EMIDI_GM);
 	XMIDIEventList *eventlist = midfile.GetEventList(0);
 	if (eventlist) 
@@ -1092,7 +1092,7 @@ int MUSIC_PlaySong(uint8_t  *song, int loopflag)
     return(MUSIC_Ok);
 } // MUSIC_PlaySong
 
-int MUSIC_PlayExtSong(char *fn)
+int MUSIC_PlayExtSong(uint8_t  *fn)
 {
     MUSIC_StopSong();
 
@@ -1125,12 +1125,12 @@ return(MUSIC_Ok);
 } // MUSIC_PlaySong
 
 
-extern char ApogeePath[256];
+extern uint8_t  ApogeePath[256];
 
-static void CheckAndPlayMusicType(const char* szName, const char* szType)
+static void CheckAndPlayMusicType(const uint8_t * szName, const uint8_t * szType)
 {
 
-	char fpath[1024] = {'\0'};
+	uint8_t  fpath[1024] = {'\0'};
 
 	// Is this a TC?
 	if(game_dir[0] != '\0')
@@ -1162,16 +1162,16 @@ static void CheckAndPlayMusicType(const char* szName, const char* szType)
 }
 
 // Duke3D-specific.  --ryan.
-void PlayMusic(char *fn)
+void PlayMusic(uint8_t  *fn)
 {
-	//extern int File_Exists(char *fn);
-	//extern void GetOnlyNameOfFile(char *fn);
+	//extern int File_Exists(uint8_t  *fn);
+	//extern void GetOnlyNameOfFile(uint8_t  *fn);
 
 	short      fp;
     int32_t        l;
-	char *cfn;
-	char *buffer;
-	char fpath[19] = {'\0'};
+	uint8_t  *cfn;
+	uint8_t  *buffer;
+	uint8_t  fpath[19] = {'\0'};
 
 	cfn = fn;
 

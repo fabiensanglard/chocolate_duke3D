@@ -142,13 +142,13 @@ void enet_deinitialize (void);
   Clean-up ENet after use. Should be called when a program that has initialized
 and used ENet exits.
 
-int enet_address_set_host (ENetAddress * address, const char * hostName);
+int enet_address_set_host (ENetAddress * address, const uint8_t  * hostName);
 
   Attempts to resolve the host named by the parameter hostName and sets the host
 field in the address parameter if successful. Returns 0 on success and -1 on
 failure.
 
-int enet_address_get_host (const ENetAddress * address, char * hostName, size_t nameLength);
+int enet_address_get_host (const ENetAddress * address, uint8_t  * hostName, size_t nameLength);
 
   Attempts to do a reverse lookup of the host field in the address parameter.
 If successful, the name of the host is placed in the string described by

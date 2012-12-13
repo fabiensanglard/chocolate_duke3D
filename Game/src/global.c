@@ -32,8 +32,8 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 
 #include "duke3d.h"
 
-char *mymembuf;
-char MusicPtr[72000];
+uint8_t  *mymembuf;
+uint8_t  MusicPtr[72000];
 
 
 crc32_t crc32lookup[] = {
@@ -89,30 +89,30 @@ short animatesect[MAXANIMATES];
 int32_t msx[2048],msy[2048];
 short cyclers[MAXCYCLERS][6],numcyclers;
 
-char fta_quotes[NUMOFFIRSTTIMEACTIVE][64];
+uint8_t  fta_quotes[NUMOFFIRSTTIMEACTIVE][64];
 
 uint8_t  tempbuf[2048], packbuf[576];
 
-char buf[80];
+uint8_t  buf[80];
 
 short camsprite;
 short mirrorwall[64], mirrorsector[64], mirrorcnt;
 
 int current_menu;
 
-char betaname[80];
+uint8_t  betaname[80];
 
-char level_names[44][33],level_file_names[44][128];
+uint8_t  level_names[44][33],level_file_names[44][128];
 int32_t partime[44],designertime[44];
-char volume_names[4][33] = { "L.A. MELTDOWN", "LUNAR APOCALYPSE", "SHRAPNEL CITY", "" }; // Names are not in 1.3 con files. MUST be in code.
-char skill_names[5][33] = { "PIECE OF CAKE", "LET'S ROCK", "COME GET SOME", "DAMN I'M GOOD", "" };
+uint8_t  volume_names[4][33] = { "L.A. MELTDOWN", "LUNAR APOCALYPSE", "SHRAPNEL CITY", "" }; // Names are not in 1.3 con files. MUST be in code.
+uint8_t  skill_names[5][33] = { "PIECE OF CAKE", "LET'S ROCK", "COME GET SOME", "DAMN I'M GOOD", "" };
 
 volatile int32_t checksume;
 int32_t soundsiz[NUM_SOUNDS];
 
 short soundps[NUM_SOUNDS],soundpe[NUM_SOUNDS],soundvo[NUM_SOUNDS];
-char soundm[NUM_SOUNDS],soundpr[NUM_SOUNDS];
-char sounds[NUM_SOUNDS][14];
+uint8_t  soundm[NUM_SOUNDS],soundpr[NUM_SOUNDS];
+uint8_t  sounds[NUM_SOUNDS][14];
 
 short title_zoom;
 
@@ -121,15 +121,15 @@ fx_device device;
 SAMPLE Sound[ NUM_SOUNDS ];
 SOUNDOWNER SoundOwner[NUM_SOUNDS][4];
 
-char numplayersprites,earthquaketime;
+uint8_t  numplayersprites,earthquaketime;
 
 int32_t fricxv,fricyv;
 struct player_orig po[MAXPLAYERS];
 struct player_struct ps[MAXPLAYERS];
 struct user_defs ud;
 
-char pus, pub;
-char syncstat, syncval[MAXPLAYERS][MOVEFIFOSIZ];
+uint8_t  pus, pub;
+uint8_t  syncstat, syncval[MAXPLAYERS][MOVEFIFOSIZ];
 int32_t syncvalhead[MAXPLAYERS], syncvaltail, syncvaltottail;
 
 input sync[MAXPLAYERS], loc;
@@ -149,22 +149,22 @@ int32_t movefifoend[MAXPLAYERS];
 
     //Game recording variables
 
-char playerreadyflag[MAXPLAYERS],ready2send;
-char playerquitflag[MAXPLAYERS];
+uint8_t  playerreadyflag[MAXPLAYERS],ready2send;
+uint8_t  playerquitflag[MAXPLAYERS];
 int32_t vel, svel, angvel, horiz, ototalclock, respawnactortime=768, respawnitemtime=768, groupfile;
 
 int32_t script[MAXSCRIPTSIZE],*scriptptr,*insptr,*labelcode,labelcnt;
 int32_t *actorscrptr[MAXTILES],*parsing_actor;
-char *label,*textptr,error,warning,killit_flag;
-char *music_pointer;
-char actortype[MAXTILES];
+uint8_t  *label,*textptr,error,warning,killit_flag;
+uint8_t  *music_pointer;
+uint8_t  actortype[MAXTILES];
 
 
-char display_mirror,typebuflen,typebuf[41];
+uint8_t  display_mirror,typebuflen,typebuf[41];
 
-char music_fn[4][11][13],music_select;
-char env_music_fn[4][13];
-char rtsplaying;
+uint8_t  music_fn[4][11][13],music_select;
+uint8_t  env_music_fn[4][13];
+uint8_t  rtsplaying;
 
 
 short weaponsandammosprites[15] = {
@@ -192,7 +192,7 @@ int32_t myx, omyx, myxvel, myy, omyy, myyvel, myz, omyz, myzvel;
 short myhoriz, omyhoriz, myhorizoff, omyhorizoff;
 short myang, omyang, mycursectnum, myjumpingcounter,frags[MAXPLAYERS][MAXPLAYERS];
 
-char myjumpingtoggle, myonground, myhardlanding, myreturntocenter;
+uint8_t  myjumpingtoggle, myonground, myhardlanding, myreturntocenter;
 int8_t multiwho, multipos, multiwhat, multiflag;
 
 int32_t fakemovefifoplc,movefifoplc;
@@ -200,11 +200,11 @@ int32_t myxbak[MOVEFIFOSIZ], myybak[MOVEFIFOSIZ], myzbak[MOVEFIFOSIZ];
 int32_t myhorizbak[MOVEFIFOSIZ],dukefriction = 0xcc00, show_shareware;
 
 short myangbak[MOVEFIFOSIZ];
-char myname[2048] = {"XDUKE"};
-char camerashitable,freezerhurtowner=0,lasermode;
+uint8_t  myname[2048] = {"XDUKE"};
+uint8_t  camerashitable,freezerhurtowner=0,lasermode;
 // CTW - MODIFICATION
-// char networkmode = 255, movesperpacket = 1,gamequit = 0,playonten = 0,everyothertime;
-char networkmode = 255, movesperpacket = 1,gamequit = 0,everyothertime;
+// uint8_t  networkmode = 255, movesperpacket = 1,gamequit = 0,playonten = 0,everyothertime;
+uint8_t  networkmode = 255, movesperpacket = 1,gamequit = 0,everyothertime;
 // CTW END - MODIFICATION
 int32_t numfreezebounces=3,rpgblastradius,pipebombblastradius,tripbombblastradius,shrinkerblastradius,morterblastradius,bouncemineblastradius,seenineblastradius;
 STATUSBARTYPE sbar;
@@ -221,11 +221,11 @@ int32_t *curipos[MAXINTERPOLATIONS];
 // portability stuff.  --ryan.
 // A good portion of this was ripped from GPL'd Rise of the Triad.  --ryan.
 
-void FixFilePath(char *filename)
+void FixFilePath(uint8_t  *filename)
 {
 #if PLATFORM_UNIX
-    char *ptr;
-    char *lastsep = filename;
+    uint8_t  *ptr;
+    uint8_t  *lastsep = filename;
 
     if ((!filename) || (*filename == '\0'))
         return;
@@ -240,7 +240,7 @@ void FixFilePath(char *filename)
 
         if ((*ptr == PATH_SEP_CHAR) || (*ptr == '\0'))
         {
-            char pch = *ptr;
+            uint8_t  pch = *ptr;
             struct dirent *dent = NULL;
             DIR *dir;
 
@@ -301,7 +301,7 @@ void FixFilePath(char *filename)
  /* no-op. */
 
 #elif PLATFORM_WIN32
-int _dos_findfirst(char *filename, int x, struct find_t *f)
+int _dos_findfirst(uint8_t  *filename, int x, struct find_t *f)
 {
     int32_t rc = _findfirst(filename, &f->data);
     f->handle = rc;
@@ -334,9 +334,9 @@ int _dos_findnext(struct find_t *f)
 }
 
 #elif defined(PLATFORM_UNIX) || defined(PLATFORM_MACOSX)
-int _dos_findfirst(char *filename, int x, struct find_t *f)
+int _dos_findfirst(uint8_t  *filename, int x, struct find_t *f)
 {
-    char *ptr;
+    uint8_t  *ptr;
 
     if (strlen(filename) >= sizeof (f->pattern))
         return(1);
@@ -361,7 +361,7 @@ int _dos_findfirst(char *filename, int x, struct find_t *f)
 }
 
 
-static int check_pattern_nocase(const char *x, const char *y)
+static int check_pattern_nocase(const uint8_t  *x, const uint8_t  *y)
 {
     if ((x == NULL) || (y == NULL))
         return(0);  /* not a match. */
@@ -494,7 +494,7 @@ int FindDistance3D(int ix, int iy, int iz)
    return (ix - (ix>>4) + (t>>2) + (t>>3));
 }
 #include "SDL.h"
-void Error (int errorType, char *error, ...)
+void Error (int errorType, uint8_t  *error, ...)
 {
    va_list argptr;
 
@@ -517,12 +517,12 @@ void Error (int errorType, char *error, ...)
    exit (errorType);
 }
 
-void write2disk(int line, char* cfilename, char *filename2write, char *message)
+void write2disk(int line, uint8_t * cfilename, uint8_t  *filename2write, uint8_t  *message)
 {
-	// usage: write2disk(__LINE__, __FILE__, "c:\temp\my_dbug_file.txt", char* msg);
+	// usage: write2disk(__LINE__, __FILE__, "c:\temp\my_dbug_file.txt", uint8_t * msg);
 
 	int i, k=0;
-	char filename[2048];
+	uint8_t  filename[2048];
 	FILE *pFile;
 
 	for(i=0; cfilename[i]; i++)
@@ -539,10 +539,10 @@ void write2disk(int line, char* cfilename, char *filename2write, char *message)
 	fclose(pFile);
 }
 
-int32 SafeOpenAppend (const char *_filename, int32 filetype)
+int32 SafeOpenAppend (const uint8_t  *_filename, int32 filetype)
 {
 	int	handle;
-    char filename[MAX_PATH];
+    uint8_t  filename[MAX_PATH];
     strncpy(filename, _filename, sizeof (filename));
     filename[sizeof (filename) - 1] = '\0';
     FixFilePath(filename);
@@ -560,9 +560,9 @@ int32 SafeOpenAppend (const char *_filename, int32 filetype)
 	return handle;
 }
 
-boolean SafeFileExists ( const char * _filename )
+boolean SafeFileExists ( const uint8_t  * _filename )
 {
-    char filename[MAX_PATH];
+    uint8_t  filename[MAX_PATH];
     strncpy(filename, _filename, sizeof (filename));
     filename[sizeof (filename) - 1] = '\0';
     FixFilePath(filename);
@@ -575,10 +575,10 @@ boolean SafeFileExists ( const char * _filename )
 }
 
 
-int32 SafeOpenWrite (const char *_filename, int32 filetype)
+int32 SafeOpenWrite (const uint8_t  *_filename, int32 filetype)
 {
 	int	handle;
-    char filename[MAX_PATH];
+    uint8_t  filename[MAX_PATH];
     strncpy(filename, _filename, sizeof (filename));
     filename[sizeof (filename) - 1] = '\0';
     FixFilePath(filename);
@@ -596,10 +596,10 @@ int32 SafeOpenWrite (const char *_filename, int32 filetype)
 	return handle;
 }
 
-int32 SafeOpenRead (const char *_filename, int32 filetype)
+int32 SafeOpenRead (const uint8_t  *_filename, int32 filetype)
 {
 	int	handle;
-    char filename[MAX_PATH];
+    uint8_t  filename[MAX_PATH];
     strncpy(filename, _filename, sizeof (filename));
     filename[sizeof (filename) - 1] = '\0';
     FixFilePath(filename);
@@ -642,7 +642,7 @@ void SafeWrite (int32 handle, void *buffer, int32 count)
 	}
 }
 
-void SafeWriteString (int handle, char * buffer)
+void SafeWriteString (int handle, uint8_t  * buffer)
 {
 	unsigned	iocount;
 
@@ -827,9 +827,9 @@ void SwapIntelShortArray(short *s, int num)
  */
  
 #if PLATFORM_UNIX
-char *strlwr(char *s)
+uint8_t  *strlwr(uint8_t  *s)
 {
-	char *p = s;
+	uint8_t  *p = s;
 	
 	while (*p) {
 		*p = tolower(*p);
@@ -839,9 +839,9 @@ char *strlwr(char *s)
 	return s;
 }
 
-char *strupr(char *s)
+uint8_t  *strupr(uint8_t  *s)
 {
-	char *p = s;
+	uint8_t  *p = s;
 	
 	while (*p) {
 		*p = toupper(*p);
@@ -851,7 +851,7 @@ char *strupr(char *s)
 	return s;
 }
 	
-char *itoa(int value, char *string, int radix)
+uint8_t  *itoa(int value, uint8_t  *string, int radix)
 {
 	switch (radix) {
 		case 10:
@@ -868,7 +868,7 @@ char *itoa(int value, char *string, int radix)
 	return string;
 }
 
-char *ltoa(int32_t value, char *string, int radix)
+uint8_t  *ltoa(int32_t value, uint8_t  *string, int radix)
 {
 	switch (radix) {
 		case 10:
@@ -885,7 +885,7 @@ char *ltoa(int32_t value, char *string, int radix)
 	return string;
 }
 
-char *ultoa(unsigned int32_t value, char *string, int radix)
+uint8_t  *ultoa(unsigned int32_t value, uint8_t  *string, int radix)
 {
 	switch (radix) {
 		case 10:
@@ -903,7 +903,7 @@ char *ultoa(unsigned int32_t value, char *string, int radix)
 }
 #endif
 
-char ApogeePath[256];
+uint8_t  ApogeePath[256];
 
 int setup_homedir (void)
 {
@@ -927,7 +927,7 @@ int setup_homedir (void)
 }
 
 
-char   CheckParm (char *check)
+uint8_t    CheckParm (uint8_t  *check)
 {
     int i;
     for (i = 1; i < _argc; i++)
@@ -963,5 +963,5 @@ void Shutdown(void)
  *  BUILD_CACHEDEBUG 0 at the top of the source. Flip it to 1 if you ever
  *  need to tinker in the cache code.
  */
-char cachedebug = 0;
+uint8_t  cachedebug = 0;
 

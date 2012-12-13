@@ -53,7 +53,7 @@ public:
 	virtual uint32 read4() =0;
 	virtual uint32 read4high() =0;
 	virtual float readf() =0;
-	virtual void read(char *, int) =0;
+	virtual void read(uint8_t  *, int) =0;
 	
 	virtual void write1(unsigned int) =0;
 	virtual void write2(uint16) =0;
@@ -61,7 +61,7 @@ public:
 	virtual void write4(uint32) =0;
 	virtual void write4high(uint32) =0;
 	virtual void writef(float) =0;
-	virtual void write(char *, int) =0;
+	virtual void write(uint8_t  *, int) =0;
 	
 	virtual void seek(unsigned int) =0;
 	virtual void skip(int) =0;
@@ -78,7 +78,7 @@ protected:
 	uint8_t  *buf_ptr;
 	sint32 size;
 public:
-	BufferDataSource(char *data, unsigned int len)
+	BufferDataSource(uint8_t  *data, unsigned int len)
 	{
 		// data can be NULL if len is also 0
 //		assert(data!=0 || len==0);
@@ -86,7 +86,7 @@ public:
 		size = len;
 	};
 	
-	void load(char *data, unsigned int len)
+	void load(uint8_t  *data, unsigned int len)
 	{
 		// data can be NULL if len is also 0
 		//assert(data!=0 || len==0);
@@ -151,7 +151,7 @@ public:
 		return uif.f;
 	};
 	
-	void read(char *b, int len) {
+	void read(uint8_t  *b, int len) {
 		memcpy(b, buf_ptr, len);
 		buf_ptr += len;
 	};
@@ -200,7 +200,7 @@ public:
 		*buf_ptr++ = (uif.i>>24)&0xff;
 	};
 	
-	virtual void write(char *b, int len)
+	virtual void write(uint8_t  *b, int len)
 	{
 		memcpy(buf_ptr, b, len);
 		buf_ptr += len;

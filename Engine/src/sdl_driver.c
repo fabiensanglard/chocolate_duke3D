@@ -40,18 +40,18 @@
 /*
 void (*callcommit)(void);
 void (*initcrc)(void);
-int32_t (*getcrc)(char *buffer, short bufleng);
-void (*initmultiplayers)(char damultioption, char dacomrateoption, char dapriority);
-void (*sendpacket)(int32_t other, char *bufptr, int32_t messleng);
+int32_t (*getcrc)(uint8_t  *buffer, short bufleng);
+void (*initmultiplayers)(uint8_t  damultioption, uint8_t  dacomrateoption, uint8_t  dapriority);
+void (*sendpacket)(int32_t other, uint8_t  *bufptr, int32_t messleng);
 void (*setpackettimeout)(int32_t datimeoutcount, int32_t daresendagaincount);
 void (*uninitmultiplayers)(void);
 void (*sendlogon)(void);
 void (*sendlogoff)(void);
 int  (*getoutputcirclesize)(void);
 void (*setsocket)(short newsocket);
-short (*getpacket)(short *other, char *bufptr);
+short (*getpacket)(short *other, uint8_t  *bufptr);
 void (*flushpackets)(void);
-void (*genericmultifunction)(int32_t other, char *bufptr, int32_t messleng, int32_t command);
+void (*genericmultifunction)(int32_t other, uint8_t  *bufptr, int32_t messleng, int32_t command);
 */
 /**/
 
@@ -115,7 +115,7 @@ void initcrc(void)
 	}
 #endif
 }
-int32_t getcrc(char *buffer, short bufleng)
+int32_t getcrc(uint8_t  *buffer, short bufleng)
 {
     #ifndef USER_DUMMY_NETWORK
 	switch(nNetMode)
@@ -128,7 +128,7 @@ int32_t getcrc(char *buffer, short bufleng)
 #endif
 	return 0;
 }
-void initmultiplayers(char damultioption, char dacomrateoption, char dapriority)
+void initmultiplayers(uint8_t  damultioption, uint8_t  dacomrateoption, uint8_t  dapriority)
 {
 #ifndef USER_DUMMY_NETWORK
 	switch(nNetMode)
@@ -142,7 +142,7 @@ void initmultiplayers(char damultioption, char dacomrateoption, char dapriority)
 	}
 #endif
 }
-void sendpacket(int32_t other, char *bufptr, int32_t messleng)
+void sendpacket(int32_t other, uint8_t  *bufptr, int32_t messleng)
 {
 #ifndef USER_DUMMY_NETWORK
 	switch(nNetMode)
@@ -239,7 +239,7 @@ void setsocket(short newsocket)
 	}
 #endif
 }
-short getpacket(short *other, char *bufptr)
+short getpacket(short *other, uint8_t  *bufptr)
 {
 #ifndef USER_DUMMY_NETWORK
 	switch(nNetMode)
@@ -266,7 +266,7 @@ void flushpackets(void)
 	}
 #endif
 }
-void genericmultifunction(int32_t other, char *bufptr, int32_t messleng, int32_t command)
+void genericmultifunction(int32_t other, uint8_t  *bufptr, int32_t messleng, int32_t command)
 {
     #ifndef USER_DUMMY_NETWORK
 	switch(nNetMode)
@@ -296,7 +296,7 @@ typedef enum
     RENDERER_TOTAL
 } sdl_renderer_type;
 
-const char *renderer_name[RENDERER_TOTAL];
+const uint8_t  *renderer_name[RENDERER_TOTAL];
 
 #define ENVRSTR_RENDERER_SOFTWARE  "software"
 #define ENVRSTR_RENDERER_OPENGL3D  "opengl3d"
@@ -321,13 +321,13 @@ static sdl_renderer_type renderer = RENDERER_SOFTWARE;
 
 
 int _argc = 0;
-char **_argv = NULL;
+uint8_t  **_argv = NULL;
 
     /* !!! move these elsewhere? */
 int32_t xres, yres, bytesperline, frameplace, frameoffset, imageSize, maxpages;
-char *screen, vesachecked;
+uint8_t  *screen, vesachecked;
 int32_t buffermode, origbuffermode, linearmode;
-char permanentupdate = 0, vgacompatible;
+uint8_t  permanentupdate = 0, vgacompatible;
 
 SDL_Surface *surface = NULL; /* This isn't static so that we can use it elsewhere AH */
 static int debug_hall_of_mirrors = 0;
@@ -355,8 +355,8 @@ static FILE *_sdl_debug_file = NULL;
 
 void set_sdl_renderer(void);
 
-static __inline void __out_sdldebug(const char *subsystem,
-                                  const char *fmt, va_list ap)
+static __inline void __out_sdldebug(const uint8_t  *subsystem,
+                                  const uint8_t  *fmt, va_list ap)
 {
     fprintf(_sdl_debug_file, "%s: ", subsystem);
     vfprintf(_sdl_debug_file, fmt, ap);
@@ -365,7 +365,7 @@ static __inline void __out_sdldebug(const char *subsystem,
 } /* __out_sdldebug */
 
 
-static void sdldebug(const char *fmt, ...)
+static void sdldebug(const uint8_t  *fmt, ...)
 {
     va_list ap;
 
@@ -379,7 +379,7 @@ static void sdldebug(const char *fmt, ...)
 
 
 #if (defined USE_OPENGL)
-void sgldebug(const char *fmt, ...)
+void sgldebug(const uint8_t  *fmt, ...)
 {
     va_list ap;
 
@@ -393,9 +393,9 @@ void sgldebug(const char *fmt, ...)
 #endif
 
 
-static void __append_sdl_surface_flag(SDL_Surface *_surface, char *str,
+static void __append_sdl_surface_flag(SDL_Surface *_surface, uint8_t  *str,
                                       size_t strsize, Uint32 flag,
-                                      const char *flagstr)
+                                      const uint8_t  *flagstr)
 {
     if (_surface->flags & flag)
     {
@@ -413,7 +413,7 @@ static void __append_sdl_surface_flag(SDL_Surface *_surface, char *str,
 static void output_surface_info(SDL_Surface *_surface)
 {
     const SDL_VideoInfo *info;
-    char f[256];
+    uint8_t  f[256];
 
     if (!_sdl_debug_file)
         return;
@@ -471,7 +471,7 @@ static void output_surface_info(SDL_Surface *_surface)
 
 static void output_driver_info(void)
 {
-    char buffer[256];
+    uint8_t  buffer[256];
 
     if (!_sdl_debug_file)
         return;
@@ -516,7 +516,7 @@ int using_opengl(void)
  * !!!  Just be sure to keep the non-DOS things, like the window's
  * !!!  titlebar caption.   --ryan.
  */
-static char screenalloctype = 255;
+static uint8_t  screenalloctype = 255;
 static void init_new_res_vars(int32_t davidoption)
 {
     int i = 0;
@@ -566,7 +566,7 @@ static void init_new_res_vars(int32_t davidoption)
     	j = ydim*4*sizeof(long);  /* Leave room for horizlookup&horizlookup2 */
 
   //  	screenalloctype = 0;
-//	    if ((screen = (char *)kkmalloc(i+(j<<1))) == NULL)
+//	    if ((screen = (uint8_t  *)kkmalloc(i+(j<<1))) == NULL)
 //    	{
 //	    	 allocache((int32_t *)&screen,i+(j<<1),&permanentlock);
 //    		 screenalloctype = 1;
@@ -612,7 +612,7 @@ static void init_new_res_vars(int32_t davidoption)
     //	clearallviews(0L);
     //} /* if */
 
-	setbrightness((char) curbrightness, (uint8_t  *) &palette[0]);
+	setbrightness((uint8_t ) curbrightness, (uint8_t  *) &palette[0]);
 
 	if (searchx < 0) { searchx = halfxdimen; searchy = (ydimen>>1); }
 } /* init_new_res_vars */
@@ -889,7 +889,7 @@ void _handle_events(void)
 static SDL_Joystick *joystick = NULL;
 void _joystick_init(void)
 {
-    const char *envr = getenv(BUILD_SDLJOYSTICK);
+    const uint8_t  *envr = getenv(BUILD_SDLJOYSTICK);
     int favored = 0;
     int numsticks;
     int i;
@@ -923,7 +923,7 @@ void _joystick_init(void)
 
     for (i = 0; i < numsticks; i++)
     {
-        const char *stickname = SDL_JoystickName(i);
+        const uint8_t  *stickname = SDL_JoystickName(i);
         if ((envr != NULL) && (strcmp(envr, stickname) == 0))
             favored = i;
 
@@ -1010,7 +1010,7 @@ uint8_t  _readlastkeyhit(void)
 
 static __inline void init_debugging(void)
 {
-    const char *envr = getenv(BUILD_SDLDEBUG); 
+    const uint8_t  *envr = getenv(BUILD_SDLDEBUG); 
 
     debug_hall_of_mirrors = (getenv(BUILD_HALLOFMIRRORS) != NULL);
 
@@ -1071,9 +1071,9 @@ static __inline void detect_vmware(void)
 
 
 /* lousy -ansi flag.  :) */
-static char *string_dupe(const char *str)
+static uint8_t  *string_dupe(const uint8_t  *str)
 {
-    char *retval = malloc(strlen(str) + 1);
+    uint8_t  *retval = malloc(strlen(str) + 1);
     if (retval != NULL)
         strcpy(retval, str);
     return(retval);
@@ -1082,7 +1082,7 @@ static char *string_dupe(const char *str)
 
 void set_sdl_renderer(void)
 {
-    const char *envr = getenv(BUILD_RENDERER);
+    const uint8_t  *envr = getenv(BUILD_RENDERER);
 
 #ifdef USE_OPENGL
     int need_opengl_lib = 0;
@@ -1182,11 +1182,11 @@ void Setup_StableNetworking()
 }
 
 
-void _platform_init(int argc, char **argv, const char *title, const char *icon)
+void _platform_init(int argc, uint8_t  **argv, const uint8_t  *title, const uint8_t  *icon)
 {
     int i;
 	int32_t timeElapsed;
-	char dummyString[4096];
+	uint8_t  dummyString[4096];
 
     _argc = argc;
     _argv = argv;
@@ -1388,7 +1388,7 @@ int setvesa(int32_t x, int32_t y)
 
 
 // Capture BMP of the current frame
-int screencapture(char *filename, char inverseit)
+int screencapture(uint8_t  *filename, uint8_t  inverseit)
 {
 //  FIX_00006: better naming system for screenshots + message when pic is taken. 
 //  Use ./screenshots folder. Screenshot code rerwritten. Faster and
@@ -1411,7 +1411,7 @@ void setvmode(int mode)
 
 } 
 
-int _setgamemode(char davidoption, int32_t daxdim, int32_t daydim)
+int _setgamemode(uint8_t  davidoption, int32_t daxdim, int32_t daydim)
 {
 	int validated, i;
 	SDL_Surface     *image;
@@ -1462,10 +1462,10 @@ int _setgamemode(char davidoption, int32_t daxdim, int32_t daydim)
         {
             if (!shown_gl_strings)
             {
-                sgldebug("GL_VENDOR [%s]", (char *) dglGetString(GL_VENDOR));
-                sgldebug("GL_RENDERER [%s]", (char *) dglGetString(GL_RENDERER));
-                sgldebug("GL_VERSION [%s]", (char *) dglGetString(GL_VERSION));
-                sgldebug("GL_EXTENSIONS [%s]", (char *) dglGetString(GL_EXTENSIONS));
+                sgldebug("GL_VENDOR [%s]", (uint8_t  *) dglGetString(GL_VENDOR));
+                sgldebug("GL_RENDERER [%s]", (uint8_t  *) dglGetString(GL_RENDERER));
+                sgldebug("GL_VERSION [%s]", (uint8_t  *) dglGetString(GL_VERSION));
+                sgldebug("GL_EXTENSIONS [%s]", (uint8_t  *) dglGetString(GL_EXTENSIONS));
                 shown_gl_strings = 1;
             } /* if */
 
@@ -1491,10 +1491,10 @@ int _setgamemode(char davidoption, int32_t daxdim, int32_t daydim)
 } /* setgamemode */
 
 
-static int get_dimensions_from_str(const char *str, int32_t *_w, int32_t *_h)
+static int get_dimensions_from_str(const uint8_t  *str, int32_t *_w, int32_t *_h)
 {
-    char *xptr = NULL;
-    char *ptr = NULL;
+    uint8_t  *xptr = NULL;
+    uint8_t  *ptr = NULL;
     int32_t w = -1;
     int32_t h = -1;
 
@@ -1531,7 +1531,7 @@ static __inline void get_max_screen_res(int32_t *max_w, int32_t *max_h)
 {
     int32_t w = DEFAULT_MAXRESWIDTH;
     int32_t h = DEFAULT_MAXRESHEIGHT;
-    const char *envr = getenv(BUILD_MAXSCREENRES);
+    const uint8_t  *envr = getenv(BUILD_MAXSCREENRES);
 
     if (envr != NULL)
     {
@@ -1551,7 +1551,7 @@ static __inline void get_max_screen_res(int32_t *max_w, int32_t *max_h)
 } /* get_max_screen_res */
 
 
-static void add_vesa_mode(const char *typestr, int w, int h)
+static void add_vesa_mode(const uint8_t  *typestr, int w, int h)
 {
     sdldebug("Adding %s resolution (%dx%d).", typestr, w, h);
     validmode[validmodecnt] = validmodecnt;
@@ -1566,7 +1566,7 @@ static __inline void add_user_defined_resolution(void)
 {
     int32_t w;
     int32_t h;
-    const char *envr = getenv(BUILD_USERSCREENRES);
+    const uint8_t  *envr = getenv(BUILD_USERSCREENRES);
 
     if (envr == NULL)
         return;
@@ -1602,7 +1602,7 @@ static __inline SDL_Rect **get_physical_resolutions(void)
 } /* get_physical_resolutions */
 
 
-static void remove_vesa_mode(int index, const char *reason)
+static void remove_vesa_mode(int index, const uint8_t  *reason)
 {
     int i;
 
@@ -1698,8 +1698,8 @@ static __inline void cleanup_vesa_modelist(void)
 
 static __inline void output_vesa_modelist(void)
 {
-    char buffer[256];
-    char numbuf[20];
+    uint8_t  buffer[256];
+    uint8_t  numbuf[20];
     int i;
 
     if (!_sdl_debug_file)
@@ -1759,7 +1759,7 @@ void getvalidvesamodes(void)
 } /* getvalidvesamodes */
 
 
-int VBE_setPalette(int32_t start, int32_t num, char *palettebuffer)
+int VBE_setPalette(int32_t start, int32_t num, uint8_t  *palettebuffer)
 /*
  * (From Ken's docs:)
  *   Set (num) palette palette entries starting at (start)
@@ -1776,7 +1776,7 @@ int VBE_setPalette(int32_t start, int32_t num, char *palettebuffer)
 {
     SDL_Color fmt_swap[256];
     SDL_Color *sdlp = &fmt_swap[start];
-    char *p = palettebuffer;
+    uint8_t  *p = palettebuffer;
     int i;
 
 #if (defined USE_OPENGL)
@@ -1830,10 +1830,10 @@ int VBE_setPalette(int32_t start, int32_t num, char *palettebuffer)
 } /* VBE_setPalette */
 
 
-int VBE_getPalette(int32_t start, int32_t num, char *palettebuffer)
+int VBE_getPalette(int32_t start, int32_t num, uint8_t  *palettebuffer)
 {
     SDL_Color *sdlp = surface->format->palette->colors + start;
-    char *p = palettebuffer + (start * 4);
+    uint8_t  *p = palettebuffer + (start * 4);
     int i;
 
     for (i = 0; i < num; i++)
@@ -2072,10 +2072,10 @@ void fillscreen16(int32_t offset, int32_t color, int32_t blocksize)
 
 /* Most of this line code is taken from Abrash's "Graphics Programming Blackbook".
 Remember, sharing code is A Good Thing. AH */
-static __inline void DrawHorizontalRun (char **ScreenPtr, int XAdvance, int RunLength, char Color)
+static __inline void DrawHorizontalRun (uint8_t  **ScreenPtr, int XAdvance, int RunLength, uint8_t  Color)
 {
     int i;
-    char *WorkingScreenPtr = *ScreenPtr;
+    uint8_t  *WorkingScreenPtr = *ScreenPtr;
 
     for (i=0; i<RunLength; i++)
     {
@@ -2086,10 +2086,10 @@ static __inline void DrawHorizontalRun (char **ScreenPtr, int XAdvance, int RunL
     *ScreenPtr = WorkingScreenPtr;
 }
 
-static __inline void DrawVerticalRun (char **ScreenPtr, int XAdvance, int RunLength, char Color)
+static __inline void DrawVerticalRun (uint8_t  **ScreenPtr, int XAdvance, int RunLength, uint8_t  Color)
 {
     int i;
-    char *WorkingScreenPtr = *ScreenPtr;
+    uint8_t  *WorkingScreenPtr = *ScreenPtr;
 
     for (i=0; i<RunLength; i++)
     {
@@ -2100,11 +2100,11 @@ static __inline void DrawVerticalRun (char **ScreenPtr, int XAdvance, int RunLen
     *ScreenPtr = WorkingScreenPtr;
 }
 
-void drawline16(int32_t XStart, int32_t YStart, int32_t XEnd, int32_t YEnd, char Color)
+void drawline16(int32_t XStart, int32_t YStart, int32_t XEnd, int32_t YEnd, uint8_t  Color)
 {
     int Temp, AdjUp, AdjDown, ErrorTerm, XAdvance, XDelta, YDelta;
     int WholeStep, InitialPixelCount, FinalPixelCount, i, RunLength;
-    char *ScreenPtr;
+    uint8_t  *ScreenPtr;
     int32_t dx, dy;
 
     if (SDL_MUSTLOCK(surface))
@@ -2150,7 +2150,7 @@ void drawline16(int32_t XStart, int32_t YStart, int32_t XEnd, int32_t YEnd, char
     }
 
     /* Point to the bitmap address first pixel to draw */
-    ScreenPtr = (char *) (get_framebuffer()) + XStart + (surface->w * YStart);
+    ScreenPtr = (uint8_t  *) (get_framebuffer()) + XStart + (surface->w * YStart);
 
     /* Figure out whether we're going left or right, and how far we're going horizontally */
     if ((XDelta = XEnd - XStart) < 0)

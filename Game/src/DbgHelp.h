@@ -1520,7 +1520,7 @@ SymRegisterFunctionEntryCallback(
 typedef struct _IMAGEHLP_SYMBOL_SRC {
     DWORD sizeofstruct;
     DWORD type;
-    char  file[MAX_PATH];
+    uint8_t   file[MAX_PATH];
 } IMAGEHLP_SYMBOL_SRC, *PIMAGEHLP_SYMBOL_SRC;
 
 typedef struct _MODULE_TYPE_INFO { // AKA TYPTYP

@@ -207,7 +207,7 @@ void MusicShutdown( void )
       }
    }
 
-int USRHOOKS_GetMem(char **ptr, uint32_t size )
+int USRHOOKS_GetMem(uint8_t  **ptr, uint32_t size )
 {
    *ptr = malloc(size);
 
@@ -218,13 +218,13 @@ int USRHOOKS_GetMem(char **ptr, uint32_t size )
 
 }
 
-int USRHOOKS_FreeMem(char *ptr)
+int USRHOOKS_FreeMem(uint8_t  *ptr)
 {
    free(ptr);
    return( USRHOOKS_Ok);
 }
 
-char menunum=0;
+uint8_t  menunum=0;
 
 void intomenusounds(void)
 {
@@ -252,7 +252,7 @@ void intomenusounds(void)
     menunum %= 17;
 }
 
-void playmusic(char *fn)
+void playmusic(uint8_t  *fn)
 {
 #if PLATFORM_DOS
     short      fp;
@@ -285,7 +285,7 @@ void playmusic(char *fn)
 #endif
 }
 
-char loadsound(unsigned short num)
+uint8_t  loadsound(unsigned short num)
 {
     int32_t   fp, l;
 

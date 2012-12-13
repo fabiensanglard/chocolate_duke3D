@@ -52,7 +52,7 @@ public:
 	virtual void		stop_track(void);
 	virtual void		stop_sfx(void);
 	virtual bool		is_playing(void);
-	virtual const char	*copyright(void);
+	virtual const uint8_t 	*copyright(void);
 
 	// PSMDEX - Pentagram Streaming Midi Driver Extensions
 	virtual int			max_streams();

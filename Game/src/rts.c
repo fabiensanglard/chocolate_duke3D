@@ -35,7 +35,7 @@ static void  **lumpcache;
 static lumpinfo_t *lumpinfo;              // location of each lump on disk
 static boolean RTS_Started = false;
 
-char lumplockbyte[11];
+uint8_t  lumplockbyte[11];
 
 /*
 ============================================================================
@@ -57,7 +57,7 @@ char lumplockbyte[11];
 ====================
 */
 
-void RTS_AddFile (char *filename)
+void RTS_AddFile (uint8_t  *filename)
    {
    wadinfo_t  header;
    lumpinfo_t *lump_p;
@@ -114,7 +114,7 @@ void RTS_AddFile (char *filename)
 ====================
 */
 
-void RTS_Init (char *filename)
+void RTS_Init (uint8_t  *filename)
    {
    int32 length;
    //
@@ -178,7 +178,7 @@ int32 RTS_SoundLength (int32 lump)
 ====================
 */
 
-char * RTS_GetSoundName (int32 i)
+uint8_t  * RTS_GetSoundName (int32 i)
    {
    i++;
    if (i>=numlumps)

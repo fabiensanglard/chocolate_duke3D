@@ -27,7 +27,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 #include "duke3d.h"
 #include "cache1d.h"
 
-extern char everyothertime;
+extern uint8_t  everyothertime;
 short which_palookup = 9;
 
 
@@ -38,7 +38,7 @@ static void tloadtile(short tilenume)
 
 void cachespritenum(short i)
 {
-    char maxc;
+    uint8_t  maxc;
     short j;
 
     if(ud.monsters_off && badguy(&sprite[i])) return;
@@ -230,7 +230,7 @@ void cachegoodsprites(void)
             tloadtile(i);
 }
 
-char getsound(unsigned short num)
+uint8_t  getsound(unsigned short num)
 {
     short fp;
     int32_t   l;
@@ -475,7 +475,7 @@ void resetplayerstats(short snum)
     pus = 1;
     p->on_warping_sector = 0;
     p->spritebridge      = 0;
-    p->palette = (char *) &palette[0];
+    p->palette = (uint8_t  *) &palette[0];
 
     if(p->steroids_amount < 400 )
     {
@@ -570,7 +570,7 @@ void resetinventory(short snum)
 }
 
 
-void resetprestat(short snum,char g)
+void resetprestat(short snum,uint8_t  g)
 {
     struct player_struct *p;
     short i;
@@ -662,7 +662,7 @@ void setupbackdrop(short sky)
    pskybits=3;
 }
 
-void prelevel(char g)
+void prelevel(uint8_t  g)
 {
     short i, nexti, j, startwall, endwall, lotaglist;
     short lotags[65];
@@ -982,7 +982,7 @@ void prelevel(char g)
 }
 
 
-void newgame(char vn,char ln,char sk)
+void newgame(uint8_t  vn,uint8_t  ln,uint8_t  sk)
 {
     struct player_struct *p = &ps[0];
     short i;
@@ -1063,17 +1063,17 @@ void newgame(char vn,char ln,char sk)
 }
 
 
-void resetpspritevars(char g)
+void resetpspritevars(uint8_t  g)
 {
     short i, j, nexti,circ;
     int32_t firstx,firsty;
     spritetype *s;
-    char aimmode[MAXPLAYERS];
+    uint8_t  aimmode[MAXPLAYERS];
     STATUSBARTYPE tsbar[MAXPLAYERS];
 
 	#define BOT_MAX_NAME 20
 	int bot_used[BOT_MAX_NAME] = { false };
-	char *bot_names[] = {	"* ELASTI", 
+	uint8_t  *bot_names[] = {	"* ELASTI", 
 							"* ^ZookeM^",
 							"* DOOM",
 							"* DRO",
@@ -1282,12 +1282,12 @@ void genspriteremaps(void)
 {
     int32_t j,fp;
     int8_t look_pos;
-    char *lookfn = "lookup.dat";
-    char numl;
+    uint8_t  *lookfn = "lookup.dat";
+    uint8_t  numl;
 
     fp = TCkopen4load(lookfn,0);
     if(fp != -1)
-        kread(fp,(char *)&numl,1);
+        kread(fp,(uint8_t  *)&numl,1);
     else
         gameexit("\nERROR: File 'LOOKUP.DAT' not found.");
 
@@ -1440,12 +1440,12 @@ void resetmys(void)
       myreturntocenter = ps[myconnectindex].return_to_center;
 }
 
-void enterlevel(char g)
+void enterlevel(uint8_t  g)
 {
     short i;
     int32_t l;
-    char levname[256];
-	char fulllevelfilename[512];
+    uint8_t  levname[256];
+	uint8_t  fulllevelfilename[512];
 
 
 	KB_ClearKeyDown(sc_Pause); // avoid entering in pause mode.

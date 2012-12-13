@@ -30,7 +30,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 extern short otherp;
 
 static short total_lines,line_number;
-static char checking_ifelse,parsing_state,*last_used_text;
+static uint8_t  checking_ifelse,parsing_state,*last_used_text;
 static short num_squigilly_brackets;
 static int32_t last_used_size;
 
@@ -42,13 +42,13 @@ static spritetype *g_sp;
 #define NUMKEYWORDS     112
 
 //From global.c
-void FixFilePath(char *filename);
+void FixFilePath(uint8_t  *filename);
 
 //From actors.c
 void lotsofmail(spritetype *s, short n);
 void lotsofpaper(spritetype *s, short n);
 
-char *keyw[NUMKEYWORDS] =
+uint8_t  *keyw[NUMKEYWORDS] =
 {
     "definelevelname",  // 0
     "actor",            // 1    [#]
@@ -183,7 +183,7 @@ short getincangle(short a,short na)
     }
 }
 
-char ispecial(char c)
+uint8_t  ispecial(uint8_t  c)
 {
     if(c == 0x0a)
     {
@@ -197,7 +197,7 @@ char ispecial(char c)
     return 0;
 }
 
-char isaltok(char c)
+uint8_t  isaltok(uint8_t  c)
 {
     return ( isalnum(c) || c == '{' || c == '}' || c == '/' || c == '*' || c == '-' || c == '_' || c == '.');
 }
@@ -311,7 +311,7 @@ void getlabel(void)
 int32_t keyword(void)
 {
     int32_t i;
-    char *temptextptr;
+    uint8_t  *temptextptr;
 
     temptextptr = textptr;
 
@@ -331,7 +331,7 @@ int32_t keyword(void)
     tempbuf[i] = 0;
 
     for(i=0;i<NUMKEYWORDS;i++)
-        if( strcmp( (const char*)tempbuf,keyw[i]) == 0 )
+        if( strcmp( (const uint8_t *)tempbuf,keyw[i]) == 0 )
             return i;
 
     return -1;
@@ -359,7 +359,7 @@ int32_t transword(void) //Returns its code #
 
     for(i=0;i<NUMKEYWORDS;i++)
     {
-        if( strcmp( (const char*)tempbuf,keyw[i]) == 0 )
+        if( strcmp( (const uint8_t *)tempbuf,keyw[i]) == 0 )
         {
             *scriptptr = i;
             textptr += l;
@@ -418,7 +418,7 @@ void transnum(void)
 
     for(i=0;i<labelcnt;i++)
     {
-        if( strcmp((const char*)tempbuf,label+(i<<6)) == 0 )
+        if( strcmp((const uint8_t *)tempbuf,label+(i<<6)) == 0 )
         {
             *scriptptr = labelcode[i];
             scriptptr++;
@@ -442,10 +442,10 @@ void transnum(void)
 }
 
 
-char parsecommand(int readfromGRP)
+uint8_t  parsecommand(int readfromGRP)
 {
     int32_t i, j, k, *tempscrptr;
-    char done, *origtptr, temp_ifelse_check, tw;
+    uint8_t  done, *origtptr, temp_ifelse_check, tw;
     short temp_line_number;
     int fp;
 
@@ -698,7 +698,7 @@ char parsecommand(int readfromGRP)
             return 0;
         case 55: // include other con files.
 			{
-				char includedconfile[512];
+				uint8_t  includedconfile[512];
 				scriptptr--;
 				while( isaltok(*textptr) == 0 )
 				{
@@ -715,7 +715,7 @@ char parsecommand(int readfromGRP)
 				tempbuf[j] = '\0';
 
 				// fix path for unix. (doesn't really matter...)			
-				FixFilePath((char*)tempbuf);
+				FixFilePath((uint8_t *)tempbuf);
 /*
 				// Are we loading a TC?
 				if(game_dir[0] != '\0')
@@ -755,7 +755,7 @@ char parsecommand(int readfromGRP)
 
 				*(textptr+j) = 0;
 
-				kread(fp,(char *)textptr,j);
+				kread(fp,(uint8_t  *)textptr,j);
 				kclose(fp);
 				ud.conCRC[0] = crc32_update((uint8_t  *)textptr, j, ud.conCRC[0]);
 
@@ -1504,7 +1504,7 @@ void passone(int readfromGRP)
 
 }
 
-char *defaultcons[3] =
+uint8_t  *defaultcons[3] =
 {
      "GAME.CON",
      "USER.CON",
@@ -1548,10 +1548,10 @@ void copydefaultcons(void)
     }
 }
 
-void loadefs(char *filenam, char *mptr, int readfromGRP)
+void loadefs(uint8_t  *filenam, uint8_t  *mptr, int readfromGRP)
 {
     int32_t fs,fp;
-	char kbdKey;
+	uint8_t  kbdKey;
 
 	memset(script, 0, sizeof(script));
 
@@ -1568,10 +1568,10 @@ void loadefs(char *filenam, char *mptr, int readfromGRP)
 
         fs = kfilelength(fp);
 
-        last_used_text = textptr = (char *) mptr;
+        last_used_text = textptr = (uint8_t  *) mptr;
         last_used_size = fs;
 
-        kread(fp,(char *)textptr,fs);
+        kread(fp,(uint8_t  *)textptr,fs);
         kclose(fp);
 		ud.conCRC[0]=0;
 		ud.conCRC[0] = crc32_update((uint8_t  *)textptr, fs, ud.conCRC[0]);
@@ -1672,7 +1672,7 @@ void loadefs(char *filenam, char *mptr, int readfromGRP)
 	}
 }
 
-char dodge(spritetype *s)
+uint8_t  dodge(spritetype *s)
 {
     short i;
     int32_t bx,by,mx,my,bxvect,byvect,mxvect,myvect,d;
@@ -2035,7 +2035,7 @@ void move()
    }
 }
 
-char parse(void);
+uint8_t  parse(void);
 
 void parseifelse(int32_t condition)
 {
@@ -2057,7 +2057,7 @@ void parseifelse(int32_t condition)
 
 // int32_t *it = 0x00589a04;
 
-char parse(void)
+uint8_t  parse(void)
 {
     int32_t j, l, s;
 
@@ -2315,9 +2315,9 @@ char parse(void)
             break;
         case 99:
             insptr++;
-            g_sp->xrepeat = (char) *insptr;
+            g_sp->xrepeat = (uint8_t ) *insptr;
             insptr++;
-            g_sp->yrepeat = (char) *insptr;
+            g_sp->yrepeat = (uint8_t ) *insptr;
             insptr++;
             break;
         case 13:
@@ -3134,7 +3134,7 @@ char parse(void)
 
 void execute(short i,short p,int32_t x)
 {
-    char done;
+    uint8_t  done;
 
     g_i = i;
     g_p = p;

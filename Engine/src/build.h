@@ -100,7 +100,7 @@ typedef struct
 	short point2, nextwall, nextsector, cstat;
 	short picnum, overpicnum;
 	int8_t shade;
-	char pal, xrepeat, yrepeat, xpanning, ypanning;
+	uint8_t  pal, xrepeat, yrepeat, xpanning, ypanning;
 	short lotag, hitag, extra;
 } walltype;
 
@@ -151,7 +151,7 @@ EXTERN unsigned short mapCRC;
 EXTERN int32_t spritesortcnt;
 EXTERN spritetype tsprite[MAXSPRITESONSCREEN];
 
-EXTERN char vidoption;
+EXTERN uint8_t  vidoption;
 EXTERN int32_t xdim, ydim, ylookup[MAXYDIM+1], numpages;
 EXTERN int32_t yxaspect, viewingrange;
 
@@ -165,8 +165,8 @@ EXTERN int32_t numframes, randomseed;
 EXTERN short sintable[2048];
 EXTERN uint8_t  palette[768];
 EXTERN short numpalookups;
-EXTERN char *palookup[MAXPALOOKUPS];
-EXTERN char parallaxtype, showinvisibility;
+EXTERN uint8_t  *palookup[MAXPALOOKUPS];
+EXTERN uint8_t  parallaxtype, showinvisibility;
 EXTERN int32_t parallaxyoffs, parallaxyscale;
 EXTERN int32_t visibility, parallaxvisibility;
 
@@ -180,7 +180,7 @@ EXTERN short prevspritesect[MAXSPRITES], prevspritestat[MAXSPRITES];
 EXTERN short nextspritesect[MAXSPRITES], nextspritestat[MAXSPRITES];
 
 EXTERN short tilesizx[MAXTILES], tilesizy[MAXTILES];
-EXTERN char walock[MAXTILES];
+EXTERN uint8_t  walock[MAXTILES];
 EXTERN int32_t numtiles, picanm[MAXTILES], waloff[MAXTILES];
 
     /*
@@ -198,13 +198,13 @@ EXTERN int32_t numtiles, picanm[MAXTILES], waloff[MAXTILES];
 	 *    then in 3D mode, the walls and sprites that you see will show up the
 	 *    next time you flip to 2D mode.
      */
-EXTERN char show2dsector[(MAXSECTORS+7)>>3];
-EXTERN char show2dwall[(MAXWALLS+7)>>3];
-EXTERN char show2dsprite[(MAXSPRITES+7)>>3];
-EXTERN char automapping;
+EXTERN uint8_t  show2dsector[(MAXSECTORS+7)>>3];
+EXTERN uint8_t  show2dwall[(MAXWALLS+7)>>3];
+EXTERN uint8_t  show2dsprite[(MAXSPRITES+7)>>3];
+EXTERN uint8_t  automapping;
 
-EXTERN char gotpic[(MAXTILES+7)>>3];
-EXTERN char gotsector[(MAXSECTORS+7)>>3];
+EXTERN uint8_t  gotpic[(MAXTILES+7)>>3];
+EXTERN uint8_t  gotsector[(MAXSECTORS+7)>>3];
 
 /*************************************************************************
 POSITION VARIABLES:
@@ -327,7 +327,7 @@ OTHER VARIABLES:
 //END VISUALIZE RENDERER
 
 //Global.c
-void Error (int errorType, char *error, ...);
+void Error (int errorType, uint8_t  *error, ...);
 int FindDistance2D(int ix, int iy);
 
 #endif  /* defined _INCLUDE_BUILD_H_ */

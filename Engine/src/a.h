@@ -16,7 +16,7 @@ extern "C" {
 
 int32_t mmxoverlay(void);
 int32_t sethlinesizes(int32_t,int32_t,int32_t);
-int32_t setpalookupaddress(char *);
+int32_t setpalookupaddress(uint8_t  *);
 int32_t setuphlineasm4(int32_t,int32_t);
 int32_t hlineasm4(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
 int32_t setuprhlineasm4(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);

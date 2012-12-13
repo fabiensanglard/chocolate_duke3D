@@ -384,7 +384,7 @@ extern void       enet_socket_destroy (ENetSocket);
     @retval < 0 on failure
     @returns the address of the given hostName in address on success
 */
-extern int enet_address_set_host (ENetAddress *address, const char *hostName );
+extern int enet_address_set_host (ENetAddress *address, const uint8_t  *hostName );
 
 /** Attempts to do a reserve lookup of the host field in the address parameter.
     @param address    address used for reverse lookup
@@ -394,7 +394,7 @@ extern int enet_address_set_host (ENetAddress *address, const char *hostName );
     @retval 0 on success
     @retval < 0 on failure
 */
-extern int enet_address_get_host (const ENetAddress *address, char *hostName, size_t nameLength );
+extern int enet_address_get_host (const ENetAddress *address, uint8_t  *hostName, size_t nameLength );
 
 /** @} */
 

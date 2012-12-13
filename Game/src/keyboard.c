@@ -40,9 +40,9 @@ kb_scancode KB_LastScan;
 
 static volatile boolean keyIsWaiting = 0;
 
-static char scancodeToASCII[ MAXKEYBOARDSCAN ];
-static char shiftedScancodeToASCII[ MAXKEYBOARDSCAN ];
-static char extscanToSC[ MAXKEYBOARDSCAN ];
+static uint8_t  scancodeToASCII[ MAXKEYBOARDSCAN ];
+static uint8_t  shiftedScancodeToASCII[ MAXKEYBOARDSCAN ];
+static uint8_t  extscanToSC[ MAXKEYBOARDSCAN ];
 
 /*
 =============================================================================
@@ -110,7 +110,7 @@ boolean KB_KeyWaiting( void )
     return keyIsWaiting;
 }
 
-char KB_Getch( void )
+uint8_t  KB_Getch( void )
 {
 
     while (!keyIsWaiting) { _idle(); /* pull the pud. */ }
@@ -124,7 +124,7 @@ char KB_Getch( void )
     return scancodeToASCII[KB_LastScan];
 }
 
-void KB_Addch( char ch )
+void KB_Addch( uint8_t  ch )
 {
 	STUBBED("KB_Addch");
 }
@@ -144,7 +144,7 @@ void KB_ClearKeysDown( void )
 }
 
 static struct {
-	char* name;
+	char * name;
 	int code;
 } keyname2scancode[] = {
 	{ ",",		sc_Comma	},
@@ -252,7 +252,7 @@ static struct {
 	{ NULL,		0		}
 };
 
-char *KB_ScanCodeToString( kb_scancode scancode )
+uint8_t  *KB_ScanCodeToString( kb_scancode scancode )
 {
 	int i;
 	for(i = 0; keyname2scancode[i].name != NULL; i++)
@@ -264,9 +264,9 @@ char *KB_ScanCodeToString( kb_scancode scancode )
 	return NULL;
 }
 
-kb_scancode KB_StringToScanCode( char * string )
+kb_scancode KB_StringToScanCode( uint8_t  * string )
 {
-	char* name = NULL;
+	uint8_t * name = NULL;
 	int32 i=0;
 	name = keyname2scancode[i].name;
 	for(;name;++i, name=keyname2scancode[i].name)

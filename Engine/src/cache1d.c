@@ -39,7 +39,7 @@
  *              cachestart = (int32_t )(pointer to start of BIG buffer)
  *              cachesize = length of BIG buffer
  *
- *   Step 2: Call allocache(int32_t *bufptr, int32_t bufsiz, char *lockptr)
+ *   Step 2: Call allocache(int32_t *bufptr, int32_t bufsiz, uint8_t  *lockptr)
  *              whenever you need to allocate a buffer, where:
  *
  *              *bufptr = pointer to 4-byte pointer to buffer
@@ -47,7 +47,7 @@
  *                 previously allocated things from the cache safely by
  *                 setting the 4-byte pointer to 0.
  *              bufsiz = number of bytes to allocate
- *              *lockptr = pointer to locking char which tells whether
+ *              *lockptr = pointer to locking uint8_t  which tells whether
  *                 the region can be removed or not.  If *lockptr = 0 then
  *                 the region is not locked else its locked.
  *
@@ -70,7 +70,7 @@ cactype cac[MAXCACHEOBJECTS];
 int32_t lockrecip[200];
 
 // TC game directory
-char game_dir[512] = { '\0' };
+uint8_t  game_dir[512] = { '\0' };
 
 void initcache(int32_t dacachestart, int32_t dacachesize)
 {
@@ -192,7 +192,7 @@ void suckcache (int32_t *suckptr)
 void agecache(void)
 {
 	int32_t cnt;
-	char ch;
+	uint8_t  ch;
 
 	if (agecount >= cacnum) agecount = cacnum-1;
 	assert(agecount >= 0);
@@ -207,7 +207,7 @@ void agecache(void)
 	}
 }
 
-void reportandexit(char *errormessage)
+void reportandexit(uint8_t  *errormessage)
 {
 	int32_t i, j;
 
@@ -253,9 +253,9 @@ int32_t numgroupfiles = 0;			// number of GRP files actually used.
 int32_t gnumfiles[MAXGROUPFILES];	// number of files on grp
 int32_t groupfil[MAXGROUPFILES] = {-1,-1,-1,-1}; // grp file handles
 int32_t groupfilpos[MAXGROUPFILES];
-char *gfilelist[MAXGROUPFILES];	// name list + size list of all the files in grp
+uint8_t  *gfilelist[MAXGROUPFILES];	// name list + size list of all the files in grp
 int32_t *gfileoffs[MAXGROUPFILES];	// offset of the files
-char *groupfil_memory[MAXGROUPFILES]; // addresses of raw GRP files in memory
+uint8_t  *groupfil_memory[MAXGROUPFILES]; // addresses of raw GRP files in memory
 int32_t groupefil_crc32[MAXGROUPFILES];
 
 uint8_t  filegrp[MAXOPENFILES];
@@ -283,7 +283,7 @@ static PHYSFS_file *filehan[MAXOPENFILES] =
 #endif
 
 
-int32_t initgroupfile(const char *filename)
+int32_t initgroupfile(const uint8_t  *filename)
 {
 #if (defined USE_PHYSICSFS)
     static int initted_physfs = 0;
@@ -308,7 +308,7 @@ int32_t initgroupfile(const char *filename)
 
     return(1); /* uhh...? */
 #else
-	char buf[16];
+	uint8_t  buf[16];
 	int32_t i, j, k;
 
 	printf("Loading %s ...\n", filename);
@@ -343,7 +343,7 @@ int32_t initgroupfile(const char *filename)
 
 		gnumfiles[numgroupfiles] = BUILDSWAP_INTEL32(*((int32_t *)&buf[12]));
 
-		if ((gfilelist[numgroupfiles] = (char *)kmalloc(gnumfiles[numgroupfiles]<<4)) == 0)
+		if ((gfilelist[numgroupfiles] = (uint8_t  *)kmalloc(gnumfiles[numgroupfiles]<<4)) == 0)
 			{ Error(EXIT_FAILURE, "Not enough memory for file grouping system\n"); }
 		if ((gfileoffs[numgroupfiles] = (int32_t *)kmalloc((gnumfiles[numgroupfiles]+1)<<2)) == 0)
 			{ Error(EXIT_FAILURE, "Not enough memory for file grouping system\n"); }
@@ -407,11 +407,11 @@ void uninitgroupfile(void)
 }
 
 #if (defined USE_PHYSICSFS)
-static int locateOneElement(char *buf)
+static int locateOneElement(uint8_t  *buf)
 {
-    char *ptr;
-    char **rc;
-    char **i;
+    uint8_t  *ptr;
+    uint8_t  **rc;
+    uint8_t  **i;
 
     if (PHYSFS_exists(buf))
         return(1);  /* quick rejection: exists in current case. */
@@ -446,11 +446,11 @@ static int locateOneElement(char *buf)
 } /* locateOneElement */
 
 
-int PHYSFSEXT_locateCorrectCase(char *buf)
+int PHYSFSEXT_locateCorrectCase(uint8_t  *buf)
 {
     int rc;
-    char *ptr;
-    char *prevptr;
+    uint8_t  *ptr;
+    uint8_t  *prevptr;
 
     while (*buf == '/')  /* skip any '/' at start of string... */
         buf++;
@@ -528,7 +528,7 @@ unsigned int crc32_update(uint8_t  *buf, unsigned int length, unsigned int crc_t
 
 #define POLY 0x8408   /* 1021H bit reversed */
 
-unsigned short crc16(char *data_p, unsigned short length)
+unsigned short crc16(uint8_t  *data_p, unsigned short length)
 {
       uint8_t  i;
       unsigned int data;
@@ -555,12 +555,12 @@ unsigned short crc16(char *data_p, unsigned short length)
       return (crc);
 }
 
-int32_t kopen4load(const char *filename, int readfromGRP)
+int32_t kopen4load(const uint8_t  *filename, int readfromGRP)
 { // FIX_00072: all files are now 1st searched in Duke's root folder and then in the GRP.
 #if (defined USE_PHYSICSFS)
     int i;
     PHYSFS_file *rc;
-    char _filename[64];
+    uint8_t  _filename[64];
 
     assert(strlen(filename) < sizeof (_filename));
     strcpy(_filename, filename);
@@ -584,7 +584,7 @@ int32_t kopen4load(const char *filename, int readfromGRP)
 #else
 	int32_t i, j, k, fil, newhandle;
 	uint8_t  bad;
-	char *gfileptr;
+	uint8_t  *gfileptr;
 
 	newhandle = MAXOPENFILES-1;
 	while (filehan[newhandle] != -1)
@@ -612,7 +612,7 @@ int32_t kopen4load(const char *filename, int readfromGRP)
 		{
 			for(i=gnumfiles[k]-1;i>=0;i--)
 			{
-				gfileptr = (char *)&gfilelist[k][i<<4];
+				gfileptr = (uint8_t  *)&gfilelist[k][i<<4];
 
 				bad = 0;
 				for(j=0;j<13;j++)
@@ -687,7 +687,7 @@ int kread32(int32_t handle, int32_t *buffer)
     return(1);
 }
 
-int kread8(int32_t handle, char *buffer)
+int kread8(int32_t handle, uint8_t  *buffer)
 {
     if (kread(handle, buffer, 1) != 1)
         return(0);
@@ -775,7 +775,7 @@ void kclose(int32_t handle)
 
 	/* Internal LZW variables */
 #define LZWSIZE 16384           /* Watch out for shorts! */
-static char *lzwbuf1, *lzwbuf4, *lzwbuf5;
+static uint8_t  *lzwbuf1, *lzwbuf4, *lzwbuf5;
 static uint8_t  lzwbuflock[5];
 static short *lzwbuf2, *lzwbuf3;
 
@@ -784,7 +784,7 @@ void kdfread(void *buffer, size_t dasizeof, size_t count, int32_t fil)
 	size_t i, j;
 	int32_t k, kgoal;
 	short leng;
-	char *ptr;
+	uint8_t  *ptr;
 
 	lzwbuflock[0] = lzwbuflock[1] = lzwbuflock[2] = lzwbuflock[3] = lzwbuflock[4] = 200;
 	if (lzwbuf1 == NULL) allocache((int32_t *)&lzwbuf1,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[0]);
@@ -794,7 +794,7 @@ void kdfread(void *buffer, size_t dasizeof, size_t count, int32_t fil)
 	if (lzwbuf5 == NULL) allocache((int32_t *)&lzwbuf5,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[4]);
 
 	if (dasizeof > LZWSIZE) { count *= dasizeof; dasizeof = 1; }
-	ptr = (char *)buffer;
+	ptr = (uint8_t  *)buffer;
 
 	kread(fil,&leng,2); kread(fil,lzwbuf5,(int32_t )leng);
 	k = 0;
@@ -822,7 +822,7 @@ void dfread(void *buffer, size_t dasizeof, size_t count, FILE *fil)
 	size_t i, j;
 	int32_t k, kgoal;
 	short leng;
-	char *ptr;
+	uint8_t  *ptr;
 
 	lzwbuflock[0] = lzwbuflock[1] = lzwbuflock[2] = lzwbuflock[3] = lzwbuflock[4] = 200;
 	if (lzwbuf1 == NULL) allocache((int32_t *)&lzwbuf1,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[0]);
@@ -832,7 +832,7 @@ void dfread(void *buffer, size_t dasizeof, size_t count, FILE *fil)
 	if (lzwbuf5 == NULL) allocache((int32_t *)&lzwbuf5,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[4]);
 
 	if (dasizeof > LZWSIZE) { count *= dasizeof; dasizeof = 1; }
-	ptr = (char *)buffer;
+	ptr = (uint8_t  *)buffer;
 
 	fread(&leng,2,1,fil); fread(lzwbuf5,(int32_t )leng,1,fil);
 	k = 0; kgoal = uncompress(lzwbuf5,(int32_t )leng,lzwbuf4);
@@ -858,7 +858,7 @@ void dfwrite(void *buffer, size_t dasizeof, size_t count, FILE *fil)
 {
 	size_t i, j, k;
 	short leng;
-	char *ptr;
+	uint8_t  *ptr;
 
 	lzwbuflock[0] = lzwbuflock[1] = lzwbuflock[2] = lzwbuflock[3] = lzwbuflock[4] = 200;
 	if (lzwbuf1 == NULL) allocache((int32_t *)&lzwbuf1,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[0]);
@@ -868,7 +868,7 @@ void dfwrite(void *buffer, size_t dasizeof, size_t count, FILE *fil)
 	if (lzwbuf5 == NULL) allocache((int32_t *)&lzwbuf5,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[4]);
 
 	if (dasizeof > LZWSIZE) { count *= dasizeof; dasizeof = 1; }
-	ptr = (char *)buffer;
+	ptr = (uint8_t  *)buffer;
 
 	copybufbyte(ptr,lzwbuf4,(int32_t )dasizeof);
 	k = dasizeof;
@@ -898,13 +898,13 @@ void dfwrite(void *buffer, size_t dasizeof, size_t count, FILE *fil)
 	lzwbuflock[0] = lzwbuflock[1] = lzwbuflock[2] = lzwbuflock[3] = lzwbuflock[4] = 1;
 }
 
-int32_t compress(char *lzwinbuf, int32_t uncompleng, char *lzwoutbuf)
+int32_t compress(uint8_t  *lzwinbuf, int32_t uncompleng, uint8_t  *lzwoutbuf)
 {
 	int32_t i, addr, newaddr, addrcnt, zx, *longptr;
 	int32_t bytecnt1, bitcnt, numbits, oneupnumbits;
 	short *shortptr;
 
-	for(i=255;i>=0;i--) { lzwbuf1[i] = (char) i; lzwbuf3[i] = (short) ((i+1)&255); }
+	for(i=255;i>=0;i--) { lzwbuf1[i] = (uint8_t ) i; lzwbuf3[i] = (short) ((i+1)&255); }
 	clearbuf((void *) FP_OFF(lzwbuf2),256>>1,0xffffffff);
 	clearbuf((void *) FP_OFF(lzwoutbuf),((uncompleng+15)+3)>>2,0L);
 
@@ -960,7 +960,7 @@ int32_t compress(char *lzwinbuf, int32_t uncompleng, char *lzwoutbuf)
 	return(uncompleng+4);
 }
 
-int32_t uncompress(char *lzwinbuf, int32_t compleng, char *lzwoutbuf)
+int32_t uncompress(uint8_t  *lzwinbuf, int32_t compleng, uint8_t  *lzwoutbuf)
 {
 	int32_t strtot, currstr, numbits, oneupnumbits;
 	int32_t i, dat, leng, bitcnt, outbytecnt, *longptr;
@@ -987,9 +987,9 @@ int32_t uncompress(char *lzwinbuf, int32_t compleng, char *lzwoutbuf)
 		lzwbuf3[currstr] = (short) dat;
 
 		for(leng=0;dat>=256;leng++,dat=lzwbuf3[dat])
-			lzwbuf1[leng] = (char) lzwbuf2[dat];
+			lzwbuf1[leng] = (uint8_t ) lzwbuf2[dat];
 
-		lzwoutbuf[outbytecnt++] = (char) dat;
+		lzwoutbuf[outbytecnt++] = (uint8_t ) dat;
 		for(i=leng-1;i>=0;i--) lzwoutbuf[outbytecnt++] = lzwbuf1[i];
 
 		lzwbuf2[currstr-1] = (short) dat; lzwbuf2[currstr] = (short) dat;
@@ -1000,9 +1000,9 @@ int32_t uncompress(char *lzwinbuf, int32_t compleng, char *lzwoutbuf)
 }
 
 
-int32_t TCkopen4load(const char *filename, int readfromGRP)
+int32_t TCkopen4load(const uint8_t  *filename, int readfromGRP)
 {
-	char fullfilename[512];
+	uint8_t  fullfilename[512];
 	int32_t result = 0;
  
 	if(game_dir[0] != '\0' && !readfromGRP)

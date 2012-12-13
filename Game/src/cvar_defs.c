@@ -65,7 +65,7 @@ void CVARDEFS_Render()
     if(g_CV_DebugJoystick)
     {
         int i;
-        char buf[128];
+        uint8_t  buf[128];
          minitext(2, 2, "Debug Joystick", 17,10+16);
 
          for(i = 0; i < MAXJOYAXES; i++)
@@ -99,7 +99,7 @@ void CVARDEFS_Render()
 
 	if(g_CV_DebugSound)
 	{
-        char buf[128];
+        uint8_t  buf[128];
         minitext(2, 2, "Debug Sound", 17,10+16);
 
 		sprintf(buf, "Active sounds: %lu", sounddebugActiveSounds);
@@ -297,7 +297,7 @@ void CVARDEFS_FunctionLevel(void* var)
 
             for(i=connecthead;i>=0;i=connectpoint2[i])
             {
-                sendpacket(i,(char*)tempbuf,11); //And send the packet to everyone
+                sendpacket(i,(uint8_t *)tempbuf,11); //And send the packet to everyone
             }
         }
 		else ps[myconnectindex].gm |= MODE_RESTART; //Otherwise just restart the game
@@ -326,7 +326,7 @@ void CVARDEFS_FunctionPlayMidi(void* var)
 void CVARDEFS_FunctionHelp(void* var)
 {	
 	int i, numArgs, numCvars;
-	char *helpcmd = CONSOLE_GetArgv(0);	
+	uint8_t  *helpcmd = CONSOLE_GetArgv(0);	
 	numCvars = CVAR_GetNumCvarBindings();
     numArgs = CONSOLE_GetArgc();
 

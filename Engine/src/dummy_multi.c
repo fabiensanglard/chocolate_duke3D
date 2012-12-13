@@ -13,4 +13,4 @@ short numplayers = 0, myconnectindex = 0;
 short connecthead, connectpoint2[MAXPLAYERS];
 
 
-char syncstate=0;
+uint8_t  syncstate=0;

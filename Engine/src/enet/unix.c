@@ -67,12 +67,12 @@ enet_time_set (enet_uint32 newTimeBase)
 }
 
 int
-enet_address_set_host (ENetAddress * address, const char * name)
+enet_address_set_host (ENetAddress * address, const uint8_t  * name)
 {
     struct hostent * hostEntry = NULL;
 #ifdef HAS_GETHOSTBYNAME_R
     struct hostent hostData;
-    char buffer [2048];
+    uint8_t  buffer [2048];
     int errnum;
 
 #ifdef linux
@@ -94,26 +94,26 @@ enet_address_set_host (ENetAddress * address, const char * name)
 }
 
 int
-enet_address_get_host (const ENetAddress * address, char * name, size_t nameLength)
+enet_address_get_host (const ENetAddress * address, uint8_t  * name, size_t nameLength)
 {
     struct in_addr in;
     struct hostent * hostEntry = NULL;
 #ifdef HAS_GETHOSTBYADDR_R
     struct hostent hostData;
-    char buffer [2048];
+    uint8_t  buffer [2048];
     int errnum;
 
     in.s_addr = address -> host;
 
 #ifdef linux
-    gethostbyaddr_r ((char *) & in, sizeof (struct in_addr), AF_INET, & hostData, buffer, sizeof (buffer), & hostEntry, & errnum);
+    gethostbyaddr_r ((uint8_t  *) & in, sizeof (struct in_addr), AF_INET, & hostData, buffer, sizeof (buffer), & hostEntry, & errnum);
 #else
-    hostEntry = gethostbyaddr_r ((char *) & in, sizeof (struct in_addr), AF_INET, & hostData, buffer, sizeof (buffer), & errnum);
+    hostEntry = gethostbyaddr_r ((uint8_t  *) & in, sizeof (struct in_addr), AF_INET, & hostData, buffer, sizeof (buffer), & errnum);
 #endif
 #else
     in.s_addr = address -> host;
 
-    hostEntry = gethostbyaddr ((char *) & in, sizeof (struct in_addr), AF_INET);
+    hostEntry = gethostbyaddr ((uint8_t  *) & in, sizeof (struct in_addr), AF_INET);
 #endif
 
     if (hostEntry == NULL)
@@ -145,7 +145,7 @@ enet_socket_create (ENetSocketType type, const ENetAddress * address)
         ioctl (newSocket, FIONBIO, & nonBlocking);
 #endif
 
-        setsockopt (newSocket, SOL_SOCKET, SO_RCVBUF, (char *) & receiveBufferSize, sizeof (int));
+        setsockopt (newSocket, SOL_SOCKET, SO_RCVBUF, (uint8_t  *) & receiveBufferSize, sizeof (int));
     }
     
     if (address == NULL)
