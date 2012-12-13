@@ -10,12 +10,7 @@
 #include "platform.h"
 #include "build.h"
 
-//FCS: In order to see how the engine renders different part of the screen you can set the following macros
-//VISUALIZE RENDERER
-#define RENDER_DRAW_WALL_BORDERS 1
-#define RENDER_DRAW_WALL_INSIDE 1
-#define RENDER_DRAW_CEILING_AND_FLOOR 1
-//END VISUALIZE RENDERER
+
 
 #define shrd(a,b,c) (((b)<<(32-(c))) | ((a)>>(c)))
 #define shld(a,b,c) (((b)>>(32-(c))) | ((a)<<(c)))
@@ -51,6 +46,7 @@ static unsigned char* pal_eax;
 void setuphlineasm4(long i1, long i2) { }
 void setpalookupaddress(unsigned char *i1) { pal_eax = i1; }
 
+//FCS:   Draw ceiling/floors
 void hlineasm4(long _count, unsigned long unused_source, long _shade, unsigned long _i4, unsigned long _i5, long i6)
 {
     /* force into registers (probably only useful on PowerPC)... */
@@ -66,6 +62,9 @@ void hlineasm4(long _count, unsigned long unused_source, long _shade, unsigned l
     register unsigned char *pal = (unsigned char *) pal_eax;
     register long _asm1 = asm1;
     register long _asm2 = asm2;
+
+	if (!RENDER_DRAW_CEILING_AND_FLOOR)
+		return;
 
     while (count) {
 	    source = i5 >> shifter;
@@ -92,6 +91,7 @@ void setuprhlineasm4(long i1, long i2, long i3, long i4, long i5, long i6)
     rmach_edx = i4;
     rmach_esi = i5;
 } /* setuprhlineasm4 */
+
 
 void rhlineasm4(long i1, long i2, long i3, unsigned long i4, unsigned long i5, long i6)
 {
@@ -131,6 +131,7 @@ void setuprmhlineasm4(long i1, long i2, long i3, long i4, long i5, long i6)
 } /* setuprmhlineasm4 */
 
 /* #pragma aux rmhlineasm4 parm [eax][ebx][ecx][edx][esi][edi] */
+//FCS: ????
 void rmhlineasm4(long i1, long i2, long i3, long i4, long i5, long i6)
 {
     unsigned long ebp = i6 - i1;
@@ -188,21 +189,24 @@ long vlineasm1(long i1, long i2, long i3, long i4, long i5, long i6);
 
 /* #pragma aux prevlineasm1 parm [eax][ebx][ecx][edx][esi][edi] */
 static unsigned char mach3_al;
+
+//FCS:  RENDER TOP AND BOTTOM COLUMN
 long prevlineasm1(long i1, long i2, long i3, long i4, long i5, long i6)
 {
     unsigned char *source = (unsigned char *)i5;
     unsigned char *dest = (unsigned char *)i6;
+
+	
+
     if (i3 == 0)
     {
+		if (!RENDER_DRAW_TOP_AND_BOTTOM_COLUMN)
+		return;
+
 	    i1 += i4;
-        
         //FCS
         //((unsigned long)i4) >>= mach3_al;
         i4 = ((unsigned long)i4) >> mach3_al;
-        //unsigned long tmp = i4;
-	    //tmp >>= mach3_al;
-        //i4 = tmp;
-        
 	    i4 = (i4&0xffffff00) | (source[i4]&0xff);
 	    *dest = ((unsigned char*)i2)[i4];
 	    return i1;
@@ -215,12 +219,15 @@ long prevlineasm1(long i1, long i2, long i3, long i4, long i5, long i6)
 //extern unsigned char * get_framebuffer(void);
 
 /* #pragma aux vlineasm1 parm [eax][ebx][ecx][edx][esi][edi] */
+//FCS: This is used to draw wall border vertical lines
 long vlineasm1(long vince, long palookupoffse, long i3, long vplce, long bufplce, long i6)
 {
     unsigned long temp;
     unsigned char *dest = (unsigned char *)i6;
 
-    
+    if (!RENDER_DRAW_WALL_BORDERS)
+		return;
+
     i3++;
     while (i3)
     {
@@ -412,8 +419,14 @@ static void vlineasm4_altivec(long i1, long i2)
 #endif
 
 /* #pragma aux vlineasm4 parm [ecx][edi] modify [eax ebx ecx edx esi edi] */
+//FCS This is used to fill the inside of a wall
 void vlineasm4(long i1, long i2)
 {
+
+	
+	if (!RENDER_DRAW_WALL_INSIDE)
+		return ;
+
 #if HAVE_POWERPC
     if (has_altivec)
         vlineasm4_altivec(i1, i2);
@@ -450,6 +463,7 @@ void mvlineasm4(long i1, long i2)
     unsigned long temp;
     unsigned long index = (i2 + ylookup[i1]);
     unsigned char *dest = (unsigned char*)(-ylookup[i1]);
+
     do {
         for (i = 0; i < 4; i++)
         {
@@ -720,6 +734,7 @@ extern long fpuasm;
 #define high32(a) ((int)(((__int64)a&(__int64)0xffffffff00000000)>>32))
 
 /* #pragma aux slopevlin parm [eax][ebx][ecx][edx][esi][edi] */
+//FCS: Render RENDER_SLOPPED_CEILING_AND_FLOOR
 void slopevlin(long i1, unsigned long i2, long i3, long i4, long i5, long i6)
 {
     bitwisef2i c;
@@ -729,6 +744,10 @@ void slopevlin(long i1, unsigned long i2, long i3, long i4, long i5, long i6)
     esi = i5 + low32((__int64)globalx3 * (__int64)(i2<<3));
     edi = i6 + low32((__int64)globaly3 * (__int64)(i2<<3));
     ebx = i4;
+
+	if (!RENDER_SLOPPED_CEILING_AND_FLOOR)
+		return;
+
     do {
 	    // -------------
 	    // All this is calculating a fixed point approx. of 1/a

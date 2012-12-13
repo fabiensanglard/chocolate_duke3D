@@ -1940,6 +1940,12 @@ void _nextpage(void)
 		// FIX_00085: Optimized Video driver. FPS increases by +20%.
         // SDL_Flip(surface);
 		SDL_UpdateRect(surface, 0, 0, 0, 0);
+
+		// When visualizing the rendering process, part of the screen
+		// are not updated: In order to avoid the "ghost effect", we
+		// clear the framebuffer to black.
+		if (CLEAR_FRAMEBUFFER)
+			SDL_FillRect(surface,0,0);
     }
 
 #ifdef USE_OPENGL
