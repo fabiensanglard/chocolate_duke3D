@@ -11,4 +11,4 @@ SDL-1.2.9
 *.opensdf
 DebugVC7
 bin
-vcxproj.user
+*vcxproj.user

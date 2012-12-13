@@ -10,6 +10,13 @@
 #include "platform.h"
 #include "build.h"
 
+//FCS: In order to see how the engine renders different part of the screen you can set the following macros
+//VISUALIZE RENDERER
+#define RENDER_DRAW_WALL_BORDERS 1
+#define RENDER_DRAW_WALL_INSIDE 1
+#define RENDER_DRAW_CEILING_AND_FLOOR 1
+//END VISUALIZE RENDERER
+
 #define shrd(a,b,c) (((b)<<(32-(c))) | ((a)>>(c)))
 #define shld(a,b,c) (((b)>>(32-(c))) | ((a)<<(c)))
 
@@ -220,9 +227,7 @@ long vlineasm1(long vince, long palookupoffse, long i3, long vplce, long bufplce
 	    temp = ((unsigned)vplce) >> mach3_al;
         
 	    temp = ((unsigned char *)bufplce)[temp];
-        //temp = ((unsigned int *)bufplce)[temp];
-        
-    //    if (dest < (get_framebuffer()+(640*480)))
+      
         *dest = ((unsigned char*)palookupoffse)[temp];
 	    vplce += vince;
 	    dest += fixchain;
