@@ -35,8 +35,8 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 =============================================================================
 */
 
-volatile byte  KB_KeyDown[ MAXKEYBOARDSCAN ];   // Keyboard state array
-volatile kb_scancode KB_LastScan;
+byte  KB_KeyDown[ MAXKEYBOARDSCAN ];   // Keyboard state array
+kb_scancode KB_LastScan;
 
 static volatile boolean keyIsWaiting = 0;
 
@@ -112,7 +112,6 @@ boolean KB_KeyWaiting( void )
 
 char KB_Getch( void )
 {
-    int shifted;
 
     while (!keyIsWaiting) { _idle(); /* pull the pud. */ }
 	keyIsWaiting = false;

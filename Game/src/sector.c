@@ -207,6 +207,9 @@ long ldist(spritetype *s1,spritetype *s2)
     return(FindDistance2D(vx,vy) + 1);
 }
 
+// Declaration here just to shut down compiler warning:
+// The linker was able to find it :/ regardless !
+int FindDistance3D(int ix, int iy, int iz);
 long dist(spritetype *s1,spritetype *s2)
 {
     long vx,vy,vz;
@@ -879,7 +882,7 @@ void operatesectors(short sn,short ii)
                 i = nextspritestat[i];
             }
 			
-#pragma message ( "Why would this ever be -1?" )
+            //Why would this ever be -1?
 			if(i < 0)
 			{
 				return;
@@ -1015,7 +1018,7 @@ void operaterespawns(short low)
 
 void operateactivators(short low,short snum)
 {
-    short i, j, k, *p, nexti;
+    short i, j, k, *p;
     walltype *wal;
 
     for(i=numcyclers-1;i>=0;i--)
@@ -1477,7 +1480,7 @@ char checkhitswitch(short snum,long w,char switchtype)
                 x = headspritestat[3];
                 while(x >= 0)
                 {
-                   if( ((sprite[x].hitag) == lotag) )
+                   if( (sprite[x].hitag) == lotag )
                    {
                        switch(sprite[x].lotag)
                        {
@@ -1564,10 +1567,8 @@ void breakwall(short newpn,short spr,short dawallnum)
 void checkhitwall(short spr,short dawallnum,long x,long y,long z,short atwith)
 {
     short j, i, sn = -1, darkestwall;
-    signed char nfloors,nceilings;
-    short nextj;
     walltype *wal;
-    spritetype *s;
+   
 
     wal = &wall[dawallnum];
 
@@ -1870,9 +1871,9 @@ void checkplayerhurt(struct player_struct *p,short j)
 
 char checkhitceiling(short sn)
 {
-    short i, j, q, darkestwall, darkestceiling;
-    signed char nfloors,nceilings;
-    walltype *wal;
+    short i, j;
+
+  
 
     switch(sector[sn].ceilingpicnum)
     {
@@ -1945,7 +1946,7 @@ char checkhitceiling(short sn)
 
 void checkhitsprite(short i,short sn)
 {
-    short j, k, l, nextj, p;
+    short j, k, p;
     spritetype *s;
 
     i &= (MAXSPRITES-1);

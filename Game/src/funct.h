@@ -61,7 +61,7 @@ extern void stopenvsound(short num,short i);
 //#line "sounds.c" 494
 extern void pan3dsound(void );
 //#line "sounds.c" 571
-extern void TestCallBack(unsigned long num);
+extern void TestCallBack(long num);
 //#line "sector.c" 9
 extern short callsound(short sn,short whatsprite);
 //#line "sector.c" 56
@@ -503,13 +503,13 @@ extern uint16 findpage(uint16 framenumber);
 //#line "animlib.c" 71
 extern void loadpage(uint16 pagenumber,uint16 *pagepointer);
 //#line "animlib.c" 97
-extern void CPlayRunSkipDump(char *srcP,char *dstP);
+extern void CPlayRunSkipDump(byte *srcP,byte *dstP);
 //#line "animlib.c" 177
 extern void renderframe(uint16 framenumber,uint16 *pagepointer);
 //#line "animlib.c" 214
 extern void drawframe(uint16 framenumber);
 //#line "animlib.c" 228
-extern void ANIM_LoadAnim(char *buffer);
+extern void ANIM_LoadAnim(byte *buffer);
 //#line "animlib.c" 260
 extern void ANIM_FreeAnim(void );
 //#line "animlib.c" 275

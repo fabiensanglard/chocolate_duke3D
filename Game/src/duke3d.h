@@ -356,7 +356,7 @@ extern long movefifosendplc;
 typedef struct
 {
     char *ptr;
-    volatile char lock;
+    char lock;
     int  length, num;
 } SAMPLE;
 

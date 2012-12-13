@@ -173,8 +173,8 @@ typedef uint8 kb_scancode;
 =============================================================================
 */
 
-extern volatile byte  KB_KeyDown[ MAXKEYBOARDSCAN ];   // Keyboard state array
-extern volatile kb_scancode KB_LastScan;
+extern byte  KB_KeyDown[ MAXKEYBOARDSCAN ];   // Keyboard state array
+extern kb_scancode KB_LastScan;
 
 
 /*

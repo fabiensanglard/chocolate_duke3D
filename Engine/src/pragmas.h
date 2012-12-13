@@ -48,32 +48,32 @@ static __inline long msqrtasm(unsigned long c)
 
 void vlin16first (long i1, long i2);
 
-static __inline int sqr (int input1) { return input1*input1; }
+static inline int sqr (int input1) { return input1*input1; }
 
 /* internal use:32x32 = 64bit */
-static __inline __int64 mul32_64(int i1,int i2)
+static inline int64_t mul32_64(int i1,int i2)
 {
 	return (__int64)i1*i2;
 }
-static __inline int scale (int input1, int input2, int input3)
+static inline int scale (int input1, int input2, int input3)
 {
-	return mul32_64(input1,input2)/input3;
+	return (int)(mul32_64(input1,input2)/(int64_t)input3);
 }
-static __inline int mulscale (int input1, int input2, int input3)
+static inline int mulscale (int input1, int input2, int input3)
 {
-	return mul32_64(input1,input2)>>input3;
+	return (int)(mul32_64(input1,input2)>>input3);
 }
-static __inline int dmulscale  (int input1, int input2, int input3,int input4,int input5)
+static inline int dmulscale  (int input1, int input2, int input3,int input4,int input5)
 {
-	return (mul32_64(input1,input2) + mul32_64(input3,input4))>>input5;
+	return (int)((mul32_64(input1,input2) + mul32_64(input3,input4))>>input5);
 }
-static __inline int tmulscale(int i1, int i2, int i3, int i4, int i5, int i6,int shift)
+static inline int tmulscale(int i1, int i2, int i3, int i4, int i5, int i6,int shift)
 {
-	return (mul32_64(i1,i2) + mul32_64(i3,i4) + mul32_64(i5,i6))>>shift;
+	return (int)((mul32_64(i1,i2) + mul32_64(i3,i4) + mul32_64(i5,i6))>>shift);
 }
-static __inline int divscale(int i1, int i2, int i3)
+static inline int divscale(int i1, int i2, int i3)
 {
-	return ((__int64)i1<<i3)/i2;
+	return (int)(((int64_t)i1<<i3)/i2);
 }
 
 #define DEFFUNCS \
@@ -157,8 +157,8 @@ void clearbuf(void *d, long c, long a);
 void clearbufbyte(void *D, long c, long a);
 void copybufbyte(void *S, void *D, long c);
 
-void qinterpolatedown16 (long bufptr, long num, long val, long add);
-void qinterpolatedown16short (long bufptr, long num, long val, long add);
+void qinterpolatedown16 (long* bufptr, long num, long val, long add);
+void qinterpolatedown16short (long* bufptr, long num, long val, long add);
 
 #endif /* !defined _INCLUDE_PRAGMAS_H_ */
 

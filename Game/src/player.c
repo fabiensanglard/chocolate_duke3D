@@ -52,7 +52,6 @@ void setpal(struct player_struct *p)
 void incur_damage( struct player_struct *p )
 {
     long  damage = 0L, shield_damage = 0L;
-    short i, damage_source;
 
     sprite[p->i].extra -= p->extra_extra8>>8;
 
@@ -1219,7 +1218,7 @@ long lastvisinc;
 
 void displaymasks(short snum)
 {
-    short i, p;
+    short p;
 
     if(sprite[ps[snum].i].pal == 1)
         p = 1;
@@ -1297,7 +1296,7 @@ short fistsign;
 void displayweapon(short snum)
 {
     long gun_pos, looking_arc, cw;
-    long weapon_xoffset, i, j, x1, y1, x2;
+    long weapon_xoffset, i, j;
     char o,pal;
     signed char gs;
     struct player_struct *p;
@@ -2129,7 +2128,7 @@ void getinput(short snum)
 
 char doincrements(struct player_struct *p)
 {
-    long /*j,*/i,snum;
+    long snum;
 
     snum = sprite[p->i].yvel;
 //    j = sync[snum].avel;
@@ -2319,7 +2318,7 @@ short weapon_sprites[MAX_WEAPONS] = { KNEE, FIRSTGUNSPRITE, SHOTGUNSPRITE,
 
 void checkweapons(struct player_struct *p)
 {
-    short j,cw;
+    short cw;
 
     cw = p->curr_weapon;
 
@@ -2725,7 +2724,7 @@ void processinput(short snum)
 		ud.playing_demo_rev == BYTEVERSION_28 || 
 		ud.playing_demo_rev == BYTEVERSION_116 || 
 		ud.playing_demo_rev == BYTEVERSION_117) &&
-		sb_snum&(1<<6) || 
+		sb_snum&(1<<6) ||
 		ACTION(gamefunc_Look_Left) && (p->gm&MODE_GAME) && 
 		!(p->gm&MODE_MENU) && !(p->gm&MODE_TYPE) && !(ud.pause_on) && (ud.recstat != 2))
 	{
@@ -2739,8 +2738,11 @@ void processinput(short snum)
 		ud.playing_demo_rev == BYTEVERSION_116 || 
 		ud.playing_demo_rev == BYTEVERSION_117) &&
 		sb_snum&(1<<7) || 
-		ACTION(gamefunc_Look_Right) && (p->gm&MODE_GAME) && 
-		!(p->gm&MODE_MENU) && !(p->gm&MODE_TYPE) && !(ud.pause_on) && (ud.recstat != 2))
+		(
+         ACTION(gamefunc_Look_Right) && (p->gm&MODE_GAME) &&
+		!(p->gm&MODE_MENU) && !(p->gm&MODE_TYPE) && !(ud.pause_on) && (ud.recstat != 2)
+         )
+         )
 	{
 		p->look_ang += 152;
 		p->rotscrnang -= 24;
@@ -3248,6 +3250,7 @@ void processinput(short snum)
         k = sintable[p->bobcounter&2047]>>12;
 
         if(truefdist < PHEIGHT+(8<<8) )
+        {
             if( k == 1 || k == 3 )
         {
             if(p->spritebridge == 0 && p->walking_snd_toggle == 0 && p->on_ground)
@@ -3277,9 +3280,14 @@ void processinput(short snum)
                 }
             }
         }
-        else if(p->walking_snd_toggle > 0)
-            p->walking_snd_toggle --;
-
+        else{
+            if(p->walking_snd_toggle > 0)
+            {
+              p->walking_snd_toggle --;
+            }
+        }
+        }
+        
         if(p->jetpack_on == 0 && p->steroids_amount > 0 && p->steroids_amount < 400)
             doubvel <<= 1;
 

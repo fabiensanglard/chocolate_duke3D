@@ -118,7 +118,7 @@ void loadpage (uint16 pagenumber, uint16 *pagepointer)
 //
 //****************************************************************************
 
-void CPlayRunSkipDump (char *srcP, char *dstP)
+void CPlayRunSkipDump (byte *srcP, byte *dstP)
    {
    signed char cnt;
    uint16 wordCnt;
@@ -249,7 +249,7 @@ void drawframe (uint16 framenumber)
 //
 //****************************************************************************
 
-void ANIM_LoadAnim (char * buffer)
+void ANIM_LoadAnim (byte * buffer)
    {
    uint16 i;
    int32 size;

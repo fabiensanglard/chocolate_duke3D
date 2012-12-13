@@ -2,9 +2,10 @@
 #include "cvar_defs.h"
 #include <stdlib.h>
 
+#include <strings.h>
+
 #define MAX_CVARS 32
 
-#pragma message ( "We probably want this to be some sort of dynamic list at some point" )
 cvar_binding cvar_binding_list[MAX_CVARS];
 int num_cvar_bindings = 0;
 
@@ -40,12 +41,12 @@ cvar_binding* CVAR_GetCvarBinding(unsigned int nBinding)
 }
 
 // Bind all standard CVars here
-void CVAR_RegisterDefaultCvarBindings()
+void CVAR_RegisterDefaultCvarBindings(void)
 {
     CVARDEFS_Init();
 }
 
-void CVAR_Render()
+void CVAR_Render(void)
 {
     CVARDEFS_Render();
 }

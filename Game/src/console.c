@@ -48,6 +48,7 @@ int console_num_spaces = 0; //number of spaces
 // Toggle for the console state
 int nConsole_Active = 0;
 
+void CVAR_RegisterDefaultCvarBindings(void);
 // Initialize the console
 void CONSOLE_Init()
 {
@@ -559,7 +560,6 @@ void CONSOLE_RecalculateDirtyBuffer()
 
 void CONSOLE_Printf(const char *newmsg, ...)
 {
-    int tmp;
     CONSOLEELEMENT *pElement;
     va_list		argptr;
     char		msg[512];//[MAX_CONSOLE_STRING_LENGTH];

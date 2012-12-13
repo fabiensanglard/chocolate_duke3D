@@ -228,7 +228,6 @@ char menunum=0;
 
 void intomenusounds(void)
 {
-    short i;
     static const short menusnds[] =
     {
         LASERTRIP_EXPLODE,
@@ -626,7 +625,7 @@ void pan3dsound(void)
     }
 }
 
-void TestCallBack(unsigned long num)
+void TestCallBack(long num)
 {
     short tempi,tempj,tempk;
 

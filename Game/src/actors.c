@@ -623,10 +623,10 @@ void hitradius( short i, long  r, long  hp1, long  hp2, long  hp3, long  hp4 )
 }
 
 
-movesprite(short spritenum, long xchange, long ychange, long zchange, unsigned long cliptype)
+int movesprite(short spritenum, long xchange, long ychange, long zchange, unsigned long cliptype)
 {
     long daz,h, oldx, oldy;
-    short retval, dasectnum, a, cd;
+    short retval, dasectnum, cd;
     char bg;
 
     bg = badguy(&sprite[spritenum]);
@@ -1012,7 +1012,7 @@ short ifhitsectors(short sectnum)
 
 short ifhitbyweapon(short sn)
 {
-    short j, k, p;
+    short j, p;
     spritetype *npc;
 
     if( hittype[sn].extra >= 0 )
@@ -1515,8 +1515,8 @@ void movefallers(void)
 
 void movestandables(void)
 {
-    short i, j, k, m, nexti, nextj, nextk, p, q, sect;
-    long l=0, x, *t, x1, y1;
+    short i, j, k, m, nexti, nextj, p, sect;
+    long l=0, x, *t;
     spritetype *s;
 
     i = headspritestat[6];
@@ -2451,8 +2451,8 @@ void bounce(short i)
      
 void moveweapons(void)
 {
-    short i, j, k, nexti, p, q, tempsect;
-    long dax,day,daz, x, l, ll, x1, y1;
+    short i, j, k, nexti, p, q;
+    long dax,day,daz, x, ll;
     unsigned long qq;
     spritetype *s;
 
@@ -2797,7 +2797,7 @@ void moveweapons(void)
 void movetransports(void)
 {
     char warpspriteto;
-    short i, j, k, l, p, sect, sectlotag, nexti, nextj, nextk;
+    short i, j, k, l, p, sect, sectlotag, nexti, nextj;
     long ll,onfloorz,q;
 
     i = headspritestat[9]; //Transporters
@@ -4394,7 +4394,7 @@ void moveactors(void)
 
 void moveexplosions(void)  // STATNUM 5
 {
-    short i, j, k, nexti, sect, p;
+    short i, j, nexti, sect, p;
     long l, x, *t;
     spritetype *s;
 
@@ -5171,8 +5171,8 @@ void moveeffectors(void)   //STATNUM 3
 
                 if(s->owner == -1)
                 {
-                    sprintf(tempbuf,"Could not find any locators for SE# 6 and 14 with a hitag of %ld.\n",t[3]);
-                    gameexit(tempbuf);
+                    sprintf((char*)tempbuf,"Could not find any locators for SE# 6 and 14 with a hitag of %ld.\n",t[3]);
+                    gameexit((char*)tempbuf);
                 }
 
                 j = ldist(&sprite[s->owner],s);

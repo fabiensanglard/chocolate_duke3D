@@ -22,6 +22,8 @@
 
 #include "../../Game/src/cvar_defs.h"
 
+#include "types.h"
+#include "file_lib.H"
 
 #if (defined USE_PHYSICSFS)
 #include "physfs.h"
@@ -372,9 +374,9 @@ long initgroupfile(const char *filename)
 
 	i = 1000000; // FIX_00086: grp loaded by smaller sucessive chunks to avoid overloading low ram computers
 	groupfil_memory[numgroupfiles] = malloc(i);
-	while(j=read(groupfil[numgroupfiles], groupfil_memory[numgroupfiles], i))
+	while((j=read(groupfil[numgroupfiles], groupfil_memory[numgroupfiles], i)))
 	{
-		groupefil_crc32[numgroupfiles] = crc32_update(groupfil_memory[numgroupfiles], j, groupefil_crc32[numgroupfiles]);	
+		groupefil_crc32[numgroupfiles] = crc32_update((unsigned char*)groupfil_memory[numgroupfiles], j, groupefil_crc32[numgroupfiles]);
 	}
 
 	free(groupfil_memory[numgroupfiles]);  
@@ -713,7 +715,7 @@ long klseek(long handle, long offset, long whence)
 
 	groupnum = filegrp[handle];
 
-	if (groupnum == 255) return(lseek(filehan[handle],offset,whence));
+	if (groupnum == 255) return((long)lseek(filehan[handle],offset,whence));
 	if (groupfil[groupnum] != -1)
 	{
 		switch(whence)
@@ -735,7 +737,7 @@ long filelength(long fd)
 {
     struct stat stats;
     fstat(fd, &stats);
-    return stats.st_size;
+    return (long)stats.st_size;
 }
 #endif
 
@@ -1018,7 +1020,7 @@ long TCkopen4load(const char *filename, int readfromGRP)
 
 	if(g_CV_DebugFileAccess != 0)
 	{
-		printf("FILE ACCESS: [read] File: (%s) Result: %d, clock: %d\n", fullfilename, result, totalclock);
+		printf("FILE ACCESS: [read] File: (%s) Result: %ld, clock: %ld\n", fullfilename, result, totalclock);
 	}
 
 	return result;

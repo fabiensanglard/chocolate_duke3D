@@ -54,7 +54,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 #include <sys/stat.h>
 
 
-#pragma message("game.c this is So lame")
+// this is So lame
 #include "cache1d.h"
 
 #define MINITEXT_BLUE	0
@@ -454,7 +454,6 @@ char *grpVersion2char(unsigned char grp_to_identify)
 void getpackets(void)
 {
     long i, j, k, l;
-    FILE *fp;
     short other, packbufleng;
     input *osyn, *nsyn;
 
@@ -1876,7 +1875,7 @@ void coolgaugetext(short snum)
 {
     struct player_struct *p;
     long i, j, o, ss, u;
-    char c, permbit;
+    char permbit;
 	short offx = 3, offy = 3, stepx=60, stepy=6;
 
     p = &ps[snum];
@@ -2918,7 +2917,7 @@ void updatesectorz(long x, long y, long z, short *sectnum)
 void view(struct player_struct *pp, long *vx, long *vy,long *vz,short *vsectnum, short ang, short horiz)
 {
      spritetype *sp;
-     long i, nx, ny, nz, hx, hy, hz, hitx, hity, hitz;
+     long i, nx, ny, nz, hx, hy, hitx, hity, hitz;
      short bakcstat, hitsect, hitwall, hitsprite, daang;
 
      nx = (sintable[(ang+1536)&2047]>>4);
@@ -2977,7 +2976,7 @@ void view(struct player_struct *pp, long *vx, long *vy,long *vz,short *vsectnum,
 void drawbackground(void)
 {
      short dapicnum;
-     long x,y,x1,y1,x2,y2,topy;
+     long x,y,x1,y1,x2,y2;
 
      flushperms();
 
@@ -3202,10 +3201,10 @@ static long oyrepeat=-1;
 
 void displayrooms(short snum,long smoothratio)
 {
-    long cposx,cposy,cposz,dst,j,fz,cz,hz,lz;
-    short sect, cang, k, choriz,tsect;
+    long cposx,cposy,cposz,dst,j,fz,cz;
+    short sect, cang, k, choriz;
     struct player_struct *p;
-    long tposx,tposy,tposz,dx,dy,thoriz,i;
+    long tposx,tposy,i;
     short tang;
 
     p = &ps[snum];
@@ -7482,7 +7481,7 @@ void cacheicon(void)
 
 void Logo(void)
 {
-    short i,j,soundanm;
+    short i,soundanm;
 
     soundanm = 0;
 
@@ -8131,7 +8130,6 @@ static int load_duke3d_groupfile(void)
 	// FIX_00032: Added multi base GRP manager. Use duke3d*.grp to handle multiple grp.
     
 	char groupfilefullpath[512];
-	int i = 0;
 
 	char *baseDir="duke3d*.grp";
 	//char *baseDir="DUKE3D.GRP";
@@ -8146,11 +8144,11 @@ static int load_duke3d_groupfile(void)
 
 int main(int argc,char **argv)
 {
-    long i, j, k, l;
+    long i, j;
 	int32 iScriptHandle;
 	long filehandle;
 
-	char HEAD[2048], HEAD2[2048], HEADA[2048], HEAD2A[2048];
+	char HEAD[2048], HEAD2[2048], HEADA[2048];
 	char kbdKey;
 	char *exe;
 
@@ -8611,7 +8609,7 @@ int main(int argc,char **argv)
         if( ud.recstat == 2 || ud.multimode > 1 || ( ud.show_help == 0 && (ps[myconnectindex].gm&MODE_MENU) != MODE_MENU ) )
             if( ps[myconnectindex].gm&MODE_GAME )
 			{
-#pragma message (" It's stuck here ")
+                // (" It's stuck here ")
 				//printf("ps[myconnectindex].gm&MODE_GAME\n");
 				if( moveloop() ) 
 				{
@@ -8946,7 +8944,6 @@ char in_menu = 0;
 long playback(void)
 {
     long i,j,k,l,t;
-    short p;
     char foundemo;
 #ifdef DBGRECORD
 	FILE * pFile;
@@ -9888,7 +9885,7 @@ void doorders(void)
 
 void dobonus(char bonusonly)
 {
-    short t, r, tinc,gfx_offset;
+    short t, tinc,gfx_offset;
     long i, y,xfragtotal,yfragtotal;
     short bonuscnt;
 
@@ -10766,7 +10763,7 @@ void takescreenshot(void)
 
 	if(ud.multimode>1) // if more than 1 player, we add name. Then add score if DM
 	{
-		strcat(tempbuf, " [");
+		strcat((char*)tempbuf, " [");
 		for(i=connecthead;i>=0;i=connectpoint2[i])
 		{
 			if(!ud.user_name[i][0])

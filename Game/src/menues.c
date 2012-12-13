@@ -38,7 +38,7 @@ extern char vgacompatible;
 short probey=0,lastprobey=0,last_menu,globalskillsound=-1;
 short sh,onbar,buttonstat,deletespot;
 short last_zero,last_fifty,last_threehundred = 0;
-static char fileselect = 1, menunamecnt, menuname[256][17], curpath[80], menupath[80];
+static char fileselect = 1, menunamecnt, menuname[256][17];
 
 // File tree info
 //
@@ -178,10 +178,9 @@ void getangplayers(short snum)
 int loadpheader(char spot,int32 *vn,int32 *ln,int32 *psk,int32 *nump)
 {
 
-     long i;
-         char fn[] = "game0.sav";
-         long fil;
-     long bv;
+    char fn[] = "game0.sav";
+    long fil;
+    long bv;
 
          fn[4] = spot+'0';
 
@@ -784,7 +783,6 @@ int probe(int x,int y,int i,int n)
 int probeXduke(int x,int y,int i,int n, long spriteSize)
 {
     short centre;
-	long mouseY;
 	int32 mouseSens;
 
 	static long delay_counter_up = 0, delay_counter_down = 0, delay_up = 50, delay_down = 50;
@@ -2295,7 +2293,7 @@ else
 					{
 						//CONSOLE_Printf("MENU_USER_MAP");
 						//
-#pragma message ("[Todo: generate file list starting from .\\maps]")
+                    //[Todo: generate file list starting from .\\maps]")
 
 						cmenu(MENU_USER_MAP); // cmenu(101)
 						break;
@@ -2359,8 +2357,7 @@ else
 
 				// Draw USER MAP background
 				{
-					int x1, x2, y, y1, y2; 
-					long sx, sy;
+					int y, x1;
 					long xPos, xPos2;
 					long yPos, yPos2;
 

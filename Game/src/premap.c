@@ -419,7 +419,6 @@ void pickrandomspot(short snum)
 void resetplayerstats(short snum)
 {
     struct player_struct *p;
-    short i;
 
     p = &ps[snum];
 
@@ -1358,7 +1357,7 @@ void waitforeverybody()
 
 void dofrontscreens(void)
 {
-    long tincs,i,j;
+    long i,j;
 
     if(ud.recstat != 2)
     {
@@ -1443,7 +1442,7 @@ void resetmys(void)
 
 void enterlevel(char g)
 {
-    short i,j;
+    short i;
     long l;
     char levname[256];
 	char fulllevelfilename[512];

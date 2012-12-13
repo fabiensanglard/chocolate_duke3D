@@ -94,11 +94,6 @@ static int32 setupread=0;
 #define MAXSETUPFILES 20
 void CONFIG_GetSetupFilename( void )
    {
-   struct find_t fblock;
-   char extension[10];
-   char * src;
-   char * filenames[MAXSETUPFILES];
-   int32 numfiles;
    int32 i;
 
 
@@ -387,7 +382,7 @@ void CONFIG_SetupMouse( int32 scripthandle )
       function = CONFIG_AnalogNameToNum(temp);
       if (function != -1)
          {
-#pragma message( "Fix the Analog mouse axis issue. Just make a new function for registering them." )      
+         //TODO Fix the Analog mouse axis issue. Just make a new function for registering them.
          //CONTROL_MapAnalogAxis(i,function);
          }
       sprintf(str,"MouseDigitalAxes%ld_0",i);
@@ -402,7 +397,7 @@ void CONFIG_SetupMouse( int32 scripthandle )
       CONTROL_MapDigitalAxis( i, function, 1 );
       sprintf(str,"MouseAnalogScale%ld",i);
       SCRIPT_GetNumber(scripthandle, "Controls", str,&scale);
-#pragma message( "Fix the Analog mouse scale issue. Just make a new function for registering them." )      
+      //TODO: Fix the Analog mouse scale issue. Just make a new function for registering them.
 	  //CONTROL_SetAnalogAxisScale( i, scale );
       }
 
@@ -552,7 +547,7 @@ void CONFIG_SetupJoystick( int32 scripthandle )
    SCRIPT_GetNumber( scripthandle, "Controls","JoystickPort",&function);
    CONTROL_JoystickPort = function;
    // read in rudder state
-   SCRIPT_GetNumber( scripthandle, "Controls","EnableRudder",&CONTROL_RudderEnabled);
+   SCRIPT_GetNumber( scripthandle, "Controls","EnableRudder",(int32_t*)&CONTROL_RudderEnabled);
 }
 
 void readsavenames(void)
@@ -862,15 +857,15 @@ void CONFIG_WriteSetup( void )
 	// FIX_00016: Build in Keyboard/mouse setup. Mouse now faster.
 	for(i=0; i<MAXMOUSEBUTTONS; i++)
 	{
-		sprintf(tempbuf, "MouseButton%d", i);
-		SCRIPT_PutString(scripthandle, "Controls", tempbuf, 
+		sprintf((char*)tempbuf, "MouseButton%ld", i);
+		SCRIPT_PutString(scripthandle, "Controls", (char*)tempbuf, 
 			(MouseMapping[i]!=-1)?CONFIG_FunctionNumToName(MouseMapping[i]):"");
 	}
 
 	for (i=0;i<MAXMOUSEAXES*2;i++)
 	{
-		sprintf(tempbuf, "MouseDigitalAxes%d_%d", i>>1, i&1);
-		SCRIPT_PutString(scripthandle, "Controls", tempbuf, 
+		sprintf((char*)tempbuf, "MouseDigitalAxes%ld_%ld", i>>1, i&1);
+		SCRIPT_PutString(scripthandle, "Controls", (char*)tempbuf, 
 			(MouseDigitalAxeMapping[i>>1][i&1]!=-1)?CONFIG_FunctionNumToName(MouseDigitalAxeMapping[i>>1][i&1]):"");
 	}
 

@@ -815,8 +815,8 @@ struct uint64 {
 	}
 
 	void printx() {
-		if (high) printf ("%X%08X", high, low);
-		else printf ("%X", low);
+		if (high) printf ("%lX%08lX", high, low);
+		else printf ("%lX", low);
 	}
 };
 #endif

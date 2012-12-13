@@ -84,6 +84,15 @@ static int32 JoyButtonMapping[MAXJOYBUTTONS];
 static float JoyAnalogScale[MAXJOYAXES];
 static int32 JoyAnalogDeadzone[MAXJOYAXES];
 
+//Extern functions from SDLDriver.c:
+int _joystick_hat(int hat);
+void _joystick_deinit(void);
+void _joystick_init(void);
+int _joystick_button(int button);
+int _joystick_axis(int axis);
+int _joystick_update(void);
+//End of SDLDriver declaration
+
 int ACTION(int i)
 {
 

@@ -45,8 +45,8 @@ typedef unsigned short int      uint16;
 typedef uint16                  word;
 typedef short int               int16;
 
-typedef unsigned long           uint32;
-typedef long                    int32;
+typedef unsigned int           uint32;
+typedef int                    int32;
 typedef uint32                  dword;
 
 typedef int32                   fixed;

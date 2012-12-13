@@ -26,7 +26,7 @@ void  FX_SetReverseStereo( int setting ){}
 int   FX_GetReverseStereo( void ){return 1;}
 void  FX_SetReverb( int reverb ){}
 void  FX_SetFastReverb( int reverb ){}
-int   FX_GetMaxReverbDelay( void ){}
+int   FX_GetMaxReverbDelay( void ){return 0;}
 int   FX_GetReverbDelay( void ){return 1;}
 void  FX_SetReverbDelay( int delay ){}
 

@@ -82,7 +82,7 @@ void Setup_StableNetworking();
 
 int nNetMode = 0;
 
-#pragma message ( "[Fix this horrible networking mess. Function pointers not happy]" )
+//TODO ( "[Fix this horrible networking mess. Function pointers not happy]" )
 // I do not like this one bit.
 // Figure out what was causing the problems with the function pointers.
 // This mess is a direct result of my lack of time.. bleh
@@ -343,7 +343,6 @@ static long mouse_relative_x = 0;
 static long mouse_relative_y = 0;
 static short mouse_buttons = 0;
 static unsigned int lastkey = 0;
-static SDL_TimerID primary_timer = NULL;
 /* so we can make use of setcolor16()... - DDOI */
 static unsigned char drawpixel_color=0;
 
@@ -537,7 +536,7 @@ static void init_new_res_vars(int davidoption)
     xdim = xres = surface->w;
     ydim = yres = surface->h;
 
-	printf("init_new_res_vars %d %d\n",xdim,ydim);
+	printf("init_new_res_vars %ld %ld\n",xdim,ydim);
 
     bytesperline = surface->w;
     vesachecked = 1;
@@ -682,8 +681,6 @@ static __inline int sdl_mouse_button_filter(SDL_MouseButtonEvent const *event)
 
 static int sdl_mouse_motion_filter(SDL_Event const *event)
 {
-	static int i = 0;
-
     if (surface == NULL)
 		return(0);
 
@@ -1093,7 +1090,7 @@ static char *string_dupe(const char *str)
 void set_sdl_renderer(void)
 {
     const char *envr = getenv(BUILD_RENDERER);
-    char buffer[256];
+
 #ifdef USE_OPENGL
     int need_opengl_lib = 0;
 #endif
@@ -1216,7 +1213,7 @@ void _platform_init(int argc, char **argv, const char *title, const char *icon)
             {
                 //fullscreen = 1;
 				//TODO:
-#pragma message ( "[Todo: handle -netmode <int>]" )
+//TODO ( "[Todo: handle -netmode <int>]" )
 				Setup_StableNetworking();
 					
             }
@@ -1444,7 +1441,7 @@ int _setgamemode(char davidoption, long daxdim, long daydim)
 
     if (daxdim > MAXXDIM || daydim > MAXYDIM)
     {
-		printf("%d x %d is too big. Changed to %d x %d\n", daxdim, daydim, MAXXDIM,MAXYDIM);
+		printf("%ld x %ld is too big. Changed to %d x %d\n", daxdim, daydim, MAXXDIM,MAXYDIM);
 	    daxdim = MAXXDIM;
 	    daydim = MAXYDIM;
     } 
@@ -1460,7 +1457,7 @@ int _setgamemode(char davidoption, long daxdim, long daydim)
 
 	if(!validated)
     {
-		printf("%d x %d unsupported. Changed to 640 x 480\n", daxdim, daydim);
+		printf("%ld x %ld unsupported. Changed to 640 x 480\n", daxdim, daydim);
 	    daxdim = 640;
 	    daydim = 480;
     }

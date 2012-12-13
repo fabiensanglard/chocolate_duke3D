@@ -102,13 +102,13 @@ void CVARDEFS_Render()
         char buf[128];
         minitext(2, 2, "Debug Sound", 17,10+16);
 
-		sprintf(buf, "Active sounds: %d", sounddebugActiveSounds);
+		sprintf(buf, "Active sounds: %lu", sounddebugActiveSounds);
 		minitext(2, 10, buf, 23,10+16);
 		
-		sprintf(buf, "Allocate Calls: %d", sounddebugAllocateSoundCalls);
+		sprintf(buf, "Allocate Calls: %lu", sounddebugAllocateSoundCalls);
 		minitext(2, 18, buf, 23,10+16);
 
-		sprintf(buf, "Deallocate Calls: %d", sounddebugDeallocateSoundCalls);
+		sprintf(buf, "Deallocate Calls: %ld", sounddebugDeallocateSoundCalls);
 		minitext(2, 26, buf, 23,10+16);
 	}
 
@@ -120,7 +120,6 @@ void CVARDEFS_Render()
 void CVARDEFS_DefaultFunction(void* var)
 {
     int argc;
-    char* argv;
     cvar_binding* binding = (cvar_binding*)var;
 
     argc = CONSOLE_GetArgc();
@@ -144,7 +143,6 @@ void CVARDEFS_FunctionQuit(void* var)
   {
 	if(ps[myconnectindex].gm&MODE_GAME)
 	{
-		char quittimer = totalclock+1;
 		gamequit = 1;
 		CONSOLE_SetActive(0);
     }
@@ -299,7 +297,7 @@ void CVARDEFS_FunctionLevel(void* var)
 
             for(i=connecthead;i>=0;i=connectpoint2[i])
             {
-                sendpacket(i,tempbuf,11); //And send the packet to everyone
+                sendpacket(i,(char*)tempbuf,11); //And send the packet to everyone
             }
         }
 		else ps[myconnectindex].gm |= MODE_RESTART; //Otherwise just restart the game

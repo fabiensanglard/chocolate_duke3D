@@ -324,6 +324,10 @@ OTHER VARIABLES:
 #endif
 //END VISUALIZE RENDERER
 
+//Global.c
+void Error (int errorType, char *error, ...);
+int FindDistance2D(int ix, int iy);
+
 #endif  /* defined _INCLUDE_BUILD_H_ */
 
 /* end of build.h ... */
