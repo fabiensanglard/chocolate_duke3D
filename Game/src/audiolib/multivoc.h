@@ -111,7 +111,7 @@ int   MV_PlayVOC( char *ptr, int pitchoffset, int vol, int left, int right,
          int priority, unsigned long callbackval );
 int   MV_PlayLoopedVOC( char *ptr, long loopstart, long loopend,
          int pitchoffset, int vol, int left, int right, int priority,
-         unsigned long callbackval );
+         uint32_t callbackval );
 void  MV_CreateVolumeTable( int index, int volume, int MaxVolume );
 void  MV_SetVolume( int volume );
 int   MV_GetVolume( void );

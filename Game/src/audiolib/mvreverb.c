@@ -24,7 +24,7 @@ static  double iRVBLeft, iRVBRight;
 
 static int cnv_offset(int src)
 {
-	__int64 temp = ((__int64)src * (__int64)MV_MixRate) / 22050;
+	int64_t temp = ((int64_t)src * (int64_t)MV_MixRate) / 22050;
 	return (int)temp;
 }
 
@@ -80,7 +80,7 @@ static void check_buffer()
 
 }
 
-__inline double g_buffer(int iOff, double *ptr)                          // get_buffer content helper: takes care about wraps
+double g_buffer(int iOff, double *ptr)                          // get_buffer content helper: takes care about wraps
 {
 	int correctDelay = delay;
 	if(!correctDelay)
@@ -101,7 +101,7 @@ __inline double g_buffer(int iOff, double *ptr)                          // get_
 	return (double)*(ptr+iOff);
 }
 
-__inline void s_buffer(int iOff,double iVal, double *ptr)                // set_buffer content helper: takes care about wraps and clipping
+void s_buffer(int iOff,double iVal, double *ptr)                // set_buffer content helper: takes care about wraps and clipping
 {
 	int correctDelay = delay;
 	if(!correctDelay)
@@ -122,7 +122,7 @@ __inline void s_buffer(int iOff,double iVal, double *ptr)                // set_
 	*(ptr+iOff)=iVal;
 }
 
-__inline void s_buffer1(int iOff,double iVal, double *ptr)                // set_buffer (+1 sample) content helper: takes care about wraps and clipping
+void s_buffer1(int iOff,double iVal, double *ptr)                // set_buffer (+1 sample) content helper: takes care about wraps and clipping
 {
 	int correctDelay = delay;
 	if(!correctDelay)
@@ -143,7 +143,7 @@ __inline void s_buffer1(int iOff,double iVal, double *ptr)                // set
 	*(ptr+iOff)=iVal;
 }
 
-__inline double MixREVERBLeft(double INPUT_SAMPLE_L, double INPUT_SAMPLE_R, double *ptr)
+double MixREVERBLeft(double INPUT_SAMPLE_L, double INPUT_SAMPLE_R, double *ptr)
 {
 	double ACC0,ACC1,FB_A0,FB_A1,FB_B0,FB_B1;
 	
@@ -191,7 +191,7 @@ __inline double MixREVERBLeft(double INPUT_SAMPLE_L, double INPUT_SAMPLE_R, doub
 	return (double)iRVBLeft;
 }
 
-__inline double MixREVERBRight(void)
+double MixREVERBRight(void)
 {
 	return (double)iRVBRight;
 }

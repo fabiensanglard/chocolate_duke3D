@@ -23,7 +23,7 @@ extern int g_CV_CubicInterpolation;
 #define gval0 MV_GVal[*MV_GPos&3]
 #define gval(x) MV_GVal[(*MV_GPos+x)&3]
 
-_inline int MV_cubic(int position)
+int MV_cubic(int position)
 {
 	int xd, fa;
 	xd = (position >> 1) & 0x7FFF;

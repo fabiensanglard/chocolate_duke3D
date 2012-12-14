@@ -47,6 +47,15 @@
 		2D7B630116791C0300E35E54 /* dummy_multi.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B630016791C0200E35E54 /* dummy_multi.c */; };
 		2D7B7AEE16792D6700DB503A /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B7AED16792D6700DB503A /* SDLMain.m */; };
 		2D7B7B121679325D00DB503A /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D7B7B111679325D00DB503A /* CoreFoundation.framework */; };
+		2D7C17D7167AD6A500E1BBA1 /* dsl.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7C17CE167AD6A500E1BBA1 /* dsl.c */; };
+		2D7C17D8167AD6A500E1BBA1 /* fx_man.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7C17CF167AD6A500E1BBA1 /* fx_man.c */; };
+		2D7C17D9167AD6A500E1BBA1 /* ll_man.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7C17D0167AD6A500E1BBA1 /* ll_man.c */; };
+		2D7C17DA167AD6A500E1BBA1 /* multivoc.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7C17D1167AD6A500E1BBA1 /* multivoc.c */; };
+		2D7C17DB167AD6A500E1BBA1 /* mv_mix.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7C17D2167AD6A500E1BBA1 /* mv_mix.c */; };
+		2D7C17DC167AD6A500E1BBA1 /* mvreverb.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7C17D3167AD6A500E1BBA1 /* mvreverb.c */; };
+		2D7C17DD167AD6A500E1BBA1 /* nodpmi.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7C17D4167AD6A500E1BBA1 /* nodpmi.c */; };
+		2D7C17DE167AD6A500E1BBA1 /* user.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7C17D6167AD6A500E1BBA1 /* user.c */; };
+		2D7C17E0167ADE2000E1BBA1 /* pitch.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7C17DF167ADE1F00E1BBA1 /* pitch.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -160,6 +169,17 @@
 		2D7B7AED16792D6700DB503A /* SDLMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDLMain.m; sourceTree = "<group>"; };
 		2D7B7AEF16792D8900DB503A /* SDLMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDLMain.h; sourceTree = "<group>"; };
 		2D7B7B111679325D00DB503A /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		2D7C17CD167AD6A500E1BBA1 /* assert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = assert.h; path = ../../Game/src/audiolib/assert.h; sourceTree = "<group>"; };
+		2D7C17CE167AD6A500E1BBA1 /* dsl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = dsl.c; path = ../../Game/src/audiolib/dsl.c; sourceTree = "<group>"; };
+		2D7C17CF167AD6A500E1BBA1 /* fx_man.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = fx_man.c; path = ../../Game/src/audiolib/fx_man.c; sourceTree = "<group>"; };
+		2D7C17D0167AD6A500E1BBA1 /* ll_man.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ll_man.c; path = ../../Game/src/audiolib/ll_man.c; sourceTree = "<group>"; };
+		2D7C17D1167AD6A500E1BBA1 /* multivoc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = multivoc.c; path = ../../Game/src/audiolib/multivoc.c; sourceTree = "<group>"; };
+		2D7C17D2167AD6A500E1BBA1 /* mv_mix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mv_mix.c; path = ../../Game/src/audiolib/mv_mix.c; sourceTree = "<group>"; };
+		2D7C17D3167AD6A500E1BBA1 /* mvreverb.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mvreverb.c; path = ../../Game/src/audiolib/mvreverb.c; sourceTree = "<group>"; };
+		2D7C17D4167AD6A500E1BBA1 /* nodpmi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = nodpmi.c; path = ../../Game/src/audiolib/nodpmi.c; sourceTree = "<group>"; };
+		2D7C17D5167AD6A500E1BBA1 /* pitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pitch.h; path = ../../Game/src/audiolib/pitch.h; sourceTree = "<group>"; };
+		2D7C17D6167AD6A500E1BBA1 /* user.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = user.c; path = ../../Game/src/audiolib/user.c; sourceTree = "<group>"; };
+		2D7C17DF167ADE1F00E1BBA1 /* pitch.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pitch.c; path = ../../Game/src/audiolib/pitch.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -273,6 +293,7 @@
 		2D7B623916788F7900E35E54 /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				2D7C17CC167AD65800E1BBA1 /* Audiolib */,
 				2D7B623A16788F9B00E35E54 /* _functio.h */,
 				2D7B623B16788F9B00E35E54 /* _rts.h */,
 				2D7B623C16788F9B00E35E54 /* actors.c */,
@@ -337,6 +358,24 @@
 			);
 			name = midi;
 			path = ../../Game/src/midi;
+			sourceTree = "<group>";
+		};
+		2D7C17CC167AD65800E1BBA1 /* Audiolib */ = {
+			isa = PBXGroup;
+			children = (
+				2D7C17DF167ADE1F00E1BBA1 /* pitch.c */,
+				2D7C17CD167AD6A500E1BBA1 /* assert.h */,
+				2D7C17CE167AD6A500E1BBA1 /* dsl.c */,
+				2D7C17CF167AD6A500E1BBA1 /* fx_man.c */,
+				2D7C17D0167AD6A500E1BBA1 /* ll_man.c */,
+				2D7C17D1167AD6A500E1BBA1 /* multivoc.c */,
+				2D7C17D2167AD6A500E1BBA1 /* mv_mix.c */,
+				2D7C17D3167AD6A500E1BBA1 /* mvreverb.c */,
+				2D7C17D4167AD6A500E1BBA1 /* nodpmi.c */,
+				2D7C17D5167AD6A500E1BBA1 /* pitch.h */,
+				2D7C17D6167AD6A500E1BBA1 /* user.c */,
+			);
+			name = Audiolib;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -426,6 +465,15 @@
 				2D7B62FF16790E8100E35E54 /* dummy_audiolib.c in Sources */,
 				2D7B630116791C0300E35E54 /* dummy_multi.c in Sources */,
 				2D7B7AEE16792D6700DB503A /* SDLMain.m in Sources */,
+				2D7C17D7167AD6A500E1BBA1 /* dsl.c in Sources */,
+				2D7C17D8167AD6A500E1BBA1 /* fx_man.c in Sources */,
+				2D7C17D9167AD6A500E1BBA1 /* ll_man.c in Sources */,
+				2D7C17DA167AD6A500E1BBA1 /* multivoc.c in Sources */,
+				2D7C17DB167AD6A500E1BBA1 /* mv_mix.c in Sources */,
+				2D7C17DC167AD6A500E1BBA1 /* mvreverb.c in Sources */,
+				2D7C17DD167AD6A500E1BBA1 /* nodpmi.c in Sources */,
+				2D7C17DE167AD6A500E1BBA1 /* user.c in Sources */,
+				2D7C17E0167ADE2000E1BBA1 /* pitch.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -454,7 +502,10 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "/Library/Frameworks/SDL.framework/Headers/**";
+				HEADER_SEARCH_PATHS = (
+					"/Library/Frameworks/SDL.framework/Headers/**",
+					"/Library/Frameworks/SDL_Mixer.framework/Headers/**",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -477,7 +528,10 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "/Library/Frameworks/SDL.framework/Headers/**";
+				HEADER_SEARCH_PATHS = (
+					"/Library/Frameworks/SDL.framework/Headers/**",
+					"/Library/Frameworks/SDL_Mixer.framework/Headers/**",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 			};

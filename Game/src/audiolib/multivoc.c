@@ -61,7 +61,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "multivoc.h"
 #include "_multivc.h"
 #include "debugio.h"
-#include "..\sounddebugdefs.h"
+#include "../sounddebugdefs.h"
 
 // for the Mutex
 #include <SDL.h>
@@ -132,7 +132,7 @@ static int MV_VoiceHandle  = MV_MinVoiceHandle;
 
 static void ( *MV_CallBackFunc )( unsigned long ) = NULL;
 static void ( *MV_RecordFunc )( char *ptr, int length ) = NULL;
-static void ( *MV_MixFunction )( VoiceNode *voice/*, int buffer */);
+static void ( *MV_MixFunction )( VoiceNode *voice);
 
 int MV_MaxVolume = 63;
 
@@ -2576,7 +2576,7 @@ int MV_PlayLoopedVOC
    int   left,
    int   right,
    int   priority,
-   unsigned long callbackval
+   uint32_t callbackval
    )
 
    {
