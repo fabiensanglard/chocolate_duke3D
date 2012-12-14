@@ -295,8 +295,9 @@ unsigned int _swap32(unsigned int D)
 }
 
 /*
-     FCS: Scan through sectors using portals (a portal is wall with a nextwall attribute != -1).
-          Flood is prevented if a portal does not face the POV.
+   FCS: 
+   Scan through sectors using portals (a portal is wall with a nextsector attribute >= 0).
+   Flood is prevented if a portal does not face the POV.
  */
 static void scansector (short sectnum)
 {
@@ -430,27 +431,41 @@ static void scansector (short sectnum)
 			if ((yb2[numscans] < 256) || (xb1[numscans] > xb2[numscans])) goto skipitaddwall;
 
 				/* Made it all the way! */
-			thesector[numscans] = sectnum; thewall[numscans] = z;
-			rx1[numscans] = xp1; ry1[numscans] = yp1;
-			rx2[numscans] = xp2; ry2[numscans] = yp2;
+			thesector[numscans] = sectnum; 
+			thewall[numscans] = z;
+
+			//Save the camera space wall endpoints coordinate (camera origin at player location + rotated according to player orientation).
+			rx1[numscans] = xp1; 
+			ry1[numscans] = yp1;
+			rx2[numscans] = xp2; 
+			ry2[numscans] = yp2;
+
 			p2[numscans] = numscans+1;
 			numscans++;
 skipitaddwall:
 
 			if ((wall[z].point2 < z) && (scanfirst < numscans))
-				p2[numscans-1] = scanfirst, scanfirst = numscans;
+			{
+				p2[numscans-1] = scanfirst;
+				scanfirst = numscans;
+			}
 		}
 
         //FCS: TODO rename this p2[]. This name is an abomination
 		for(z=numscansbefore;z<numscans;z++)
+		{
 			if ((wall[thewall[z]].point2 != thewall[p2[z]]) || (xb2[z] >= xb1[p2[z]]))
-				bunchfirst[numbunches++] = p2[z], p2[z] = -1;
+			{
+				bunchfirst[numbunches++] = p2[z];
+				p2[z] = -1;
+			}
+		}
 
         //For each bunch, cache the last wall of the bunch in bunchlast.
 		for(z=bunchfrst;z<numbunches;z++)
 		{
 			for(zz=bunchfirst[z];p2[zz]>=0;zz=p2[zz]);
-			bunchlast[z] = zz;
+				bunchlast[z] = zz;
 		}
     
 	} while (sectorbordercnt > 0);
@@ -3847,13 +3862,19 @@ void drawline256 (int32_t x1, int32_t y1, int32_t x2, int32_t y2, uint8_t  col)
 	}
 }
 
+/*
+    FCS: Return true if the point (x,Y) is inside the sector sectnum.
+	Note that a sector is closed to the answer is always 0 or 1.
 
+	Algorithm: For each wall one after an other....???
+*/
 int inside(int32_t x, int32_t y, short sectnum)
 {
 	walltype *wal;
 	int32_t i, x1, y1, x2, y2;
 	uint32_t  cnt;
 
+	//Quick check if the sector ID is valide.
 	if ((sectnum < 0) || (sectnum >= numsectors)) return(-1);
 
 	cnt = 0;
@@ -3863,18 +3884,26 @@ int inside(int32_t x, int32_t y, short sectnum)
 	{
 		y1 = wal->y-y;
         y2 = wall[wal->point2].y-y;
+
+		// Compare the sign of y1 and y2.
+		// If (y1^y2) < 0 then y is above or below both wal->y and wall[wal->point2].y.
 		if ((y1^y2) < 0)
 		{
 			x1 = wal->x-x;
             x2 = wall[wal->point2].x-x;
             
+			//Again, compare the sign of x1 and x2. If (x1^x2) >= 0 then x is on the left or the right of both wal->x and wall[wal->point2].x.
 			if ((x1^x2) >= 0)
                 cnt ^= x1;
             else
                 cnt ^= (x1*y2-x2*y1)^y2;
 		}
-		wal++; i--;
+
+		wal++; 
+		i--;
+
 	} while (i);
+
 	return(cnt>>31);
 }
 
@@ -6284,8 +6313,8 @@ int pushmove(int32_t *x, int32_t *y, int32_t *z, short *sectnum,
 }
 
 /*
-   FCS:  x and y are the new position of the entity.
-         sectnum is an hint (the last known sector number of the entity)
+   FCS:  x and y are the new position of the entity that has just moved:
+         lastKnownSector is an hint (the last known sectorID of the entity).
  
    Thanks to the "hint", the algorithm check:
    1. Is (x,y) inside sectors[sectnum].
@@ -6295,24 +6324,30 @@ int pushmove(int32_t *x, int32_t *y, int32_t *z, short *sectnum,
    Note: Inside uses cross_product and return as soon as the point switch
          from one side to the other.
  */
-void updatesector(int32_t x, int32_t y, short *sectnum)
+void updatesector(int32_t x, int32_t y, short *lastKnownSector)
 {
 	walltype *wal;
 	int32_t i, j;
 
-	if (inside(x,y,*sectnum) == 1) return;
-
-	if ((*sectnum >= 0) && (*sectnum < numsectors))
+	//First check the last sector where (old_x,old_y) was before being updated to (x,y)
+	if (inside(x,y,*lastKnownSector) ) 
 	{
-		wal = &wall[sector[*sectnum].wallptr];
-		j = sector[*sectnum].wallnum;
+		//We found it and (x,y) is still in the same sector: nothing to update !
+		return;
+	}
+
+	// Seems (x,y) moved into an other sector....hopefully one connected via a portal. Let's flood in each portal.
+	if ((*lastKnownSector >= 0) && (*lastKnownSector < numsectors))
+	{
+		wal = &wall[sector[*lastKnownSector].wallptr];
+		j = sector[*lastKnownSector].wallnum;
 		do
 		{
 			i = wal->nextsector;
 			if (i >= 0)
 				if (inside(x,y,(short)i) == 1)
 				{
-					*sectnum = i;
+					*lastKnownSector = i;
 					return;
 				}
 			wal++;
@@ -6320,14 +6355,17 @@ void updatesector(int32_t x, int32_t y, short *sectnum)
 		} while (j != 0);
 	}
 
+	//Damn that is a BIG move, still cannot find which sector (x,y) belongs to. Let's search via linear search.
 	for(i=numsectors-1;i>=0;i--)
+	{
 		if (inside(x,y,(short)i) == 1)
 		{
-			*sectnum = i;
+			*lastKnownSector = i;
 			return;
 		}
-
-	*sectnum = -1;
+	}
+    // (x,y) is contained in NO sector. (x,y) is likely out of the map.
+	*lastKnownSector = -1;
 }
 
 

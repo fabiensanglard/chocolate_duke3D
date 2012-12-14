@@ -328,7 +328,7 @@ int FX_Shutdown
 
 int FX_SetCallBack
    (
-   void ( *function )( uint32_t )
+   void ( *function )( int32_t )
    )
 
    {

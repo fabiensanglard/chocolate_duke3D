@@ -114,7 +114,8 @@ enum
 #define CRC_BASE_GRP_PLUTONIUM_14	0xF514A6AC
 #define CRC_BASE_GRP_ATOMIC_15		0xFD3DCFF1 
 
-#define PLUTOPAK  (!VOLUMEONE && !VOLUMEALL) // implies  conVersion == 14 or conVersion == 15
+// implies  conVersion == 14 or conVersion == 15
+#define PLUTOPAK  (!VOLUMEONE && !VOLUMEALL) 
 #define VOLUMEONE (groupefil_crc32[0]==CRC_BASE_GRP_SHAREWARE_13)
 // VOLUMEALL = 1.3d full
 #define VOLUMEALL (groupefil_crc32[0]==CRC_BASE_GRP_FULL_13 || conVersion == 13 && groupefil_crc32[0]!=CRC_BASE_GRP_SHAREWARE_13 && groupefil_crc32[0]!=CRC_BASE_GRP_PLUTONIUM_14 && groupefil_crc32[0]!=CRC_BASE_GRP_ATOMIC_15)

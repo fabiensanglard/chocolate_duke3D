@@ -63,15 +63,7 @@ typedef double                  float64;
 typedef int64_t                 float128;
 typedef float64                 appfloat;
 
-#define MAXINT32                0x7fffffff
-#define MININT32                -0x80000000
-#define MAXUINT32               0xffffffff
-#define MINUINT32               0
 
-#define MAXINT16                0x7fff
-#define MININT16                -0x8000
-#define MAXUINT16               0xffff
-#define MINUINT16               0
 
 //***************************************************************************
 //

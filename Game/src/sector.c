@@ -849,13 +849,13 @@ void operatesectors(short sn,short ii)
             if ( (sptr->lotag&0x8000) )
             {
                 q = (sptr->ceilingz+sptr->floorz)>>1;
-                j = setanimation(sn,&sptr->floorz,q,sptr->extra);
+               // j = setanimation(sn,&sptr->floorz,q,sptr->extra);
                 j = setanimation(sn,&sptr->ceilingz,q,sptr->extra);
             }
             else
             {
                 q = sector[nextsectorneighborz(sn,sptr->floorz,1,1)].floorz;
-                j = setanimation(sn,&sptr->floorz,q,sptr->extra);
+               // j = setanimation(sn,&sptr->floorz,q,sptr->extra);
                 q = sector[nextsectorneighborz(sn,sptr->ceilingz,-1,-1)].ceilingz;
                 j = setanimation(sn,&sptr->ceilingz,q,sptr->extra);
             }

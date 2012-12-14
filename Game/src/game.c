@@ -5670,9 +5670,8 @@ void animatesprites(int32_t x,int32_t y,short a,int32_t smoothratio)
             case RECON:
 
                 k = getangle(s->x-x,s->y-y);
-                if( T1 < 4 )
-                    k = (((s->ang+3072+128-k)&2047)/170);
-                else k = (((s->ang+3072+128-k)&2047)/170);
+
+				k = (((s->ang+3072+128-k)&2047)/170);
 
                 if(k>6)
                 {
@@ -8086,7 +8085,7 @@ void findGRPToUse(uint8_t * game_dir,uint8_t * baseDir,uint8_t * groupfilefullpa
 	else
 		sprintf(groupfilefullpath, "%s", baseDir);
     
-	printf("Searching '%d':\n\n",groupfilefullpath);
+	printf("Searching '%s':\n\n",groupfilefullpath);
 	hFind = FindFirstFile(groupfilefullpath,&FindFileData);
     
 	if ( hFind==INVALID_HANDLE_VALUE )
@@ -8108,7 +8107,7 @@ void findGRPToUse(uint8_t * game_dir,uint8_t * baseDir,uint8_t * groupfilefullpa
 			kbdKey = getch();
 		while(kbdKey < '1' || kbdKey > ('0' + i));
 		printf("%c\n", kbdKey);
-		grpID =  groupfile[kbdKey-'1'];
+		grpID =  kbdKey-'1';
 		
 	}
 	
@@ -10709,7 +10708,7 @@ void takescreenshot(void)
 {
 	char  szFilename[256];
 	int i;
-	uint8_t  score[20];
+	char  score[20];
 	time_t time4file;
 	struct tm *tmHMS;
     
@@ -10741,14 +10740,12 @@ void takescreenshot(void)
 			if(ud.m_coop==0 || ud.m_coop==2)  // if DM or DM No spawn. Add Score as well
 			{
 				strcat(tempbuf, "(");
-                snprintf(ps[i].frag-ps[i].fraggedself, sizeof(ps[i].frag-ps[i].fraggedself), "%d", score);
-				strcat(tempbuf, ps[i].frag-ps[i].fraggedself);
-				strcat(tempbuf, ") vs ");
+                snprintf(score, sizeof(score), "%d", ps[i].frag-ps[i].fraggedself-ps[i].fraggedself);
+				strcat(tempbuf, score);
+				strcat(tempbuf, ")");
 			}
-			else
-				strcat(tempbuf, " vs ");
 		}	
-		tempbuf[strlen(tempbuf)-4]=0; // remove last vs
+		
 		strcat(tempbuf, "]");
 	}
 	strcat(tempbuf, ".bmp");
