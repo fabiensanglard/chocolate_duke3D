@@ -59,10 +59,7 @@ int FX_Installed = FALSE;
    number.  A -1 returns a pointer the current error.
 ---------------------------------------------------------------------*/
 
-char *FX_ErrorString
-   (
-   int ErrorNumber
-   )
+char *FX_ErrorString(int ErrorNumber)
 
    {
    char *ErrorString;
@@ -899,7 +896,7 @@ int FX_PlayVOC
    int left,
    int right,
    int priority,
-   unsigned long callbackval
+   uint32_t callbackval
    )
 
    {
@@ -926,14 +923,14 @@ int FX_PlayVOC
 int FX_PlayLoopedVOC
    (
    char *ptr,
-   long loopstart,
-   long loopend,
-   int pitchoffset,
-   int vol,
-   int left,
-   int right,
-   int priority,
-   unsigned long callbackval
+   int32_t loopstart,
+   int32_t loopend,
+   int32_t pitchoffset,
+   int32_t vol,
+   int32_t left,
+   int32_t right,
+   int32_t priority,
+   uint32_t callbackval
    )
 
    {
@@ -960,12 +957,12 @@ int FX_PlayLoopedVOC
 int FX_PlayWAV
    (
    char *ptr,
-   int pitchoffset,
-   int vol,
-   int left,
-   int right,
-   int priority,
-   unsigned long callbackval
+   int32_t pitchoffset,
+   int32_t vol,
+   int32_t left,
+   int32_t right,
+   int32_t priority,
+   uint32_t callbackval
    )
 
    {
@@ -991,19 +988,19 @@ int FX_PlayWAV
 
 int FX_PlayLoopedWAV
    (
-   uint8_t *ptr,
-   long loopstart,
-   long loopend,
-   int pitchoffset,
-   int vol,
-   int left,
-   int right,
-   int priority,
-   unsigned long callbackval
+   char *ptr,
+   int32_t loopstart,
+   int32_t loopend,
+   int32_t pitchoffset,
+   int32_t vol,
+   int32_t left,
+   int32_t right,
+   int32_t priority,
+   uint32_t callbackval
    )
 
    {
-   int handle;
+   int32_t handle;
 
    handle = MV_PlayLoopedWAV( ptr, loopstart, loopend,
       pitchoffset, vol, left, right, priority, callbackval );
@@ -1027,11 +1024,11 @@ int FX_PlayLoopedWAV
 int FX_PlayVOC3D
    (
    char *ptr,
-   int pitchoffset,
-   int angle,
-   int distance,
-   int priority,
-   unsigned long callbackval
+   int32_t pitchoffset,
+   int32_t angle,
+   int32_t distance,
+   int32_t priority,
+   uint32_t callbackval
    )
 
    {
@@ -1059,11 +1056,11 @@ int FX_PlayVOC3D
 int FX_PlayWAV3D
    (
    char *ptr,
-   int pitchoffset,
-   int angle,
-   int distance,
-   int priority,
-   unsigned long callbackval
+   int32_t pitchoffset,
+   int32_t angle,
+   int32_t distance,
+   int32_t priority,
+   uint32_t callbackval
    )
 
    {
@@ -1090,14 +1087,14 @@ int FX_PlayWAV3D
 int FX_PlayRaw
    (
    char *ptr,
-   unsigned long length,
-   unsigned rate,
-   int pitchoffset,
-   int vol,
-   int left,
-   int right,
-   int priority,
-   unsigned long callbackval
+   uint32_t length,
+   uint32_t rate,
+   int32_t pitchoffset,
+   int32_t vol,
+   int32_t left,
+   int32_t right,
+   int32_t priority,
+   uint32_t callbackval
    )
 
    {
@@ -1124,16 +1121,16 @@ int FX_PlayRaw
 int FX_PlayLoopedRaw
    (
    char *ptr,
-   unsigned long length,
-   char *loopstart,
-   char *loopend,
-   unsigned rate,
-   int pitchoffset,
-   int vol,
-   int left,
-   int right,
-   int priority,
-   unsigned long callbackval
+   uint32_t length,
+   uint8_t *loopstart,
+   uint8_t *loopend,
+   uint32_t rate,
+   int32_t pitchoffset,
+   int32_t vol,
+   int32_t left,
+   int32_t right,
+   int32_t priority,
+   uint32_t callbackval
    )
 
    {
@@ -1269,14 +1266,14 @@ int FX_StopAllSounds
 
 int FX_StartDemandFeedPlayback
    (
-   void ( *function )( char **ptr, unsigned long *length ),
-   int rate,
-   int pitchoffset,
-   int vol,
-   int left,
-   int right,
-   int priority,
-   unsigned long callbackval
+   void ( *function )( char **ptr, uint32_t *length ),
+   int32_t rate,
+   int32_t pitchoffset,
+   int32_t vol,
+   int32_t left,
+   int32_t right,
+   int32_t priority,
+   uint32_t callbackval
    )
 
    {

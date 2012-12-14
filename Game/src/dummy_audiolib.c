@@ -9,6 +9,7 @@
 #include "audiolib/fx_man.h"
 #include <inttypes.h>
 
+/*
 uint8_t  *FX_ErrorString( int ErrorNumber ){
    static uint8_t  nope = '\0';
     return &nope;
@@ -37,7 +38,7 @@ int FX_SetPan( int handle, int vol, int left, int right ){return 1;}
 int FX_SetPitch( int handle, int pitchoffset ){return 1;}
 int FX_SetFrequency( int handle, int frequency ){return 1;}
 
-int FX_PlayVOC( uint8_t  *ptr, int pitchoffset, int vol, int left, int right,
+int FX_PlayVOC( char  *ptr, int pitchoffset, int vol, int left, int right,
                int priority, uint32_t callbackval ){return FX_Ok;}
 int FX_PlayLoopedVOC( uint8_t  *ptr, int32_t loopstart, int32_t loopend,
                      int pitchoffset, int vol, int left, int right, int priority,
@@ -65,10 +66,10 @@ int FX_StopAllSounds( void ){return 1;}
 int FX_StartDemandFeedPlayback( void ( *function )( uint8_t  **ptr, uint32_t *length ),
                                int rate, int pitchoffset, int vol, int left, int right,
                                int priority, uint32_t callbackval ){return 1;}
-int  FX_StartRecording( int MixRate, void ( *function )( uint8_t  *ptr, int length ) ){return 1;}
+int  FX_StartRecording( int MixRate, void ( *function )( char  *ptr, int length ) ){return 1;}
 void FX_StopRecord( void ){}
 
-
+ */
 
 
 //Dummy music
@@ -193,4 +194,5 @@ void PlayMusic(short dummy)
 {
         
 }
+
 
