@@ -54,54 +54,6 @@ volatile uint8_t  oa1, o3c2, ortca, ortcb, overtbits, laststereoint;
 #define MAXWALLSB 2048
 #define MAXCLIPDIST 1024
 
-#ifdef PLATFORM_DOS
-	/* MUST CALL MALLOC THIS WAY TO FORCE CALLS TO KMALLOC! */
-void *kmalloc(size_t size) { return(malloc(size)); }
-void *kkmalloc(size_t size);
-#pragma aux kkmalloc =\
-	"call kmalloc",\
-	parm [eax]\
-
-	/* MUST CALL FREE THIS WAY TO FORCE CALLS TO KFREE! */
-void kfree(void *buffer) { free(buffer); }
-void kkfree(void *buffer);
-#pragma aux kkfree =\
-	"call kfree",\
-	parm [eax]\
-
-#endif
-
-#ifdef SUPERBUILD
-	/* MUST CALL LOADVOXEL THIS WAY BECAUSE WATCOM STINKS! */
-
-/* !!! wtf does this do?! --ryan. */
-static void loadvoxel(int32_t voxindex)
-{
-    voxindex = 0;  /* prevent compiler whining. */
-}
-
-#if ((defined __WATCOMC__) && (defined PLATFORM_DOS))
-void kloadvoxel(int32_t voxindex);
-#pragma aux kloadvoxel =\
-	"call loadvoxel",\
-	parm [eax]\
-
-#else
-#define kloadvoxel(a) (loadvoxel(a))
-#endif
-
-	/* These variables need to be copied into BUILD */
-#define MAXXSIZ 128
-#define MAXYSIZ 128
-#define MAXZSIZ 200
-#define MAXVOXELS 512
-#define MAXVOXMIPS 5
-int32_t voxoff[MAXVOXELS][MAXVOXMIPS], voxlock[MAXVOXELS][MAXVOXMIPS];
-static int32_t ggxinc[MAXXSIZ+1], ggyinc[MAXXSIZ+1];
-static int32_t lowrecip[1024], nytooclose, nytoofar;
-static uint32_t  distrecip[16384];
-#endif
-
 /* used to be static. --ryan. */
 uint8_t  moustat = 0;
 
@@ -151,7 +103,7 @@ int32_t pow2long[32] =
 };
 int32_t reciptable[2048], fpuasm;
 
-uint8_t  kensmessage[128];
+char  kensmessage[128];
 
 
 
@@ -274,7 +226,7 @@ short searchit;
 int32_t searchx = -1, searchy;                     /* search input  */
 short searchsector, searchwall, searchstat;     /* search output */
 
-static uint8_t  artfilename[20];
+static char  artfilename[20];
 static int32_t numtilefiles, artfil = -1, artfilnum, artfilplc;
 
 static uint8_t  inpreparemirror = 0;
@@ -2567,7 +2519,7 @@ static void transmaskwallscan(int32_t x1, int32_t x2)
 	faketimerhandler();
 }
 
-int loadboard(uint8_t  *filename, int32_t *daposx, int32_t *daposy,
+int loadboard(char  *filename, int32_t *daposx, int32_t *daposy,
               int32_t *daposz, short *daang, short *dacursectnum)
 {
     int x;
@@ -3665,7 +3617,7 @@ int allocatepermanenttile(short tilenume, int32_t xsiz, int32_t ysiz)
 }
 
 
-int loadpics(uint8_t  *filename, uint8_t * gamedir)
+int loadpics(char  *filename, char * gamedir)
 {
 	int32_t offscount, localtilestart, localtileend, dasiz;
 	short fil, i, j, k;
@@ -3691,24 +3643,7 @@ int loadpics(uint8_t  *filename, uint8_t * gamedir)
 		artfilename[6] = ((k/10)%10)+48;
 		artfilename[5] = ((k/100)%10)+48;
 
-		/*
-		// Are we loading a TC?
-		if(gamedir[0] != 0)
-		{
-			// Yes
-			sprintf(fullpathartfilename, "%s\\%s", gamedir, artfilename);
-			if(!SafeFileExists(fullpathartfilename))
-			{
-				// If this isn't in the TC's game root, then just load it as normal
-				sprintf(fullpathartfilename, "%s", artfilename);
-			}
-		}
-		else
-		{
-			// No
-			sprintf(fullpathartfilename, "%s", artfilename);
-		}
-		*/
+	
 
 		if ((fil = TCkopen4load(artfilename,0)) != -1)
 		{
@@ -3777,33 +3712,6 @@ int loadpics(uint8_t  *filename, uint8_t * gamedir)
 	return(0);
 }
 
-#ifdef SUPERBUILD
-void qloadkvx(int32_t voxindex, uint8_t  *filename)
-{
-	int32_t i, fil, dasiz, lengcnt, lengtot;
-	uint8_t  *ptr;
-
-	if ((fil = kopen4load(filename,0)) == -1) return;
-
-	lengcnt = 0;
-	lengtot = kfilelength(fil);
-
-	for(i=0;i<MAXVOXMIPS;i++)
-	{
-		kread32(fil,&dasiz);
-
-			/* Must store filenames to use cacheing system :( */
-		voxlock[voxindex][i] = 200;
-		allocache(&voxoff[voxindex][i],dasiz,(uint8_t  *)&voxlock[voxindex][i]);
-		ptr = (uint8_t  *)voxoff[voxindex][i];
-		kread(fil,ptr,dasiz);
-
-		lengcnt += dasiz+4;
-		if (lengcnt >= lengtot-768) break;
-	}
-	kclose(fil);
-}
-#endif
 
 
 int clipinsidebox(int32_t x, int32_t y, short wallnum, int32_t walldist)
@@ -4948,125 +4856,7 @@ static void drawsprite (int32_t snum)
 			/* Draw it! */
 		ceilspritescan(lx,rx-1);
 	}
-#ifdef SUPERBUILD
-	else if ((cstat&48) == 48)
-	{
-		lx = 0; rx = xdim-1;
-		for(x=lx;x<=rx;x++)
-		{
-			lwall[x] = (long)startumost[x+windowx1]-windowy1;
-			swall[x] = (long)startdmost[x+windowx1]-windowy1;
-		}
-		for(i=smostwallcnt-1;i>=0;i--)
-		{
-			j = smostwall[i];
-			if ((xb1[j] > rx) || (xb2[j] < lx)) continue;
-			if ((yp <= yb1[j]) && (yp <= yb2[j])) continue;
-			if (spritewallfront(tspr,(long)thewall[j]) && ((yp <= yb1[j]) || (yp <= yb2[j]))) continue;
 
-			dalx2 = max(xb1[j],lx); darx2 = min(xb2[j],rx);
-
-			switch(smostwalltype[i])
-			{
-				case 0:
-					if (dalx2 <= darx2)
-					{
-						if ((dalx2 == lx) && (darx2 == rx)) return;
-							clearbufbyte(&swall[dalx2],(darx2-dalx2+1)*sizeof(swall[0]),0L);
-					}
-					break;
-				case 1:
-					k = smoststart[i] - xb1[j];
-					for(x=dalx2;x<=darx2;x++)
-						if (smost[k+x] > lwall[x]) lwall[x] = smost[k+x];
-					break;
-				case 2:
-					k = smoststart[i] - xb1[j];
-					for(x=dalx2;x<=darx2;x++)
-						if (smost[k+x] < swall[x]) swall[x] = smost[k+x];
-					break;
-			}
-		}
-
-		if (lwall[rx] >= swall[rx])
-		{
-			for(x=lx;x<rx;x++)
-				if (lwall[x] < swall[x]) break;
-			if (x == rx) return;
-		}
-
-		for(i=0;i<MAXVOXMIPS;i++)
-			if (!voxoff[tilenum][i])
-			{
-				kloadvoxel(tilenum);
-				break;
-			}
-
-		longptr = (int32_t *)voxoff[tilenum][0];
-		//if (!(cstat&128)) tspr->z -= mulscale6(longptr[5],(long)tspr->yrepeat);
-		if (!(cstat&128))
-        {
-#pragma message ("[Crashbug: commenting out for now]")
-			// crashes 2nd demo of atomic, when pig jumps in hole.
-            tspr->z -= mulscale6(longptr[5],(long)tspr->yrepeat);
-        }
-		yoff = (long)((int8_t  )((picanm[sprite[tspr->owner].picnum]>>16)&255))+((long)tspr->yoffset);
-		tspr->z -= ((yoff*tspr->yrepeat)<<2);
-
-		globvis = globalvisibility;
-		if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((uint8_t )(sec->visibility+16)));
-
-		if ((searchit >= 1) && (yp > (4<<8)) && (searchy >= lwall[searchx]) && (searchy < swall[searchx]))
-		{
-			siz = divscale19(xdimenscale,yp);
-
-			xv = mulscale16(((long)tspr->xrepeat)<<16,xyaspect);
-
-			xspan = ((longptr[0]+longptr[1])>>1);
-			yspan = longptr[2];
-			xsiz = mulscale30(siz,xv*xspan);
-			ysiz = mulscale14(siz,tspr->yrepeat*yspan);
-
-				/* Watch out for divscale overflow */
-			if (((xspan>>11) < xsiz) && (yspan < (ysiz>>1)))
-			{
-				x1 = xb-(xsiz>>1);
-				if (xspan&1) x1 += mulscale31(siz,xv);  /* Odd xspans */
-				i = mulscale30(siz,xv*xoff);
-				if ((cstat&4) == 0) x1 -= i; else x1 += i;
-
-				y1 = mulscale16(tspr->z-globalposz,siz);
-				/*y1 -= mulscale14(siz,tspr->yrepeat*yoff);*/
-				y1 += (globalhoriz<<8)-ysiz;
-				/*if (cstat&128)  //Already fixed up above */
-				y1 += (ysiz>>1);
-
-				x2 = x1+xsiz-1;
-				y2 = y1+ysiz-1;
-				if (((y1|255) < (y2|255)) && (searchx >= (x1>>8)+1) && (searchx <= (x2>>8)))
-				{
-					if ((sec->ceilingstat&3) == 0)
-						startum = globalhoriz+mulscale24(siz,sec->ceilingz-globalposz)-1;
-					else
-						startum = 0;
-					if ((sec->floorstat&3) == 0)
-						startdm = globalhoriz+mulscale24(siz,sec->floorz-globalposz)+1;
-					else
-						startdm = 0x7fffffff;
-
-						/* sprite */
-					if ((searchy >= max(startum,(y1>>8))) && (searchy < min(startdm,(y2>>8))))
-					{
-						searchsector = sectnum; searchwall = spritenum;
-						searchstat = 3; searchit = 1;
-					}
-				}
-			}
-		}
-
-		drawvox(tspr->x,tspr->y,tspr->z,(long)tspr->ang+1536,(long)tspr->xrepeat,(long)tspr->yrepeat,tilenum,tspr->shade,tspr->pal,lwall,swall);
-	}
-#endif
 	if (automapping == 1) show2dsprite[spritenum>>3] |= pow2char[spritenum&7];
 }
 
@@ -5153,23 +4943,6 @@ void drawmasks(void)
 		}
 		i = j;
 	}
-
-	/*for(i=spritesortcnt-1;i>=0;i--)
-	{
-		xs = tspriteptr[i].x-globalposx;
-		ys = tspriteptr[i].y-globalposy;
-		zs = tspriteptr[i].z-globalposz;
-
-		xp = ys*cosglobalang-xs*singlobalang;
-		yp = (zs<<1);
-		zp = xs*cosglobalang+ys*singlobalang;
-
-		xs = scale(xp,halfxdimen<<12,zp)+((halfxdimen+windowx1)<<12);
-		ys = scale(yp,xdimenscale<<12,zp)+((globalhoriz+windowy1)<<12);
-
-		drawline256(xs-65536,ys-65536,xs+65536,ys+65536,31);
-		drawline256(xs+65536,ys-65536,xs-65536,ys+65536,31);
-	}*/
 
 	while ((spritesortcnt > 0) && (maskwallcnt > 0))  /* While BOTH > 0 */
 	{
@@ -6431,43 +6204,6 @@ int pushmove(int32_t *x, int32_t *y, int32_t *z, short *sectnum,
 		clipsectcnt = 0; clipsectnum = 1;
 		do
 		{
-
-#if 0
-			/*Push FACE sprites */
-			for(i=headspritesect[clipsectorlist[clipsectcnt]];i>=0;i=nextspritesect[i])
-			{
-				spr = &sprite[i];
-				if (((spr->cstat&48) != 0) && ((spr->cstat&48) != 48)) continue;
-				if ((spr->cstat&dasprclipmask) == 0) continue;
-
-				dax = (*x)-spr->x; day = (*y)-spr->y;
-				t = (spr->clipdist<<2)+walldist;
-				if ((klabs(dax) < t) && (klabs(day) < t))
-				{
-					t = ((tilesizy[spr->picnum]*spr->yrepeat)<<2);
-					if (spr->cstat&128) daz = spr->z+(t>>1); else daz = spr->z;
-					if (picanm[spr->picnum]&0x00ff0000) daz -= ((long)((int8_t  )((picanm[spr->picnum]>>16)&255))*spr->yrepeat<<2);
-					if (((*z) < daz+ceildist) && ((*z) > daz-t-flordist))
-					{
-						t = (spr->clipdist<<2)+walldist;
-
-						j = getangle(dax,day);
-						dx = (sintable[(j+512)&2047]>>11);
-						dy = (sintable[(j)&2047]>>11);
-						bad2 = 16;
-						do
-						{
-							*x = (*x) + dx; *y = (*y) + dy;
-							bad2--; if (bad2 == 0) break;
-						} while ((klabs((*x)-spr->x) < t) && (klabs((*y)-spr->y) < t));
-						bad = -1;
-						k--; if (k <= 0) return(bad);
-						updatesector(*x,*y,sectnum);
-					}
-				}
-			}
-#endif
-
 			sec = &sector[clipsectorlist[clipsectcnt]];
 			if (dir > 0)
 				startwall = sec->wallptr, endwall = startwall + sec->wallnum;
@@ -6772,11 +6508,8 @@ void draw2dscreen(int32_t posxe, int32_t posye, short ange, int32_t zoome, short
 							col += ((numframes&2)<<2);
 					}
 
-#ifdef PLATFORM_DOS
-					tempint = (mul5(200+yp1)<<7)+(320+xp1)+pageoffset;
-#else
+
 					tempint = (mul5(200+yp1)<<7)+(320+xp1);
-#endif
 
 					setcolor16((long)col);
 
@@ -6826,11 +6559,9 @@ void draw2dscreen(int32_t posxe, int32_t posye, short ange, int32_t zoome, short
 					if (((320+xp1) >= 2) && ((320+xp1) <= 637))
 						if (((200+yp1) >= 2) && ((200+yp1) <= ydim16-3))
 						{
-#ifdef PLATFORM_DOS
-							tempint = (mul5(200+yp1)<<7)+(320+xp1)+pageoffset;
-#else
+
 							tempint = (mul5(200+yp1)<<7)+(320+xp1);
-#endif
+
 
 							setcolor16((long)col);
 							drawpixel16(tempint-1-1280);

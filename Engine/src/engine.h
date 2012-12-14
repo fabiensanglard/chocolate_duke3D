@@ -58,7 +58,7 @@ int getmmxoverlay(void);
 void nextpage(void);
 void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,
                short daang, int32_t dahoriz, short dacursectnum);
-int loadboard(uint8_t  *filename, int32_t *daposx, int32_t *daposy,
+int loadboard(char  *filename, int32_t *daposx, int32_t *daposy,
 			  int32_t *daposz, short *daang, short *dacursectnum);
 void drawmasks(void);
 void printext256(int32_t xpos, int32_t ypos, short col, short backcol,
@@ -67,13 +67,13 @@ void printext256_noupdate(int32_t xpos, int32_t ypos, short col, short backcol,
 			uint8_t  name[82], uint8_t  fontsize);
 void initengine(void);
 void uninitengine(void);
-int loadpics(uint8_t  *filename, uint8_t * gamedir);
+int loadpics(char  *filename, char * gamedir);
 int saveboard(uint8_t  *filename, int32_t *daposx, int32_t *daposy, int32_t *daposz,
                          short *daang, short *dacursectnum);
 void plotpixel(int32_t x, int32_t y, uint8_t  col);
 uint8_t  getpixel(int32_t x, int32_t y);
 void setbrightness(uint8_t  dabrightness, uint8_t  *dapal);
-int screencapture(uint8_t  *filename, uint8_t  inverseit);
+int screencapture(char  *filename, uint8_t  inverseit);
 void getmousevalues(short *mousx, short *mousy, short *bstatus);
 int clipmove (int32_t *x, int32_t *y, int32_t *z, short *sectnum, int32_t xvect,
 			int32_t yvect, int32_t walldist, int32_t ceildist,

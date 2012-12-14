@@ -58,9 +58,9 @@ int32_t setupslopevlin(int32_t,int32_t,int32_t);
 int32_t slopevlin(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
 int32_t settransnormal(void);
 int32_t settransreverse(void);
-int32_t setupdrawslab(int32_t,int32_t);
-int32_t drawslab(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
-int32_t stretchhline(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
+
+
+
 int32_t is_vmware_running(void);
 
     

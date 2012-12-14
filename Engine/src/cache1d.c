@@ -23,11 +23,6 @@
 #include "../../Game/src/cvar_defs.h"
 
 #include "types.h"
-//#include "file_lib.H"
-
-#if (defined USE_PHYSICSFS)
-#include "physfs.h"
-#endif
 
 /*
  *   This module keeps track of a standard linear cacheing system.
@@ -228,7 +223,7 @@ void reportandexit(char  *errormessage)
 	Error(EXIT_FAILURE, "");
 }
 
-#if (!defined USE_PHYSICSFS)
+
 uint8_t  toupperlookup[256] =
 {
 	0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0a,0x0b,0x0c,0x0d,0x0e,0x0f,
@@ -268,46 +263,10 @@ int32_t filehan[MAXOPENFILES] =
 	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
 };
 
-#else
-static PHYSFS_file *filehan[MAXOPENFILES] =
-{
-	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-};
-#endif
 
 
 int32_t initgroupfile(const uint8_t  *filename)
 {
-#if (defined USE_PHYSICSFS)
-    static int initted_physfs = 0;
-    static int added_cwd = 0;
-
-    if (!initted_physfs)
-    {
-        if (!PHYSFS_init(_argv[0]))
-            return(-1);
-        initted_physfs = 1;
-    } /* if */
-
-    if (!added_cwd)
-    {
-        if (!PHYSFS_addToSearchPath(".", 0))
-            return(-1);
-        added_cwd = 1;
-    } /* if */
-
-    if (!PHYSFS_addToSearchPath(filename, 1))
-        return(-1);
-
-    return(1); /* uhh...? */
-#else
 	uint8_t  buf[16];
 	int32_t i, j, k;
 
@@ -333,7 +292,7 @@ int32_t initgroupfile(const uint8_t  *filename)
 			return(-1);
 		}
 
-		//The ".grp" file format is just a collection of a lot of files stored into 1 big one. 
+		//FCS: The ".grp" file format is just a collection of a lot of files stored into 1 big one. 
 		//I tried to make the format as simple as possible: The first 12 bytes contains my name, 
 		//"KenSilverman". The next 4 bytes is the number of files that were compacted into the 
 		//group file. Then for each file, there is a 16 byte structure, where the first 12 
@@ -384,15 +343,11 @@ int32_t initgroupfile(const uint8_t  *filename)
 
 	numgroupfiles++;
 	return(groupfil[numgroupfiles-1]);
-#endif
+
 }
 
 void uninitgroupfile(void)
 {
-#if (defined USE_PHYSICSFS)
-    PHYSFS_deinit();
-    memset(filehan, '\0', sizeof (filehan));
-#else
 	int32_t i;
 
 	for(i=numgroupfiles-1;i>=0;i--)
@@ -403,76 +358,8 @@ void uninitgroupfile(void)
 			close(groupfil[i]);
 			groupfil[i] = -1;
 		}
-#endif
+
 }
-
-#if (defined USE_PHYSICSFS)
-static int locateOneElement(uint8_t  *buf)
-{
-    uint8_t  *ptr;
-    uint8_t  **rc;
-    uint8_t  **i;
-
-    if (PHYSFS_exists(buf))
-        return(1);  /* quick rejection: exists in current case. */
-
-    ptr = strrchr(buf, '/');  /* find entry at end of path. */
-    if (ptr == NULL)
-    {
-        rc = PHYSFS_enumerateFiles("/");
-        ptr = buf;
-    } /* if */
-    else
-    {
-        *ptr = '\0';
-        rc = PHYSFS_enumerateFiles(buf);
-        *ptr = '/';
-        ptr++;  /* point past dirsep to entry itself. */
-    } /* else */
-
-    for (i = rc; *i != NULL; i++)
-    {
-        if (stricmp(*i, ptr) == 0)
-        {
-            strcpy(ptr, *i); /* found a match. Overwrite with this case. */
-            PHYSFS_freeList(rc);
-            return(1);
-        } /* if */
-    } /* for */
-
-    /* no match at all... */
-    PHYSFS_freeList(rc);
-    return(0);
-} /* locateOneElement */
-
-
-int PHYSFSEXT_locateCorrectCase(uint8_t  *buf)
-{
-    int rc;
-    uint8_t  *ptr;
-    uint8_t  *prevptr;
-
-    while (*buf == '/')  /* skip any '/' at start of string... */
-        buf++;
-
-    ptr = prevptr = buf;
-    if (*ptr == '\0')
-        return(0);  /* Uh...I guess that's success. */
-
-    while ((ptr = strchr(ptr + 1, '/')) != NULL)
-    {
-        *ptr = '\0';  /* block this path section off */
-        rc = locateOneElement(buf);
-        *ptr = '/'; /* restore path separator */
-        if (!rc)
-            return(-2);  /* missing element in path. */
-    } /* while */
-
-    /* check final element... */
-    return(locateOneElement(buf) ? 0 : -1);
-} /* PHYSFSEXT_locateCorrectCase */
-#endif
-
 
 void crc32_table_gen(unsigned int* crc32_table) /* build CRC32 table */
 {
@@ -557,31 +444,6 @@ unsigned short crc16(uint8_t  *data_p, unsigned short length)
 
 int32_t kopen4load(const char  *filename, int readfromGRP)
 { // FIX_00072: all files are now 1st searched in Duke's root folder and then in the GRP.
-#if (defined USE_PHYSICSFS)
-    int i;
-    PHYSFS_file *rc;
-    uint8_t  _filename[64];
-
-    assert(strlen(filename) < sizeof (_filename));
-    strcpy(_filename, filename);
-    PHYSFSEXT_locateCorrectCase(_filename);
-
-    rc = PHYSFS_openRead(_filename);
-    if (rc == NULL)
-        return(-1);
-
-    for (i = 0; i < MAXOPENFILES; i++)
-    {
-        if (filehan[i] == NULL)
-        {
-            filehan[i] = rc;
-            return(i);
-        }
-    }
-
-    PHYSFS_close(rc);  /* oh well. */
-    return(-1);
-#else
 	int32_t i, j, k, fil, newhandle;
 	uint8_t  bad;
 	uint8_t  *gfileptr;
@@ -631,15 +493,11 @@ int32_t kopen4load(const char  *filename, int readfromGRP)
 		}
 	}
 	return(-1);
-#endif
+
 }
 
 int32_t kread(int32_t handle, void *buffer, int32_t leng)
 {
-#if (defined USE_PHYSICSFS)
-    return(PHYSFS_read(filehan[handle], buffer, 1, leng));
-return(leng);
-#else
 	int32_t i, filenum, groupnum;
 
 	filenum = filehan[handle];
@@ -666,7 +524,7 @@ return(leng);
 	}
 
 	return(0);
-#endif
+
 }
 
 int kread16(int32_t handle, short *buffer)
@@ -697,20 +555,6 @@ int kread8(int32_t handle, uint8_t  *buffer)
 
 int32_t klseek(int32_t handle, int32_t offset, int32_t whence)
 {
-#if (defined USE_PHYSICSFS)
-    if (whence == SEEK_END)  /* !!! FIXME: You can try PHYSFS_filelength(). */
-    {
-		Error(EXIT_FAILURE, "Unsupported seek semantic!\n");
-    } /* if */
-
-    if (whence == SEEK_CUR)
-        offset += PHYSFS_tell(filehan[handle]);
-
-    if (!PHYSFS_seek(filehan[handle], offset))
-        return(-1);
-
-    return(offset);
-#else
 	int32_t i, groupnum;
 
 	groupnum = filegrp[handle];
@@ -729,7 +573,7 @@ int32_t klseek(int32_t handle, int32_t offset, int32_t whence)
 		return(filepos[handle]);
 	}
 	return(-1);
-#endif
+
 }
 
 #ifdef __APPLE__
@@ -743,31 +587,21 @@ int32_t filelength(int32_t fd)
 
 int32_t kfilelength(int32_t handle)
 {
-#if (defined USE_PHYSICSFS)
-    return(PHYSFS_fileLength(filehan[handle]));
-#else
 	int32_t i, groupnum;
 
 	groupnum = filegrp[handle];
 	if (groupnum == 255) return(filelength(filehan[handle]));
 	i = filehan[handle];
 	return(gfileoffs[groupnum][i+1]-gfileoffs[groupnum][i]);
-#endif
+
 }
 
 void kclose(int32_t handle)
 {
-#if (defined USE_PHYSICSFS)
-    if (filehan[handle] != NULL)
-    {
-        PHYSFS_close(filehan[handle]);
-        filehan[handle] = NULL;
-    } /* if */
-#else
 	if (handle < 0) return;
 	if (filegrp[handle] == 255) close(filehan[handle]);
 	filehan[handle] = -1;
-#endif
+
 }
 
 

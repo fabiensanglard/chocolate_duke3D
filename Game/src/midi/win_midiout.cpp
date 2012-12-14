@@ -1164,9 +1164,6 @@ static void CheckAndPlayMusicType(const char * szName, const char * szType)
 // Duke3D-specific.  --ryan.
 void PlayMusic(char  *fn)
 {
-	//extern int File_Exists(uint8_t  *fn);
-	//extern void GetOnlyNameOfFile(uint8_t  *fn);
-
 	short      fp;
     int32_t        l;
 	char  *cfn;

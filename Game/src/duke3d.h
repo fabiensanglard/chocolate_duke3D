@@ -434,7 +434,7 @@ extern uint8_t  picsiz[MAXTILES];
 typedef struct
 {
 	unsigned int crc32;
-	uint8_t * name;
+	char * name;
 	uint32_t size;
 } crc32_t;
 

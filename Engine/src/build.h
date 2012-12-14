@@ -311,7 +311,7 @@ OTHER VARIABLES:
 			you call the loadboard function.
 ***************************************************************************/
 
-#define PORTSIG  "Port by Ryan C. Gordon, Andrew Henderson, Dan Olson, and a cast of thousands."
+#define PORTSIG  "Port by Ryan C. Gordon, Andrew Henderson, Dan Olson, Fabien Sanglard and a cast of thousands."
 
 
 //FCS: In order to see how the engine renders different part of the screen you can set the following macros
@@ -330,7 +330,7 @@ OTHER VARIABLES:
 //END VISUALIZE RENDERER
 
 //Global.c
-void Error (int errorType, uint8_t  *error, ...);
+void Error (int errorType, char  *error, ...);
 int FindDistance2D(int ix, int iy);
 
 #endif  /* defined _INCLUDE_BUILD_H_ */

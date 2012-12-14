@@ -33,15 +33,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "sndcards.h"
 #include "multivoc.h"
 
-#ifdef PLAT_DOS
-#include "blaster.h"
-#include "pas16.h"
-#include "sndscape.h"
-#include "guswave.h"
-#include "sndsrc.h"
-#else
+
 #include "dsl.h"
-#endif
 
 #include "ll_man.h"
 #include "user.h"

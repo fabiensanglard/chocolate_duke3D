@@ -450,16 +450,7 @@ void MV_ServiceVoc
 	VoiceNode *voice;
 	VoiceNode *next;
 	char      *buffer;
-	
-#ifdef PLAT_DOS
-	if ( MV_DMAChannel >= 0 )
-	{
-		// Get the currently playing buffer
-		buffer = ( char * )DMA_GetCurrentPos( MV_DMAChannel );
-		MV_MixPage   = ( unsigned )( buffer - MV_MixBuffer[ 0 ] );
-		MV_MixPage >>= MV_BuffShift;
-	}
-#endif
+
 	
 	// Toggle which buffer we'll mix next
 	MV_MixPage++;
@@ -532,37 +523,6 @@ void MV_ServiceVoc
 			
 	}
 }
-
-#ifdef PLAT_DOS
-int leftpage  = -1;
-int rightpage = -1;
-
-void MV_ServiceGus( char **ptr, unsigned long *length )
-   {
-   if ( leftpage == MV_MixPage )
-      {
-      MV_ServiceVoc();
-      }
-
-   leftpage = MV_MixPage;
-
-   *ptr = MV_MixBuffer[ MV_MixPage ];
-   *length = MV_BufferSize;
-   }
-
-void MV_ServiceRightGus( char **ptr, unsigned long *length )
-   {
-   if ( rightpage == MV_MixPage )
-      {
-      MV_ServiceVoc();
-      }
-
-   rightpage = MV_MixPage;
-
-   *ptr = MV_MixBuffer[ MV_MixPage ] + MV_RightChannelOffset;
-   *length = MV_BufferSize;
-   }
-#endif
 
 /*---------------------------------------------------------------------
    Function: MV_GetNextVOCBlock
