@@ -65,7 +65,7 @@ cactype cac[MAXCACHEOBJECTS];
 int32_t lockrecip[200];
 
 // TC game directory
-uint8_t  game_dir[512] = { '\0' };
+char  game_dir[512] = { '\0' };
 
 void initcache(int32_t dacachestart, int32_t dacachesize)
 {

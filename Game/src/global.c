@@ -91,7 +91,8 @@ short cyclers[MAXCYCLERS][6],numcyclers;
 
 char  fta_quotes[NUMOFFIRSTTIMEACTIVE][64];
 
-uint8_t  tempbuf[2048], packbuf[576];
+char  tempbuf[2048];
+uint8_t packbuf[576];
 
 char  buf[80];
 
@@ -162,7 +163,8 @@ uint8_t  *music_pointer;
 uint8_t  actortype[MAXTILES];
 
 
-uint8_t  display_mirror,typebuflen,typebuf[41];
+uint8_t  display_mirror,typebuflen;
+char typebuf[41];
 
 char  music_fn[4][11][13];
 uint8_t music_select;
@@ -520,7 +522,7 @@ void Error (int errorType, char  *error, ...)
    exit (errorType);
 }
 
-void write2disk(int line, uint8_t * cfilename, uint8_t  *filename2write, uint8_t  *message)
+void write2disk(int line, char * cfilename, char  *filename2write, char  *message)
 {
 	// usage: write2disk(__LINE__, __FILE__, "c:\temp\my_dbug_file.txt", uint8_t * msg);
 

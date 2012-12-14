@@ -61,10 +61,8 @@ void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,
 int loadboard(char  *filename, int32_t *daposx, int32_t *daposy,
 			  int32_t *daposz, short *daang, short *dacursectnum);
 void drawmasks(void);
-void printext256(int32_t xpos, int32_t ypos, short col, short backcol,
-			uint8_t  name[82], uint8_t  fontsize);
-void printext256_noupdate(int32_t xpos, int32_t ypos, short col, short backcol,
-			uint8_t  name[82], uint8_t  fontsize);
+void printext256(int32_t xpos, int32_t ypos, short col, short backcol,char  name[82], uint8_t  fontsize);
+void printext256_noupdate(int32_t xpos, int32_t ypos, short col, short backcol,char  name[82], uint8_t  fontsize);
 void initengine(void);
 void uninitengine(void);
 

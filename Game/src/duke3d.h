@@ -30,6 +30,8 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 #include <string.h>
 #include <stdlib.h>
 
+
+
 #include "platform.h"
 #if !PLATFORM_MACOSX
 #include <malloc.h>
@@ -369,7 +371,8 @@ extern struct animwalltype animwall[MAXANIMWALLS];
 extern short numanimwalls,probey,lastprobey;
 
 extern uint8_t  *mymembuf;
-extern uint8_t  typebuflen,typebuf[41];
+extern uint8_t  typebuflen;
+char typebuf[41];
 extern uint8_t  MusicPtr[72000];
 extern int32_t msx[2048],msy[2048];
 extern short cyclers[MAXCYCLERS][6],numcyclers;
@@ -509,7 +512,8 @@ struct player_struct
 	uint8_t  fakeplayer;
 };
 
-extern uint8_t  tempbuf[2048], packbuf[576];
+extern char  tempbuf[2048];
+extern uint8_t packbuf[576];
 
 extern int32_t gc,max_player_health,max_armour_amount,max_ammo_amount[MAX_WEAPONS];
 

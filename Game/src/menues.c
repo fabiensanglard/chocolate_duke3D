@@ -1267,7 +1267,7 @@ int getfilenames(uint8_t  kind[6])
 
 #else
 
-int getfilenames(uint8_t  kind[6])
+int getfilenames(char  kind[6])
 {
 /* !!! FIXME: Visual C? */
 #if (defined __WATCOMC__)
@@ -1716,15 +1716,15 @@ void menus(void)
 
             dispnames();
 
-            sprintf(tempbuf,"PLAYERS: %-2d                      ",numplr);
-            gametext(160,158,tempbuf,0,2+8+16);
+            sprintf((char*)tempbuf,"PLAYERS: %-2d                      ",numplr);
+            gametext(160,158,(char*)tempbuf,0,2+8+16);
 
-            sprintf(tempbuf,"EPISODE: %-2d / LEVEL: %-2d / SKILL: %-2d",1+volnum,1+levnum,plrskl);
-            gametext(160,170,tempbuf,0,2+8+16);
+            sprintf((char*)tempbuf,"EPISODE: %-2d / LEVEL: %-2d / SKILL: %-2d",1+volnum,1+levnum,plrskl);
+            gametext(160,170,(char*)tempbuf,0,2+8+16);
 
             gametext(160,90,"LOAD game:",0,2+8+16);
-            sprintf(tempbuf,"\"%s\"",ud.savegame[current_menu-1000]);
-            gametext(160,99,tempbuf,0,2+8+16);
+            sprintf((char*)tempbuf,"\"%s\"",ud.savegame[current_menu-1000]);
+            gametext(160,99,(char*)tempbuf,0,2+8+16);
             gametext(160,99+9,"(Y/N)",0,2+8+16);
 
 			_handle_events();
@@ -3647,8 +3647,8 @@ else
             rotatesprite(160<<16,29<<16,65536L,0,MENUBAR,16,0,10,0,0,xdim-1,ydim-1);
             menutext(320>>1,34,0,0,&ud.user_name[myconnectindex][0]);
 
-            sprintf(tempbuf,"Waiting for master");
-            gametext(160,50,tempbuf,0,2+8+16);
+            sprintf((char*)tempbuf,"Waiting for master");
+            gametext(160,50,(char*)tempbuf,0,2+8+16);
             gametext(160,59,"to select level",0,2+8+16);
 
             if( KB_KeyPressed(sc_Escape) )

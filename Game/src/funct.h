@@ -29,7 +29,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 
 #include "duke3d.h"
 
-extern void sendscore(uint8_t  *s);
+extern void sendscore(char  *s);
 //#line "sounds.c" 25
 extern void SoundStartup(void );
 //#line "sounds.c" 95
@@ -251,7 +251,7 @@ extern void bar(int x,int y,short *p,short dainc,uint8_t  damodify,short s,short
 //#line "menues.c" 806
 extern void dispnames(void );
 //#line "menues.c" 832
-extern int getfilenames(uint8_t  kind[]);
+extern int getfilenames(char  kind[]);
 //#line "menues.c" 865
 extern void sortfilenames(void);
 //#line "menues.c" 886
@@ -405,7 +405,7 @@ extern void nonsharedkeys(void );
 //#line "game.c" 5863
 extern void comlinehelp(uint8_t  **argv);
 //#line "game.c" 5889
-extern void checkcommandline(int argc,uint8_t  **argv);
+extern void checkcommandline(int argc,char  **argv);
 //#line "game.c" 6078
 extern void printstr(short x,short y,uint8_t  string[],uint8_t  attribute);
 //#line "game.c" 6104
@@ -477,7 +477,7 @@ extern void CONFIG_GetSetupFilename(void );
 //#line "config.c" 170
 extern int32 CONFIG_FunctionNameToNum(char  *func);
 //#line "config.c" 192
-extern uint8_t  *CONFIG_FunctionNumToName(int32 func);
+extern char  *CONFIG_FunctionNumToName(int32 func);
 //#line "config.c" 211
 extern int32 CONFIG_AnalogNameToNum(char  *func);
 //#line "config.c" 240

@@ -6664,13 +6664,13 @@ static void __printext256(int32_t xpos, int32_t ypos, short col, short backcol, 
 }
 
 
-void printext256(int32_t xpos, int32_t ypos, short col, short backcol, uint8_t  name[82], uint8_t  fontsize)
+void printext256(int32_t xpos, int32_t ypos, short col, short backcol, char  name[82], uint8_t  fontsize)
 {
     __printext256(xpos, ypos, col, backcol, name, fontsize, 1);
 }
 
 
-void printext256_noupdate(int32_t xpos, int32_t ypos, short col, short backcol, uint8_t  name[82], uint8_t  fontsize)
+void printext256_noupdate(int32_t xpos, int32_t ypos, short col, short backcol, char  name[82], uint8_t  fontsize)
 {
     __printext256(xpos, ypos, col, backcol, name, fontsize, 0);
 }

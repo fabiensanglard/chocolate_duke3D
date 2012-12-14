@@ -327,7 +327,7 @@ void CVARDEFS_FunctionPlayMidi(void* var)
 void CVARDEFS_FunctionHelp(void* var)
 {	
 	int i, numArgs, numCvars;
-	uint8_t  *helpcmd = CONSOLE_GetArgv(0);	
+	char  *helpcmd = CONSOLE_GetArgv(0);
 	numCvars = CVAR_GetNumCvarBindings();
     numArgs = CONSOLE_GetArgc();
 

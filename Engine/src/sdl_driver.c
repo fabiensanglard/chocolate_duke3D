@@ -266,7 +266,7 @@ void flushpackets(void)
 	}
 #endif
 }
-void genericmultifunction(int32_t other, uint8_t  *bufptr, int32_t messleng, int32_t command)
+void genericmultifunction(int32_t other, char  *bufptr, int32_t messleng, int32_t command)
 {
     #ifndef USER_DUMMY_NETWORK
 	switch(nNetMode)
@@ -1171,7 +1171,7 @@ void _platform_init(int argc, char  **argv, const char  *title, const char  *ico
 {
     int i;
 	int32_t timeElapsed;
-	uint8_t  dummyString[4096];
+	char  dummyString[4096];
 
     _argc = argc;
     _argv = argv;
@@ -1476,10 +1476,10 @@ int _setgamemode(uint8_t  davidoption, int32_t daxdim, int32_t daydim)
 } /* setgamemode */
 
 
-static int get_dimensions_from_str(const uint8_t  *str, int32_t *_w, int32_t *_h)
+static int get_dimensions_from_str(const char  *str, int32_t *_w, int32_t *_h)
 {
-    uint8_t  *xptr = NULL;
-    uint8_t  *ptr = NULL;
+    char  *xptr = NULL;
+    char  *ptr = NULL;
     int32_t w = -1;
     int32_t h = -1;
 
@@ -1551,7 +1551,7 @@ static __inline void add_user_defined_resolution(void)
 {
     int32_t w;
     int32_t h;
-    const uint8_t  *envr = getenv(BUILD_USERSCREENRES);
+    const char  *envr = getenv(BUILD_USERSCREENRES);
 
     if (envr == NULL)
         return;
@@ -1587,7 +1587,7 @@ static __inline SDL_Rect **get_physical_resolutions(void)
 } /* get_physical_resolutions */
 
 
-static void remove_vesa_mode(int index, const uint8_t  *reason)
+static void remove_vesa_mode(int index, const char  *reason)
 {
     int i;
 
@@ -1683,8 +1683,8 @@ static __inline void cleanup_vesa_modelist(void)
 
 static __inline void output_vesa_modelist(void)
 {
-    uint8_t  buffer[256];
-    uint8_t  numbuf[20];
+    char  buffer[256];
+    char  numbuf[20];
     int i;
 
     if (!_sdl_debug_file)

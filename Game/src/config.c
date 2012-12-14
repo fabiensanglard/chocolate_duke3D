@@ -171,7 +171,7 @@ int32 CONFIG_FunctionNameToNum( char  * func )
 ===================
 */
 
-uint8_t  * CONFIG_FunctionNumToName( int32 func )
+char  * CONFIG_FunctionNumToName( int32 func )
 {
 	if (-1 < func && func < NUMGAMEFUNCTIONS)
 	{
@@ -852,15 +852,15 @@ void CONFIG_WriteSetup( void )
 	// FIX_00016: Build in Keyboard/mouse setup. Mouse now faster.
 	for(i=0; i<MAXMOUSEBUTTONS; i++)
 	{
-		sprintf((uint8_t *)tempbuf, "MouseButton%d", i);
-		SCRIPT_PutString(scripthandle, "Controls", (uint8_t *)tempbuf, 
+		sprintf((char *)tempbuf, "MouseButton%d", i);
+		SCRIPT_PutString(scripthandle, "Controls", (char *)tempbuf,
 			(MouseMapping[i]!=-1)?CONFIG_FunctionNumToName(MouseMapping[i]):"");
 	}
 
 	for (i=0;i<MAXMOUSEAXES*2;i++)
 	{
-		sprintf((uint8_t *)tempbuf, "MouseDigitalAxes%d_%d", i>>1, i&1);
-		SCRIPT_PutString(scripthandle, "Controls", (uint8_t *)tempbuf, 
+		sprintf((char *)tempbuf, "MouseDigitalAxes%d_%d", i>>1, i&1);
+		SCRIPT_PutString(scripthandle, "Controls", (char *)tempbuf, 
 			(MouseDigitalAxeMapping[i>>1][i&1]!=-1)?CONFIG_FunctionNumToName(MouseDigitalAxeMapping[i>>1][i&1]):"");
 	}
 

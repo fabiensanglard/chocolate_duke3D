@@ -99,7 +99,7 @@ int getoutputcirclesize(void);
 void setsocket(short newsocket);
 short getpacket(short *other, uint8_t  *bufptr);
 void flushpackets(void);
-void genericmultifunction(int32_t other, uint8_t  *bufptr, int32_t messleng, int32_t command);
+void genericmultifunction(int32_t other, char  *bufptr, int32_t messleng, int32_t command);
 
 /* engine.c */
 extern int setgotpic(int32_t i1);
@@ -151,8 +151,8 @@ extern int initmouse(void);
 extern void getmousevalues(short *mousx, short *mousy, short *bstatus);
 extern void draw2dgrid(int32_t posxe, int32_t posye, short ange, int32_t zoome, short gride);
 extern void draw2dscreen(int32_t posxe, int32_t posye, short ange, int32_t zoome, short gride);
-extern void printext256(int32_t xpos, int32_t ypos, short col, short backcol, uint8_t  name[82], uint8_t  fontsize);
-extern void printext256_noupdate(int32_t xpos, int32_t ypos, short col, short backcol, uint8_t  name[82], uint8_t  fontsize);
+extern void printext256(int32_t xpos, int32_t ypos, short col, short backcol, char  name[82], uint8_t  fontsize);
+extern void printext256_noupdate(int32_t xpos, int32_t ypos, short col, short backcol, char  name[82], uint8_t  fontsize);
 #ifdef DBGRECORD
 extern int krand(int line, uint8_t * file);
 #else
