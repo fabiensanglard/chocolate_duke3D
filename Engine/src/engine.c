@@ -349,29 +349,37 @@ static void scansector (short sectnum)
 			wal2 = &wall[wal->point2];
             
             // In camera space the center is the player.
-            // Make the camrea the center of the world: Wall coordinates
-			x1 = wal->x-globalposx; y1 = wal->y-globalposy;
-			x2 = wal2->x-globalposx; y2 = wal2->y-globalposy;
+            // Make the camera the center of the world for the 2 Wall endpoints (x,y)
+			x1 = wal->x-globalposx;
+            y1 = wal->y-globalposy;
+			
+            x2 = wal2->x-globalposx;
+            y2 = wal2->y-globalposy;
 
             // If this is a portal...
 			if ((nextsectnum >= 0) && ((wal->cstat&32) == 0))
-                //If this portal has not been visited.
+                //If this portal has not been visited yet.
 				if ((gotsector[nextsectnum>>3]&pow2char[nextsectnum&7]) == 0)
 				{
+                    //Cross product -> Z component
 					tempint = x1*y2-x2*y1;
                     
                     // Using cross product, determine if the portal is facing us or not.
                     // If it is: Add it to the stack and bump the stack counter.
+                    // This line is equivalent to tempint < 0x40000
 					if (((unsigned)tempint+262144) < 524288)
+                    {
+                        //(x2-x1)*(x2-x1)+(y2-y1)*(y2-y1) is the squared length of the wall
 						if (mulscale5(tempint,tempint) <= (x2-x1)*(x2-x1)+(y2-y1)*(y2-y1))
 							sectorborder[sectorbordercnt++] = nextsectnum;
+                    }
 				}
 
             // Rotate the wall endpoint position according to the player orientation.
             // This is a regular rotation matrix using [29.3] fixed point.
 			if ((z == startwall) || (wall[z-1].point2 != z))
 			{
-                //If this is the first endpoint of the bunch, rotate
+                //If this is the first endpoint of the bunch, rotate: This is a standard cos sin 2D rotation matrix projection
 				xp1 = dmulscale6(y1,cosglobalang,-x1,singlobalang);
 				yp1 = dmulscale6(x1,cosviewingrangeglobalang,y1,sinviewingrangeglobalang);
 			}
@@ -381,8 +389,10 @@ static void scansector (short sectnum)
 				xp1 = xp2;
 				yp1 = yp2;
 			}
-			    xp2 = dmulscale6(y2,cosglobalang,-x2,singlobalang);
-			    yp2 = dmulscale6(x2,cosviewingrangeglobalang,y2,sinviewingrangeglobalang);
+            
+            // Rotate: This is a standard cos sin 2D rotation matrix projection
+            xp2 = dmulscale6(y2,cosglobalang,-x2,singlobalang);
+            yp2 = dmulscale6(x2,cosviewingrangeglobalang,y2,sinviewingrangeglobalang);
             
             
             
@@ -396,21 +406,31 @@ static void scansector (short sectnum)
             
 			if (xp1 >= -yp1)
 			{
-				if ((xp1 > yp1) || (yp1 == 0)) goto skipitaddwall;
+				if ((xp1 > yp1) || (yp1 == 0))
+                    goto skipitaddwall;
+                
 				xb1[numscans] = halfxdimen + scale(xp1,halfxdimen,yp1);
-				if (xp1 >= 0) xb1[numscans]++;   /* Fix for SIGNED divide */
-				if (xb1[numscans] >= xdimen) xb1[numscans] = xdimen-1;
+				if (xp1 >= 0)
+                    xb1[numscans]++;   /* Fix for SIGNED divide */
+                
+				if (xb1[numscans] >= xdimen)
+                    xb1[numscans] = xdimen-1;
+                
 				yb1[numscans] = yp1;
 			}
 			else
 			{
-				if (xp2 < -yp2) goto skipitaddwall;
+				if (xp2 < -yp2)
+                    goto skipitaddwall;
+                
 				xb1[numscans] = 0;
 				tempint = yp1-yp2+xp1-xp2;
-				if (tempint == 0) goto skipitaddwall;
+				if (tempint == 0)
+                    goto skipitaddwall;
 				yb1[numscans] = yp1 + scale(yp2-yp1,xp1+yp1,tempint);
 			}
-			if (yb1[numscans] < 256) goto skipitaddwall;
+			if (yb1[numscans] < 256)
+                goto skipitaddwall;
 
 			if (xp2 <= yp2)
 			{
@@ -451,7 +471,7 @@ skipitaddwall:
 			}
 		}
 
-        //FCS: TODO rename this p2[]. This name is an abomination
+        //FCS: TODO rename this p2[] to bunchList[] or something like that. This name is an abomination
 		for(z=numscansbefore;z<numscans;z++)
 		{
 			if ((wall[thewall[z]].point2 != thewall[p2[z]]) || (xb2[z] >= xb1[p2[z]]))
@@ -3874,7 +3894,7 @@ int inside(int32_t x, int32_t y, short sectnum)
 	int32_t i, x1, y1, x2, y2;
 	uint32_t  cnt;
 
-	//Quick check if the sector ID is valide.
+	//Quick check if the sector ID is valid.
 	if ((sectnum < 0) || (sectnum >= numsectors)) return(-1);
 
 	cnt = 0;
@@ -3894,9 +3914,15 @@ int inside(int32_t x, int32_t y, short sectnum)
             
 			//Again, compare the sign of x1 and x2. If (x1^x2) >= 0 then x is on the left or the right of both wal->x and wall[wal->point2].x.
 			if ((x1^x2) >= 0)
+            {
+                // Euh...je ne sais pas.....
                 cnt ^= x1;
+            }
             else
+            {
+                //Cross-Product WTF ?
                 cnt ^= (x1*y2-x2*y1)^y2;
+            }
 		}
 
 		wal++; 
@@ -3904,6 +3930,7 @@ int inside(int32_t x, int32_t y, short sectnum)
 
 	} while (i);
 
+    //Just return the sign.
 	return(cnt>>31);
 }
 
