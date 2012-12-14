@@ -207,7 +207,7 @@ void agecache(void)
 	}
 }
 
-void reportandexit(uint8_t  *errormessage)
+void reportandexit(char  *errormessage)
 {
 	int32_t i, j;
 

@@ -3378,7 +3378,7 @@ static void dorotatesprite (int32_t sx, int32_t sy, int32_t z, short a, short pi
 				if ((xv2&0x0000ffff) == 0)
 				{
 					qlinemode = 1;
-					setupqrhlineasm4(0L,yv2<<16,(xv2>>16)*ysiz+(yv2>>16),palookupoffs,0L,0L);
+					setuprhlineasm4(0L,yv2<<16,(xv2>>16)*ysiz+(yv2>>16),palookupoffs,0L,0L);
 				}
 				else
 				{
@@ -3411,7 +3411,7 @@ static void dorotatesprite (int32_t sx, int32_t sy, int32_t z, short a, short pi
 
 								/* x,y1 */
 							bx += xv*(y1-oy); by += yv*(y1-oy); oy = y1;
-							if (dastat&64) {  if (qlinemode) qrhlineasm4(x-lastx[y1],(bx>>16)*ysiz+(by>>16)+bufplc,0L,0L    ,by<<16,ylookup[y1]+x+frameplace);
+							if (dastat&64) {  if (qlinemode) rhlineasm4(x-lastx[y1],(bx>>16)*ysiz+(by>>16)+bufplc,0L,0L    ,by<<16,ylookup[y1]+x+frameplace);
 																  else rhlineasm4(x-lastx[y1],(bx>>16)*ysiz+(by>>16)+bufplc,0L,bx<<16,by<<16,ylookup[y1]+x+frameplace);
 															  } else rmhlineasm4(x-lastx[y1],(bx>>16)*ysiz+(by>>16)+bufplc,0L,bx<<16,by<<16,ylookup[y1]+x+frameplace);
 						}
@@ -3425,7 +3425,7 @@ static void dorotatesprite (int32_t sx, int32_t sy, int32_t z, short a, short pi
 
 								/* x,y1 */
 							bx += xv*(y1-oy); by += yv*(y1-oy); oy = y1;
-							if (dastat&64) {  if (qlinemode) qrhlineasm4(x-lastx[y1],(bx>>16)*ysiz+(by>>16)+bufplc,0L,0L    ,by<<16,ylookup[y1]+x+frameplace);
+							if (dastat&64) {  if (qlinemode) rhlineasm4(x-lastx[y1],(bx>>16)*ysiz+(by>>16)+bufplc,0L,0L    ,by<<16,ylookup[y1]+x+frameplace);
 																  else rhlineasm4(x-lastx[y1],(bx>>16)*ysiz+(by>>16)+bufplc,0L,bx<<16,by<<16,ylookup[y1]+x+frameplace);
 															  } else rmhlineasm4(x-lastx[y1],(bx>>16)*ysiz+(by>>16)+bufplc,0L,bx<<16,by<<16,ylookup[y1]+x+frameplace);
 						}
@@ -3437,7 +3437,7 @@ static void dorotatesprite (int32_t sx, int32_t sy, int32_t z, short a, short pi
 
 							/* x,y2 */
 						bx += xv*(y2-oy); by += yv*(y2-oy); oy = y2;
-						if (dastat&64) {  if (qlinemode) qrhlineasm4(x-lastx[y2],(bx>>16)*ysiz+(by>>16)+bufplc,0L,0L    ,by<<16,ylookup[y2]+x+frameplace);
+						if (dastat&64) {  if (qlinemode) rhlineasm4(x-lastx[y2],(bx>>16)*ysiz+(by>>16)+bufplc,0L,0L    ,by<<16,ylookup[y2]+x+frameplace);
 															  else rhlineasm4(x-lastx[y2],(bx>>16)*ysiz+(by>>16)+bufplc,0L,bx<<16,by<<16,ylookup[y2]+x+frameplace);
 														  } else rmhlineasm4(x-lastx[y2],(bx>>16)*ysiz+(by>>16)+bufplc,0L,bx<<16,by<<16,ylookup[y2]+x+frameplace);
 					}
@@ -3451,7 +3451,7 @@ static void dorotatesprite (int32_t sx, int32_t sy, int32_t z, short a, short pi
 
 							/* x,y1 */
 						bx += xv*(y1-oy); by += yv*(y1-oy); oy = y1;
-						if (dastat&64) {  if (qlinemode) qrhlineasm4(x-lastx[y1],(bx>>16)*ysiz+(by>>16)+bufplc,0L,0L    ,by<<16,ylookup[y1]+x+frameplace);
+						if (dastat&64) {  if (qlinemode) rhlineasm4(x-lastx[y1],(bx>>16)*ysiz+(by>>16)+bufplc,0L,0L    ,by<<16,ylookup[y1]+x+frameplace);
 															  else rhlineasm4(x-lastx[y1],(bx>>16)*ysiz+(by>>16)+bufplc,0L,bx<<16,by<<16,ylookup[y1]+x+frameplace);
 														  } else rmhlineasm4(x-lastx[y1],(bx>>16)*ysiz+(by>>16)+bufplc,0L,bx<<16,by<<16,ylookup[y1]+x+frameplace);
 					}
@@ -3468,7 +3468,7 @@ static void dorotatesprite (int32_t sx, int32_t sy, int32_t z, short a, short pi
 
 					/* x2,y1 */
 				bx += xv*(y1-oy); by += yv*(y1-oy); oy = y1;
-				if (dastat&64) {  if (qlinemode) qrhlineasm4(x2-lastx[y1],(bx>>16)*ysiz+(by>>16)+bufplc,0L,0L    ,by<<16,ylookup[y1]+x2+frameplace);
+				if (dastat&64) {  if (qlinemode) rhlineasm4(x2-lastx[y1],(bx>>16)*ysiz+(by>>16)+bufplc,0L,0L    ,by<<16,ylookup[y1]+x2+frameplace);
 													  else rhlineasm4(x2-lastx[y1],(bx>>16)*ysiz+(by>>16)+bufplc,0L,bx<<16,by<<16,ylookup[y1]+x2+frameplace);
 												  } else rmhlineasm4(x2-lastx[y1],(bx>>16)*ysiz+(by>>16)+bufplc,0L,bx<<16,by<<16,ylookup[y1]+x2+frameplace);
 			}
@@ -4178,219 +4178,6 @@ static void ceilspritescan (int32_t x1, int32_t x2)
 	while (y1 < y2-1) ceilspritehline(x2,++y1);
 	faketimerhandler();
 }
-
-
-#ifdef SUPERBUILD
-static void drawvox(int32_t dasprx, int32_t daspry, int32_t dasprz, int32_t dasprang,
-		  int32_t daxscale, int32_t dayscale, uint8_t  daindex,
-		  int8_t dashade, uint8_t  dapal, int32_t *daumost, int32_t *dadmost)
-{
-	int32_t i, j, k, x, y, syoff, ggxstart, ggystart, nxoff;
-	int32_t cosang, sinang, sprcosang, sprsinang, backx, backy, gxinc, gyinc;
-	int32_t daxsiz, daysiz, dazsiz, daxpivot, daypivot, dazpivot;
-	int32_t daxscalerecip, dayscalerecip, cnt, gxstart, gystart, odayscale;
-	int32_t l1, l2, slabxoffs, xyvoxoffs, *longptr;
-	int32_t lx, rx, nx, ny, x1=0, y1=0, z1, x2=0, y2=0, z2, yplc, yinc=0;
-	int32_t yoff, xs=0, ys=0, xe, ye, xi=0, yi=0, cbackx, cbacky, dagxinc, dagyinc;
-	short *shortptr;
-	uint8_t  *voxptr, *voxend, *davoxptr, oand, oand16, oand32;
-
-	cosang = sintable[(globalang+512)&2047];
-	sinang = sintable[globalang&2047];
-	sprcosang = sintable[(dasprang+512)&2047];
-	sprsinang = sintable[dasprang&2047];
-
-	i = klabs(dmulscale6(dasprx-globalposx,cosang,daspry-globalposy,sinang));
-	j = (long)(getpalookup((long)mulscale21(globvis,i),(long)dashade)<<8);
-	setupdrawslab(ylookup[1],(long)FP_OFF(palookup[dapal])+j);
-	j = 1310720;
-	j *= min(daxscale,dayscale); j >>= 6;  /* New hacks (for sized-down voxels) */
-	for(k=0;k<MAXVOXMIPS;k++)
-	{
-		if (i < j) { i = k; break; }
-		j <<= 1;
-	}
-	if (k >= MAXVOXMIPS) i = MAXVOXMIPS-1;
-
-	davoxptr = (uint8_t  *)voxoff[daindex][i]; if (!davoxptr) return;
-
-	daxscale <<= (i+8); dayscale <<= (i+8);
-	odayscale = dayscale;
-	daxscale = mulscale16(daxscale,xyaspect);
-	daxscale = scale(daxscale,xdimenscale,xdimen<<8);
-	dayscale = scale(dayscale,mulscale16(xdimenscale,viewingrangerecip),xdimen<<8);
-
-	daxscalerecip = (1<<30)/daxscale;
-	dayscalerecip = (1<<30)/dayscale;
-
-	longptr = (int32_t *)davoxptr;
-	daxsiz = longptr[0]; daysiz = longptr[1]; dazsiz = longptr[2];
-	daxpivot = longptr[3]; daypivot = longptr[4]; dazpivot = longptr[5];
-	davoxptr += (6<<2);
-
-	x = mulscale16(globalposx-dasprx,daxscalerecip);
-	y = mulscale16(globalposy-daspry,daxscalerecip);
-	backx = ((dmulscale10(x,sprcosang,y,sprsinang)+daxpivot)>>8);
-	backy = ((dmulscale10(y,sprcosang,x,-sprsinang)+daypivot)>>8);
-	cbackx = min(max(backx,0),daxsiz-1);
-	cbacky = min(max(backy,0),daysiz-1);
-
-	sprcosang = mulscale14(daxscale,sprcosang);
-	sprsinang = mulscale14(daxscale,sprsinang);
-
-	x = (dasprx-globalposx) - dmulscale18(daxpivot,sprcosang,daypivot,-sprsinang);
-	y = (daspry-globalposy) - dmulscale18(daypivot,sprcosang,daxpivot,sprsinang);
-
-	cosang = mulscale16(cosang,dayscalerecip);
-	sinang = mulscale16(sinang,dayscalerecip);
-
-	gxstart = y*cosang - x*sinang;
-	gystart = x*cosang + y*sinang;
-	gxinc = dmulscale10(sprsinang,cosang,sprcosang,-sinang);
-	gyinc = dmulscale10(sprcosang,cosang,sprsinang,sinang);
-
-	x = 0; y = 0; j = max(daxsiz,daysiz);
-	for(i=0;i<=j;i++)
-	{
-		ggxinc[i] = x; x += gxinc;
-		ggyinc[i] = y; y += gyinc;
-	}
-
-	if ((klabs(globalposz-dasprz)>>10) >= klabs(odayscale)) return;
-	syoff = divscale21(globalposz-dasprz,odayscale) + (dazpivot<<7);
-	yoff = ((klabs(gxinc)+klabs(gyinc))>>1);
-	longptr = (int32_t *)davoxptr;
-	xyvoxoffs = ((daxsiz+1)<<2);
-
-	for(cnt=0;cnt<8;cnt++)
-	{
-		switch(cnt)
-		{
-			case 0: xs = 0;        ys = 0;        xi = 1;  yi = 1;  break;
-			case 1: xs = daxsiz-1; ys = 0;        xi = -1; yi = 1;  break;
-			case 2: xs = 0;        ys = daysiz-1; xi = 1;  yi = -1; break;
-			case 3: xs = daxsiz-1; ys = daysiz-1; xi = -1; yi = -1; break;
-			case 4: xs = 0;        ys = cbacky;   xi = 1;  yi = 2;  break;
-			case 5: xs = daxsiz-1; ys = cbacky;   xi = -1; yi = 2;  break;
-			case 6: xs = cbackx;   ys = 0;        xi = 2;  yi = 1;  break;
-			case 7: xs = cbackx;   ys = daysiz-1; xi = 2;  yi = -1; break;
-		}
-		xe = cbackx; ye = cbacky;
-		if (cnt < 4)
-		{
-			if ((xi < 0) && (xe >= xs)) continue;
-			if ((xi > 0) && (xe <= xs)) continue;
-			if ((yi < 0) && (ye >= ys)) continue;
-			if ((yi > 0) && (ye <= ys)) continue;
-		}
-		else
-		{
-			if ((xi < 0) && (xe > xs)) continue;
-			if ((xi > 0) && (xe < xs)) continue;
-			if ((yi < 0) && (ye > ys)) continue;
-			if ((yi > 0) && (ye < ys)) continue;
-			xe += xi; ye += yi;
-		}
-
-		i = ksgn(ys-backy)+ksgn(xs-backx)*3+4;
-		switch(i)
-		{
-			case 6: case 7: x1 = 0; y1 = 0; break;
-			case 8: case 5: x1 = gxinc; y1 = gyinc; break;
-			case 0: case 3: x1 = gyinc; y1 = -gxinc; break;
-			case 2: case 1: x1 = gxinc+gyinc; y1 = gyinc-gxinc; break;
-		}
-		switch(i)
-		{
-			case 2: case 5: x2 = 0; y2 = 0; break;
-			case 0: case 1: x2 = gxinc; y2 = gyinc; break;
-			case 8: case 7: x2 = gyinc; y2 = -gxinc; break;
-			case 6: case 3: x2 = gxinc+gyinc; y2 = gyinc-gxinc; break;
-		}
-		oand = pow2char[(xs<backx)+0]+pow2char[(ys<backy)+2];
-		oand16 = oand+16;
-		oand32 = oand+32;
-
-		if (yi > 0) { dagxinc = gxinc; dagyinc = mulscale16(gyinc,viewingrangerecip); }
-				 else { dagxinc = -gxinc; dagyinc = -mulscale16(gyinc,viewingrangerecip); }
-
-			/* Fix for non 90 degree viewing ranges */
-		nxoff = mulscale16(x2-x1,viewingrangerecip);
-		x1 = mulscale16(x1,viewingrangerecip);
-
-		ggxstart = gxstart+ggyinc[ys];
-		ggystart = gystart-ggxinc[ys];
-
-		for(x=xs;x!=xe;x+=xi)
-		{
-			slabxoffs = (long)&davoxptr[longptr[x]];
-			shortptr = (short *)&davoxptr[((x*(daysiz+1))<<1)+xyvoxoffs];
-
-			nx = mulscale16(ggxstart+ggxinc[x],viewingrangerecip)+x1;
-			ny = ggystart+ggyinc[x];
-			for(y=ys;y!=ye;y+=yi,nx+=dagyinc,ny-=dagxinc)
-			{
-				if ((ny <= nytooclose) || (ny >= nytoofar)) continue;
-				voxptr = (uint8_t  *)(shortptr[y]+slabxoffs);
-				voxend = (uint8_t  *)(shortptr[y+1]+slabxoffs);
-				if (voxptr == voxend) continue;
-
-				lx = mulscale32(nx>>3,distrecip[(ny+y1)>>14])+halfxdimen;
-				if (lx < 0) lx = 0;
-				rx = mulscale32((nx+nxoff)>>3,distrecip[(ny+y2)>>14])+halfxdimen;
-				if (rx > xdimen) rx = xdimen;
-				if (rx <= lx) continue;
-				rx -= lx;
-
-				l1 = distrecip[(ny-yoff)>>14];
-				l2 = distrecip[(ny+yoff)>>14];
-				for(;voxptr<voxend;voxptr+=voxptr[1]+3)
-				{
-					j = (voxptr[0]<<15)-syoff;
-					if (j < 0)
-					{
-						k = j+(voxptr[1]<<15);
-						if (k < 0)
-						{
-							if ((voxptr[2]&oand32) == 0) continue;
-							z2 = mulscale32(l2,k) + globalhoriz;     /* Below slab */
-						}
-						else
-						{
-							if ((voxptr[2]&oand) == 0) continue;    /* Middle of slab */
-							z2 = mulscale32(l1,k) + globalhoriz;
-						}
-						z1 = mulscale32(l1,j) + globalhoriz;
-					}
-					else
-					{
-						if ((voxptr[2]&oand16) == 0) continue;
-						z1 = mulscale32(l2,j) + globalhoriz;        /* Above slab */
-						z2 = mulscale32(l1,j+(voxptr[1]<<15)) + globalhoriz;
-					}
-
-					if (voxptr[1] == 1)
-					{
-						yplc = 0; yinc = 0;
-						if (z1 < daumost[lx]) z1 = daumost[lx];
-					}
-					else
-					{
-						if (z2-z1 >= 1024) yinc = divscale16(voxptr[1],z2-z1);
-						else if (z2 > z1) yinc = (lowrecip[z2-z1]*voxptr[1]>>8);
-						if (z1 < daumost[lx]) { yplc = yinc*(daumost[lx]-z1); z1 = daumost[lx]; } else yplc = 0;
-					}
-					if (z2 > dadmost[lx]) z2 = dadmost[lx];
-					z2 -= z1; if (z2 <= 0) continue;
-
-					drawslab(rx,yplc,z2,yinc,(long)&voxptr[3],ylookup[z1]+lx+frameoffset);
-				}
-			}
-		}
-	}
-}
-#endif
-
 
 static void drawsprite (int32_t snum)
 {

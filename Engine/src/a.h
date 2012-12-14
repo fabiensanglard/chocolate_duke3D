@@ -27,8 +27,8 @@ int32_t setuprhlineasm4(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
 int32_t rhlineasm4(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
 int32_t setuprmhlineasm4(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
 int32_t rmhlineasm4(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
-int32_t setupqrhlineasm4(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
-int32_t qrhlineasm4(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
+
+
 int32_t setvlinebpl(int32_t);
 int32_t fixtransluscence(int32_t);
 int32_t prevlineasm1(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
