@@ -376,7 +376,7 @@ XMIDI::~XMIDI()
 	}
 }
 
-XMIDIEventList *XMIDI::GetEventList (uint32 track)
+XMIDIEventList *XMIDI::GetEventList (uint32_t track)
 {
 	if (!events)
 	{
@@ -441,7 +441,7 @@ void XMIDI::CreateNewEvent (int time)
 //
 // Get a Conventional Variable Length Quantity
 //
-int XMIDI::GetVLQ (DataSource *source, uint32 &quant)
+int XMIDI::GetVLQ (DataSource *source, uint32_t &quant)
 {
 	int i;
 	quant = 0;
@@ -468,7 +468,7 @@ int XMIDI::GetVLQ (DataSource *source, uint32 &quant)
 //
 // Get a XMIDI Variable Length Quantity
 //
-int XMIDI::GetVLQ2 (DataSource *source, uint32 &quant)
+int XMIDI::GetVLQ2 (DataSource *source, uint32_t &quant)
 {
 	int i;
 	quant = 0;
@@ -829,12 +829,12 @@ struct uint64 {
 //
 // This is used by Midi's ONLY! It will do nothing with Xmidi
 //
-void XMIDI::AdjustTimings(uint32 ppqn)
+void XMIDI::AdjustTimings(uint32_t ppqn)
 {
-	uint32		tempo = 500000;
-	uint32		time_prev = 0;
-	uint32		hs_rem = 0;
-	uint32		hs     = 0;
+	uint32_t		tempo = 500000;
+	uint32_t		time_prev = 0;
+	uint32_t		hs_rem = 0;
+	uint32_t		hs     = 0;
 
 	ppqn *= 10000;
 
@@ -1032,7 +1032,7 @@ int XMIDI::ConvertEvent (const int time, uint8_t  status, DataSource *source, co
 
 int XMIDI::ConvertNote (const int time, const uint8_t  status, DataSource *source, const int size)
 {
-	uint32	delta = 0;
+	uint32_t	delta = 0;
 	int	data;
 
 	data = source->read1();
@@ -1104,9 +1104,9 @@ int XMIDI::ConvertSystemMessage (const int time, const uint8_t  status, DataSour
 int XMIDI::ConvertFiletoList (DataSource *source, const bool is_xmi, first_state &fs)
 {
 	int 	time = 0;			// 120th of a second
-	uint32 	data;
+	uint32_t 	data;
 	int		end = 0;
-	uint32	status = 0;
+	uint32_t	status = 0;
 	int		play_size = 2;
 	int		file_size = source->getSize();
 	int		retval = 0;
@@ -1199,7 +1199,7 @@ int XMIDI::ConvertFiletoList (DataSource *source, const bool is_xmi, first_state
 			if (status == 0xFF)
 			{
 				int	pos = source->getPos();
-				uint32	data = source->read1();
+				uint32_t	data = source->read1();
 				
 				if (data == 0x2F)					// End, of track
 					end = 1;
@@ -1228,7 +1228,7 @@ int XMIDI::ConvertFiletoList (DataSource *source, const bool is_xmi, first_state
 int XMIDI::ExtractTracksFromXmi (DataSource *source)
 {
 	int				num = 0;
-	uint32			len = 0;
+	uint32_t			len = 0;
 	uint8_t 			buf[32];
 
 	first_state	fs;
@@ -1284,10 +1284,10 @@ int XMIDI::ExtractTracksFromXmi (DataSource *source)
 	return num;
 }
 
-int XMIDI::ExtractTracksFromMid (DataSource *source, const uint32 ppqn, const int num_tracks, const bool type1)
+int XMIDI::ExtractTracksFromMid (DataSource *source, const uint32_t ppqn, const int num_tracks, const bool type1)
 {
 	int			num = 0;
-	uint32		len = 0;
+	uint32_t		len = 0;
 	uint8_t 		buf[32];
 	int			chan_mask = 0;
 
@@ -1340,10 +1340,10 @@ int XMIDI::ExtractTracksFromMid (DataSource *source, const uint32 ppqn, const in
 
 int XMIDI::ExtractTracks (DataSource *source)
 {
-	uint32		i = 0;
+	uint32_t		i = 0;
 	int		start;
-	uint32		len;
-	uint32		chunk_len;
+	uint32_t		len;
+	uint32_t		chunk_len;
 	int 		count;
 	uint8_t 		buf[32];
 
@@ -1497,7 +1497,7 @@ int XMIDI::ExtractTracks (DataSource *source)
 		if (type == 1) num_tracks = 1;
 
 		events = Calloc<XMIDIEventList*>(num_tracks); //new midi_event *[info.tracks];
-		const uint32 ppqn = source->read2high();
+		const uint32_t ppqn = source->read2high();
 
 		for (i = 0; i < num_tracks; i++)
 			events[i] = Calloc<XMIDIEventList>();
@@ -1619,7 +1619,7 @@ int XMIDIEventList::Write (DataSource *dest)
 //
 // Write a Conventional Variable Length Quantity
 //
-int XMIDIEventList::PutVLQ(DataSource *dest, uint32 value)
+int XMIDIEventList::PutVLQ(DataSource *dest, uint32_t value)
 {
 	int buffer;
 	int i = 1;
@@ -1643,16 +1643,16 @@ int XMIDIEventList::PutVLQ(DataSource *dest, uint32 value)
 // Converts and event list to a MTrk
 // Returns bytes of the array
 // buf can be NULL
-uint32 XMIDIEventList::ConvertListToMTrk (DataSource *dest)
+uint32_t XMIDIEventList::ConvertListToMTrk (DataSource *dest)
 {
 	int time = 0;
 	int lasttime = 0;
 	midi_event	*event;
-	uint32	delta;
+	uint32_t	delta;
 	uint8_t 	last_status = 0;
-	uint32 	i = 8;
-	uint32 	j;
-	uint32	size_pos=0;
+	uint32_t 	i = 8;
+	uint32_t 	j;
+	uint32_t	size_pos=0;
 
 	if (dest)
 	{

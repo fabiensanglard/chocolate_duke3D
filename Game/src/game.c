@@ -8063,7 +8063,7 @@ void findGRPToUse(uint8_t * game_dir,uint8_t * baseDir,uint8_t * groupfilefullpa
     WIN32_FIND_DATA FindFileData;
 	HANDLE hFind =  INVALID_HANDLE_VALUE;
     int i=0,kbdKey ;
-	uint8_t  groupfile[9][512];
+	char  groupfile[9][512];
 	int grpID ;
 
 	if(game_dir[0] != '\0')
@@ -10740,7 +10740,7 @@ void CenterRudder(void)
 //            makes smaller files. Doesn't freeze or lag the game anymore.
 void takescreenshot(void)
 {
-	uint8_t  szFilename[256];
+	char  szFilename[256];
 	int i;
 	uint8_t  score[20];
 	time_t time4file;

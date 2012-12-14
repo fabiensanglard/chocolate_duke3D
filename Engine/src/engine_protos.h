@@ -24,67 +24,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 /* Prototypes for the build engine */
 
-#if 0
-/* game.c */
-extern void initsb(uint8_t  dadigistat, uint8_t  damusistat, int32_t dasamplerate, uint8_t  danumspeakers, uint8_t  dabytespersample, uint8_t  daintspersec, uint8_t  daquality);
-extern void uninitsb(void);
-extern int loadsong(uint8_t  *filename);
-extern void musicon(void);
-extern void musicoff(void);
-extern void wsayfollow(uint8_t  *dafilename, int32_t dafreq, int32_t davol, int32_t *daxplc, int32_t *dayplc, uint8_t  followstat);
-extern void wsay(uint8_t  *dafilename, int32_t dafreq, int32_t volume1, int32_t volume2);
-extern void preparesndbuf(void);
-extern void setears(int32_t daposx, int32_t daposy, int32_t daxvect, int32_t dayvect);
-extern void timerhandler(void);
-extern void keyhandler(void);
-extern void initlava(void);
-extern void movelava(uint8_t  *dapic);
-extern void drawtilebackground(int32_t thex, int32_t they, short tilenum, int8_t shade, int32_t cx1, int32_t cy1, int32_t cx2, int32_t cy2, uint8_t  dapalnum);
-extern void printext(int32_t x, int32_t y, uint8_t  *buffer, short tilenum, uint8_t  invisiblecol);
-extern void drawstatusflytime(short snum);
-extern void drawstatusbar(short snum);
-extern void setup3dscreen(void);
-extern void setinterpolation(int32_t *posptr);
-extern void stopinterpolation(int32_t *posptr);
-extern void updateinterpolations(void);
-extern void restoreinterpolations(void);
-extern void searchmap(short startsector);
-extern void prepareboard(uint8_t  *daboardfilename);
-extern int32_t changehealth(short snum, short deltahealth);
-extern void changenumbombs(short snum, short deltanumbombs);
-extern void changenummissiles(short snum, short deltanummissiles);
-extern void changenumgrabbers(short snum, short deltanumgrabbers);
-extern void findrandomspot(int32_t *x, int32_t *y, short *sectnum);
-extern void operatesector(short dasector);
-extern void shootgun(short snum, int32_t x, int32_t y, int32_t z, short daang, int32_t dahoriz, short dasectnum, uint8_t  guntype);
-extern void operatesprite(short dasprite);
-extern void checktouchsprite(short snum, short sectnum);
-extern void checkgrabbertouchsprite(short snum, short sectnum);
-extern void activatehitag(short dahitag);
-extern void processinput(short snum);
-extern void movethings(void);
-extern void fakedomovethings(void);
-extern void fakedomovethingscorrect(void);
-extern void doanimations(void);
-extern void warp(int32_t *x, int32_t *y, int32_t *z, short *daang, short *dasector);
-extern void warpsprite(short spritenum);
-extern int testneighborsectors(short sect1, short sect2);
-extern void tagcode(void);
-extern void bombexplode(int32_t i);
-extern void statuslistcode(void);
-extern void checkmasterslaveswitch(void);
-extern void getpackets(void);
-extern void initplayersprite(short snum);
-extern void analyzesprites(int32_t dax, int32_t day);
-extern void updatesectorz(int32_t x, int32_t y, int32_t z, short *sectnum);
-extern void drawoverheadmap(int32_t cposx, int32_t cposy, int32_t czoom, short cang);
-extern void drawscreen(short snum, int32_t dasmoothratio);
-extern int loadgame(void);
-extern int savegame(void);
-extern void faketimerhandler(void);
-extern void waitforeverybody(void);
-#endif
-
 /* cache1d.c */
 extern void initcache(int32_t dacachestart, int32_t dacachesize);
 extern void allocache(int32_t *newhandle, int32_t newbytes, uint8_t  *newlockptr);
@@ -93,7 +32,7 @@ extern void agecache(void);
 extern void reportandexit(uint8_t  *errormessage);
 extern int32_t initgroupfile(const uint8_t  *filename);
 extern void uninitgroupfile(void);
-extern int32_t kopen4load(const uint8_t  *filename,int readfromGRP);
+extern int32_t kopen4load(const char  *filename,int readfromGRP);
 extern int32_t kread(int32_t handle, void *buffer, int32_t leng);
 extern int32_t klseek(int32_t handle, int32_t offset, int32_t whence);
 extern int32_t kfilelength(int32_t handle);
@@ -110,7 +49,7 @@ extern void _handle_events(void);
 extern uint8_t  _readlastkeyhit(void);
 extern int mprotect_align(const void *addr, size_t len, int prot);
 extern void unprotect_ASM_pages(void);
-extern void _platform_init(int argc, uint8_t  **argv, const uint8_t  *title, const uint8_t  *icon);
+extern void _platform_init(int argc, char  **argv, const char  *title, const char  *icon);
 extern int setvesa(int32_t x, int32_t y);
 extern int screencapture(uint8_t  *filename, uint8_t  inverseit);
 extern void setvmode(int mode);

@@ -67,7 +67,7 @@ enet_time_set (enet_uint32 newTimeBase)
 }
 
 int
-enet_address_set_host (ENetAddress * address, const uint8_t  * name)
+enet_address_set_host (ENetAddress * address, const char  * name)
 {
     struct hostent * hostEntry;
 

@@ -19,6 +19,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef WIN_MIDIOUT_H
 #define WIN_MIDIOUT_H
 
+
+
 #if (__GNUG__ >= 2) && (!defined WIN32)
 #  pragma interface
 #endif
@@ -44,6 +46,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <mmsystem.h>
 #include "xmidi.h"
 
+#ifdef _WIN32
+   #include "../../Engine/src/windows/inttypes.h"
+   #define inline
+#else
+   #include <inttypes.h>
+#endif
+
 class	Windows_MidiOut
 {
 public:
@@ -52,7 +61,7 @@ public:
 	virtual void		stop_track(void);
 	virtual void		stop_sfx(void);
 	virtual bool		is_playing(void);
-	virtual const uint8_t 	*copyright(void);
+	virtual const char 	*copyright(void);
 
 	// PSMDEX - Pentagram Streaming Midi Driver Extensions
 	virtual int			max_streams();
@@ -109,34 +118,34 @@ public:
 	void reset_channel (int i);
 
 	// Microsecond Clock
-	unsigned int32_t start;
-	unsigned int32_t sfx_start;
+	uint32_t start;
+	uint32_t sfx_start;
 
 	inline void wmoInitClock ()
 	{ start = GetTickCount()*6; }
 
-	inline void wmoAddOffset (unsigned int32_t offset)
+	inline void wmoAddOffset (uint32_t offset)
 	{ start += offset; }
 
-	inline unsigned int32_t wmoGetTime ()
+	inline uint32_t wmoGetTime ()
 	{ return GetTickCount()*6 - start; }
 
-	inline unsigned int32_t wmoGetStart ()
+	inline uint32_t wmoGetStart ()
 	{ return start; }
 
-	inline unsigned int32_t wmoGetRealTime ()
+	inline uint32_t wmoGetRealTime ()
 	{ return GetTickCount()*6; }
 
 	inline void wmoInitSFXClock ()
 	{ sfx_start = GetTickCount()*6; }
 
-	inline void wmoAddSFXOffset (unsigned int32_t offset)
+	inline void wmoAddSFXOffset (uint32_t offset)
 	{ sfx_start += offset; }
 
-	inline unsigned int32_t wmoGetSFXTime ()
+	inline uint32_t wmoGetSFXTime ()
 	{ return GetTickCount()*6 - sfx_start; }
 
-	inline unsigned int32_t wmoGetSFXStart ()
+	inline uint32_t wmoGetSFXStart ()
 	{ return sfx_start; }
 };
 

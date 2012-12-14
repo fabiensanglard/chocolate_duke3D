@@ -185,7 +185,7 @@ DWORD Windows_MidiOut::thread_main()
 
 	// List all the midi devices.
 	MIDIOUTCAPS caps;
-	signed int32_t dev_count = (signed long) midiOutGetNumDevs(); 
+	int32_t dev_count = (signed long) midiOutGetNumDevs(); 
 	std::cout << dev_count << " Midi Devices Detected" << endl;
 	std::cout << "Listing midi devices:" << endl;
 
@@ -208,7 +208,7 @@ DWORD Windows_MidiOut::thread_main()
 	giveinfo();
 	if (mmsys_err != MMSYSERR_NOERROR)
 	{
-		uint8_t  buf[512];
+		char  buf[512];
 
 		giveinfo();
 		midiOutGetErrorText(mmsys_err, buf, 512);
@@ -245,9 +245,9 @@ DWORD Windows_MidiOut::thread_main()
 void Windows_MidiOut::thread_play ()
 {
 	int				repeat = false;
-	uint32			aim = 0;
-	sint32			diff = 0;
-	uint32			last_tick = 0;
+	uint32_t			aim = 0;
+	int32_t			diff = 0;
+	uint32_t			last_tick = 0;
 	XMIDIEventList	*evntlist = NULL;
 	midi_event		*event = NULL;
 	NoteStack		notes_on;
@@ -269,9 +269,9 @@ void Windows_MidiOut::thread_play ()
 	giveinfo();
 
 	int				s_track = 0;
-	uint32			s_aim = 0;
-	sint32			s_diff = 0;
-	uint32			s_last_tick = 0;
+	uint32_t			s_aim = 0;
+	int32_t			s_diff = 0;
+	uint32_t			s_last_tick = 0;
 	NoteStack		s_notes_on;
 	XMIDIEventList	*s_evntlist = NULL;
 	midi_event		*s_event = NULL;
@@ -291,7 +291,7 @@ void Windows_MidiOut::thread_play ()
 			new_volume = -1;
 
 			for (int i = 0; i < 16; i++) {
-				uint32 message = i;
+				uint32_t message = i;
 				message |= MIDI_STATUS_CONTROLLER << 4;
 				message |= 7 << 8;
 				message |= ((volumes[i] * vol_multi)/0xFF)<<16;
@@ -374,7 +374,7 @@ void Windows_MidiOut::thread_play ()
 			else if (event->status < 0xF0)
 			{
 				unsigned int type = event->status >> 4;
-				uint32 data = event->data[0] | (event->data[1] << 8);
+				uint32_t data = event->data[0] | (event->data[1] << 8);
 
 				// Channel volume
 				if (type == MIDI_STATUS_CONTROLLER && event->data[0] == 0x7) {
@@ -742,7 +742,7 @@ bool Windows_MidiOut::is_playing(void)
 	return playing!=0;
 }
 
-const uint8_t  *Windows_MidiOut::copyright(void)
+const char  *Windows_MidiOut::copyright(void)
 {
 	giveinfo();
 	return "Internal Win32 Midiout Midi Player for Pentagram. Version 1.2a";
@@ -810,10 +810,10 @@ extern "C"
 #include "../duke3d.h"
 #include "cache1d.h"
 
-static uint8_t  warningMessage[80];
-static uint8_t  errorMessage[80];
+static char  warningMessage[80];
+static char  errorMessage[80];
 
-uint8_t  *MUSIC_ErrorString(int ErrorNumber)
+char  *MUSIC_ErrorString(int ErrorNumber)
 {
     switch (ErrorNumber)
     {
@@ -864,10 +864,10 @@ static int music_context = 0;
 static int music_loopflag = MUSIC_PlayOnce;
 static Windows_MidiOut *midi_device = NULL;
 
-extern void musdebug(const uint8_t  *fmt, ...);
+extern void musdebug(const char  *fmt, ...);
 extern void init_debugging(void);
-extern void setWarningMessage(const uint8_t  *msg);
-extern void setErrorMessage(const uint8_t  *msg);
+extern void setWarningMessage(const char  *msg);
+extern void setErrorMessage(const char  *msg);
 extern int MUSIC_ErrorCode;
 #define __FX_TRUE  (1 == 1)
 #define __FX_FALSE (!__FX_TRUE)
@@ -875,7 +875,7 @@ extern int MUSIC_ErrorCode;
 #pragma message (" The win_midi code is temp until the SDL midi code functions properly ")
 
 #pragma message (" STUBBED musdebug ")
-void musdebug(const uint8_t  *fmt, ...)
+void musdebug(const char  *fmt, ...)
 {
 #if 0
     va_list ap;
@@ -893,7 +893,7 @@ void musdebug(const uint8_t  *fmt, ...)
 } // snddebug
 
 #pragma message (" STUBBED setErrorMessage ")
-static void setErrorMessage(const uint8_t  *msg)
+static void setErrorMessage(const char  *msg)
 {
 #if 0
     strncpy(errorMessage, msg, sizeof (errorMessage));
@@ -1092,7 +1092,7 @@ int MUSIC_PlaySong(uint8_t  *song, int loopflag)
     return(MUSIC_Ok);
 } // MUSIC_PlaySong
 
-int MUSIC_PlayExtSong(uint8_t  *fn)
+int MUSIC_PlayExtSong(char  *fn)
 {
     MUSIC_StopSong();
 
@@ -1127,10 +1127,10 @@ return(MUSIC_Ok);
 
 extern uint8_t  ApogeePath[256];
 
-static void CheckAndPlayMusicType(const uint8_t * szName, const uint8_t * szType)
+static void CheckAndPlayMusicType(const char * szName, const char * szType)
 {
 
-	uint8_t  fpath[1024] = {'\0'};
+	char  fpath[1024] = {'\0'};
 
 	// Is this a TC?
 	if(game_dir[0] != '\0')
@@ -1162,15 +1162,15 @@ static void CheckAndPlayMusicType(const uint8_t * szName, const uint8_t * szType
 }
 
 // Duke3D-specific.  --ryan.
-void PlayMusic(uint8_t  *fn)
+void PlayMusic(char  *fn)
 {
 	//extern int File_Exists(uint8_t  *fn);
 	//extern void GetOnlyNameOfFile(uint8_t  *fn);
 
 	short      fp;
     int32_t        l;
-	uint8_t  *cfn;
-	uint8_t  *buffer;
+	char  *cfn;
+	char  *buffer;
 	uint8_t  fpath[19] = {'\0'};
 
 	cfn = fn;
@@ -1224,13 +1224,13 @@ int MUSIC_GetContext(void)
 } // MUSIC_GetContext
 
 
-void MUSIC_SetSongTick(unsigned int32_t PositionInTicks)
+void MUSIC_SetSongTick(uint32_t PositionInTicks)
 {
     musdebug("STUB ... MUSIC_SetSongTick().\n");
 } // MUSIC_SetSongTick
 
 
-void MUSIC_SetSongTime(unsigned int32_t milliseconds)
+void MUSIC_SetSongTime(uint32_t milliseconds)
 {
     musdebug("STUB ... MUSIC_SetSongTime().\n");
 }// MUSIC_SetSongTime

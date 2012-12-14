@@ -29,7 +29,7 @@ int32_t initgroupfile(const uint8_t  *filename);
 void uninitgroupfile(void);
 unsigned short crc16(uint8_t  *data_p, unsigned short length);
 unsigned int crc32_update(uint8_t  *buf, unsigned int length, unsigned int crc_to_update);
-int32_t kopen4load(const uint8_t  *filename, int readfromGRP);
+int32_t kopen4load(const char  *filename, int readfromGRP);
 int32_t kread(int32_t handle, void *buffer, int32_t leng);
 int kread8(int32_t handle, uint8_t  *buffer);
 int kread16(int32_t handle, short *buffer);

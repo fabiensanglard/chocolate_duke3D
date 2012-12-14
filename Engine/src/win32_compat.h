@@ -14,6 +14,8 @@
  * See the included license file "BUILDLIC.TXT" for license info.
  * This file IS NOT A PART OF Ken Silverman's original release
  */
+
+
   
 #ifndef _INCLUDE_WIN32_COMPAT_H_
 #define _INCLUDE_WIN32_COMPAT_H_
@@ -130,6 +132,10 @@ int _kinp_handler(int port, char *source_file, int source_line);
 #endif /* defined _MSC_VER */
 
 #define snprintf _snprintf
+
+//Damn you Microsoft, how hard would it REALLY be to support C99 ?!??!?!
+#define inline 
+#include "windows/inttypes.h"
 
 #endif
 

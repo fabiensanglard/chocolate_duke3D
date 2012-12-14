@@ -321,7 +321,7 @@ static sdl_renderer_type renderer = RENDERER_SOFTWARE;
 
 
 int _argc = 0;
-uint8_t  **_argv = NULL;
+char  **_argv = NULL;
 
     /* !!! move these elsewhere? */
 int32_t xres, yres, bytesperline, frameplace, frameoffset, imageSize, maxpages;
@@ -345,8 +345,8 @@ static int32_t last_render_ticks = 0;
 int32_t total_render_time = 1;
 int32_t total_rendered_frames = 0;
 
-static uint8_t *title = NULL;
-static uint8_t *titleshort = NULL;
+static char *titleNameLong = NULL;
+static char *titleNameShort = NULL;
 
 void restore256_palette (void);
 void set16color_palette (void);
@@ -524,7 +524,7 @@ static void init_new_res_vars(int32_t davidoption)
 
     setupmouse();
 
-    SDL_WM_SetCaption(title, titleshort);
+    SDL_WM_SetCaption(titleNameLong, titleNameShort);
 
     xdim = xres = surface->w;
     ydim = yres = surface->h;
@@ -1071,9 +1071,9 @@ static __inline void detect_vmware(void)
 
 
 /* lousy -ansi flag.  :) */
-static uint8_t  *string_dupe(const uint8_t  *str)
+static char  *string_dupe(const char  *str)
 {
-    uint8_t  *retval = malloc(strlen(str) + 1);
+    char  *retval = malloc(strlen(str) + 1);
     if (retval != NULL)
         strcpy(retval, str);
     return(retval);
@@ -1182,7 +1182,7 @@ void Setup_StableNetworking()
 }
 
 
-void _platform_init(int argc, uint8_t  **argv, const uint8_t  *title, const uint8_t  *icon)
+void _platform_init(int argc, uint8_t  **argv, const char  *title, const char  *iconName)
 {
     int i;
 	int32_t timeElapsed;
@@ -1243,11 +1243,11 @@ void _platform_init(int argc, uint8_t  **argv, const uint8_t  *title, const uint
     if (title == NULL)
         title = "BUILD";
 
-    if (icon == NULL)
-        icon = "BUILD";
+    if (iconName == NULL)
+        iconName = "BUILD";
 
-    title = string_dupe(title);
-    titleshort = string_dupe(icon);
+    titleNameLong = string_dupe(title);
+    titleNameShort = string_dupe(iconName);
 
     sdl_flags = BFullScreen ? SDL_FULLSCREEN : 0;
 
@@ -2479,7 +2479,9 @@ void uninitkeys(void)
 //} /* getticks */
 
 
-#if PLATFORM_WIN32
+#if 0// PLATFORM_WIN32 Timer on windows 98 used to be really poor but now it is very accurate
+     // We can just used what SDL uses, now need for QueryPerformanceFrequency or QueryPerformanceCounter
+     // (which I bet SDL is using anyway).
 
 int TIMER_GetPlatformTicksInOneSecond(int64_t* t)
 {

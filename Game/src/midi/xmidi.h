@@ -78,11 +78,11 @@ struct midi_event
 
 	uint8_t 	data[2];
 
-	uint32			len;		// Length of SysEx Data
+	uint32_t			len;		// Length of SysEx Data
 	uint8_t 	*buffer;	// SysEx Data
 	int				duration;	// Duration of note (120 Hz)
 	midi_event		*next_note;	// The next note on the stack
-	uint32			note_time;	// Time note stops playing (6000th of second)
+	uint32_t			note_time;	// Time note stops playing (6000th of second)
 	midi_event	*next;
 };
 
@@ -102,7 +102,7 @@ public:
 	}
 
 	// Pops the top of the stack if its off_time is <= time (6000th of second)
-	inline midi_event *PopTime(uint32 time) {
+	inline midi_event *PopTime(uint32_t time) {
 		if (notes && notes->note_time <= time)  {
 			midi_event *note = notes;
 			notes = note->next_note;
@@ -175,7 +175,7 @@ public:
 	}
 
 
-	inline void Push(midi_event *event, uint32 time) {
+	inline void Push(midi_event *event, uint32_t time) {
 		event->note_time = time;
 		event->next_note = 0;
 
@@ -215,8 +215,8 @@ class XMIDIEventList
 	int				counter;
 	
 	// Helper funcs for Write
-	int				PutVLQ(DataSource *dest, uint32 value);
-	uint32			ConvertListToMTrk (DataSource *dest);
+	int				PutVLQ(DataSource *dest, uint32_t value);
+	uint32_t			ConvertListToMTrk (DataSource *dest);
 
 	static void		DeleteEventList (midi_event *list);
 
@@ -237,7 +237,7 @@ public:
 class   XMIDI
 {
 protected:
-	uint16				num_tracks;
+	uint16_t				num_tracks;
 
 private:
 	XMIDIEventList		**events;
@@ -267,7 +267,7 @@ public:
 	int number_of_tracks() { return num_tracks; }
 
 	// External Event list functions
-	XMIDIEventList *GetEventList (uint32 track);
+	XMIDIEventList *GetEventList (uint32_t track);
 
 	// Not yet implimented
 	// int apply_patch (int track, DataSource *source);
@@ -286,10 +286,10 @@ private:
 	void CreateNewEvent (int time);
 
 	// Variable length quantity
-	int GetVLQ (DataSource *source, uint32 &quant);
-	int GetVLQ2 (DataSource *source, uint32 &quant);
+	int GetVLQ (DataSource *source, uint32_t &quant);
+	int GetVLQ2 (DataSource *source, uint32_t &quant);
 
-	void AdjustTimings(uint32 ppqn);	// This is used by Midi's ONLY!
+	void AdjustTimings(uint32_t ppqn);	// This is used by Midi's ONLY!
 	void ApplyFirstState(first_state &fs, int chan_mask);
 
 	int ConvertNote (const int time, const uint8_t  status, DataSource *source, const int size);
@@ -299,7 +299,7 @@ private:
 	int ConvertFiletoList (DataSource *source, const bool is_xmi, first_state& fs);
 
 	int ExtractTracksFromXmi (DataSource *source);
-	int ExtractTracksFromMid (DataSource *source, const uint32 ppqn, const int num_tracks, const bool type1);
+	int ExtractTracksFromMid (DataSource *source, const uint32_t ppqn, const int num_tracks, const bool type1);
 	
 	int ExtractTracks (DataSource *source);
 };

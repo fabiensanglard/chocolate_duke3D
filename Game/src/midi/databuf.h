@@ -17,6 +17,12 @@
 #ifndef DATA_H
 #define DATA_H
 
+#ifdef _WIN32
+   #include "../../../Engine/src/windows/inttypes.h"
+#else
+   #include <inttypes.h>
+#endif
+
 #ifndef ALPHA_LINUX_CXX
 #  include <cstdio>
 #  include <cstring>
@@ -27,6 +33,8 @@
 #include <fstream>
 #include <iomanip>
 
+
+/*
 typedef uint8_t  uint8;
 typedef unsigned short uint16;
 typedef uint32_t uint32;
@@ -34,12 +42,13 @@ typedef uint32_t uint32;
 typedef int8_t sint8;
 typedef signed short sint16;
 typedef int32_t sint32;
+*/
 
 class DataSource
 {
 protected:
 	union uint_float {
-		uint32	i;
+		uint32_t	i;
 		float	f;
 	};
 
@@ -48,18 +57,18 @@ public:
 	virtual ~DataSource() {};
 	
 	virtual unsigned int read1() =0;
-	virtual uint16 read2() =0;
-	virtual uint16 read2high() =0;
-	virtual uint32 read4() =0;
-	virtual uint32 read4high() =0;
+	virtual uint16_t read2() =0;
+	virtual uint16_t read2high() =0;
+	virtual uint32_t read4() =0;
+	virtual uint32_t read4high() =0;
 	virtual float readf() =0;
-	virtual void read(uint8_t  *, int) =0;
+	virtual void read(uint8_t  *, int32_t) =0;
 	
-	virtual void write1(unsigned int) =0;
-	virtual void write2(uint16) =0;
-	virtual void write2high(uint16) =0;
-	virtual void write4(uint32) =0;
-	virtual void write4high(uint32) =0;
+	virtual void write1(uint32_t) =0;
+	virtual void write2(uint16_t) =0;
+	virtual void write2high(uint16_t) =0;
+	virtual void write4(uint32_t) =0;
+	virtual void write4high(uint32_t) =0;
 	virtual void writef(float) =0;
 	virtual void write(uint8_t  *, int) =0;
 	
@@ -76,7 +85,7 @@ protected:
 		data is being passed 'non-const' anyway */
 	const uint8_t  *buf;
 	uint8_t  *buf_ptr;
-	sint32 size;
+	int32_t size;
 public:
 	BufferDataSource(uint8_t  *data, unsigned int len)
 	{
@@ -103,7 +112,7 @@ public:
 		return (b0);
 	};
 	
-	virtual uint16 read2()
+	virtual uint16_t read2()
 	{
 		uint8_t  b0, b1;
 		b0 = static_cast<uint8_t >(*buf_ptr++);
@@ -111,7 +120,7 @@ public:
 		return (b0 | (b1 << 8));
 	};
 	
-	virtual uint16 read2high()
+	virtual uint16_t read2high()
 	{
 		uint8_t  b0, b1;
 		b1 = static_cast<uint8_t >(*buf_ptr++);
@@ -119,7 +128,7 @@ public:
 		return (b0 | (b1 << 8));
 	};
 	
-	virtual uint32 read4()
+	virtual uint32_t read4()
 	{
 		uint8_t  b0, b1, b2, b3;
 		b0 = static_cast<uint8_t >(*buf_ptr++);
@@ -129,7 +138,7 @@ public:
 		return (b0 | (b1<<8) | (b2<<16) | (b3<<24));
 	};
 	
-	virtual uint32 read4high()
+	virtual uint32_t read4high()
 	{
 		uint8_t  b0, b1, b2, b3;
 		b3 = static_cast<uint8_t >(*buf_ptr++);
@@ -161,20 +170,20 @@ public:
 		*buf_ptr++ = val & 0xff;
 	};
 	
-	virtual void write2(uint16 val)
+	virtual void write2(uint16_t val)
 	{
 		*buf_ptr++ = val & 0xff;
 		*buf_ptr++ = (val>>8) & 0xff;
 	};
 
-	virtual void write2high(uint16 val)
+	virtual void write2high(uint16_t val)
 	{
 		*buf_ptr++ = (val>>8) & 0xff;
 		*buf_ptr++ = val & 0xff;
 	};
 
 	
-	virtual void write4(uint32 val)
+	virtual void write4(uint32_t val)
 	{
 		*buf_ptr++ = val & 0xff;
 		*buf_ptr++ = (val>>8) & 0xff;
@@ -182,7 +191,7 @@ public:
 		*buf_ptr++ = (val>>24)&0xff;
 	};
 	
-	virtual void write4high(uint32 val)
+	virtual void write4high(uint32_t val)
 	{
 		*buf_ptr++ = (val>>24)&0xff;
 		*buf_ptr++ = (val>>16)&0xff;
@@ -200,7 +209,7 @@ public:
 		*buf_ptr++ = (uif.i>>24)&0xff;
 	};
 	
-	virtual void write(uint8_t  *b, int len)
+	virtual void write(uint8_t  *b, int32_t len)
 	{
 		memcpy(buf_ptr, b, len);
 		buf_ptr += len;

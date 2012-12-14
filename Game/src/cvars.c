@@ -2,7 +2,7 @@
 #include "cvar_defs.h"
 #include <stdlib.h>
 
-#include <strings.h>
+#include <string.h>
 
 #define MAX_CVARS 32
 

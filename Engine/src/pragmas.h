@@ -8,7 +8,7 @@
 #ifndef __PRAGMAS_H__
 #define __PRAGMAS_H__
 
-#include "platform.h" //for __int64
+#include "platform.h" 
 
 static __inline void swapchar(uint8_t  *p1, uint8_t  *p2)
 { uint8_t  tmp = *p1; *p1 = *p2; *p2 = tmp; }
@@ -48,32 +48,32 @@ static __inline int32_t msqrtasm(uint32_t c)
 
 void vlin16first (int32_t i1, int32_t i2);
 
-static inline int sqr (int input1) { return input1*input1; }
+static inline int32_t sqr (int32_t input1) { return input1*input1; }
 
 /* internal use:32x32 = 64bit */
-static inline int64_t mul32_64(int i1,int i2)
+static inline int64_t mul32_64(int32_t i1,int32_t i2)
 {
-	return (__int64)i1*i2;
+	return (int64_t)i1*i2;
 }
-static inline int scale (int input1, int input2, int input3)
+static inline int scale (int32_t input1, int32_t input2, int32_t input3)
 {
 	return (int)(mul32_64(input1,input2)/(int64_t)input3);
 }
-static inline int mulscale (int input1, int input2, int input3)
+static inline int mulscale (int32_t input1, int32_t input2, int32_t input3)
 {
 	return (int)(mul32_64(input1,input2)>>input3);
 }
-static inline int dmulscale  (int input1, int input2, int input3,int input4,int input5)
+static inline int dmulscale  (int32_t input1, int32_t input2, int32_t input3,int32_t input4,int32_t input5)
 {
 	return (int)((mul32_64(input1,input2) + mul32_64(input3,input4))>>input5);
 }
-static inline int tmulscale(int i1, int i2, int i3, int i4, int i5, int i6,int shift)
+static inline int tmulscale(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6,int32_t shift)
 {
 	return (int)((mul32_64(i1,i2) + mul32_64(i3,i4) + mul32_64(i5,i6))>>shift);
 }
-static inline int divscale(int i1, int i2, int i3)
+static inline int32_t divscale(int32_t i1, int32_t i2, int32_t i3)
 {
-	return (int)(((int64_t)i1<<i3)/i2);
+	return (int32_t)(((int64_t)i1<<i3)/i2);
 }
 
 #define DEFFUNCS \
@@ -111,45 +111,45 @@ DEFFUN(31)\
 DEFFUN(32)
 
 #define DEFFUN(N) \
-static __inline int mulscale##N(int input1, int input2) \
+static __inline int mulscale##N(int32_t input1, int32_t input2) \
 { return mulscale(input1,input2,N); }
 DEFFUNCS
 #undef DEFFUN
 
 #define DEFFUN(N) \
-static __inline int dmulscale##N(int input1, int input2,int input3,int input4) \
+static __inline int dmulscale##N(int32_t input1, int32_t input2,int32_t input3,int32_t input4) \
 { return dmulscale(input1,input2,input3,input4,N); }
 DEFFUNCS
 #undef DEFFUN
 
 #define DEFFUN(N) \
-static __inline int tmulscale##N(int i1, int i2,int i3,int i4,int i5,int i6) \
+static __inline int tmulscale##N(int32_t i1, int32_t i2,int32_t i3,int32_t i4,int32_t i5,int32_t i6) \
 { return tmulscale(i1,i2,i3,i4,i5,i6,N); }
 DEFFUNCS
 #undef DEFFUN
 
 #define DEFFUN(N) \
-static __inline int divscale##N(int input1, int input2) \
+static __inline int divscale##N(int32_t input1, int32_t input2) \
 { return divscale(input1,input2,N); }
 DEFFUNCS
 #undef DEFFUN
 
-static __inline int ksgn(int i1)
+static inline int ksgn(int32_t i1)
 {
   if (i1 < 0) return -1;
   else if (i1 > 0) return 1;
   else return 0;
 }
 
-static __inline int sgn(int i1) { return ksgn(i1); }
-static __inline int klabs (int i1)
+static inline int sgn(int32_t i1) { return ksgn(i1); }
+static inline int klabs (int32_t i1)
 {
   if (i1 < 0) i1 = -i1;
   return i1;
 }
-static __inline int mul3 (int i1) { return i1*3; }
-static __inline int mul5 (int i1) { return i1*5; }
-static __inline int mul9 (int i1) { return i1*9; }
+static inline int mul3 (int32_t i1) { return i1*3; }
+static inline int mul5 (int32_t i1) { return i1*5; }
+static inline int mul9 (int32_t i1) { return i1*9; }
 
 void copybufreverse(void *S, void *D, int32_t c);
 void copybuf(void *s, void *d, int32_t c);

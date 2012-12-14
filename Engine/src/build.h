@@ -7,8 +7,11 @@
 
 #ifndef _INCLUDE_BUILD_H_
 #define _INCLUDE_BUILD_H_
-
-#include <inttypes.h>
+#ifdef _WIN32
+   #include "windows/inttypes.h"
+#else
+   #include <inttypes.h>
+#endif
 
 #define MAXSECTORS 1024
 #define MAXWALLS 8192

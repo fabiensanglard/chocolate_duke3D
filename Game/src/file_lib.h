@@ -48,21 +48,21 @@ enum
 // SafeOpenWrite - Opens a file for writing, returns handle
 //
 //==========================================================================
-int32 SafeOpenWrite ( const uint8_t  * filename, int32 filetype );
+int32 SafeOpenWrite ( const char  * filename, int32 filetype );
 
 //==========================================================================
 //
 // SafeOpenRead - Opens a file for reading, returns handle
 //
 //==========================================================================
-int32 SafeOpenRead ( const uint8_t  * filename, int32 filetype );
+int32 SafeOpenRead ( const char  * filename, int32 filetype );
 
 //==========================================================================
 //
 // SafeOpenAppend - Opens a file for appending, returns handle
 //
 //==========================================================================
-int32 SafeOpenAppend ( const uint8_t  * filename, int32 filetype );
+int32 SafeOpenAppend ( const char  * filename, int32 filetype );
 
 //==========================================================================
 //
@@ -76,7 +76,7 @@ void SafeClose ( int32 handle );
 // SafeFileExists - Checks for existence of file
 //
 //==========================================================================
-boolean SafeFileExists ( const uint8_t  * filename );
+boolean SafeFileExists ( const char  * filename );
 
 //==========================================================================
 //

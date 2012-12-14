@@ -8,7 +8,11 @@
 #ifndef _INCLUDE_A_H_
 #define _INCLUDE_A_H_
 
-#include <inttypes.h>
+#ifdef _WIN32
+   #include "windows/inttypes.h"
+#else
+   #include <inttypes.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {

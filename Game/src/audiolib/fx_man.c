@@ -499,7 +499,7 @@ int FX_Shutdown
 
 int FX_SetCallBack
    (
-   void ( *function )( unsigned long )
+   void ( *function )( uint32_t )
    )
 
    {
@@ -998,7 +998,7 @@ int FX_PlayWAV
 
 int FX_PlayLoopedWAV
    (
-   char *ptr,
+   uint8_t *ptr,
    long loopstart,
    long loopend,
    int pitchoffset,

@@ -68,7 +68,7 @@
 
 /* set these in your _platform_init() implementation. */
 extern int _argc;
-extern uint8_t  **_argv;
+extern char  **_argv;
 
 /* !!! gads, look at all the namespace polution... */
 extern int32_t xres, yres, bytesperline, imageSize, maxpages;
@@ -101,7 +101,7 @@ extern int32_t ScreenMode;
 
 
 /* these need to be implemented by YOUR driver. */
-void _platform_init(int argc, uint8_t  **argv, const uint8_t  *title, const uint8_t  *icon);
+void _platform_init(int argc, char  **argv, const char  *title, const char  *iconName);
 void _idle(void);
 void _handle_events(void);
 void *_getVideoBase(void);

@@ -560,9 +560,9 @@ int32 SafeOpenAppend (const uint8_t  *_filename, int32 filetype)
 	return handle;
 }
 
-boolean SafeFileExists ( const uint8_t  * _filename )
+boolean SafeFileExists ( const char  * _filename )
 {
-    uint8_t  filename[MAX_PATH];
+    char  filename[MAX_PATH];
     strncpy(filename, _filename, sizeof (filename));
     filename[sizeof (filename) - 1] = '\0';
     FixFilePath(filename);
@@ -575,10 +575,10 @@ boolean SafeFileExists ( const uint8_t  * _filename )
 }
 
 
-int32 SafeOpenWrite (const uint8_t  *_filename, int32 filetype)
+int32 SafeOpenWrite (const char  *_filename, int32 filetype)
 {
 	int	handle;
-    uint8_t  filename[MAX_PATH];
+    char  filename[MAX_PATH];
     strncpy(filename, _filename, sizeof (filename));
     filename[sizeof (filename) - 1] = '\0';
     FixFilePath(filename);

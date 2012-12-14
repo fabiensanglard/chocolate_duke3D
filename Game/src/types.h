@@ -27,7 +27,11 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 #ifndef _types_public
 #define _types_public
 
-#include <inttypes.h>
+#ifdef _WIN32
+   #include "../../Engine/src/windows/inttypes.h"
+#else
+   #include <inttypes.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {

@@ -5,7 +5,11 @@
 #ifndef __ENET_TYPES_H__
 #define __ENET_TYPES_H__
 
-#include <inttypes.h>
+#ifdef _WIN32
+   #include "../../windows/inttypes.h"
+#else
+   #include <inttypes.h>
+#endif
 
 typedef uint8_t enet_uint8;       /**< unsigned 8-bit type  */
 typedef unsigned short enet_uint16;     /**< unsigned 16-bit type */

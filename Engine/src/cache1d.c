@@ -23,7 +23,7 @@
 #include "../../Game/src/cvar_defs.h"
 
 #include "types.h"
-#include "file_lib.H"
+//#include "file_lib.H"
 
 #if (defined USE_PHYSICSFS)
 #include "physfs.h"
@@ -555,7 +555,7 @@ unsigned short crc16(uint8_t  *data_p, unsigned short length)
       return (crc);
 }
 
-int32_t kopen4load(const uint8_t  *filename, int readfromGRP)
+int32_t kopen4load(const char  *filename, int readfromGRP)
 { // FIX_00072: all files are now 1st searched in Duke's root folder and then in the GRP.
 #if (defined USE_PHYSICSFS)
     int i;
@@ -1000,9 +1000,9 @@ int32_t uncompress(uint8_t  *lzwinbuf, int32_t compleng, uint8_t  *lzwoutbuf)
 }
 
 
-int32_t TCkopen4load(const uint8_t  *filename, int readfromGRP)
+int32_t TCkopen4load(const char  *filename, int readfromGRP)
 {
-	uint8_t  fullfilename[512];
+	char  fullfilename[512];
 	int32_t result = 0;
  
 	if(game_dir[0] != '\0' && !readfromGRP)
