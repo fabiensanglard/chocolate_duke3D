@@ -252,14 +252,13 @@ void intomenusounds(void)
     menunum %= 17;
 }
 
-void playmusic(uint8_t  *fn)
+void playmusic(char  *fn)
 {
     if(MusicToggle == 0) return;
     if(MusicDevice == NumSoundCards) return;
 
     // the SDL_mixer version does more or less this same thing.  --ryan.
     PlayMusic(fn);
-
 }
 
 uint8_t  loadsound(unsigned short num)

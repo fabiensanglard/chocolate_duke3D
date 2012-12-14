@@ -40,7 +40,7 @@ extern "C" {
 
 	#define NUMGAMEFUNCTIONS 55 //dont forget to check NUMKEYENTRIES
 
-extern uint8_t  * gamefunctions[];
+extern char  * gamefunctions[];
 
 enum
    {

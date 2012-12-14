@@ -89,8 +89,8 @@ void allocache (int32_t *newhandle, int32_t newbytes, uint8_t  *newlockptr)
 
 	if ((unsigned)newbytes > (unsigned)cachesize)
 	{
-		printf("Cachesize: %ld\n",cachesize);
-		printf("*Newhandle: 0x%x, Newbytes: %ld, *Newlock: %d\n",(unsigned int)newhandle,newbytes,*newlockptr);
+		printf("Cachesize: %d\n",cachesize);
+		printf("*Newhandle: 0x%x, Newbytes: %d, *Newlock: %d\n",(unsigned int)newhandle,newbytes,*newlockptr);
 		reportandexit("BUFFER TOO BIG TO FIT IN CACHE!\n");
 	}
 
@@ -210,15 +210,15 @@ void reportandexit(char  *errormessage)
 	j = 0;
 	for(i=0;i<cacnum;i++)
 	{
-		printf("%ld- ",i);
-		printf("ptr: 0x%lx, ",*cac[i].hand);
-		printf("leng: %ld, ",cac[i].leng);
+		printf("%d- ",i);
+		printf("ptr: 0x%x, ",*cac[i].hand);
+		printf("leng: %d, ",cac[i].leng);
 		printf("lock: %d\n",*cac[i].lock);
 		j += cac[i].leng;
 	}
-	printf("Cachesize = %ld\n",cachesize);
-	printf("Cacnum = %ld\n",cacnum);
-	printf("Cache length sum = %ld\n",j);
+	printf("Cachesize = %d\n",cachesize);
+	printf("Cacnum = %d\n",cacnum);
+	printf("Cache length sum = %d\n",j);
 	printf("ERROR: %s",errormessage);
 	Error(EXIT_FAILURE, "");
 }
@@ -265,7 +265,7 @@ int32_t filehan[MAXOPENFILES] =
 
 
 
-int32_t initgroupfile(const uint8_t  *filename)
+int32_t initgroupfile(const char  *filename)
 {
 	uint8_t  buf[16];
 	int32_t i, j, k;
@@ -833,7 +833,7 @@ int32_t uncompress(uint8_t  *lzwinbuf, int32_t compleng, uint8_t  *lzwoutbuf)
 	return((int32_t )shortptr[0]); /* uncompleng */
 }
 
-
+int SafeFileExists ( const char  * _filename );
 int32_t TCkopen4load(const char  *filename, int readfromGRP)
 {
 	char  fullfilename[512];
@@ -854,7 +854,7 @@ int32_t TCkopen4load(const char  *filename, int readfromGRP)
 
 	if(g_CV_DebugFileAccess != 0)
 	{
-		printf("FILE ACCESS: [read] File: (%s) Result: %ld, clock: %ld\n", fullfilename, result, totalclock);
+		printf("FILE ACCESS: [read] File: (%s) Result: %d, clock: %d\n", fullfilename, result, totalclock);
 	}
 
 	return result;

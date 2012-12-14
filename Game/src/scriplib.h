@@ -59,7 +59,7 @@ void SCRIPT_Free( int32 scripthandle );
 ==============
 */
 
-int32 SCRIPT_Parse ( uint8_t  *data, int32 length, uint8_t  * name );
+int32 SCRIPT_Parse ( uint8_t  *data, int32 length, char  * name );
 
 
 /*
@@ -70,7 +70,7 @@ int32 SCRIPT_Parse ( uint8_t  *data, int32 length, uint8_t  * name );
 ==============
 */
 
-int32 SCRIPT_Load ( uint8_t  * filename );
+int32 SCRIPT_Load ( char  * filename );
 
 /*
 ==============
@@ -79,7 +79,7 @@ int32 SCRIPT_Load ( uint8_t  * filename );
 =
 ==============
 */
-void SCRIPT_Save (int32 scripthandle, uint8_t  * filename);
+void SCRIPT_Save (int32 scripthandle, char  * filename);
 
 
 /*
@@ -110,7 +110,7 @@ uint8_t  * SCRIPT_Section( int32 scripthandle, int32 which );
 ==============
 */
 
-int32 SCRIPT_NumberEntries( int32 scripthandle, uint8_t  * sectionname );
+int32 SCRIPT_NumberEntries( int32 scripthandle, char  * sectionname );
 
 /*
 ==============
@@ -120,7 +120,7 @@ int32 SCRIPT_NumberEntries( int32 scripthandle, uint8_t  * sectionname );
 ==============
 */
 
-uint8_t  * SCRIPT_Entry( int32 scripthandle, uint8_t  * sectionname, int32 which );
+char  * SCRIPT_Entry( int32 scripthandle, char  * sectionname, int32 which );
 
 
 /*
@@ -130,7 +130,7 @@ uint8_t  * SCRIPT_Entry( int32 scripthandle, uint8_t  * sectionname, int32 which
 =
 ==============
 */
-uint8_t  * SCRIPT_GetRaw(int32 scripthandle, uint8_t  * sectionname, uint8_t  * entryname);
+char  * SCRIPT_GetRaw(int32 scripthandle, char  * sectionname, char  * entryname);
 
 /*
 ==============
@@ -142,9 +142,9 @@ uint8_t  * SCRIPT_GetRaw(int32 scripthandle, uint8_t  * sectionname, uint8_t  * 
 void SCRIPT_GetString
    (
    int32 scripthandle,
-   uint8_t  * sectionname,
-   uint8_t  * entryname,
-   uint8_t  * dest
+   char  * sectionname,
+   char  * entryname,
+   char  * dest
    );
 
 /*
@@ -157,10 +157,10 @@ void SCRIPT_GetString
 void SCRIPT_GetDoubleString
    (
    int32 scripthandle,
-   uint8_t  * sectionname,
-   uint8_t  * entryname,
-   uint8_t  * dest1,
-   uint8_t  * dest2
+   char  * sectionname,
+   char  * entryname,
+   char  * dest1,
+   char  * dest2
    );
 
 /*
@@ -173,8 +173,8 @@ void SCRIPT_GetDoubleString
 boolean SCRIPT_GetNumber
    (
    int32 scripthandle,
-   uint8_t  * sectionname,
-   uint8_t  * entryname,
+   char  * sectionname,
+   char  * entryname,
    int32 * number
    );
 
@@ -204,8 +204,8 @@ void SCRIPT_GetBoolean
 boolean SCRIPT_GetFloat
    (
    int32 scripthandle,
-   uint8_t  * sectionname,
-   uint8_t  * entryname,
+   char  * sectionname,
+   char  * entryname,
    float * floatnumber
    );
 
@@ -221,8 +221,8 @@ boolean SCRIPT_GetFloat
 void SCRIPT_GetDouble
    (
    int32 scripthandle,
-   uint8_t  * sectionname,
-   uint8_t  * entryname,
+   char  * sectionname,
+   char  * entryname,
    double * number
    );
 
@@ -295,9 +295,9 @@ void SCRIPT_PutRaw
 void SCRIPT_PutString
    (
    int32 scripthandle,
-   uint8_t  * sectionname,
-   uint8_t  * entryname,
-   uint8_t  * string
+   char  * sectionname,
+   char  * entryname,
+   char  * string
    );
 
 /*
@@ -310,10 +310,10 @@ void SCRIPT_PutString
 void SCRIPT_PutDoubleString
    (
    int32 scripthandle,
-   uint8_t  * sectionname,
-   uint8_t  * entryname,
-   uint8_t  * string1,
-   uint8_t  * string2
+   char  * sectionname,
+   char  * entryname,
+   char  * string1,
+   char  * string2
    );
 
 /*
@@ -326,8 +326,8 @@ void SCRIPT_PutDoubleString
 void SCRIPT_PutNumber
    (
    int32 scripthandle,
-   uint8_t  * sectionname,
-   uint8_t  * entryname,
+   char  * sectionname,
+   char  * entryname,
    int32 number,
    boolean hexadecimal,
    boolean defaultvalue

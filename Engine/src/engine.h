@@ -67,8 +67,9 @@ void printext256_noupdate(int32_t xpos, int32_t ypos, short col, short backcol,
 			uint8_t  name[82], uint8_t  fontsize);
 void initengine(void);
 void uninitengine(void);
+
 int loadpics(char  *filename, char * gamedir);
-int saveboard(uint8_t  *filename, int32_t *daposx, int32_t *daposy, int32_t *daposz,
+int saveboard(char  *filename, int32_t *daposx, int32_t *daposy, int32_t *daposz,
                          short *daang, short *dacursectnum);
 void plotpixel(int32_t x, int32_t y, uint8_t  col);
 uint8_t  getpixel(int32_t x, int32_t y);

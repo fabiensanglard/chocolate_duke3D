@@ -252,7 +252,7 @@ static struct {
 	{ NULL,		0		}
 };
 
-uint8_t  *KB_ScanCodeToString( kb_scancode scancode )
+char  *KB_ScanCodeToString( kb_scancode scancode )
 {
 	int i;
 	for(i = 0; keyname2scancode[i].name != NULL; i++)
@@ -264,9 +264,9 @@ uint8_t  *KB_ScanCodeToString( kb_scancode scancode )
 	return NULL;
 }
 
-kb_scancode KB_StringToScanCode( uint8_t  * string )
+kb_scancode KB_StringToScanCode( char  * string )
 {
-	uint8_t * name = NULL;
+	char * name = NULL;
 	int32 i=0;
 	name = keyname2scancode[i].name;
 	for(;name;++i, name=keyname2scancode[i].name)

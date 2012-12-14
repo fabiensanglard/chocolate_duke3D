@@ -55,7 +55,7 @@ static boolean Anim_Started = false;
 //
 //****************************************************************************
 
-void CheckAnimStarted ( uint8_t  * funcname )
+void CheckAnimStarted ( char  * funcname )
    {
    if (!Anim_Started)
       Error(EXIT_FAILURE, "ANIMLIB_%s: Anim has not been initialized\n",funcname);

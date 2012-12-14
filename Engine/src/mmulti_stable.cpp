@@ -487,7 +487,7 @@ int connect_to_everyone()
 			for(i = 0; i < gcom->numplayers-1; ++i)
 			{
 				ENetPeer *peer;
-				uint8_t szHostName[64];
+				char szHostName[64];
 	
 	
 				address.host = allowed_addresses[i].host; //ip;
@@ -710,7 +710,7 @@ void HandleEvent(ENetEvent *pEvent)
 
 					address.host = pEvent->peer->address.host; //ip;
 					address.port = pEvent->peer->address.port; //m_nPort;
-					uint8_t szHostName[64];
+					char szHostName[64];
 					enet_address_get_host(&address, szHostName, 64);
 					
 					printf("Connection Established with: (%s)\n", szHostName);

@@ -69,7 +69,7 @@ int32_t curbrightness = 0;
 static uint8_t  globalpolytype;
 static short *dotp1[MAXYDIM], *dotp2[MAXYDIM];
 
-static uint8_t  tempbuf[MAXWALLS];
+static char  tempbuf[MAXWALLS];
 
 int32_t ebpbak, espbak;
 int32_t slopalookup[16384];
@@ -2675,7 +2675,7 @@ static void write8(int f, uint8_t  val)
 }
 
 
-int saveboard(uint8_t  *filename, int32_t *daposx, int32_t *daposy,
+int saveboard(char  *filename, int32_t *daposx, int32_t *daposy,
               int32_t *daposz, short *daang, short *dacursectnum)
 {
 	int fil;
@@ -2973,9 +2973,7 @@ void initengine(void)
 {
     int32_t i;
 
-#ifdef SUPERBUILD
-	int32_t j;
-#endif
+
 
     initengine_called = 1;
 
@@ -2990,16 +2988,6 @@ void initengine(void)
 
 	parallaxtype = 2; parallaxyoffs = 0L; parallaxyscale = 65536;
 	showinvisibility = 0;
-
-#ifdef SUPERBUILD
-	for(i=1;i<1024;i++) lowrecip[i] = ((1<<24)-1)/i;
-	for(i=0;i<MAXVOXELS;i++)
-		for(j=0;j<MAXVOXMIPS;j++)
-		{
-			voxoff[i][j] = 0L;
-			voxlock[i][j] = 200;
-		}
-#endif
 
 	paletteloaded = 0;
 
@@ -3236,7 +3224,11 @@ static void dorotatesprite (int32_t sx, int32_t sy, int32_t z, short a, short pi
 	{
 		if (((a&1023) == 0) && (ysiz <= 256))  /* vlineasm4 has 256 high limit! */
 		{
-			if (dastat&64) setupvlineasm(24L); else setupmvlineasm(24L);
+			if (dastat&64)
+                setupvlineasm(24L);
+            else
+                setupmvlineasm(24L);
+            
 			by <<= 8; yv <<= 8; yv2 <<= 8;
 
 			palookupoffse[0] = palookupoffse[1] = palookupoffse[2] = palookupoffse[3] = palookupoffs;
@@ -3403,13 +3395,28 @@ static void dorotatesprite (int32_t sx, int32_t sy, int32_t z, short a, short pi
 
 							/* x,y1 */
 						bx += xv*(y1-oy); by += yv*(y1-oy); oy = y1;
-						if (dastat&64) {  if (qlinemode) rhlineasm4(x-lastx[y1],(bx>>16)*ysiz+(by>>16)+bufplc,0L,0L    ,by<<16,ylookup[y1]+x+frameplace);
-															  else rhlineasm4(x-lastx[y1],(bx>>16)*ysiz+(by>>16)+bufplc,0L,bx<<16,by<<16,ylookup[y1]+x+frameplace);
-														  } else rmhlineasm4(x-lastx[y1],(bx>>16)*ysiz+(by>>16)+bufplc,0L,bx<<16,by<<16,ylookup[y1]+x+frameplace);
+						if (dastat&64)
+                        {
+                            if (qlinemode)
+                                rhlineasm4(x-lastx[y1],(bx>>16)*ysiz+(by>>16)+bufplc,0L,0L    ,by<<16,ylookup[y1]+x+frameplace);
+                            else
+                                rhlineasm4(x-lastx[y1],(bx>>16)*ysiz+(by>>16)+bufplc,0L,bx<<16,by<<16,ylookup[y1]+x+frameplace);
+                        }
+                        else
+                            rmhlineasm4(x-lastx[y1],(bx>>16)*ysiz+(by>>16)+bufplc,0L,bx<<16,by<<16,ylookup[y1]+x+frameplace);
 					}
-					if (x == x2-1) { bx += xv2; by += yv2; break; }
+					if (x == x2-1)
+                    {
+                        bx += xv2;
+                        by += yv2;
+                        break;
+                    }
+                    
 					y1 = uplc[x+1];
-					if (((dastat&8) == 0) && (startumost[x+1] > y1)) y1 = startumost[x+1];
+                    
+					if (((dastat&8) == 0) && (startumost[x+1] > y1))
+                        y1 = startumost[x+1];
+                    
 					y2 = y1;
 				}
 				bx += xv2; by += yv2;
@@ -3431,15 +3438,16 @@ static void dorotatesprite (int32_t sx, int32_t sy, int32_t z, short a, short pi
 	if ((dastat&1) == 0)
 	{
 		if (dastat&64)
-				setupspritevline(palookupoffs,(xv>>16)*ysiz,xv<<16,ysiz,yv,0L);
+            setupspritevline(palookupoffs,(xv>>16)*ysiz,xv<<16,ysiz,yv,0L);
 		else
-				msetupspritevline(palookupoffs,(xv>>16)*ysiz,xv<<16,ysiz,yv,0L);
+            msetupspritevline(palookupoffs,(xv>>16)*ysiz,xv<<16,ysiz,yv,0L);
 	}
 	else
 	{
 			tsetupspritevline(palookupoffs,(xv>>16)*ysiz,xv<<16,ysiz,yv,0L);
 		if (dastat&32) settransreverse(); else settransnormal();
 	}
+        
 	for(x=x1;x<x2;x++)
 	{
 		bx += xv2; by += yv2;
@@ -3454,10 +3462,23 @@ static void dorotatesprite (int32_t sx, int32_t sy, int32_t z, short a, short pi
 
 		switch(y1-oy)
 		{
-		case -1: bx -= xv; by -= yv; oy = y1; break;
-		case 0: break;
-		case 1: bx += xv; by += yv; oy = y1; break;
-		default: bx += xv*(y1-oy); by += yv*(y1-oy); oy = y1; break;
+		case -1:
+                bx -= xv;
+                by -= yv;
+                oy = y1;
+                break;
+		case 0:
+                break;
+		case 1:
+                bx += xv;
+                by += yv;
+                oy = y1;
+                break;
+		default:
+                bx += xv*(y1-oy);
+                by += yv*(y1-oy);
+                oy = y1;
+                break;
 		}
 
 		p = ylookup[y1]+x+frameplace;
@@ -3465,14 +3486,14 @@ static void dorotatesprite (int32_t sx, int32_t sy, int32_t z, short a, short pi
 		if ((dastat&1) == 0)
 		{
 			if (dastat&64)
-					spritevline(0L,by<<16,y2-y1+1,bx<<16,(bx>>16)*ysiz+(by>>16)+bufplc,p);
+                spritevline(0L,by<<16,y2-y1+1,bx<<16,(bx>>16)*ysiz+(by>>16)+bufplc,p);
 			else
-					mspritevline(0L,by<<16,y2-y1+1,bx<<16,(bx>>16)*ysiz+(by>>16)+bufplc,p);
+                mspritevline(0L,by<<16,y2-y1+1,bx<<16,(bx>>16)*ysiz+(by>>16)+bufplc,p);
 		}
 		else
 		{
-				tspritevline(0L,by<<16,y2-y1+1,bx<<16,(bx>>16)*ysiz+(by>>16)+bufplc,p);
-				transarea += (y2-y1);
+            tspritevline(0L,by<<16,y2-y1+1,bx<<16,(bx>>16)*ysiz+(by>>16)+bufplc,p);
+            transarea += (y2-y1);
 		}
 		faketimerhandler();
 	}
@@ -3490,22 +3511,6 @@ void nextpage(void)
 {
 	int32_t i;
 	permfifotype *per;
-	/* int32_t j,k; */
-
-#if 0
-	uint8_t  snotbuf[32];
-	j = 0; k = 0;
-	for(i=0;i<4096;i++)
-	   if (waloff[i] != 0)
-	   {
-	      sprintf(snotbuf,"%ld-%ld",i,tilesizx[i]*tilesizy[i]);
-	      printext256((j>>5)*40+32,(j&31)*6,walock[i]>>3,-1,snotbuf,1);
-	      k += tilesizx[i]*tilesizy[i];
-	      j++;
-	   }
-	sprintf(snotbuf,"Total: %ld",k);
-	printext256((j>>5)*40+32,(j&31)*6,31,-1,snotbuf,1);
-#endif
 
     if (qsetmode == 200)
     {
@@ -3618,6 +3623,7 @@ int allocatepermanenttile(short tilenume, int32_t xsiz, int32_t ysiz)
 
 
 int loadpics(char  *filename, char * gamedir)
+
 {
 	int32_t offscount, localtilestart, localtileend, dasiz;
 	short fil, i, j, k;
@@ -6947,7 +6953,8 @@ void flushperms(void)
 	permhead = permtail = 0;
 }
 
-
+// Render a sprite on screen. This is used by the Engine but also the Game module
+// when drawing the HUD or the Weapon held by the player !!!
 void rotatesprite(int32_t sx, int32_t sy, int32_t z, short a, short picnum,
                   int8_t dashade, uint8_t  dapalnum, uint8_t  dastat,
                   int32_t cx1, int32_t cy1, int32_t cx2, int32_t cy2)
@@ -7158,7 +7165,7 @@ void setbrightness(uint8_t  dabrightness, uint8_t  *dapal)
 	VBE_setPalette(0, 256, (uint8_t  *) tempbuf);
 }
 
-
+//This is only used by drawmapview.
 static void fillpolygon(int32_t npoints)
 {
 	int32_t z, zz, x1, y1, x2, y2, miny, maxy, y, xinc, cnt;
@@ -7802,7 +7809,8 @@ void setviewtotile(short tilenume, int32_t xsiz, int32_t ysiz)
 		/* DRAWROOMS TO TILE BACKUP&SET CODE */
 	tilesizx[tilenume] = xsiz; tilesizy[tilenume] = ysiz;
 	bakxsiz[setviewcnt] = xsiz; bakysiz[setviewcnt] = ysiz;
-	bakvidoption[setviewcnt] = vidoption; vidoption = 2;
+	bakvidoption[setviewcnt] = vidoption;
+    vidoption = 2;
 	bakframeplace[setviewcnt] = frameplace; frameplace = waloff[tilenume];
 	bakwindowx1[setviewcnt] = windowx1; bakwindowy1[setviewcnt] = windowy1;
 	bakwindowx2[setviewcnt] = windowx2; bakwindowy2[setviewcnt] = windowy2;

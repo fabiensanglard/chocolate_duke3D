@@ -394,7 +394,7 @@ extern int enet_address_set_host (ENetAddress *address, const char  *hostName );
     @retval 0 on success
     @retval < 0 on failure
 */
-extern int enet_address_get_host (const ENetAddress *address, uint8_t  *hostName, size_t nameLength );
+extern int enet_address_get_host (const ENetAddress *address, char  *hostName, size_t nameLength );
 
 /** @} */
 

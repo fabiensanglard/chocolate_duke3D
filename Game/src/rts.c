@@ -57,7 +57,7 @@ uint8_t  lumplockbyte[11];
 ====================
 */
 
-void RTS_AddFile (uint8_t  *filename)
+void RTS_AddFile (char  *filename)
    {
    wadinfo_t  header;
    lumpinfo_t *lump_p;
@@ -114,7 +114,7 @@ void RTS_AddFile (uint8_t  *filename)
 ====================
 */
 
-void RTS_Init (uint8_t  *filename)
+void RTS_Init (char  *filename)
    {
    int32 length;
    //

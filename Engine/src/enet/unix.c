@@ -94,7 +94,7 @@ enet_address_set_host (ENetAddress * address, const char  * name)
 }
 
 int
-enet_address_get_host (const ENetAddress * address, uint8_t  * name, size_t nameLength)
+enet_address_get_host (const ENetAddress * address, char  * name, size_t nameLength)
 {
     struct in_addr in;
     struct hostent * hostEntry = NULL;

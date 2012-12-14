@@ -355,8 +355,8 @@ static FILE *_sdl_debug_file = NULL;
 
 void set_sdl_renderer(void);
 
-static __inline void __out_sdldebug(const uint8_t  *subsystem,
-                                  const uint8_t  *fmt, va_list ap)
+static __inline void __out_sdldebug(const char  *subsystem,
+                                  const char  *fmt, va_list ap)
 {
     fprintf(_sdl_debug_file, "%s: ", subsystem);
     vfprintf(_sdl_debug_file, fmt, ap);
@@ -365,7 +365,7 @@ static __inline void __out_sdldebug(const uint8_t  *subsystem,
 } /* __out_sdldebug */
 
 
-static void sdldebug(const uint8_t  *fmt, ...)
+static void sdldebug(const char  *fmt, ...)
 {
     va_list ap;
 
@@ -393,9 +393,9 @@ void sgldebug(const uint8_t  *fmt, ...)
 #endif
 
 
-static void __append_sdl_surface_flag(SDL_Surface *_surface, uint8_t  *str,
+static void __append_sdl_surface_flag(SDL_Surface *_surface, char  *str,
                                       size_t strsize, Uint32 flag,
-                                      const uint8_t  *flagstr)
+                                      const char  *flagstr)
 {
     if (_surface->flags & flag)
     {
@@ -413,7 +413,7 @@ static void __append_sdl_surface_flag(SDL_Surface *_surface, uint8_t  *str,
 static void output_surface_info(SDL_Surface *_surface)
 {
     const SDL_VideoInfo *info;
-    uint8_t  f[256];
+    char  f[256];
 
     if (!_sdl_debug_file)
         return;
@@ -471,7 +471,7 @@ static void output_surface_info(SDL_Surface *_surface)
 
 static void output_driver_info(void)
 {
-    uint8_t  buffer[256];
+    char  buffer[256];
 
     if (!_sdl_debug_file)
         return;
@@ -889,7 +889,7 @@ void _handle_events(void)
 static SDL_Joystick *joystick = NULL;
 void _joystick_init(void)
 {
-    const uint8_t  *envr = getenv(BUILD_SDLJOYSTICK);
+    const char  *envr = getenv(BUILD_SDLJOYSTICK);
     int favored = 0;
     int numsticks;
     int i;
@@ -923,7 +923,7 @@ void _joystick_init(void)
 
     for (i = 0; i < numsticks; i++)
     {
-        const uint8_t  *stickname = SDL_JoystickName(i);
+        const char  *stickname = SDL_JoystickName(i);
         if ((envr != NULL) && (strcmp(envr, stickname) == 0))
             favored = i;
 
@@ -1010,7 +1010,7 @@ uint8_t  _readlastkeyhit(void)
 
 static __inline void init_debugging(void)
 {
-    const uint8_t  *envr = getenv(BUILD_SDLDEBUG); 
+    const char  *envr = getenv(BUILD_SDLDEBUG);
 
     debug_hall_of_mirrors = (getenv(BUILD_HALLOFMIRRORS) != NULL);
 
@@ -1067,7 +1067,7 @@ static char  *string_dupe(const char  *str)
 
 void set_sdl_renderer(void)
 {
-    const uint8_t  *envr = getenv(BUILD_RENDERER);
+    const char  *envr = getenv(BUILD_RENDERER);
 
 #ifdef USE_OPENGL
     int need_opengl_lib = 0;

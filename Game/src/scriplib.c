@@ -50,10 +50,10 @@ typedef enum {
 typedef struct scriptnode_s {
 	struct scriptnode_s *child;
 	struct scriptnode_s *sibling;
-	uint8_t  *key;
+	char  *key;
 	scriptflag_t type;
 	union {
-		uint8_t  *string[2];
+		char  *string[2];
 		int number;
         float floatnumber;
 	} data;
@@ -188,11 +188,11 @@ static void SCRIPT_addchild (scriptnode_t *parent, scriptnode_t *child)
 	}
 }
 
-static uint8_t  *SCRIPT_copystring (uint8_t  * s)
+static char  *SCRIPT_copystring (char  * s)
 {
-	uint8_t  *ret;
+	char  *ret;
 
-	ret = (uint8_t  *) malloc (strlen (s)+1);
+	ret = (char  *) malloc (strlen (s)+1);
 	if (ret != NULL)
 	{
 		strcpy (ret, s);
@@ -200,7 +200,7 @@ static uint8_t  *SCRIPT_copystring (uint8_t  * s)
 	return ret;
 }
 
-static int SCRIPT_getnexttoken (uint8_t  *buffer, uint8_t * token, int start)
+static int SCRIPT_getnexttoken (char  *buffer, char * token, int start)
 {
 	int iterator = start;
 
@@ -225,9 +225,9 @@ static int SCRIPT_getnexttoken (uint8_t  *buffer, uint8_t * token, int start)
 }
 
 /* Fills in a scriptnode with the interpreted contents of a line */
-static void SCRIPT_parseline (uint8_t  *curline, scriptnode_t *node)
+static void SCRIPT_parseline (char  *curline, scriptnode_t *node)
 {
-	uint8_t  token[128];
+	char  token[128];
 	int i;
 
 	/* Needs to handle 5 cases: */
@@ -279,7 +279,7 @@ static void SCRIPT_parseline (uint8_t  *curline, scriptnode_t *node)
 		node->type = SCRIPTFLAG_DECIMAL;
 		node->data.number = -1;
 	}else if (token[0] == '"') {
-		uint8_t  workbuf[128];
+		char  workbuf[128];
 		int r;
 
 		/* Found one of possibly two strings */
@@ -317,7 +317,7 @@ static void SCRIPT_parseline (uint8_t  *curline, scriptnode_t *node)
 	}
 }
 
-static scriptnode_t *SCRIPT_findinchildren (scriptnode_t *parent, uint8_t  *s)
+static scriptnode_t *SCRIPT_findinchildren (scriptnode_t *parent, char  *s)
 {
 	scriptnode_t *cur = parent;
 
@@ -374,7 +374,7 @@ void SCRIPT_Free( int32 scripthandle )
 ==============
 */
 
-int32 SCRIPT_Parse ( uint8_t  *data, int32 length, uint8_t  * name )
+int32 SCRIPT_Parse ( uint8_t  *data, int32 length, char  * name )
 {
 	STUBBED("Parse");
 	
@@ -390,10 +390,10 @@ int32 SCRIPT_Parse ( uint8_t  *data, int32 length, uint8_t  * name )
 ==============
 */
 
-int32 SCRIPT_Load ( uint8_t  * filename )
+int32 SCRIPT_Load ( char  * filename )
 {
 	FILE *fp;
-	uint8_t  curline[128];
+	char  curline[128];
 	scriptnode_t *headnode = NULL;
 	scriptnode_t *cur_subsection = NULL;
 
@@ -481,7 +481,7 @@ int32 SCRIPT_Load ( uint8_t  * filename )
 =
 ==============
 */
-void SCRIPT_Save (int32 scripthandle, uint8_t  * filename)
+void SCRIPT_Save (int32 scripthandle, char*  filename)
 {
 	FILE *fp;
 	scriptnode_t *head;
@@ -538,7 +538,7 @@ uint8_t  * SCRIPT_Section( int32 scripthandle, int32 which )
 ==============
 */
 
-int32 SCRIPT_NumberEntries( int32 scripthandle, uint8_t  * sectionname )
+int32 SCRIPT_NumberEntries( int32 scripthandle, char  * sectionname )
 {
 	scriptnode_t *node = NULL;
 	int32 entries = 0;
@@ -566,7 +566,7 @@ int32 SCRIPT_NumberEntries( int32 scripthandle, uint8_t  * sectionname )
 =
 ==============
 */
-uint8_t  * SCRIPT_Entry( int32 scripthandle, uint8_t  * sectionname, int32 which )
+char  * SCRIPT_Entry( int32 scripthandle, char  * sectionname, int32 which )
 {
 	scriptnode_t *node = NULL;
 	int32 entrynum = 0;
@@ -599,7 +599,7 @@ uint8_t  * SCRIPT_Entry( int32 scripthandle, uint8_t  * sectionname, int32 which
 =
 ==============
 */
-uint8_t  * SCRIPT_GetRaw(int32 scripthandle, uint8_t  * sectionname, uint8_t  * entryname)
+char  * SCRIPT_GetRaw(int32 scripthandle, char  * sectionname, char  * entryname)
 {
 	STUBBED("GetRaw");
 	
@@ -616,9 +616,9 @@ uint8_t  * SCRIPT_GetRaw(int32 scripthandle, uint8_t  * sectionname, uint8_t  * 
 void SCRIPT_GetString
    (
    int32 scripthandle,
-   uint8_t  * sectionname,
-   uint8_t  * entryname,
-   uint8_t  * dest
+   char  * sectionname,
+   char  * entryname,
+   char  * dest
    )
 {
     scriptnode_t *cur;
@@ -650,10 +650,10 @@ void SCRIPT_GetString
 void SCRIPT_GetDoubleString
    (
    int32 scripthandle,
-   uint8_t  * sectionname,
-   uint8_t  * entryname,
-   uint8_t  * dest1,
-   uint8_t  * dest2
+   char  * sectionname,
+   char  * entryname,
+   char  * dest1,
+   char  * dest2
    )
 {
     scriptnode_t *cur;
@@ -686,8 +686,8 @@ void SCRIPT_GetDoubleString
 boolean SCRIPT_GetNumber
    (
    int32 scripthandle,
-   uint8_t  * sectionname,
-   uint8_t  * entryname,
+   char  * sectionname,
+   char  * entryname,
    int32 * number
    )
 {
@@ -741,8 +741,8 @@ void SCRIPT_GetBoolean
 boolean SCRIPT_GetFloat
    (
    int32 scripthandle,
-   uint8_t  * sectionname,
-   uint8_t  * entryname,
+   char  * sectionname,
+   char  * entryname,
    float * floatnumber
    )
 {
@@ -778,8 +778,8 @@ boolean SCRIPT_GetFloat
 void SCRIPT_GetDouble
    (
    int32 scripthandle,
-   uint8_t  * sectionname,
-   uint8_t  * entryname,
+   char  * sectionname,
+   char  * entryname,
    double * number
    )
 {
@@ -870,9 +870,9 @@ void SCRIPT_PutRaw
 void SCRIPT_PutString
    (
    int32 scripthandle,
-   uint8_t  * sectionname,
-   uint8_t  * entryname,
-   uint8_t  * string
+   char  * sectionname,
+   char  * entryname,
+   char  * string
    )
 {
 	scriptnode_t *head;
@@ -922,10 +922,10 @@ void SCRIPT_PutString
 void SCRIPT_PutDoubleString
    (
    int32 scripthandle,
-   uint8_t  * sectionname,
-   uint8_t  * entryname,
-   uint8_t  * string1,
-   uint8_t  * string2
+   char  * sectionname,
+   char  * entryname,
+   char  * string1,
+   char  * string2
    )
 {
 	scriptnode_t *head;
@@ -977,8 +977,8 @@ void SCRIPT_PutDoubleString
 void SCRIPT_PutNumber
    (
    int32 scripthandle,
-   uint8_t  * sectionname,
-   uint8_t  * entryname,
+   char  * sectionname,
+   char  * entryname,
    int32 number,
    boolean hexadecimal,
    boolean defaultvalue

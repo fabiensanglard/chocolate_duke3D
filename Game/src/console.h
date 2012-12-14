@@ -9,10 +9,10 @@ void     CONSOLE_Term();
 void     CONSOLE_ParseStartupScript();
 void     CONSOLE_HandleInput();
 void     CONSOLE_Render();
-void     CONSOLE_ParseCommand(uint8_t * command);
-void     CONSOLE_Printf(const uint8_t  *newmsg, ...);
+void     CONSOLE_ParseCommand(char * command);
+void     CONSOLE_Printf(const char  *newmsg, ...);
 int      CONSOLE_GetArgc();
-uint8_t *    CONSOLE_GetArgv(unsigned int var);
+char *    CONSOLE_GetArgv(unsigned int var);
 int      CONSOLE_IsActive();
 void     CONSOLE_SetActive(int i); 
 

@@ -34,6 +34,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "multivoc.h"
 
 
+
 #include "dsl.h"
 
 #include "ll_man.h"
@@ -81,42 +82,9 @@ char *FX_ErrorString(int ErrorNumber)
             "(c) Copyright 1995 James R. Dose.  All Rights Reserved.\n";
          break;
 
-#ifdef PLAT_DOS
-      case FX_BlasterError :
-         ErrorString = BLASTER_ErrorString( BLASTER_Error );
-         break;
-#endif
 
       case FX_SoundCardError :
-#ifdef PLAT_DOS
-         switch( FX_SoundDevice )
-         {
-            case SoundBlaster :
-            case Awe32 :
-               ErrorString = BLASTER_ErrorString( BLASTER_Error );
-               break;
-
-            case ProAudioSpectrum :
-            case SoundMan16 :
-               ErrorString = PAS_ErrorString( PAS_Error );
-               break;
-
-            case SoundScape :
-               ErrorString = SOUNDSCAPE_ErrorString( SOUNDSCAPE_Error );
-               break;
-
-            case UltraSound :
-               ErrorString = GUSWAVE_ErrorString( GUSWAVE_Error );
-               break;
-
-            case SoundSource :
-            case TandySoundSource :
-               ErrorString = SS_ErrorString( SS_Error );
-               break;
-            }
-#else
          ErrorString = DSL_ErrorString( DSL_Error );
-#endif
          break;
 
       case FX_InvalidCard :
@@ -167,88 +135,7 @@ int FX_SetupCard
    status = FX_Ok;
    FX_SetErrorCode( FX_Ok );
 
-#ifdef PLAT_DOS
-   switch( SoundCard )
-      {
-      case SoundBlaster :
-      case Awe32 :
-         DeviceStatus = BLASTER_Init();
-         if ( DeviceStatus != BLASTER_Ok )
-            {
-            FX_SetErrorCode( FX_SoundCardError );
-            status = FX_Error;
-            break;
-            }
 
-         device->MaxVoices = 32;
-         BLASTER_GetCardInfo( &device->MaxSampleBits, &device->MaxChannels );
-         break;
-
-      case ProAudioSpectrum :
-      case SoundMan16 :
-         DeviceStatus = PAS_Init();
-         if ( DeviceStatus != PAS_Ok )
-            {
-            FX_SetErrorCode( FX_SoundCardError );
-            status = FX_Error;
-            break;
-            }
-
-         device->MaxVoices = 32;
-         PAS_GetCardInfo( &device->MaxSampleBits, &device->MaxChannels );
-         break;
-
-      case GenMidi :
-      case SoundCanvas :
-      case WaveBlaster :
-         device->MaxVoices     = 0;
-         device->MaxSampleBits = 0;
-         device->MaxChannels   = 0;
-         break;
-
-      case SoundScape :
-         device->MaxVoices = 32;
-         DeviceStatus = SOUNDSCAPE_GetCardInfo( &device->MaxSampleBits,
-            &device->MaxChannels );
-         if ( DeviceStatus != SOUNDSCAPE_Ok )
-            {
-            FX_SetErrorCode( FX_SoundCardError );
-            status = FX_Error;
-            }
-         break;
-
-      case UltraSound :
-         if ( GUSWAVE_Init( 8 ) != GUSWAVE_Ok )
-            {
-            FX_SetErrorCode( FX_SoundCardError );
-            status = FX_Error;
-            break;
-            }
-
-         device->MaxVoices     = 8;
-         device->MaxSampleBits = 0;
-         device->MaxChannels   = 0;
-         break;
-
-      case SoundSource :
-      case TandySoundSource :
-         DeviceStatus = SS_Init( SoundCard );
-         if ( DeviceStatus != SS_Ok )
-            {
-            FX_SetErrorCode( FX_SoundCardError );
-            status = FX_Error;
-            break;
-            }
-         SS_Shutdown();
-         device->MaxVoices     = 32;
-         device->MaxSampleBits = 8;
-         device->MaxChannels   = 1;
-         break;
-      default :
-         FX_SetErrorCode( FX_InvalidCard );
-         status = FX_Error;
-      }
-#else
       DeviceStatus = DSL_Init();
       if ( DeviceStatus != DSL_Ok )
          {
@@ -261,7 +148,7 @@ int FX_SetupCard
          device->MaxSampleBits = 0;
          device->MaxChannels   = 0;
          }
-#endif
+
 
    return( status );
    }
@@ -279,27 +166,6 @@ int FX_GetBlasterSettings
    )
 
    {
-#ifdef PLAT_DOS
-   int status;
-   BLASTER_CONFIG Blaster;
-
-   FX_SetErrorCode( FX_Ok );
-
-   status = BLASTER_GetEnv( &Blaster );
-   if ( status != BLASTER_Ok )
-      {
-      FX_SetErrorCode( FX_BlasterError );
-      return( FX_Error );
-      }
-
-   blaster->Type      = Blaster.Type;
-   blaster->Address   = Blaster.Address;
-   blaster->Interrupt = Blaster.Interrupt;
-   blaster->Dma8      = Blaster.Dma8;
-   blaster->Dma16     = Blaster.Dma16;
-   blaster->Midi      = Blaster.Midi;
-   blaster->Emu       = Blaster.Emu;
-#endif
 
    return( FX_Ok );
    }
@@ -320,34 +186,7 @@ int FX_SetupSoundBlaster
    )
 
    {
-#ifdef PLAT_DOS
-   int DeviceStatus;
-   BLASTER_CONFIG Blaster;
 
-   FX_SetErrorCode( FX_Ok );
-
-   FX_SoundDevice = SoundBlaster;
-
-   Blaster.Type      = blaster.Type;
-   Blaster.Address   = blaster.Address;
-   Blaster.Interrupt = blaster.Interrupt;
-   Blaster.Dma8      = blaster.Dma8;
-   Blaster.Dma16     = blaster.Dma16;
-   Blaster.Midi      = blaster.Midi;
-   Blaster.Emu       = blaster.Emu;
-
-   BLASTER_SetCardSettings( Blaster );
-
-   DeviceStatus = BLASTER_Init();
-   if ( DeviceStatus != BLASTER_Ok )
-      {
-      FX_SetErrorCode( FX_SoundCardError );
-      return( FX_Error );
-      }
-
-   *MaxVoices = 8;
-   BLASTER_GetCardInfo( MaxSampleBits, MaxChannels );
-#endif
 
    return( FX_Ok );
    }
@@ -525,59 +364,11 @@ int FX_SetCallBack
    Sets the volume of the current sound device.
 ---------------------------------------------------------------------*/
 
-void FX_SetVolume
-   (
-   int volume
-   )
-
+void FX_SetVolume(int volume)
    {
-   int status;
 
-#ifdef PLAT_DOS
-   switch( FX_SoundDevice )
-      {
-      case SoundBlaster :
-      case Awe32 :
-         if ( BLASTER_CardHasMixer() )
-            {
-            BLASTER_SetVoiceVolume( volume );
-            }
-         else
-            {
-            MV_SetVolume( volume );
-            }
-         break;
-
-      case ProAudioSpectrum :
-      case SoundMan16 :
-         status = PAS_SetPCMVolume( volume );
-         if ( status != PAS_Ok )
-            {
-            MV_SetVolume( volume );
-            }
-         break;
-
-      case GenMidi :
-      case SoundCanvas :
-      case WaveBlaster :
-         break;
-
-      case SoundScape :
-         MV_SetVolume( volume );
-         break;
-
-      case UltraSound :
-         GUSWAVE_SetVolume( volume );
-         break;
-
-      case SoundSource :
-      case TandySoundSource :
-         MV_SetVolume( volume );
-         break;
-      }
-#else
    MV_SetVolume( volume );
-#endif
+
    }
 
 
@@ -587,63 +378,13 @@ void FX_SetVolume
    Returns the volume of the current sound device.
 ---------------------------------------------------------------------*/
 
-int FX_GetVolume
-   (
-   void
-   )
-
+int FX_GetVolume(void)
    {
    int volume;
 
-#ifdef PLAT_DOS
-   switch( FX_SoundDevice )
-      {
-      case SoundBlaster :
-      case Awe32 :
-         if ( BLASTER_CardHasMixer() )
-            {
-            volume = BLASTER_GetVoiceVolume();
-            }
-         else
-            {
-            volume = MV_GetVolume();
-            }
-         break;
 
-      case ProAudioSpectrum :
-      case SoundMan16 :
-         volume = PAS_GetPCMVolume();
-         if ( volume == PAS_Error )
-            {
-            volume = MV_GetVolume();
-            }
-         break;
-
-      case GenMidi :
-      case SoundCanvas :
-      case WaveBlaster :
-         volume = 255;
-         break;
-
-      case SoundScape :
-         volume = MV_GetVolume();
-         break;
-
-      case UltraSound :
-         volume = GUSWAVE_GetVolume();
-         break;
-
-      case SoundSource :
-      case TandySoundSource :
-         volume = MV_GetVolume();
-         break;
-
-      default :
-         volume = 0;
-      }
-#else
    volume = MV_GetVolume();
-#endif
+
 
    return( volume );
    }
@@ -655,10 +396,7 @@ int FX_GetVolume
    Set the orientation of the left and right channels.
 ---------------------------------------------------------------------*/
 
-void FX_SetReverseStereo
-   (
-   int setting
-   )
+void FX_SetReverseStereo(int setting)
 
    {
    MV_SetReverseStereo( setting );
@@ -671,10 +409,7 @@ void FX_SetReverseStereo
    Returns the orientation of the left and right channels.
 ---------------------------------------------------------------------*/
 
-int FX_GetReverseStereo
-   (
-   void
-   )
+int FX_GetReverseStereo(void)
 
    {
    return MV_GetReverseStereo();

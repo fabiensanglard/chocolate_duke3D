@@ -52,7 +52,7 @@ extern  uint8_t  **  _argv;
 void RegisterShutdownFunction( void (* shutdown) (void) );
 void   Error (int errorType, char  *error, ...);
 
-uint8_t    CheckParm (uint8_t  *check);
+uint8_t    CheckParm (char  *check);
 
 void   *SafeMalloc (int32 size);
 int32  SafeMallocSize (void * ptr);

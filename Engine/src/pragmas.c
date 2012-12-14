@@ -11,7 +11,7 @@ uint32_t getkensmessagecrc(int32_t param) {
 
 void clearbuf(void *d, int32_t c, int32_t a)
 {
-	int32_t *p = (long*)d;
+	int32_t *p = (int32_t*)d;
 	while ((c--) > 0) *(p++) = a;
 }
 
@@ -29,7 +29,7 @@ void clearbufbyte(void *D, int32_t c, int32_t a)
 
 void copybuf(void *s, void *d, int32_t c)
 {
-	int32_t *p = (long*)s, *q = (long*)d;
+	int32_t *p = (int32_t*)s, *q = (int32_t*)d;
 	while ((c--) > 0) *(q++) = *(p++);
 }
 
@@ -45,13 +45,13 @@ void copybufreverse(void *S, void *D, int32_t c)
 	while((c--) > 0) *(q++) = *(p--);
 }
 
-void qinterpolatedown16(long* bufptr, int32_t num, int32_t val, int32_t add)
+void qinterpolatedown16(int32_t* bufptr, int32_t num, int32_t val, int32_t add)
 { // gee, I wonder who could have provided this...
     int32_t i, *lptr = bufptr;
     for(i=0;i<num;i++) { lptr[i] = (val>>16); val += add; }
 }
 
-void qinterpolatedown16short(long* bufptr, int32_t num, int32_t val, int32_t add)
+void qinterpolatedown16short(int32_t* bufptr, int32_t num, int32_t val, int32_t add)
 { // ...maybe the same person who provided this too?
     int32_t i; short *sptr = (short *)bufptr;
     for(i=0;i<num;i++) { sptr[i] = (short)(val>>16); val += add; }

@@ -552,7 +552,6 @@ void resetweapons(short snum)
 void resetinventory(short snum)
 {
     struct player_struct *p;
-    short i;
 
     p = &ps[snum];
 
@@ -1073,7 +1072,7 @@ void resetpspritevars(uint8_t  g)
 
 	#define BOT_MAX_NAME 20
 	int bot_used[BOT_MAX_NAME] = { false };
-	uint8_t  *bot_names[] = {	"* ELASTI", 
+	char  *bot_names[] = {	"* ELASTI",
 							"* ^ZookeM^",
 							"* DOOM",
 							"* DRO",
@@ -1282,7 +1281,7 @@ void genspriteremaps(void)
 {
     int32_t j,fp;
     int8_t look_pos;
-    uint8_t  *lookfn = "lookup.dat";
+    char  *lookfn = "lookup.dat";
     uint8_t  numl;
 
     fp = TCkopen4load(lookfn,0);
@@ -1444,8 +1443,8 @@ void enterlevel(uint8_t  g)
 {
     short i;
     int32_t l;
-    uint8_t  levname[256];
-	uint8_t  fulllevelfilename[512];
+    char  levname[256];
+	char  fulllevelfilename[512];
 
 
 	KB_ClearKeyDown(sc_Pause); // avoid entering in pause mode.

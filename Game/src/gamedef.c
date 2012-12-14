@@ -30,7 +30,8 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 extern short otherp;
 
 static short total_lines,line_number;
-static uint8_t  checking_ifelse,parsing_state,*last_used_text;
+static uint8_t  checking_ifelse,parsing_state;
+char *last_used_text;
 static short num_squigilly_brackets;
 static int32_t last_used_size;
 
@@ -42,13 +43,13 @@ static spritetype *g_sp;
 #define NUMKEYWORDS     112
 
 //From global.c
-void FixFilePath(uint8_t  *filename);
+void FixFilePath(char  *filename);
 
 //From actors.c
 void lotsofmail(spritetype *s, short n);
 void lotsofpaper(spritetype *s, short n);
 
-uint8_t  *keyw[NUMKEYWORDS] =
+char  *keyw[NUMKEYWORDS] =
 {
     "definelevelname",  // 0
     "actor",            // 1    [#]
@@ -331,7 +332,7 @@ int32_t keyword(void)
     tempbuf[i] = 0;
 
     for(i=0;i<NUMKEYWORDS;i++)
-        if( strcmp( (const uint8_t *)tempbuf,keyw[i]) == 0 )
+        if( strcmp( (const char *)tempbuf,keyw[i]) == 0 )
             return i;
 
     return -1;
@@ -418,7 +419,7 @@ void transnum(void)
 
     for(i=0;i<labelcnt;i++)
     {
-        if( strcmp((const uint8_t *)tempbuf,label+(i<<6)) == 0 )
+        if( strcmp((const char *)tempbuf,label+(i<<6)) == 0 )
         {
             *scriptptr = labelcode[i];
             scriptptr++;
@@ -445,7 +446,9 @@ void transnum(void)
 uint8_t  parsecommand(int readfromGRP)
 {
     int32_t i, j, k, *tempscrptr;
-    uint8_t  done, *origtptr, temp_ifelse_check, tw;
+    uint8_t  done, temp_ifelse_check;
+    int32_t tw;
+    char *origtptr;
     short temp_line_number;
     int fp;
 
@@ -467,7 +470,7 @@ uint8_t  parsecommand(int readfromGRP)
                 if(*textptr == 0x0a) line_number++;
                 if( *textptr == 0 )
                 {
-                    printf("  * ERROR!(L%ld) Found '/*' with no '*/'.\n",j);
+                    printf("  * ERROR!(L%d) Found '/*' with no '*/'.\n",j);
                     error++;
                     return 0;
                 }
@@ -698,7 +701,7 @@ uint8_t  parsecommand(int readfromGRP)
             return 0;
         case 55: // include other con files.
 			{
-				uint8_t  includedconfile[512];
+				char  includedconfile[512];
 				scriptptr--;
 				while( isaltok(*textptr) == 0 )
 				{
@@ -715,20 +718,8 @@ uint8_t  parsecommand(int readfromGRP)
 				tempbuf[j] = '\0';
 
 				// fix path for unix. (doesn't really matter...)			
-				FixFilePath((uint8_t *)tempbuf);
-/*
-				// Are we loading a TC?
-				if(game_dir[0] != '\0')
-				{
-					// Yes
-					sprintf(includedconfile, "%s\\%s", game_dir, tempbuf);
-				}
-				else
-				{
-					// No
-					sprintf(includedconfile, "%s", tempbuf);
-				}
-*/
+				FixFilePath((char *)tempbuf);
+
 				sprintf(includedconfile, "%s", tempbuf);
 
 				fp = TCkopen4load(includedconfile,readfromGRP);
@@ -1504,7 +1495,7 @@ void passone(int readfromGRP)
 
 }
 
-uint8_t  *defaultcons[3] =
+char  *defaultcons[3] =
 {
      "GAME.CON",
      "USER.CON",
@@ -1548,7 +1539,7 @@ void copydefaultcons(void)
     }
 }
 
-void loadefs(uint8_t  *filenam, uint8_t  *mptr, int readfromGRP)
+void loadefs(char  *filenam, uint8_t  *mptr, int readfromGRP)
 {
     int32_t fs,fp;
 	uint8_t  kbdKey;

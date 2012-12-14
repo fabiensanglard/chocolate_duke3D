@@ -1301,6 +1301,8 @@ void displayweapon(short snum)
     int8_t gs;
     struct player_struct *p;
     short *kb;
+    
+    
 
     p = &ps[snum];
     kb = &p->kickback_pic;
@@ -2619,12 +2621,12 @@ void processinput(short snum)
                     {
                         if(snum == screenpeek)
                         {
-                            sprintf(&fta_quotes[115][0],"KILLED BY PLAYER %ld",1+p->frag_ps);
+                            sprintf(&fta_quotes[115][0],"KILLED BY PLAYER %d",1+p->frag_ps);
                             FTA(115,p,1);
                         }
                         else if(screenpeek == p->frag_ps)
                         {
-                            sprintf(&fta_quotes[116][0],"KILLED PLAYER %ld",1+snum);
+                            sprintf(&fta_quotes[116][0],"KILLED PLAYER %d",1+snum);
                             FTA(116,&ps[p->frag_ps],1);
                         }
                     }

@@ -15,6 +15,8 @@
 //We need to access debug soundinfo
 #include "sounddebugdefs.h"
 
+#include "joystick.h"
+
 // Bind our Cvars at startup. You can still add bindings after this call, but
 // it is recommanded that you bind your default CVars here.
 void CVARDEFS_Init()
@@ -65,50 +67,49 @@ void CVARDEFS_Render()
     if(g_CV_DebugJoystick)
     {
         int i;
-        uint8_t  buf[128];
-         minitext(2, 2, "Debug Joystick", 17,10+16);
+        char  buf[128];
+        minitext(2, 2, "Debug Joystick", 17,10+16);
 
-         for(i = 0; i < MAXJOYAXES; i++)
-         {
-             sprintf(buf, "Joystick Axis%d: Raw: %d  Used:%d", i,
-                 _joystick_axis(i), CONTROL_GetFilteredAxisValue(i));
-         minitext(2, (i*8)+12, buf, 23,10+16);
-         }
+        for(i = 0; i < MAXJOYAXES; i++)
+        {
+            sprintf(buf, "Joystick Axis%d: Raw: %d  Used:%d", i,_joystick_axis(i), CONTROL_GetFilteredAxisValue(i));
+            minitext(2, (i*8)+12, buf, 23,10+16);
+        }
 
-         for(i = 0; i < MAXJOYBUTTONS; i++)
-         {
-             sprintf(buf, "Button%d: %d", i, _joystick_button(i));
-             if(i < (MAXJOYBUTTONS/2))
-             {
-                 minitext(2, (i*8)+(MAXJOYAXES*8)+12, buf, 23,10+16);
-             }
-             else
-             {
-                 minitext(55, ((i-16)*8)+(MAXJOYAXES*8)+12, buf, 23,10+16);
-             }
-         }
+        for(i = 0; i < MAXJOYBUTTONS; i++)
+        {
+            sprintf(buf, "Button%d: %d", i, _joystick_button(i));
+            if(i < (MAXJOYBUTTONS/2))
+            {
+                minitext(2, (i*8)+(MAXJOYAXES*8)+12, buf, 23,10+16);
+            }
+            else
+            {
+                minitext(55, ((i-16)*8)+(MAXJOYAXES*8)+12, buf, 23,10+16);
+            }
+        }
 
-         for(i = 0; i < MAXJOYHATS; i++)
-         {
-			 sprintf(buf, "Hat%d: %d", i, _joystick_hat(i));
-             minitext(110, (i*8)+(MAXJOYAXES*8)+12, buf, 23,10+16);
-		 }
+        for(i = 0; i < MAXJOYHATS; i++)
+        {
+            sprintf(buf, "Hat%d: %d", i, _joystick_hat(i));
+            minitext(110, (i*8)+(MAXJOYAXES*8)+12, buf, 23,10+16);
+        }
 
 
     }
 
 	if(g_CV_DebugSound)
 	{
-        uint8_t  buf[128];
+        char  buf[128];
         minitext(2, 2, "Debug Sound", 17,10+16);
 
-		sprintf(buf, "Active sounds: %lu", sounddebugActiveSounds);
+		sprintf(buf, "Active sounds: %u", sounddebugActiveSounds);
 		minitext(2, 10, buf, 23,10+16);
 		
-		sprintf(buf, "Allocate Calls: %lu", sounddebugAllocateSoundCalls);
+		sprintf(buf, "Allocate Calls: %u", sounddebugAllocateSoundCalls);
 		minitext(2, 18, buf, 23,10+16);
 
-		sprintf(buf, "Deallocate Calls: %ld", sounddebugDeallocateSoundCalls);
+		sprintf(buf, "Deallocate Calls: %d", sounddebugDeallocateSoundCalls);
 		minitext(2, 26, buf, 23,10+16);
 	}
 

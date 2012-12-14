@@ -33,7 +33,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 
 typedef struct
    {
-   uint8_t  name[8];
+   char  name[8];
    int32 handle,position,size;
    } lumpinfo_t;
 
@@ -48,7 +48,7 @@ typedef struct
    {
    int32 filepos;
    int32 size;
-   uint8_t  name[8];
+   char  name[8];
    } filelump_t;
 
 #endif
