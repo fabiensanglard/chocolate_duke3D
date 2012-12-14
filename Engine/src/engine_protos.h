@@ -29,7 +29,7 @@ extern void initcache(int32_t dacachestart, int32_t dacachesize);
 extern void allocache(int32_t *newhandle, int32_t newbytes, uint8_t  *newlockptr);
 extern void suckcache(int32_t *suckptr);
 extern void agecache(void);
-extern void reportandexit(uint8_t  *errormessage);
+extern void reportandexit(char  *errormessage);
 extern int32_t initgroupfile(const uint8_t  *filename);
 extern void uninitgroupfile(void);
 extern int32_t kopen4load(const char  *filename,int readfromGRP);

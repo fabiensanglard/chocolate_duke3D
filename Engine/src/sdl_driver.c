@@ -1055,21 +1055,6 @@ static __inline void output_sdl_versions(void)
 } /* output_sdl_versions */
 
 
-static int in_vmware = 0;
-static __inline void detect_vmware(void)
-{
-#if 1
-    in_vmware = 0;  /* oh well. */
-#else
-    /* !!! need root access to touch i/o ports on Linux. */
-    #if (!defined __linux__)
-        in_vmware = (int) is_vmware_running();
-    #endif
-    sdldebug("vmWare %s running.", (in_vmware) ? "is" : "is not");
-#endif
-} /* detect_vmware */
-
-
 /* lousy -ansi flag.  :) */
 static char  *string_dupe(const char  *str)
 {
@@ -1373,7 +1358,7 @@ void _platform_init(int argc, char  **argv, const char  *title, const char  *ico
 
     output_sdl_versions();
     output_driver_info();
-    detect_vmware();
+    
 
 	printf("Video Driver [directx or windib]? -> %s \n", SDL_VideoDriverName(dummyString, 20));
 
@@ -2480,7 +2465,7 @@ void uninitkeys(void)
 
 
 //Timer on windows 98 used to be really poor but now it is very accurate
-// We can just used what SDL uses, now need for QueryPerformanceFrequency or QueryPerformanceCounter
+// We can just use what SDL uses, no need for QueryPerformanceFrequency or QueryPerformanceCounter
 // (which I bet SDL is using anyway).
 #if 0//PLATFORM_WIN32 
 int TIMER_GetPlatformTicksInOneSecond(int64_t* t)

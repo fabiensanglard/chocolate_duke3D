@@ -676,14 +676,14 @@ void clearsoundlocks(void)
 {
     int32_t i;
     
-    printf("FCS: Warning, cleaning sound lock in unproper way. THIS MUST BE FIXED ON MACOSX.\n");
+   
 
     for(i=0;i<NUM_SOUNDS;i++)
-     //   if(Sound[i].lock >= 200)
+ 
             Sound[i].lock = 199;
 
     for(i=0;i<11;i++)
-       // if(lumplockbyte[i] >= 200)
+ 
             lumplockbyte[i] = 199;
 }
 

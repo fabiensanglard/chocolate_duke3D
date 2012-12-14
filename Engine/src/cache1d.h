@@ -24,7 +24,7 @@ void initcache(int32_t dacachestart, int32_t dacachesize);
 void allocache (int32_t *newhandle, int32_t newbytes, uint8_t  *newlockptr);
 void suckcache (int32_t *suckptr);
 void agecache(void);
-void reportandexit(uint8_t  *errormessage);
+void reportandexit(char  *errormessage);
 int32_t initgroupfile(const uint8_t  *filename);
 void uninitgroupfile(void);
 unsigned short crc16(uint8_t  *data_p, unsigned short length);

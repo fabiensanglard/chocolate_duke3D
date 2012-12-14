@@ -17,10 +17,6 @@ extern int32_t asm2;
 extern int32_t asm3;
 extern int32_t asm4;
 
-int32_t is_vmware_running(void)
-{
-    return 0;
-} /* is_vmware_running */
 
 /* #pragma aux mmxoverlay modify [eax ebx ecx edx] */
 int32_t mmxoverlay(void)
@@ -87,17 +83,17 @@ void setuprhlineasm4(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5,
     rmach_ecx = i3;
     rmach_edx = i4;
     rmach_esi = i5;
-} /* setuprhlineasm4 */
+} 
 
 
-void rhlineasm4(int32_t i1, int32_t i2, int32_t i3, uint32_t i4, uint32_t i5, int32_t i6)
+void rhlineasm4(int32_t i1, int32_t i2, int32_t i3, uint32_t i4, uint32_t i5, int32_t numPixels)
 {
-    uint32_t ebp = i6 - i1;
+    uint32_t ebp = numPixels - i1;
     uint32_t rmach6b = ebp-1;
 
     if (i1 <= 0) return;
 
-    i6 = i1;
+    numPixels = i1;
     do {
 	    i3 = ((i3&0xffffff00)|(*((uint8_t *)i2)));
 	    i4 -= rmach_eax;
@@ -107,10 +103,10 @@ void rhlineasm4(int32_t i1, int32_t i2, int32_t i3, uint32_t i4, uint32_t i5, in
 	    else i2 -= rmach_ecx;
 	    ebp &= rmach_esi;
 	    i1 = ((i1&0xffffff00)|(((uint8_t *)i3)[rmach_edx]));
-	    ((uint8_t *)rmach6b)[i6] = (i1&0xff);
+	    ((uint8_t *)rmach6b)[numPixels] = (i1&0xff);
 	    i2 -= ebp;
-	    i6--;
-    } while (i6);
+	    numPixels--;
+    } while (numPixels);
 } /* rhlineasm4 */
 
 static int32_t rmmach_eax;
@@ -125,18 +121,18 @@ void setuprmhlineasm4(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5
     rmmach_ecx = i3;
     rmmach_edx = i4;
     rmmach_esi = i5;
-} /* setuprmhlineasm4 */
+} 
 
-/* #pragma aux rmhlineasm4 parm [eax][ebx][ecx][edx][esi][edi] */
+
 //FCS: ????
-void rmhlineasm4(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6)
+void rmhlineasm4(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t numPixels)
 {
-    uint32_t ebp = i6 - i1;
+    uint32_t ebp = numPixels - i1;
     uint32_t rmach6b = ebp-1;
 
     if (i1 <= 0) return;
 
-    i6 = i1;
+    numPixels = i1;
     do {
 	    i3 = ((i3&0xffffff00)|(*((uint8_t *)i2)));
 	    i4 -= rmmach_eax;
@@ -147,44 +143,31 @@ void rmhlineasm4(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int
 	    ebp &= rmmach_esi;
 	    if ((i3&0xff) != 255) {
 		    i1 = ((i1&0xffffff00)|(((uint8_t  *)i3)[rmmach_edx]));
-		    ((uint8_t  *)rmach6b)[i6] = (i1&0xff);
+		    ((uint8_t  *)rmach6b)[numPixels] = (i1&0xff);
 	    }
 	    i2 -= ebp;
-	    i6--;
-    } while (i6);
-} /* rmhlineasm4 */
+	    numPixels--;
+    } while (numPixels);
+} 
 
 
-/* #pragma aux setupqrhlineasm4 parm [eax][ebx][ecx][edx][esi][edi] */
-void setupqrhlineasm4(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6)
-{
-    setuprhlineasm4(i1,i2,i3,i4,i5,i6);
-} /* setupqrhlineasm4 */
 
-
-/* #pragma aux qrhlineasm4 parm [eax][ebx][ecx][edx][esi][edi] */
-void qrhlineasm4(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6)
-{
-    rhlineasm4(i1,i2,i3,i4,i5,i6);
-} /* qrhlineasm4 */
-
-/* #pragma aux setvlinebpl parm [eax] */
 static int32_t fixchain;
 void setvlinebpl(int32_t i1)
 {
     fixchain = i1;
-} /* setvlinebpl */
+} 
 
-/* #pragma aux fixtransluscence parm [eax] */
+
 static int32_t tmach;
 void fixtransluscence(int32_t i1)
 {
     tmach = i1;
-} /* fixtransluscence */
+} 
 
 int32_t vlineasm1(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6);
 
-/* #pragma aux prevlineasm1 parm [eax][ebx][ecx][edx][esi][edi] */
+
 static uint8_t  mach3_al;
 
 //FCS:  RENDER TOP AND BOTTOM COLUMN
@@ -210,14 +193,11 @@ int32_t prevlineasm1(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5,
     } else {
 	    return vlineasm1(i1,i2,i3,i4,i5,i6);
     }
-} /* prevlineasm1 */
+}
 
-//FCS:Debug
-//extern uint8_t  * get_framebuffer(void);
 
-/* #pragma aux vlineasm1 parm [eax][ebx][ecx][edx][esi][edi] */
 //FCS: This is used to draw wall border vertical lines
-int32_t vlineasm1(int32_t vince, int32_t palookupoffse, int32_t i3, int32_t vplce, int32_t bufplce, int32_t i6)
+int32_t vlineasm1(int32_t vince, int32_t palookupoffse, int32_t numPixels, int32_t vplce, int32_t bufplce, int32_t i6)
 {
     uint32_t temp;
     uint8_t  *dest = (uint8_t  *)i6;
@@ -225,8 +205,8 @@ int32_t vlineasm1(int32_t vince, int32_t palookupoffse, int32_t i3, int32_t vplc
     if (!RENDER_DRAW_WALL_BORDERS)
 		return vplce;
 
-    i3++;
-    while (i3)
+    numPixels++;
+    while (numPixels)
     {
 	    temp = ((unsigned)vplce) >> mach3_al;
         
@@ -235,27 +215,27 @@ int32_t vlineasm1(int32_t vince, int32_t palookupoffse, int32_t i3, int32_t vplc
         *dest = ((uint8_t *)palookupoffse)[temp];
 	    vplce += vince;
 	    dest += fixchain;
-	    i3--;
+	    numPixels--;
     }
     return vplce;
-} /* vlineasm1 */
+} 
 
-/* #pragma aux setuptvlineasm parm [eax] */
+
 static uint8_t  transmach3_al = 32;
 void setuptvlineasm(int32_t i1)
 {
     transmach3_al = (i1 & 0x1f);
-} /* setuptvlineasm */
+}
 
-/* #pragma aux tvlineasm1 parm [eax][ebx][ecx][edx][esi][edi] */
+
 static int transrev = 0;
-int32_t tvlineasm1(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6)
+int32_t tvlineasm1(int32_t i1, int32_t i2, int32_t numPixels, int32_t i4, int32_t i5, int32_t i6)
 {
 	uint8_t  *source = (uint8_t  *)i5;
 	uint8_t  *dest = (uint8_t  *)i6;
 
-	i3++;
-	while (i3)
+	numPixels++;
+	while (numPixels)
 	{
 		uint32_t temp = i4;
 		temp >>= transmach3_al;
@@ -270,7 +250,7 @@ int32_t tvlineasm1(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, i
 		}
 		i4 += i1;
 		dest += fixchain;
-		i3--;
+		numPixels--;
 	}
 	return i4;
 } /* tvlineasm1 */
@@ -286,7 +266,7 @@ void setuptvlineasm2(int32_t i1, int32_t i2, int32_t i3)
 	tran2pal_ecx = i3;
 } /* */
 
-/* #pragma aux tvlineasm2 parm [eax][ebx][ecx][edx][esi][edi] */
+
 void tvlineasm2(uint32_t i1, uint32_t i2, uint32_t i3, uint32_t i4, uint32_t i5, uint32_t i6)
 {
 	uint32_t ebp = i1;
@@ -340,10 +320,10 @@ void tvlineasm2(uint32_t i1, uint32_t i2, uint32_t i3, uint32_t i4, uint32_t i5,
 	} while (i6 > i6 - fixchain);
 	asm1 = i5;
 	asm2 = ebp;
-} /* tvlineasm2 */
+} 
 
 
-/* #pragma aux mvlineasm1 parm [eax][ebx][ecx][edx][esi][edi] */
+
 static uint8_t  machmv;
 int32_t mvlineasm1(int32_t vince, int32_t palookupoffse, int32_t i3, int32_t vplce, int32_t bufplce, int32_t i6)
 {
@@ -362,11 +342,11 @@ int32_t mvlineasm1(int32_t vince, int32_t palookupoffse, int32_t i3, int32_t vpl
     return vplce;
 } /* mvlineasm1 */
 
-/* #pragma aux setupvlineasm parm [eax] */
+
 void setupvlineasm(int32_t i1)
 {
     mach3_al = (i1&0x1f);
-} /* setupvlineasm */
+}
 
 extern int32_t vplce[4], vince[4], palookupoffse[4], bufplce[4];
 
@@ -415,12 +395,11 @@ static void vlineasm4_altivec(int32_t i1, int32_t i2)
 }
 #endif
 
-/* #pragma aux vlineasm4 parm [ecx][edi] modify [eax ebx ecx edx esi edi] */
+
 //FCS This is used to fill the inside of a wall
 void vlineasm4(int32_t i1, int32_t i2)
 {
 
-	
 	if (!RENDER_DRAW_WALL_INSIDE)
 		return ;
 
@@ -447,13 +426,13 @@ void vlineasm4(int32_t i1, int32_t i2)
     }
 } /* vlineasm4 */
 
-/* #pragma aux setupmvlineasm parm [eax] */
+
 void setupmvlineasm(int32_t i1)
 {
     machmv = (i1&0x1f);
 } /* setupmvlineasm */
 
-/* #pragma aux mvlineasm4 parm [ecx][edi] modify [eax ebx ecx edx esi edi] */
+
 void mvlineasm4(int32_t i1, int32_t i2)
 {
     int i;
@@ -474,7 +453,7 @@ void mvlineasm4(int32_t i1, int32_t i2)
     } while (((unsigned)dest - fixchain) < ((unsigned)dest));
 } /* mvlineasm4 */
 
-/* #pragma aux setupspritevline parm [eax][ebx][ecx][edx][esi][edi] */
+
 static int32_t spal_eax;
 static int32_t smach_eax;
 static int32_t smach2_eax;
@@ -487,20 +466,22 @@ void setupspritevline(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5
     smach2_eax = (i5>>16)+i2;
     smach5_eax = smach2_eax + i4;
     smach_ecx = i3;
-} /* setupspritevline */
+} 
 
-/* #pragma aux spritevline parm [eax][ebx][ecx][edx][esi][edi] */
+
 void spritevline(int32_t i1, uint32_t i2, int32_t i3, uint32_t i4, int32_t i5, int32_t i6)
 {
     uint8_t  *source = (uint8_t  *)i5;
     uint8_t  *dest = (uint8_t  *)i6;
 
-dumblabel1:
+setup:
+
     i2 += smach_eax;
     i1 = (i1&0xffffff00) | (*source&0xff);
     if ((i2 - smach_eax) > i2) source += smach2_eax + 1;
     else source += smach2_eax;
-dumblabel2:
+
+draw:
     i1 = (i1&0xffffff00) | (((uint8_t  *)spal_eax)[i1]&0xff);
     *dest = i1;
     dest += fixchain;
@@ -508,16 +489,16 @@ dumblabel2:
     i4 += smach_ecx;
     i4--;
     if (!((i4 - smach_ecx) > i4) && i4 != 0)
-	    goto dumblabel1;
+	    goto setup;
     if (i4 == 0) return;
     i2 += smach_eax;
     i1 = (i1&0xffffff00) | (*source&0xff);
     if ((i2 - smach_eax) > i2) source += smach5_eax + 1;
     else source += smach5_eax;
-    goto dumblabel2;
+    goto draw;
 } /* spritevline */
 
-/* #pragma aux msetupspritevline parm [eax][ebx][ecx][edx][esi][edi] */
+
 static int32_t mspal_eax;
 static int32_t msmach_eax;
 static int32_t msmach2_eax;
@@ -530,20 +511,21 @@ void msetupspritevline(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i
     msmach2_eax = (i5>>16)+i2;
     msmach5_eax = smach2_eax + i4;
     msmach_ecx = i3;
-} /* msetupspritevline */
+} 
 
-/* #pragma aux mspritevline parm [eax][ebx][ecx][edx][esi][edi] */
+
 void mspritevline(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6)
 {
     uint8_t  *source = (uint8_t  *)i5;
     uint8_t  *dest = (uint8_t  *)i6;
 
-msdumblabel1:
+setup:
     i2 += smach_eax;
     i1 = (i1&0xffffff00) | (*source&0xff);
     if ((i2 - smach_eax) > i2) source += smach2_eax + 1;
     else source += smach2_eax;
-msdumblabel2:
+
+	draw:
     if ((i1&0xff) != 255)
     {
 	    i1 = (i1&0xffffff00) | (((uint8_t  *)spal_eax)[i1]&0xff);
@@ -554,16 +536,16 @@ msdumblabel2:
     i4 += smach_ecx;
     i4--;
     if (!((i4 - smach_ecx) > i4) && i4 != 0)
-	    goto msdumblabel1;
+	    goto setup;
     if (i4 == 0) return;
     i2 += smach_eax;
     i1 = (i1&0xffffff00) | (*source&0xff);
     if ((i2 - smach_eax) > i2) source += smach5_eax + 1;
     else source += smach5_eax;
-    goto msdumblabel2;
-} /* mspritevline */
+    goto draw;
+}
 
-/* #pragma aux tsetupspritevline parm [eax][ebx][ecx][edx][esi][edi] */
+
 uint32_t tspal;
 uint32_t tsmach_eax1;
 uint32_t tsmach_eax2;
@@ -576,15 +558,15 @@ void tsetupspritevline(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i
 	tsmach_eax2 = (i5 >> 16) + i2;
 	tsmach_eax3 = tsmach_eax2 + i4;
 	tsmach_ecx = i3;
-} /* tsetupspritevline */
+} 
 
-/* #pragma aux tspritevline parm [eax][ebx][ecx][edx][esi][edi] */
-void tspritevline(int32_t i1, int32_t i2, int32_t i3, uint32_t i4, int32_t i5, int32_t i6)
+
+void tspritevline(int32_t i1, int32_t i2, int32_t numPixels, uint32_t i4, int32_t i5, int32_t i6)
 {
-	while (i3)
+	while (numPixels)
 	{
-		i3--;
-		if (i3 != 0)
+		numPixels--;
+		if (numPixels != 0)
 		{
 			uint32_t adder = tsmach_eax2;
 			i4 += tsmach_ecx;
@@ -606,9 +588,9 @@ void tspritevline(int32_t i1, int32_t i2, int32_t i3, uint32_t i4, int32_t i5, i
 			i6 += fixchain;
 		}
 	}
-} /* tspritevline */
+} 
 
-/* #pragma aux mhline parm [eax][ebx][ecx][edx][esi][edi] */
+
 static int32_t mmach_eax;
 static int32_t mmach_asm3;
 static int32_t mmach_asm1;
@@ -621,9 +603,9 @@ void mhline(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t 
     mmach_asm1 = asm1;
     mmach_asm2 = asm2;
     mhlineskipmodify(asm2,i2,i3,i4,i5,i6);
-} /* mhline */
+}
 
-/* #pragma aux mhlineskipmodify parm [eax][ebx][ecx][edx][esi][edi] */
+
 static uint8_t  mshift_al = 26;
 static uint8_t  mshift_bl = 6;
 void mhlineskipmodify(int32_t i1, uint32_t i2, uint32_t i3, int32_t i4, int32_t i5, int32_t i6)
@@ -643,9 +625,9 @@ void mhlineskipmodify(int32_t i1, uint32_t i2, uint32_t i3, int32_t i4, int32_t 
 	    i6++;
 	    counter--;
     }
-} /* mhlineskipmodify */
+}
 
-/* #pragma aux msethlineshift parm [eax][ebx] */
+
 void msethlineshift(int32_t i1, int32_t i2)
 {
     i1 = 256-i1;
@@ -653,7 +635,7 @@ void msethlineshift(int32_t i1, int32_t i2)
     mshift_bl = (i2&0x1f);
 } /* msethlineshift */
 
-/* #pragma aux thline parm [eax][ebx][ecx][edx][esi][edi] */
+
 static int32_t tmach_eax;
 static int32_t tmach_asm3;
 static int32_t tmach_asm1;
@@ -666,9 +648,8 @@ void thline(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t 
     tmach_asm1 = asm1;
     tmach_asm2 = asm2;
     thlineskipmodify(asm2,i2,i3,i4,i5,i6);
-} /* thline */
+}
 
-/* #pragma aux thlineskipmodify parm [eax][ebx][ecx][edx][esi][edi] */
 static uint8_t  tshift_al = 26;
 static uint8_t  tshift_bl = 6;
 void thlineskipmodify(int32_t i1, uint32_t i2, uint32_t i3, int32_t i4, int32_t i5, int32_t i6)
@@ -693,17 +674,17 @@ void thlineskipmodify(int32_t i1, uint32_t i2, uint32_t i3, int32_t i4, int32_t 
 	    i6++;
 	    counter--;
     }
-} /* thlineskipmodify */
+} 
 
-/* #pragma aux tsethlineshift parm [eax][ebx] */
+
 void tsethlineshift(int32_t i1, int32_t i2)
 {
     i1 = 256-i1;
     tshift_al = (i1&0x1f);
     tshift_bl = (i2&0x1f);
-} /* tsethlineshift */
+}
 
-/* #pragma aux setupslopevlin parm [eax][ebx][ecx] modify [edx] */
+
 static int32_t slopemach_ebx;
 static int32_t slopemach_ecx;
 static int32_t slopemach_edx;
@@ -722,7 +703,7 @@ void setupslopevlin(int32_t i1, int32_t i2, int32_t i3)
     slopemach_ah2 = (slopemach_ah1 - (i1&0x1f)) & 0x1f;
     c.f = asm2_f = (float)asm1;
     asm2 = c.i;
-} /* setupslopevlin */
+}
 
 extern int32_t reciptable[2048];
 extern int32_t globalx3, globaly3;
@@ -794,46 +775,15 @@ void slopevlin(int32_t i1, uint32_t i2, int32_t i3, int32_t i4, int32_t i5, int3
     } while ((int32_t)ebx > 0);
 } /* slopevlin */
 
-/* #pragma aux settransnormal parm */
+
 void settransnormal(void)
 {
 	transrev = 0;
-} /* settransnormal */
+} 
 
-/* #pragma aux settransreverse parm */
+
 void settransreverse(void)
 {
 	transrev = 1;
-} /* settransreverse */
-
-/* #pragma aux setupdrawslab parm [eax][ebx] */
-int32_t setupdrawslab(int32_t i1, int32_t i2)
-{
-    int32_t retval = 0;
-  
-    return(retval);
-
-} /* setupdrawslab */
-
-/* #pragma aux drawslab parm [eax][ebx][ecx][edx][esi][edi] */
-int32_t drawslab(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6)
-{
-    int32_t retval = 0;
-    /*
-    __asm__ __volatile__ (
-        "call _asm_drawslab   \n\t"
-       : "=a" (retval)
-        : "a" (i1), "b" (i2), "c" (i3), "d" (i4), "S" (i5), "D" (i6)
-        : "cc", "memory");
-	*/
-    return(retval);
-} /* drawslab */
-
-/* #pragma aux stretchhline parm [eax][ebx][ecx][edx][esi][edi] */
-int32_t stretchhline(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6)
-{
-    int32_t retval = 0;
-   
-    return(retval);
-} /* stretchhline */
+} 
 
