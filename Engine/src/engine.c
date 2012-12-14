@@ -127,8 +127,14 @@ char  kensmessage[128];
 uint8_t  britable[16][64];
 uint8_t  textfont[1024], smalltextfont[1024];
 
+//xb1 and xb2 seems to be storing the column of the wall endpoint
+//yb1 and yb2 store the Y distance from the camera.
 static int32_t xb1[MAXWALLSB], yb1[MAXWALLSB], xb2[MAXWALLSB], yb2[MAXWALLSB];
+
+//rx1,rx2,ry1,ry2 stores the cameraspace wall endpoints coordinates.
 static int32_t rx1[MAXWALLSB], ry1[MAXWALLSB], rx2[MAXWALLSB], ry2[MAXWALLSB];
+
+//
 static short p2[MAXWALLSB], thesector[MAXWALLSB], thewall[MAXWALLSB];
 
 static short bunchfirst[MAXWALLSB], bunchlast[MAXWALLSB];
@@ -353,7 +359,8 @@ static void scansector (short sectnum)
             wal2 = &wall[wal->point2];
 
             // In camera space the center is the player.
-            // Make the camera the center of the world for the 2 Wall endpoints (x,y)
+            // Tranform the 2 Wall endpoints (x,y) from worldspace to camera space.
+            // After that we have two vectors starting from the camera and going to the endpoints (x1,y1) and (x2,y2).
             x1 = wal->x-globalposx;
             y1 = wal->y-globalposy;
 
@@ -371,15 +378,16 @@ static void scansector (short sectnum)
                     // Using cross product, determine if the portal is facing us or not.
                     // If it is: Add it to the stack and bump the stack counter.
                     // This line is equivalent to tempint < 0x40000
-                    if (((unsigned)tempint+262144) < 524288)
+                    if (((unsigned)tempint+262144) < 524288) // ??? What is this test ?? How acute the angle is ?
                     {
                         //(x2-x1)*(x2-x1)+(y2-y1)*(y2-y1) is the squared length of the wall
+                        // ??? What is this test ?? How acute the angle is ?
                         if (mulscale5(tempint,tempint) <= (x2-x1)*(x2-x1)+(y2-y1)*(y2-y1))
                             sectorborder[sectorbordercnt++] = nextsectnum;
                     }
                 }
 
-            // Rotate the wall endpoint position according to the player orientation.
+            // Rotate the wall endpoints vectors according to the player orientation.
             // This is a regular rotation matrix using [29.3] fixed point.
             if ((z == startwall) || (wall[z-1].point2 != z))
             {
@@ -400,19 +408,19 @@ static void scansector (short sectnum)
 
 
 
-            // No idea what this is.
+            // Equivalent of a near plane clipping ?
             if ((yp1 < 256) && (yp2 < 256)) goto skipitaddwall;
 
             /* If wall's NOT facing you */
             if (dmulscale32(xp1,yp2,-xp2,yp1) >= 0) goto skipitaddwall;
 
             // The wall is still not eligible for rendition: Let's do some more Frustrum culling !!
-
             if (xp1 >= -yp1)
             {
                 if ((xp1 > yp1) || (yp1 == 0))
                     goto skipitaddwall;
 
+                //Project the point onto screen and see in which column it belongs.
                 xb1[numscans] = halfxdimen + scale(xp1,halfxdimen,yp1);
                 if (xp1 >= 0)
                     xb1[numscans]++;   /* Fix for SIGNED divide */
@@ -454,7 +462,8 @@ static void scansector (short sectnum)
             }
             if ((yb2[numscans] < 256) || (xb1[numscans] > xb2[numscans])) goto skipitaddwall;
 
-            /* Made it all the way! */
+            // Made it all the way!
+            // Time to add this wall information to the stack of wall potentially visible.
             thesector[numscans] = sectnum;
             thewall[numscans] = z;
 
@@ -476,16 +485,22 @@ skipitaddwall:
         }
 
         //FCS: TODO rename this p2[] to bunchList[] or something like that. This name is an abomination
+        
+        //Break down the list of walls for this sector into bunchs. Since a bunch is a
+        // continuously visible list of wall: A sector can generate many bunches.
         for(z=numscansbefore; z<numscans; z++)
         {
             if ((wall[thewall[z]].point2 != thewall[p2[z]]) || (xb2[z] >= xb1[p2[z]]))
             {
+                // Create an entry in the bunch list
                 bunchfirst[numbunches++] = p2[z];
+                
+                //Mark the end of the bunch wall list.
                 p2[z] = -1;
             }
         }
 
-        //For each bunch, cache the last wall of the bunch in bunchlast.
+        //For each bunch, find the last wall and cache it in bunchlast.
         for(z=bunchfrst; z<numbunches; z++)
         {
             for(zz=bunchfirst[z]; p2[zz]>=0; zz=p2[zz]);
@@ -493,6 +508,7 @@ skipitaddwall:
         }
 
     } while (sectorbordercnt > 0);
+    // do this until the stack of sectors to visit if empty.
 }
 
 
@@ -2420,7 +2436,7 @@ static void dosetaspect(void)
     }
 }
 
-
+//FCS: Geez one more horrible algorithm to decipher :/ :( cry smiley.....
 int wallfront(int32_t l1, int32_t l2)
 {
     walltype *wal;
@@ -2472,6 +2488,7 @@ int wallfront(int32_t l1, int32_t l2)
 }
 
 
+//Return 1 if bunch b1 is in from of bunch b2.
 static int bunchfront(int32_t b1, int32_t b2)
 {
     int32_t x1b1, x2b1, x1b2, x2b2, b1f, b2f, i;
@@ -2479,7 +2496,10 @@ static int bunchfront(int32_t b1, int32_t b2)
     b1f = bunchfirst[b1];
     x1b1 = xb1[b1f];
     x2b2 = xb2[bunchlast[b2]]+1;
-    if (x1b1 >= x2b2) return(-1);
+    
+    if (x1b1 >= x2b2)
+        return(-1);
+    
     b2f = bunchfirst[b2];
     x1b2 = xb1[b2f];
     x2b1 = xb2[bunchlast[b1]]+1;
@@ -2490,6 +2510,7 @@ static int bunchfront(int32_t b1, int32_t b2)
         for(i=b2f; xb2[i]<x1b1; i=p2[i]);
         return(wallfront(b1f,i));
     }
+    
     for(i=b1f; xb2[i]<x1b2; i=p2[i]);
     return(wallfront(i,b2f));
 }
@@ -2670,8 +2691,14 @@ void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,
         mirrorsy2 = max(dmost[mirrorsx1],dmost[mirrorsx2]);
     }
 
+    // Scan sector has generated bunches, it is not time to see which one to render.
+    // numhits is the number of column to draw (if the screen is 320x200) then numhits starts at 200.
+    // Due to rounding error, not all column may be drawn so an additional stop condition is here:
+    // When every bunches have been tested for rendition.
     while ((numbunches > 0) && (numhits > 0))
     {
+        // tempbuf is used to mark which bunches have been elected as "closest".
+        // if tempbug[x] == 1 then it should be discarded.
         clearbuf(&tempbuf[0],(long)((numbunches+3)>>2),0L);
         tempbuf[0] = 1;
 
@@ -2682,6 +2709,7 @@ void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,
             tempbuf[i] = 1;
             if (j == 0) tempbuf[closest] = 1, closest = i;
         }
+        
         for(i=0; i<numbunches; i++) /* Double-check */
         {
             if (tempbuf[i]) continue;
@@ -2690,7 +2718,7 @@ void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,
             if (j == 0) tempbuf[closest] = 1, closest = i, i = 0;
         }
 
-        //Draw every solid walls in the bunch "closest"
+        //Draw every solid walls with ceiling/floor in the bunch "closest"
         drawalls(closest);
 
         if (automapping)
@@ -2699,7 +2727,9 @@ void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,
                 show2dwall[thewall[z]>>3] |= pow2char[thewall[z]&7];
         }
 
+        //Since we just rendered a bunch, lower the current stack element
         numbunches--;
+        //...and move the bunch at the top of the stack so we won't iterate on it again...
         bunchfirst[closest] = bunchfirst[numbunches];
         bunchlast[closest] = bunchlast[numbunches];
     }
@@ -4291,20 +4321,26 @@ void drawline256 (int32_t x1, int32_t y1, int32_t x2, int32_t y2, uint8_t  col)
 
 /*
  FCS: Return true if the point (x,Y) is inside the sector sectnum.
- Note that a sector is closed to the answer is always 0 or 1.
+ Note that a sector is closed (but can be concave) so the answer is always 0 or 1.
 
- Algorithm: For each wall one after an other....???
+ Algorithm: This is an optimized raycasting inside polygon test:
+ http://en.wikipedia.org/wiki/Point_in_polygon#Ray_casting_algorithm
+ The goal is to follow an horizontal ray passing by (x,y) and count how many
+ wall are being crossed.
+ If it is an odd number of time: (x,y) is inside the sector.
+ If it is an even nymber of time:(x,y) is outside the sector.
  */
+
 int inside(int32_t x, int32_t y, short sectnum)
 {
     walltype *wal;
     int32_t i, x1, y1, x2, y2;
-    uint32_t  cnt;
+    uint32_t  wallCrossed;
 
     //Quick check if the sector ID is valid.
     if ((sectnum < 0) || (sectnum >= numsectors)) return(-1);
 
-    cnt = 0;
+    wallCrossed = 0;
     wal = &wall[sector[sectnum].wallptr];
     i = sector[sectnum].wallnum;
     do
@@ -4322,13 +4358,17 @@ int inside(int32_t x, int32_t y, short sectnum)
             //If (x1^x2) >= 0 x1 and x2 have identic sign bit: x is on the left or the right of both wal->x and wall[wal->point2].x.
             if ((x1^x2) >= 0)
             {
-                // Euh...je ne sais pas.....
-                cnt ^= x1;
+                // If (x,y) is on totally on the left or on the right, just count x1 (which indicate if we are on
+                // (x,y) is on the left or on the right.
+                wallCrossed ^= x1;
             }
             else
             {
-                //Cross-Product WTF ?
-                cnt ^= (x1*y2-x2*y1)^y2;
+                // This is the most complicated case: X is between x1 and x2 and y is between y1 and y2.
+                // We need to know exactly if it is on the left or on the right in order to know if the ray
+                // is crossing the wall or not,
+                // The sign of the Cross-Product can answer this case :) !
+                wallCrossed ^= (x1*y2-x2*y1)^y2;
             }
         }
 
@@ -4337,8 +4377,9 @@ int inside(int32_t x, int32_t y, short sectnum)
 
     } while (i);
 
-    //Just return the sign.
-    return(cnt>>31);
+    //Just return the sign. If the position vector cut the sector walls an odd number of time
+    //it is inside. Otherwise (even) it is outside.
+    return(wallCrossed>>31);
 }
 
 
