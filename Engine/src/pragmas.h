@@ -157,8 +157,8 @@ void clearbuf(void *d, int32_t c, int32_t a);
 void clearbufbyte(void *D, int32_t c, int32_t a);
 void copybufbyte(void *S, void *D, int32_t c);
 
-void qinterpolatedown16 (long* bufptr, int32_t num, int32_t val, int32_t add);
-void qinterpolatedown16short (long* bufptr, int32_t num, int32_t val, int32_t add);
+void qinterpolatedown16 (int32_t* bufptr, int32_t num, int32_t val, int32_t add);
+void qinterpolatedown16short (int32_t* bufptr, int32_t num, int32_t val, int32_t add);
 
 #endif /* !defined _INCLUDE_PRAGMAS_H_ */
 

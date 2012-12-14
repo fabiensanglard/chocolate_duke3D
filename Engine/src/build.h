@@ -330,7 +330,7 @@ OTHER VARIABLES:
 //END VISUALIZE RENDERER
 
 //Global.c
-void Error (int errorType, uint8_t  *error, ...);
+void Error (int errorType, char  *error, ...);
 int FindDistance2D(int ix, int iy);
 
 #endif  /* defined _INCLUDE_BUILD_H_ */

@@ -1301,6 +1301,8 @@ void displayweapon(short snum)
     int8_t gs;
     struct player_struct *p;
     short *kb;
+    
+    
 
     p = &ps[snum];
     kb = &p->kickback_pic;

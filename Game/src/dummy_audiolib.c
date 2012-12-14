@@ -8,7 +8,8 @@
 
 #include "audiolib/fx_man.h"
 #include <inttypes.h>
-
+#include <stdio.h>
+#include "engine_protos.h"
 /*
 uint8_t  *FX_ErrorString( int ErrorNumber ){
    static uint8_t  nope = '\0';
@@ -190,9 +191,22 @@ void MUSIC_RegisterTimbreBank(uint8_t  *timbres)
 {
 }
 
-void PlayMusic(short dummy)
+void PlayMusic(char* filename)
 {
-        
+    char magicNumber[5];
+    printf("Play music '%s'.\n",filename);
+    int32_t fd = kopen4load(filename,1);
+    if (fd > 0)
+        printf("Found the music size='%d'!\n",kfilelength(fd));
+    
+    kread(fd, magicNumber, 4);
+    magicNumber[4] = 0;
+    
+    //If midi this should be 'MThd' !
+    printf("Magic number='%s'!\n",magicNumber);
+    
+    
+    kclose(fd);
 }
 
 

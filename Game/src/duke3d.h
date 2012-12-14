@@ -373,16 +373,16 @@ extern uint8_t  typebuflen,typebuf[41];
 extern uint8_t  MusicPtr[72000];
 extern int32_t msx[2048],msy[2048];
 extern short cyclers[MAXCYCLERS][6],numcyclers;
-extern uint8_t  myname[2048];
+extern char  myname[2048];
 
 struct user_defs
 {
     uint8_t  god,warp_on,cashman,eog,showallmap;
     uint8_t  show_help,scrollmode,clipping;
-    uint8_t  user_name[MAXPLAYERS][32];
-    uint8_t  ridecule[10][40];
-    uint8_t  savegame[10][22];
-    uint8_t  pwlockout[128],rtsname[128];
+    char  user_name[MAXPLAYERS][32];
+    char  ridecule[10][40];
+    char  savegame[10][22];
+    char  pwlockout[128],rtsname[128];
     uint8_t  overhead_on,last_overhead;
 
     short pause_on,from_bonus;
@@ -434,7 +434,7 @@ extern uint8_t  picsiz[MAXTILES];
 typedef struct
 {
 	unsigned int crc32;
-	uint8_t * name;
+	char * name;
 	uint32_t size;
 } crc32_t;
 
@@ -529,9 +529,9 @@ extern short int moustat;
 
 extern short int global_random;
 extern int32_t scaredfallz;
-extern uint8_t  buf[80]; //My own generic input buffer
+extern char  buf[80]; //My own generic input buffer
 
-extern uint8_t  fta_quotes[NUMOFFIRSTTIMEACTIVE][64];
+extern char  fta_quotes[NUMOFFIRSTTIMEACTIVE][64];
 extern uint8_t  scantoasc[128],ready2send;
 extern uint8_t  scantoascwithshift[128];
 
@@ -545,7 +545,8 @@ extern uint8_t  playerreadyflag[MAXPLAYERS],playerquitflag[MAXPLAYERS];
 extern uint8_t  sounds[NUM_SOUNDS][14];
 
 extern int32_t script[MAXSCRIPTSIZE],*scriptptr,*insptr,*labelcode,labelcnt;
-extern uint8_t  *label,*textptr,error,warning,killit_flag;
+extern char  *label,*textptr,error,warning;
+extern uint8_t killit_flag;
 extern int32_t *actorscrptr[MAXTILES],*parsing_actor;
 extern uint8_t  actortype[MAXTILES];
 extern uint8_t  *music_pointer;
@@ -610,11 +611,11 @@ extern uint8_t  screencapt;
 extern short soundps[NUM_SOUNDS],soundpe[NUM_SOUNDS],soundvo[NUM_SOUNDS];
 extern uint8_t  soundpr[NUM_SOUNDS],soundm[NUM_SOUNDS];
 extern int32_t soundsiz[NUM_SOUNDS];
-extern uint8_t  level_names[44][33];
+extern char  level_names[44][33];
 extern int32_t partime[44],designertime[44];
-extern uint8_t  volume_names[4][33];
-extern uint8_t  skill_names[5][33];
-extern uint8_t  level_file_names[44][128];
+extern char  volume_names[4][33];
+extern char  skill_names[5][33];
+extern char  level_file_names[44][128];
 
 extern int32 SoundToggle,MusicToggle;
 extern short last_threehundred,lastsavedpos;
@@ -622,7 +623,7 @@ extern uint8_t  restorepalette;
 
 extern short buttonstat;
 extern int32_t cachecount;
-extern uint8_t  boardfilename[128],waterpal[768],slimepal[768],titlepal[768],drealms[768],endingpal[768];
+extern char  boardfilename[128],waterpal[768],slimepal[768],titlepal[768],drealms[768],endingpal[768];
 extern uint8_t  betaname[80];
 extern uint8_t  cachedebug,earthquaketime;
 extern uint8_t  networkmode;

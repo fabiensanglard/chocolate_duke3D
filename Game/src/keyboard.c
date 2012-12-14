@@ -264,7 +264,7 @@ uint8_t  *KB_ScanCodeToString( kb_scancode scancode )
 	return NULL;
 }
 
-kb_scancode KB_StringToScanCode( uint8_t  * string )
+kb_scancode KB_StringToScanCode( char  * string )
 {
 	uint8_t * name = NULL;
 	int32 i=0;

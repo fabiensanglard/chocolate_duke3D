@@ -43,7 +43,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 ====================
 */
 
-void RTS_Init (uint8_t  *filename);
+void RTS_Init (char  *filename);
 /*
 ====================
 =

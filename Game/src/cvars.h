@@ -14,14 +14,14 @@ typedef void (*function_t) (void* binding);
 
 typedef struct t_cvar_binding
 {
-  uint8_t           name[64];
-  uint8_t           help[64];
+  char           name[64];
+  char           help[64];
   void*         variable;
   function_t	function;
 } cvar_binding;
 
 
-void            CVAR_RegisterCvar(const uint8_t * varname, const uint8_t * varhelp, void* variable, function_t function);
+void            CVAR_RegisterCvar(const char * varname, const char * varhelp, void* variable, function_t function);
 int             CVAR_GetNumCvarBindings();
 cvar_binding*   CVAR_GetCvarBinding(unsigned int nBinding);
 void            CVAR_Render();

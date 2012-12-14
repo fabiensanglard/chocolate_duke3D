@@ -254,35 +254,11 @@ void intomenusounds(void)
 
 void playmusic(uint8_t  *fn)
 {
-#if PLATFORM_DOS
-    short      fp;
-    int32_t        l;
-
-    if(MusicToggle == 0) return;
-    if(MusicDevice == NumSoundCards) return;
-    if(eightytwofifty && numplayers > 1) return;
-
-    fp = kopen4load(fn,0);
-
-    if(fp == -1) return;
-
-    l = kfilelength( fp );
-    if(l >= 72000)
-    {
-        kclose(fp);
-        return;
-    }
-
-    kread( fp, MusicPtr, l);
-    kclose( fp );
-    MUSIC_PlaySong( MusicPtr, MUSIC_LoopSong );
-#else
     if(MusicToggle == 0) return;
     if(MusicDevice == NumSoundCards) return;
 
     // the SDL_mixer version does more or less this same thing.  --ryan.
     PlayMusic(fn);
-#endif
 }
 
 uint8_t  loadsound(unsigned short num)

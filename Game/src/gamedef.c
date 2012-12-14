@@ -42,13 +42,13 @@ static spritetype *g_sp;
 #define NUMKEYWORDS     112
 
 //From global.c
-void FixFilePath(uint8_t  *filename);
+void FixFilePath(char  *filename);
 
 //From actors.c
 void lotsofmail(spritetype *s, short n);
 void lotsofpaper(spritetype *s, short n);
 
-uint8_t  *keyw[NUMKEYWORDS] =
+char  *keyw[NUMKEYWORDS] =
 {
     "definelevelname",  // 0
     "actor",            // 1    [#]
@@ -331,7 +331,7 @@ int32_t keyword(void)
     tempbuf[i] = 0;
 
     for(i=0;i<NUMKEYWORDS;i++)
-        if( strcmp( (const uint8_t *)tempbuf,keyw[i]) == 0 )
+        if( strcmp( (const char *)tempbuf,keyw[i]) == 0 )
             return i;
 
     return -1;
@@ -698,7 +698,7 @@ uint8_t  parsecommand(int readfromGRP)
             return 0;
         case 55: // include other con files.
 			{
-				uint8_t  includedconfile[512];
+				char  includedconfile[512];
 				scriptptr--;
 				while( isaltok(*textptr) == 0 )
 				{
@@ -715,20 +715,8 @@ uint8_t  parsecommand(int readfromGRP)
 				tempbuf[j] = '\0';
 
 				// fix path for unix. (doesn't really matter...)			
-				FixFilePath((uint8_t *)tempbuf);
-/*
-				// Are we loading a TC?
-				if(game_dir[0] != '\0')
-				{
-					// Yes
-					sprintf(includedconfile, "%s\\%s", game_dir, tempbuf);
-				}
-				else
-				{
-					// No
-					sprintf(includedconfile, "%s", tempbuf);
-				}
-*/
+				FixFilePath((char *)tempbuf);
+
 				sprintf(includedconfile, "%s", tempbuf);
 
 				fp = TCkopen4load(includedconfile,readfromGRP);
@@ -1504,7 +1492,7 @@ void passone(int readfromGRP)
 
 }
 
-uint8_t  *defaultcons[3] =
+char  *defaultcons[3] =
 {
      "GAME.CON",
      "USER.CON",
@@ -1548,7 +1536,7 @@ void copydefaultcons(void)
     }
 }
 
-void loadefs(uint8_t  *filenam, uint8_t  *mptr, int readfromGRP)
+void loadefs(char  *filenam, uint8_t  *mptr, int readfromGRP)
 {
     int32_t fs,fp;
 	uint8_t  kbdKey;

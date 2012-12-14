@@ -89,11 +89,11 @@ short animatesect[MAXANIMATES];
 int32_t msx[2048],msy[2048];
 short cyclers[MAXCYCLERS][6],numcyclers;
 
-uint8_t  fta_quotes[NUMOFFIRSTTIMEACTIVE][64];
+char  fta_quotes[NUMOFFIRSTTIMEACTIVE][64];
 
 uint8_t  tempbuf[2048], packbuf[576];
 
-uint8_t  buf[80];
+char  buf[80];
 
 short camsprite;
 short mirrorwall[64], mirrorsector[64], mirrorcnt;
@@ -102,10 +102,11 @@ int current_menu;
 
 uint8_t  betaname[80];
 
-uint8_t  level_names[44][33],level_file_names[44][128];
+char level_names[44][33];
+char level_file_names[44][128];
 int32_t partime[44],designertime[44];
-uint8_t  volume_names[4][33] = { "L.A. MELTDOWN", "LUNAR APOCALYPSE", "SHRAPNEL CITY", "" }; // Names are not in 1.3 con files. MUST be in code.
-uint8_t  skill_names[5][33] = { "PIECE OF CAKE", "LET'S ROCK", "COME GET SOME", "DAMN I'M GOOD", "" };
+char  volume_names[4][33] = { "L.A. MELTDOWN", "LUNAR APOCALYPSE", "SHRAPNEL CITY", "" }; // Names are not in 1.3 con files. MUST be in code.
+char  skill_names[5][33] = { "PIECE OF CAKE", "LET'S ROCK", "COME GET SOME", "DAMN I'M GOOD", "" };
 
 volatile int32_t checksume;
 int32_t soundsiz[NUM_SOUNDS];
@@ -155,7 +156,8 @@ int32_t vel, svel, angvel, horiz, ototalclock, respawnactortime=768, respawnitem
 
 int32_t script[MAXSCRIPTSIZE],*scriptptr,*insptr,*labelcode,labelcnt;
 int32_t *actorscrptr[MAXTILES],*parsing_actor;
-uint8_t  *label,*textptr,error,warning,killit_flag;
+char  *label,*textptr,error,warning ;
+uint8_t killit_flag;
 uint8_t  *music_pointer;
 uint8_t  actortype[MAXTILES];
 
@@ -200,7 +202,7 @@ int32_t myxbak[MOVEFIFOSIZ], myybak[MOVEFIFOSIZ], myzbak[MOVEFIFOSIZ];
 int32_t myhorizbak[MOVEFIFOSIZ],dukefriction = 0xcc00, show_shareware;
 
 short myangbak[MOVEFIFOSIZ];
-uint8_t  myname[2048] = {"XDUKE"};
+char  myname[2048] = {"XDUKE"};
 uint8_t  camerashitable,freezerhurtowner=0,lasermode;
 // CTW - MODIFICATION
 // uint8_t  networkmode = 255, movesperpacket = 1,gamequit = 0,playonten = 0,everyothertime;
@@ -221,7 +223,7 @@ int32_t *curipos[MAXINTERPOLATIONS];
 // portability stuff.  --ryan.
 // A good portion of this was ripped from GPL'd Rise of the Triad.  --ryan.
 
-void FixFilePath(uint8_t  *filename)
+void FixFilePath(char  *filename)
 {
 #if PLATFORM_UNIX
     uint8_t  *ptr;
@@ -334,9 +336,9 @@ int _dos_findnext(struct find_t *f)
 }
 
 #elif defined(PLATFORM_UNIX) || defined(PLATFORM_MACOSX)
-int _dos_findfirst(uint8_t  *filename, int x, struct find_t *f)
+int _dos_findfirst(char  *filename, int x, struct find_t *f)
 {
-    uint8_t  *ptr;
+    char  *ptr;
 
     if (strlen(filename) >= sizeof (f->pattern))
         return(1);
@@ -361,7 +363,7 @@ int _dos_findfirst(uint8_t  *filename, int x, struct find_t *f)
 }
 
 
-static int check_pattern_nocase(const uint8_t  *x, const uint8_t  *y)
+static int check_pattern_nocase(const char  *x, const char  *y)
 {
     if ((x == NULL) || (y == NULL))
         return(0);  /* not a match. */
@@ -494,7 +496,7 @@ int FindDistance3D(int ix, int iy, int iz)
    return (ix - (ix>>4) + (t>>2) + (t>>3));
 }
 #include "SDL.h"
-void Error (int errorType, uint8_t  *error, ...)
+void Error (int errorType, char  *error, ...)
 {
    va_list argptr;
 
@@ -522,7 +524,7 @@ void write2disk(int line, uint8_t * cfilename, uint8_t  *filename2write, uint8_t
 	// usage: write2disk(__LINE__, __FILE__, "c:\temp\my_dbug_file.txt", uint8_t * msg);
 
 	int i, k=0;
-	uint8_t  filename[2048];
+	char  filename[2048];
 	FILE *pFile;
 
 	for(i=0; cfilename[i]; i++)
@@ -542,7 +544,8 @@ void write2disk(int line, uint8_t * cfilename, uint8_t  *filename2write, uint8_t
 int32 SafeOpenAppend (const char  *_filename, int32 filetype)
 {
 	int	handle;
-    uint8_t  filename[MAX_PATH];
+    char  filename[MAX_PATH];
+    
     strncpy(filename, _filename, sizeof (filename));
     filename[sizeof (filename) - 1] = '\0';
     FixFilePath(filename);
@@ -596,10 +599,13 @@ int32 SafeOpenWrite (const char  *_filename, int32 filetype)
 	return handle;
 }
 
+
+
+
 int32 SafeOpenRead (const char  *_filename, int32 filetype)
 {
 	int	handle;
-    uint8_t  filename[MAX_PATH];
+    char  filename[MAX_PATH];
     strncpy(filename, _filename, sizeof (filename));
     filename[sizeof (filename) - 1] = '\0';
     FixFilePath(filename);
@@ -903,7 +909,7 @@ uint8_t  *ultoa(unsigned int32_t value, uint8_t  *string, int radix)
 }
 #endif
 
-uint8_t  ApogeePath[256];
+char  ApogeePath[256];
 
 int setup_homedir (void)
 {
@@ -927,7 +933,7 @@ int setup_homedir (void)
 }
 
 
-uint8_t    CheckParm (uint8_t  *check)
+uint8_t    CheckParm (char  *check)
 {
     int i;
     for (i = 1; i < _argc; i++)

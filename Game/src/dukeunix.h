@@ -41,10 +41,10 @@
 struct find_t
 {
     DIR *dir;
-    uint8_t  pattern[MAX_PATH];
-    uint8_t  name[MAX_PATH];
+    char  pattern[MAX_PATH];
+    char  name[MAX_PATH];
 };
-int _dos_findfirst(uint8_t  *filename, int x, struct find_t *f);
+int _dos_findfirst(char  *filename, int x, struct find_t *f);
 int _dos_findnext(struct find_t *f);
 
 struct dosdate_t
@@ -65,7 +65,7 @@ void _dos_getdate(struct dosdate_t *date);
 #define max(x, y) ((x) > (y) ? (x) : (y))
 #endif
 
-#define FP_OFF(x) ((int32_t) (x))
+
 
 #ifndef strcmpi
 #define strcmpi(x, y) strcasecmp(x, y)

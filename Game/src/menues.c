@@ -146,7 +146,7 @@ void cmenu(short cm)
 }
 
 
-void savetemp(uint8_t  *fn,int32_t daptr,int32_t dasiz)
+void savetemp(char  *fn,int32_t daptr,int32_t dasiz)
 {
     int fp;
 
@@ -542,12 +542,12 @@ int loadplayer(int8_t spot)
 int saveplayer(int8_t spot)
 {
      int32_t i, j;
-         uint8_t  fn[] = "game0.sav";
-     uint8_t  mpfn[] = "gameA_00.sav";
-     uint8_t  *fnptr,scriptptrs[MAXSCRIPTSIZE];
+     char  fn[] = "game0.sav";
+     char  mpfn[] = "gameA_00.sav";
+     char  *fnptr,scriptptrs[MAXSCRIPTSIZE];
          FILE *fil;
      int32_t bv = BYTEVERSION;
-	 uint8_t  fullpathsavefilename[16];
+	 char  fullpathsavefilename[16];
 
      if(spot < 0)
      {
@@ -903,7 +903,7 @@ int probeXduke(int x,int y,int i,int n, int32_t spriteSize)
     }
 }
 
-int menutext(int x,int y,short s,short p,uint8_t  *t)
+int menutext(int x,int y,short s,short p,char  *t)
 {
     short i, ac, centre;
 
@@ -1018,7 +1018,7 @@ int menutext(int x,int y,short s,short p,uint8_t  *t)
     return (x);
 }
 
-int menutextc(int x,int y,short s,short p,uint8_t  *t)
+int menutextc(int x,int y,short s,short p,char  *t)
 {
     short i, ac, centre;
 

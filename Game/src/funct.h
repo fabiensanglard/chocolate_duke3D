@@ -123,9 +123,9 @@ extern void cheatkeys(short snum);
 //#line "sector.c" 2766
 extern void checksectors(short snum);
 //#line "rts.c" 36
-extern void RTS_AddFile(uint8_t  *filename);
+extern void RTS_AddFile(char  *filename);
 //#line "rts.c" 93
-extern void RTS_Init(uint8_t  *filename);
+extern void RTS_Init(char *filename);
 //#line "rts.c" 126
 extern int32 RTS_NumSounds(void );
 //#line "rts.c" 141
@@ -228,7 +228,7 @@ extern void processinput(short snum);
 //#line "menues.c" 18
 extern void cmenu(short cm);
 //#line "menues.c" 38
-extern void savetemp(uint8_t  *fn,int32_t daptr,int32_t dasiz);
+extern void savetemp(char  *fn,int32_t daptr,int32_t dasiz);
 //#line "menues.c" 49
 extern void getangplayers(short snum);
 //#line "menues.c" 67
@@ -243,9 +243,9 @@ extern void sendgameinfo(void );
 extern int probe(int x,int y,int i,int n);
 extern int probeXduke(int x,int y,int i,int n, int32_t spriteSize);
 //#line "menues.c" 521
-extern int menutext(int x,int y,short s,short p,uint8_t  *t);
+extern int menutext(int x,int y,short s,short p,char  *t);
 //#line "menues.c" 630
-extern int menutextc(int x,int y,short s,short p,uint8_t  *t);
+extern int menutextc(int x,int y,short s,short p,char  *t);
 //#line "menues.c" 727
 extern void bar(int x,int y,short *p,short dainc,uint8_t  damodify,short s,short pa);
 //#line "menues.c" 806
@@ -286,7 +286,7 @@ extern uint8_t  parsecommand(int readfromGRP );
 //#line "gamedef.c" 1227
 extern void passone(int readfromGRP);
 //#line "gamedef.c" 1239
-extern void loadefs(uint8_t  *fn,uint8_t  *mptr, int readfromGRP);
+extern void loadefs(char  *fn,uint8_t  *mptr, int readfromGRP);
 //#line "gamedef.c" 1342
 extern uint8_t  dodge(spritetype *s);
 //#line "gamedef.c" 1374
@@ -312,11 +312,11 @@ extern int inittimer(int);
 //#line "game.c" 81
 extern void uninittimer(void );
 //#line "game.c" 89
-extern int gametext(int x,int y,uint8_t  *t,uint8_t  s,short dabits);
+extern int gametext(int x,int y,char  *t,uint8_t  s,short dabits);
 //#line "game.c" 136
-extern int gametextpart(int x,int y,uint8_t  *t,uint8_t  s,short p);
+extern int gametextpart(int x,int y,char  *t,uint8_t  s,short p);
 //#line "game.c" 192
-extern int minitext(int x,int y,uint8_t  *t,uint8_t  p,uint8_t  sb);
+extern int minitext(int x,int y,char  *t,uint8_t  p,uint8_t  sb);
 //#line "game.c" 231
 extern void gamenumber(int32_t x,int32_t y,int32_t n,uint8_t  s);
 //#line "game.c" 248
@@ -375,7 +375,7 @@ extern void showtwoscreens(void );
 //#line "game.c" 1691
 extern void binscreen(void );
 //#line "game.c" 1705
-extern void gameexit(uint8_t  *t);
+extern void gameexit(char  *t);
 //#line "game.c" 1752
 extern short strget(short x,short y,uint8_t  *t,short dalen,short c);
 //#line "game.c" 1819
@@ -475,11 +475,11 @@ extern void takescreenshot(void );
 //#line "config.c" 57
 extern void CONFIG_GetSetupFilename(void );
 //#line "config.c" 170
-extern int32 CONFIG_FunctionNameToNum(uint8_t  *func);
+extern int32 CONFIG_FunctionNameToNum(char  *func);
 //#line "config.c" 192
 extern uint8_t  *CONFIG_FunctionNumToName(int32 func);
 //#line "config.c" 211
-extern int32 CONFIG_AnalogNameToNum(uint8_t  *func);
+extern int32 CONFIG_AnalogNameToNum(char  *func);
 //#line "config.c" 240
 extern void CONFIG_SetDefaults(void );
 //#line "config.c" 264

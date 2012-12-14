@@ -89,9 +89,9 @@ int32 CommandMusicToggleOff = 0;
 // For addfaz's stun server. use /stun to activate
 unsigned short g_bStun = 0;
 
-uint8_t  confilename[128] = {"GAME.CON"},boardfilename[128] = {0};
-uint8_t  waterpal[768], slimepal[768], titlepal[768], drealms[768], endingpal[768];
-uint8_t  firstdemofile[80] = { '\0' };
+char  confilename[128] = {"GAME.CON"},boardfilename[128] = {0};
+char  waterpal[768], slimepal[768], titlepal[768], drealms[768], endingpal[768];
+char  firstdemofile[80] = { '\0' };
 
 #define patchstatusbar(x1,y1,x2,y2)                                        \
 {                                                                          \
@@ -149,10 +149,11 @@ void timerhandler(void)
 }
 #endif
 
-int gametext(int x,int y,uint8_t  *t,uint8_t  s,short dabits)
+int gametext(int x,int y,char  *t,uint8_t  s,short dabits)
 {
     short ac,newx;
-    uint8_t  centre, *oldt;
+    char* oldt;
+    uint8_t  centre;
 
     centre = ( x == (320>>1) );
     newx = 0;
@@ -197,10 +198,11 @@ int gametext(int x,int y,uint8_t  *t,uint8_t  s,short dabits)
     return (x);
 }
 
-int gametextpal(int x,int y,uint8_t  *t,uint8_t  s,uint8_t  p)
+int gametextpal(int x,int y,char  *t,uint8_t  s,uint8_t  p)
 {
     short ac,newx;
-    uint8_t  centre, *oldt;
+    uint8_t  centre;
+    char* oldt;
 
     centre = ( x == (320>>1) );
     newx = 0;
@@ -244,10 +246,11 @@ int gametextpal(int x,int y,uint8_t  *t,uint8_t  s,uint8_t  p)
     return (x);
 }
 
-int gametextpart(int x,int y,uint8_t  *t,uint8_t  s,short p)
+int gametextpart(int x,int y,char  *t,uint8_t  s,short p)
 {
     short ac,newx, cnt;
-    uint8_t  centre, *oldt;
+    uint8_t  centre;
+    char * oldt;
 
     centre = ( x == (320>>1) );
     newx = 0;
@@ -300,11 +303,11 @@ int gametextpart(int x,int y,uint8_t  *t,uint8_t  s,short p)
     return (x);
 }
 
-int minitext(int x,int y,uint8_t  *str,uint8_t  p,uint8_t  sb)
+int minitext(int x,int y,char  *str,uint8_t  p,uint8_t  sb)
 {
     short ac;
-    uint8_t  buf[128];
-    uint8_t  *t;
+    char  buf[128];
+    char  *t;
 
     strncpy (buf, str, 128);
     buf[127] = 0;
@@ -324,11 +327,11 @@ int minitext(int x,int y,uint8_t  *str,uint8_t  p,uint8_t  sb)
     return (x);
 }
 
-int minitextshade(int x,int y,uint8_t  *str,uint8_t  s,uint8_t  p,uint8_t  sb)
+int minitextshade(int x,int y,char  *str,uint8_t  s,uint8_t  p,uint8_t  sb)
 {
     short ac;
-    uint8_t  buf[128];
-    uint8_t  *t;
+    char  buf[128];
+    char  *t;
 
     strncpy (buf, str, 128);
     buf[127] = 0;
@@ -350,7 +353,7 @@ int minitextshade(int x,int y,uint8_t  *str,uint8_t  s,uint8_t  p,uint8_t  sb)
 
 void gamenumber(int32_t x,int32_t y,int32_t n,uint8_t  s)
 {
-    uint8_t  b[10];
+    char  b[10];
     
     
     //
@@ -358,7 +361,7 @@ void gamenumber(int32_t x,int32_t y,int32_t n,uint8_t  s)
     // is NON-STANDARD and equivalent to STANDARD
     // (void) sprintf(buffer, "%ld", l);
     //ltoa(n,b,10);
-    sprintf(b,"%ld",n);
+    sprintf(b,"%d",n);
     gametext(x,y,b,s,2+8+16);
 }
 
@@ -392,7 +395,7 @@ short user_quote_time[MAXUSERQUOTES];
 uint8_t  user_quote[MAXUSERQUOTES][128];
 // uint8_t  typebuflen,typebuf[41];
 
-static void adduserquote(uint8_t  *daquote)
+static void adduserquote(char  *daquote)
 {
     int32_t i;
 
@@ -424,7 +427,7 @@ uint8_t  *grpVersion2char_from_crc(unsigned int crc32_grp_to_identify)
 
 uint8_t  *grpVersion2char(uint8_t  grp_to_identify)
 {
-	uint8_t  *id;
+	char  *id;
 
 	switch(grp_to_identify)
 	{
@@ -1421,8 +1424,8 @@ void myospal(int32_t x, int32_t y, short tilenum, int8_t shade, uint8_t  orienta
 
 void invennum(int32_t x,int32_t y,uint8_t  num1,uint8_t  ha,uint8_t  sbits)
 {
-    uint8_t  dabuf[80] = {0};
-    sprintf(dabuf,"%ld",num1);
+    char  dabuf[80] = {0};
+    sprintf(dabuf,"%c",num1);
     if(num1 > 99)
     {
         rotatesprite((x-4)<<16,y<<16,65536L,0,THREEBYFIVE+dabuf[0]-'0',ha,0,sbits,0,0,xdim-1,ydim-1);
@@ -2373,7 +2376,7 @@ void binscreen(void)
 }
 
 
-void gameexit(uint8_t  *msg)
+void gameexit(char  *msg)
 {
     short i;
     uint8_t  t[256];
@@ -7677,7 +7680,7 @@ static uint8_t  sixteen[] = "16 Possible Dukes";
 
 void compilecons(void)
 {
-	uint8_t  userconfilename[512];
+	char  userconfilename[512];
 
    mymembuf = (uint8_t  *)&hittype[0];
    labelcode = (int32_t *)&sector[0];
@@ -8031,7 +8034,7 @@ uint8_t  testcd( uint8_t  *fn )
 void copyprotect(void)
 {
     FILE *fp;
-    uint8_t  idfile[256];
+    char  idfile[256];
 
     return;
 
@@ -8437,13 +8440,7 @@ int main(int argc,char  **argv)
 
         puts("Loading palette/lookups.");
 
-// CTW - MODIFICATION
-/*  if( setgamemode(ScreenMode,ScreenWidth,ScreenHeight) < 0 )
-    {
-        printf("\nVESA driver for ( %i * %i ) not found/supported!\n",xdim,ydim);
-        vidoption = 2;
-        setgamemode(vidoption,320,200);
-    }*/
+
     if( setgamemode(ScreenMode,ScreenWidth,ScreenHeight) < 0 )
     {
         printf("\nVESA driver for ( %i * %i ) not found/supported!\n",xdim,ydim);
@@ -8452,15 +8449,11 @@ int main(int argc,char  **argv)
         ScreenHeight = 200;
         setgamemode(ScreenMode,ScreenWidth,ScreenHeight);
     }
-// CTW END - MODIFICATION
+
         printf("genspriteremaps()\n");
 
     genspriteremaps();
 
-//if (VOLUMEONE)
-// {        if(numplayers > 4 || ud.multimode > 4)
-//            gameexit(" The full version of Duke Nukem 3D supports 5 or more players.");
-// }
 
     setbrightness(ud.brightness>>2,&ps[myconnectindex].palette[0]);
 

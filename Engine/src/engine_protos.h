@@ -30,7 +30,7 @@ extern void allocache(int32_t *newhandle, int32_t newbytes, uint8_t  *newlockptr
 extern void suckcache(int32_t *suckptr);
 extern void agecache(void);
 extern void reportandexit(char  *errormessage);
-extern int32_t initgroupfile(const uint8_t  *filename);
+extern int32_t initgroupfile(const char  *filename);
 extern void uninitgroupfile(void);
 extern int32_t kopen4load(const char  *filename,int readfromGRP);
 extern int32_t kread(int32_t handle, void *buffer, int32_t leng);
@@ -85,24 +85,7 @@ extern void set16color_palette(void);
 extern void restore256_palette(void);
 extern uint32_t  getticks(void);
 
-/* mmulti.c */
-// converted to function pointers
-/*
-void (*callcommit)(void);
-void (*initcrc)(void);
-int32_t (*getcrc)(uint8_t  *buffer, short bufleng);
-void (*initmultiplayers)(uint8_t  damultioption, uint8_t  dacomrateoption, uint8_t  dapriority);
-void (*sendpacket)(int32_t other, uint8_t  *bufptr, int32_t messleng);
-void (*setpackettimeout)(int32_t datimeoutcount, int32_t daresendagaincount);
-void (*uninitmultiplayers)(void);
-void (*sendlogon)(void);
-void (*sendlogoff)(void);
-int (*getoutputcirclesize)(void);
-void (*setsocket)(short newsocket);
-short (*getpacket)(short *other, uint8_t  *bufptr);
-void (*flushpackets)(void);
-void (*genericmultifunction)(int32_t other, uint8_t  *bufptr, int32_t messleng, int32_t command);
-*/
+
 void callcommit(void);
 void initcrc(void);
 int32_t getcrc(uint8_t  *buffer, short bufleng);
@@ -123,8 +106,8 @@ extern int setgotpic(int32_t i1);
 //extern static __inline int32_t getclipmask(int32_t a, int32_t b, int32_t c, int32_t d);
 extern int wallfront(int32_t l1, int32_t l2);
 extern void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz, short daang, int32_t dahoriz, short dacursectnum);
-extern int loadboard(uint8_t  *filename, int32_t *daposx, int32_t *daposy, int32_t *daposz, short *daang, short *dacursectnum);
-extern int saveboard(uint8_t  *filename, int32_t *daposx, int32_t *daposy, int32_t *daposz, short *daang, short *dacursectnum);
+extern int loadboard(char  *filename, int32_t *daposx, int32_t *daposy, int32_t *daposz, short *daang, short *dacursectnum);
+extern int saveboard(char  *filename, int32_t *daposx, int32_t *daposy, int32_t *daposz, short *daang, short *dacursectnum);
 extern int setgamemode(uint8_t  davidoption, int32_t daxdim, int32_t daydim);
 extern void setmmxoverlay(int isenabled);
 extern int getmmxoverlay(void);
@@ -133,7 +116,7 @@ extern void uninitengine(void);
 extern void nextpage(void);
 extern void loadtile(short tilenume);
 extern int allocatepermanenttile(short tilenume, int32_t xsiz, int32_t ysiz);
-extern int loadpics(uint8_t  *filename, uint8_t * gamedir);
+extern int loadpics(char  *filename, uint8_t * gamedir);
 extern void qloadkvx(int32_t voxindex, uint8_t  *filename);
 extern int clipinsidebox(int32_t x, int32_t y, short wallnum, int32_t walldist);
 extern void drawline256(int32_t x1, int32_t y1, int32_t x2, int32_t y2, uint8_t  col);
