@@ -4313,13 +4313,13 @@ int inside(int32_t x, int32_t y, short sectnum)
         y2 = wall[wal->point2].y-y;
 
         // Compare the sign of y1 and y2.
-        // If (y1^y2) < 0 then y is above or below both wal->y and wall[wal->point2].y.
+        // If (y1^y2) < 0 : y1 and y2 have different sign bit:  y is between wal->y and wall[wal->point2].y.
         if ((y1^y2) < 0)
         {
             x1 = wal->x-x;
             x2 = wall[wal->point2].x-x;
 
-            //Again, compare the sign of x1 and x2. If (x1^x2) >= 0 then x is on the left or the right of both wal->x and wall[wal->point2].x.
+            //If (x1^x2) >= 0 x1 and x2 have identic sign bit: x is on the left or the right of both wal->x and wall[wal->point2].x.
             if ((x1^x2) >= 0)
             {
                 // Euh...je ne sais pas.....
