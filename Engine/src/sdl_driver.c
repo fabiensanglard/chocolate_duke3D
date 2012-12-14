@@ -2479,10 +2479,10 @@ void uninitkeys(void)
 //} /* getticks */
 
 
-#if 0// PLATFORM_WIN32 Timer on windows 98 used to be really poor but now it is very accurate
-     // We can just used what SDL uses, now need for QueryPerformanceFrequency or QueryPerformanceCounter
-     // (which I bet SDL is using anyway).
-
+//Timer on windows 98 used to be really poor but now it is very accurate
+// We can just used what SDL uses, now need for QueryPerformanceFrequency or QueryPerformanceCounter
+// (which I bet SDL is using anyway).
+#if 0//PLATFORM_WIN32 
 int TIMER_GetPlatformTicksInOneSecond(int64_t* t)
 {
     QueryPerformanceFrequency((LARGE_INTEGER*)t);

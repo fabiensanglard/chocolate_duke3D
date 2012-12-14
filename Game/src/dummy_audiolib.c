@@ -38,26 +38,26 @@ int FX_SetPitch( int handle, int pitchoffset ){return 1;}
 int FX_SetFrequency( int handle, int frequency ){return 1;}
 
 int FX_PlayVOC( uint8_t  *ptr, int pitchoffset, int vol, int left, int right,
-               int priority, uint32_t callbackval ){return 1;}
+               int priority, uint32_t callbackval ){return FX_Ok;}
 int FX_PlayLoopedVOC( uint8_t  *ptr, int32_t loopstart, int32_t loopend,
                      int pitchoffset, int vol, int left, int right, int priority,
-                     uint32_t callbackval ){return 1;}
+                     uint32_t callbackval ){return FX_Ok;}
 int FX_PlayWAV( uint8_t  *ptr, int pitchoffset, int vol, int left, int right,
-               int priority, uint32_t callbackval ){return 1;}
+               int priority, uint32_t callbackval ){return FX_Ok;}
 int FX_PlayLoopedWAV( uint8_t  *ptr, int32_t loopstart, int32_t loopend,
                      int pitchoffset, int vol, int left, int right, int priority,
-                     uint32_t callbackval ){return 1;}
+                     uint32_t callbackval ){return FX_Ok;}
 int FX_PlayVOC3D( uint8_t  *ptr, int pitchoffset, int angle, int distance,
-                 int priority, uint32_t callbackval ){return 1;}
+                 int priority, uint32_t callbackval ){return FX_Ok;}
 int FX_PlayWAV3D( uint8_t  *ptr, int pitchoffset, int angle, int distance,
-                 int priority, uint32_t callbackval ){return 1;}
+                 int priority, uint32_t callbackval ){return FX_Ok;}
 int FX_PlayRaw( uint8_t  *ptr, uint32_t length, unsigned rate,
                int pitchoffset, int vol, int left, int right, int priority,
-               uint32_t callbackval ){return 1;}
+               uint32_t callbackval ){return FX_Ok;}
 int FX_PlayLoopedRaw( uint8_t  *ptr, uint32_t length, uint8_t  *loopstart,
                      uint8_t  *loopend, unsigned rate, int pitchoffset, int vol, int left,
-                     int right, int priority, uint32_t callbackval ){return 1;}
-int FX_Pan3D( int handle, int angle, int distance ){return 1;}
+                     int right, int priority, uint32_t callbackval ){return FX_Ok;}
+int FX_Pan3D( int handle, int angle, int distance ){return FX_Ok;}
 int FX_SoundActive( int handle ){return 1;}
 int FX_SoundsPlaying( void ){return 0;}
 int FX_StopSound( int handle ){return 1;}
