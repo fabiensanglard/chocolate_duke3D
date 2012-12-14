@@ -1373,7 +1373,7 @@ int setvesa(int32_t x, int32_t y)
 
 
 // Capture BMP of the current frame
-int screencapture(uint8_t  *filename, uint8_t  inverseit)
+int screencapture(char  *filename, uint8_t  inverseit)
 {
 //  FIX_00006: better naming system for screenshots + message when pic is taken. 
 //  Use ./screenshots folder. Screenshot code rerwritten. Faster and

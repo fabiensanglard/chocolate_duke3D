@@ -28,10 +28,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
    (c) Copyright 1994 James R. Dose.  All Rights Reserved.
 **********************************************************************/
 
-#ifdef PLAT_DOS
-#include <dos.h>
-#endif
-
 #include <string.h>
 #include "user.h"
 
@@ -100,34 +96,5 @@ char *USER_GetText
    )
 
    {
-#ifdef PLAT_DOS
-   int i;
-   char *text;
-   char *ptr;
-
-   text = NULL;
-   i = 1;
-   while( i < _argc )
-      {
-      ptr = _argv[ i ];
-
-      // Only check parameters preceded by - or /
-      if ( ( *ptr == '-' ) || ( *ptr == '/' ) )
-         {
-         ptr++;
-         if ( stricmp( parameter, ptr ) == 0 )
-            {
-            i++;
-            text = _argv[ i ];
-            break;
-            }
-         }
-
-      i++;
-      }
-
-   return( text );
-#else
    return NULL;
-#endif
    }
