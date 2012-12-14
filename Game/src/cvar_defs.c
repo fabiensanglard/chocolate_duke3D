@@ -15,7 +15,7 @@
 //We need to access debug soundinfo
 #include "sounddebugdefs.h"
 
-#include "../../Engine/src/sdl_driver.h"
+#include "joystick.h"
 
 // Bind our Cvars at startup. You can still add bindings after this call, but
 // it is recommanded that you bind your default CVars here.
@@ -103,13 +103,13 @@ void CVARDEFS_Render()
         char  buf[128];
         minitext(2, 2, "Debug Sound", 17,10+16);
 
-		sprintf(buf, "Active sounds: %lu", sounddebugActiveSounds);
+		sprintf(buf, "Active sounds: %u", sounddebugActiveSounds);
 		minitext(2, 10, buf, 23,10+16);
 		
-		sprintf(buf, "Allocate Calls: %lu", sounddebugAllocateSoundCalls);
+		sprintf(buf, "Allocate Calls: %u", sounddebugAllocateSoundCalls);
 		minitext(2, 18, buf, 23,10+16);
 
-		sprintf(buf, "Deallocate Calls: %ld", sounddebugDeallocateSoundCalls);
+		sprintf(buf, "Deallocate Calls: %d", sounddebugDeallocateSoundCalls);
 		minitext(2, 26, buf, 23,10+16);
 	}
 

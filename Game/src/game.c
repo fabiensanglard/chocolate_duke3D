@@ -89,7 +89,8 @@ int32 CommandMusicToggleOff = 0;
 // For addfaz's stun server. use /stun to activate
 unsigned short g_bStun = 0;
 
-char  confilename[128] = {"GAME.CON"},boardfilename[128] = {0};
+char confilename[128] = {"GAME.CON"};
+char boardfilename[128] = {0};
 char  waterpal[768], slimepal[768], titlepal[768], drealms[768], endingpal[768];
 char  firstdemofile[80] = { '\0' };
 
@@ -366,7 +367,7 @@ void gamenumber(int32_t x,int32_t y,int32_t n,uint8_t  s)
 }
 
 
-uint8_t  recbuf[80];
+char  recbuf[80];
 void allowtimetocorrecterrorswhenquitting(void)
 {
      int32_t i, j, oldtotalclock;
@@ -2155,7 +2156,7 @@ static int32_t frameval[AVERAGEFRAMES], framecnt = 0;
 void tics(short offx, short offy, short color)
 {
     int32_t i;
-	uint8_t  fps[512], mapname[512];
+	char  fps[512], mapname[512];
 	int32_t currentFps;
 	static int32_t fpsAvg = 0, savedFps = 0;
 	static boolean toggle = true;
@@ -2203,7 +2204,7 @@ void tics(short offx, short offy, short color)
 	else
 		savedFps = fpsAvg;
 
-	sprintf(fps," %ld", savedFps);
+	sprintf(fps," %d", savedFps);
 	strcat(tempbuf, fps);
 
 	minitext(offx,offy,tempbuf,color,2+8+16+128);
@@ -8701,7 +8702,7 @@ uint8_t  opendemoread(uint8_t  which_demo) // 0 = mine
     uint8_t  *fname = d;
     uint8_t  ver;
     short i,j;
-	uint8_t  firstdemofile_[512];
+
 	int32 dummy;
 	int32_t groupefil_crc32_from_demo[MAXGROUPFILES];
 

@@ -552,7 +552,6 @@ void resetweapons(short snum)
 void resetinventory(short snum)
 {
     struct player_struct *p;
-    short i;
 
     p = &ps[snum];
 
@@ -1282,7 +1281,7 @@ void genspriteremaps(void)
 {
     int32_t j,fp;
     int8_t look_pos;
-    uint8_t  *lookfn = "lookup.dat";
+    char  *lookfn = "lookup.dat";
     uint8_t  numl;
 
     fp = TCkopen4load(lookfn,0);

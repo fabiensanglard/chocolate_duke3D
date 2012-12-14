@@ -395,7 +395,7 @@ void CONFIG_SetupMouse( int32 scripthandle )
       SCRIPT_GetString(scripthandle, "Controls", str,temp);
       function = CONFIG_FunctionNameToNum(temp);
       CONTROL_MapDigitalAxis( i, function, 1 );
-      sprintf(str,"MouseAnalogScale%ld",i);
+      sprintf(str,"MouseAnalogScale%d",i);
       SCRIPT_GetNumber(scripthandle, "Controls", str,&scale);
       //TODO: Fix the Analog mouse scale issue. Just make a new function for registering them.
 	  //CONTROL_SetAnalogAxisScale( i, scale );
@@ -532,7 +532,7 @@ void CONFIG_SetupJoystick( int32 scripthandle )
    {
 	  for(j=0; j < 8; j++) // 8? because hats can have 8 different values
 	  { 
-		  sprintf(str,"JoystickHat%ld_%d",i, j);
+		  sprintf(str,"JoystickHat%d_%d",i, j);
 		  memset(temp,0,sizeof(temp));
 		  SCRIPT_GetString( scripthandle,"Controls", str,temp);
 		  function = CONFIG_FunctionNameToNum(temp);
@@ -629,12 +629,7 @@ void CONFIG_ReadSetup( void )
        SCRIPT_GetString( scripthandle, "Comm Setup",commmacro,ud.ridecule[dummy]);
    }
 
-//   /* DDOI - Check version */
-//   if (!SCRIPT_GetNumber( scripthandle, "Misc", "UseOldVersion", &dukever13))
-//	   dukever13 = 0; // assume 1.5
-//#ifdef VOLUMEONE
-//   dukever13 = 1;
-//#endif
+
 
    SCRIPT_GetString( scripthandle, "Comm Setup","PlayerName",&myname[0]);
 

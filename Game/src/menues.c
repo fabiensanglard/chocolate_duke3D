@@ -38,7 +38,8 @@ extern uint8_t  vgacompatible;
 short probey=0,lastprobey=0,last_menu,globalskillsound=-1;
 short sh,onbar,buttonstat,deletespot;
 short last_zero,last_fifty,last_threehundred = 0;
-static uint8_t  fileselect = 1, menunamecnt, menuname[256][17];
+static uint8_t  fileselect = 1, menunamecnt;
+static char menuname[256][17];
 
 // File tree info
 //
@@ -178,7 +179,7 @@ void getangplayers(short snum)
 int loadpheader(uint8_t  spot,int32 *vn,int32 *ln,int32 *psk,int32 *nump)
 {
 
-    uint8_t  fn[] = "game0.sav";
+    char  fn[] = "game0.sav";
     int32_t fil;
     int32_t bv;
 
@@ -4121,20 +4122,20 @@ if(!VOLUMEONE)
             menutext(c,57-9,SHX(-2),PHX(-2),"GAME TYPE");
 
 if (VOLUMEONE)
-{            sprintf(tempbuf,"EPISODE %ld",ud.m_volume_number+1);
+{            sprintf(tempbuf,"EPISODE %d",ud.m_volume_number+1);
             menutext(c,57+16-9,SHX(-3),1,tempbuf);
 } 
 else 
-{
-            sprintf(tempbuf,"EPISODE %ld",ud.m_volume_number+1);
+
+            sprintf(tempbuf,"EPISODE %d",ud.m_volume_number+1);
             menutext(c,57+16-9,SHX(-3),PHX(-3),tempbuf);
 }
 
 #ifndef ONELEVELDEMO
-            sprintf(tempbuf,"LEVEL %ld",ud.m_level_number+1);
+            sprintf(tempbuf,"LEVEL %d",ud.m_level_number+1);
             menutext(c,57+16+16-9,SHX(-4),PHX(-4),tempbuf);
 #else
-            sprintf(tempbuf,"LEVEL %ld",ud.m_level_number+1);
+            sprintf(tempbuf,"LEVEL %d",ud.m_level_number+1);
             menutext(c,57+16+16-9,SHX(-4),1,tempbuf);
 #endif
             menutext(c,57+16+16+16-9,SHX(-5),PHX(-5),"MONSTERS");
@@ -4160,7 +4161,7 @@ else
 
             menutext(c,57+16+16+16+16+16+16+16-9,SHX(-8),PHX(-8),"START GAME");
 
-            break;
+    break;
     }
 
     if( (ps[myconnectindex].gm&MODE_MENU) != MODE_MENU)
@@ -4623,7 +4624,7 @@ void endanimvol43(int32_t fr)
 
 
 int32_t lastanimhack=0;
-void playanm(uint8_t  *fn,uint8_t  t)
+void playanm(char  *fn,uint8_t  t)
 {
         uint8_t  *animbuf, *palptr;
     int32_t i, j, k, length=0, numframes=0;

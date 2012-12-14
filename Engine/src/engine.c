@@ -117,7 +117,7 @@ int32_t curbrightness = 0;
 static uint8_t  globalpolytype;
 static short *dotp1[MAXYDIM], *dotp2[MAXYDIM];
 
-static uint8_t  tempbuf[MAXWALLS];
+static char  tempbuf[MAXWALLS];
 
 int32_t ebpbak, espbak;
 int32_t slopalookup[16384];
@@ -151,7 +151,7 @@ int32_t pow2long[32] =
 };
 int32_t reciptable[2048], fpuasm;
 
-uint8_t  kensmessage[128];
+char  kensmessage[128];
 
 
 
@@ -274,7 +274,7 @@ short searchit;
 int32_t searchx = -1, searchy;                     /* search input  */
 short searchsector, searchwall, searchstat;     /* search output */
 
-static uint8_t  artfilename[20];
+static char  artfilename[20];
 static int32_t numtilefiles, artfil = -1, artfilnum, artfilplc;
 
 static uint8_t  inpreparemirror = 0;

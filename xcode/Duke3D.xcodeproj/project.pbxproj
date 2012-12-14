@@ -180,7 +180,6 @@
 		2D7C17D5167AD6A500E1BBA1 /* pitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pitch.h; path = ../../Game/src/audiolib/pitch.h; sourceTree = "<group>"; };
 		2D7C17D6167AD6A500E1BBA1 /* user.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = user.c; path = ../../Game/src/audiolib/user.c; sourceTree = "<group>"; };
 		2D7C17DF167ADE1F00E1BBA1 /* pitch.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pitch.c; path = ../../Game/src/audiolib/pitch.c; sourceTree = "<group>"; };
-		2D7C17E2167AF7DE00E1BBA1 /* sdl_driver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sdl_driver.h; path = ../../Engine/src/sdl_driver.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -232,7 +231,6 @@
 		2D7B61F01678884400E35E54 /* Engine */ = {
 			isa = PBXGroup;
 			children = (
-				2D7C17E2167AF7DE00E1BBA1 /* sdl_driver.h */,
 				2D7B61F11678885A00E35E54 /* a.c */,
 				2D7B61F21678885A00E35E54 /* a.h */,
 				2D7B61F31678885A00E35E54 /* build.h */,

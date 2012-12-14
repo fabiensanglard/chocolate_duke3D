@@ -252,7 +252,7 @@ void intomenusounds(void)
     menunum %= 17;
 }
 
-void playmusic(uint8_t  *fn)
+void playmusic(char  *fn)
 {
     if(MusicToggle == 0) return;
     if(MusicDevice == NumSoundCards) return;

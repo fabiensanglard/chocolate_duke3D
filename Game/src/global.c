@@ -113,7 +113,7 @@ int32_t soundsiz[NUM_SOUNDS];
 
 short soundps[NUM_SOUNDS],soundpe[NUM_SOUNDS],soundvo[NUM_SOUNDS];
 uint8_t  soundm[NUM_SOUNDS],soundpr[NUM_SOUNDS];
-uint8_t  sounds[NUM_SOUNDS][14];
+char  sounds[NUM_SOUNDS][14];
 
 short title_zoom;
 
@@ -164,8 +164,9 @@ uint8_t  actortype[MAXTILES];
 
 uint8_t  display_mirror,typebuflen,typebuf[41];
 
-uint8_t  music_fn[4][11][13],music_select;
-uint8_t  env_music_fn[4][13];
+char  music_fn[4][11][13];
+uint8_t music_select;
+char  env_music_fn[4][13];
 uint8_t  rtsplaying;
 
 
@@ -648,7 +649,7 @@ void SafeWrite (int32 handle, void *buffer, int32 count)
 	}
 }
 
-void SafeWriteString (int handle, uint8_t  * buffer)
+void SafeWriteString (int handle, char  * buffer)
 {
 	unsigned	iocount;
 

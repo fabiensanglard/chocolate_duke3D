@@ -45,7 +45,7 @@ extern int USRHOOKS_FreeMem(uint8_t  *ptr);
 //#line "sounds.c" 200
 extern void intomenusounds(void );
 //#line "sounds.c" 227
-extern void playmusic(uint8_t  *fn);
+extern void playmusic(char  *fn);
 //#line "sounds.c" 251
 extern uint8_t  loadsound(unsigned short num);
 //#line "sounds.c" 277
@@ -262,7 +262,7 @@ extern void palto(uint8_t  r,uint8_t  g,uint8_t  b,int32_t e);
 //#line "menues.c" 2436
 extern void drawoverheadmap(int32_t cposx,int32_t cposy,int32_t czoom,short cang);
 //#line "menues.c" 2685
-extern void playanm(uint8_t  *fn,uint8_t );
+extern void playanm(char  *fn,uint8_t );
 //#line "gamedef.c" 122
 extern short getincangle(short a,short na);
 //#line "gamedef.c" 140

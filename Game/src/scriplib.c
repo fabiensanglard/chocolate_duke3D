@@ -50,7 +50,7 @@ typedef enum {
 typedef struct scriptnode_s {
 	struct scriptnode_s *child;
 	struct scriptnode_s *sibling;
-	uint8_t  *key;
+	char  *key;
 	scriptflag_t type;
 	union {
 		char  *string[2];
@@ -188,11 +188,11 @@ static void SCRIPT_addchild (scriptnode_t *parent, scriptnode_t *child)
 	}
 }
 
-static uint8_t  *SCRIPT_copystring (uint8_t  * s)
+static char  *SCRIPT_copystring (char  * s)
 {
-	uint8_t  *ret;
+	char  *ret;
 
-	ret = (uint8_t  *) malloc (strlen (s)+1);
+	ret = (char  *) malloc (strlen (s)+1);
 	if (ret != NULL)
 	{
 		strcpy (ret, s);
@@ -200,7 +200,7 @@ static uint8_t  *SCRIPT_copystring (uint8_t  * s)
 	return ret;
 }
 
-static int SCRIPT_getnexttoken (uint8_t  *buffer, uint8_t * token, int start)
+static int SCRIPT_getnexttoken (char  *buffer, char * token, int start)
 {
 	int iterator = start;
 
@@ -225,9 +225,9 @@ static int SCRIPT_getnexttoken (uint8_t  *buffer, uint8_t * token, int start)
 }
 
 /* Fills in a scriptnode with the interpreted contents of a line */
-static void SCRIPT_parseline (uint8_t  *curline, scriptnode_t *node)
+static void SCRIPT_parseline (char  *curline, scriptnode_t *node)
 {
-	uint8_t  token[128];
+	char  token[128];
 	int i;
 
 	/* Needs to handle 5 cases: */
@@ -279,7 +279,7 @@ static void SCRIPT_parseline (uint8_t  *curline, scriptnode_t *node)
 		node->type = SCRIPTFLAG_DECIMAL;
 		node->data.number = -1;
 	}else if (token[0] == '"') {
-		uint8_t  workbuf[128];
+		char  workbuf[128];
 		int r;
 
 		/* Found one of possibly two strings */
@@ -566,7 +566,7 @@ int32 SCRIPT_NumberEntries( int32 scripthandle, char  * sectionname )
 =
 ==============
 */
-uint8_t  * SCRIPT_Entry( int32 scripthandle, char  * sectionname, int32 which )
+char  * SCRIPT_Entry( int32 scripthandle, char  * sectionname, int32 which )
 {
 	scriptnode_t *node = NULL;
 	int32 entrynum = 0;
@@ -599,7 +599,7 @@ uint8_t  * SCRIPT_Entry( int32 scripthandle, char  * sectionname, int32 which )
 =
 ==============
 */
-uint8_t  * SCRIPT_GetRaw(int32 scripthandle, char  * sectionname, char  * entryname)
+char  * SCRIPT_GetRaw(int32 scripthandle, char  * sectionname, char  * entryname)
 {
 	STUBBED("GetRaw");
 	
@@ -741,8 +741,8 @@ void SCRIPT_GetBoolean
 boolean SCRIPT_GetFloat
    (
    int32 scripthandle,
-   uint8_t  * sectionname,
-   uint8_t  * entryname,
+   char  * sectionname,
+   char  * entryname,
    float * floatnumber
    )
 {

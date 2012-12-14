@@ -120,7 +120,7 @@ int32 SCRIPT_NumberEntries( int32 scripthandle, char  * sectionname );
 ==============
 */
 
-uint8_t  * SCRIPT_Entry( int32 scripthandle, char  * sectionname, int32 which );
+char  * SCRIPT_Entry( int32 scripthandle, char  * sectionname, int32 which );
 
 
 /*
@@ -130,7 +130,7 @@ uint8_t  * SCRIPT_Entry( int32 scripthandle, char  * sectionname, int32 which );
 =
 ==============
 */
-uint8_t  * SCRIPT_GetRaw(int32 scripthandle, char  * sectionname, char  * entryname);
+char  * SCRIPT_GetRaw(int32 scripthandle, char  * sectionname, char  * entryname);
 
 /*
 ==============
@@ -204,8 +204,8 @@ void SCRIPT_GetBoolean
 boolean SCRIPT_GetFloat
    (
    int32 scripthandle,
-   uint8_t  * sectionname,
-   uint8_t  * entryname,
+   char  * sectionname,
+   char  * entryname,
    float * floatnumber
    );
 

@@ -30,7 +30,8 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 extern short otherp;
 
 static short total_lines,line_number;
-static uint8_t  checking_ifelse,parsing_state,*last_used_text;
+static uint8_t  checking_ifelse,parsing_state;
+char *last_used_text;
 static short num_squigilly_brackets;
 static int32_t last_used_size;
 
@@ -418,7 +419,7 @@ void transnum(void)
 
     for(i=0;i<labelcnt;i++)
     {
-        if( strcmp((const uint8_t *)tempbuf,label+(i<<6)) == 0 )
+        if( strcmp((const char *)tempbuf,label+(i<<6)) == 0 )
         {
             *scriptptr = labelcode[i];
             scriptptr++;
@@ -445,7 +446,9 @@ void transnum(void)
 uint8_t  parsecommand(int readfromGRP)
 {
     int32_t i, j, k, *tempscrptr;
-    uint8_t  done, *origtptr, temp_ifelse_check, tw;
+    uint8_t  done, temp_ifelse_check;
+    int32_t tw;
+    char *origtptr;
     short temp_line_number;
     int fp;
 
@@ -467,7 +470,7 @@ uint8_t  parsecommand(int readfromGRP)
                 if(*textptr == 0x0a) line_number++;
                 if( *textptr == 0 )
                 {
-                    printf("  * ERROR!(L%ld) Found '/*' with no '*/'.\n",j);
+                    printf("  * ERROR!(L%d) Found '/*' with no '*/'.\n",j);
                     error++;
                     return 0;
                 }

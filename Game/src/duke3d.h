@@ -355,7 +355,7 @@ extern int32_t movefifosendplc;
 
 typedef struct
 {
-    uint8_t  *ptr;
+    char  *ptr;
     uint8_t  lock;
     int  length, num;
 } SAMPLE;
@@ -542,7 +542,7 @@ extern int32 mouseSensitivity_X, mouseSensitivity_Y;
 extern SOUNDOWNER SoundOwner[NUM_SOUNDS][4];
 
 extern uint8_t  playerreadyflag[MAXPLAYERS],playerquitflag[MAXPLAYERS];
-extern uint8_t  sounds[NUM_SOUNDS][14];
+extern char  sounds[NUM_SOUNDS][14];
 
 extern int32_t script[MAXSCRIPTSIZE],*scriptptr,*insptr,*labelcode,labelcnt;
 extern char  *label,*textptr,error,warning;
@@ -553,8 +553,9 @@ extern uint8_t  *music_pointer;
 
 extern uint8_t  ipath[80],opath[80];
 
-extern uint8_t  music_fn[4][11][13],music_select;
-extern uint8_t  env_music_fn[4][13];
+extern char  music_fn[4][11][13];
+extern uint8_t music_select;
+extern char  env_music_fn[4][13];
 extern short camsprite;
 
 // extern uint8_t  gotz;
