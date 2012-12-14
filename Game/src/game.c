@@ -104,8 +104,7 @@ char  firstdemofile[80] = { '\0' };
 void __interrupt __far newint24( int errval, int ax, int bp, int si );
 
 int recfilep,totalreccnt;
-uint8_t  debug_on = 0,actor_tog = 0,memorycheckoveride=0;
-char *rtsptr;
+uint8_t  debug_on = 0,actor_tog = 0,*rtsptr,memorycheckoveride=0;
 
 
 
@@ -394,7 +393,7 @@ void allowtimetocorrecterrorswhenquitting(void)
 #define MAXUSERQUOTES 4
 int32_t quotebot, quotebotgoal;
 short user_quote_time[MAXUSERQUOTES];
-char  user_quote[MAXUSERQUOTES][128];
+uint8_t  user_quote[MAXUSERQUOTES][128];
 // uint8_t  typebuflen,typebuf[41];
 
 static void adduserquote(char  *daquote)
@@ -411,9 +410,9 @@ static void adduserquote(char  *daquote)
     pub = NUMPAGES;
 }
 
-char  *grpVersion2char_from_crc(unsigned int crc32_grp_to_identify)
+uint8_t  *grpVersion2char_from_crc(unsigned int crc32_grp_to_identify)
 {
-	char  *id;
+	uint8_t  *id;
 	int i=0;
 
 	id = crc32lookup[MAX_KNOWN_GRP].name; // unknown version
@@ -656,7 +655,7 @@ void getpackets(void)
 
                 if (SoundToggle == 0 || ud.lockout == 1 || FXDevice == NumSoundCards)
                     break;
-                rtsptr = (char  *)RTS_GetSound(packbuf[1]-1);
+                rtsptr = (uint8_t  *)RTS_GetSound(packbuf[1]-1);
                 if (*rtsptr == 'C')
                     FX_PlayVOC3D(rtsptr,0,0,0,255,-packbuf[1]);
                 else
@@ -1102,7 +1101,7 @@ void caches(void)
      for(i=0;i<cacnum;i++)
           if ((*cac[i].lock) >= 200)
           {
-                sprintf(tempbuf,"Locked- %d: Leng:%d, Lock:%d",i,cac[i].leng,*cac[i].lock);
+                sprintf(tempbuf,"Locked- %ld: Leng:%ld, Lock:%ld",i,cac[i].leng,*cac[i].lock);
                 printext256(0L,k,31,-1,tempbuf,1); k += 6;
           }
 
@@ -1111,7 +1110,7 @@ void caches(void)
      for(i=1;i<11;i++)
           if (lumplockbyte[i] >= 200)
           {
-                sprintf(tempbuf,"RTS Locked %d:",i);
+                sprintf(tempbuf,"RTS Locked %ld:",i);
                 printext256(0L,k,31,-1,tempbuf,1); k += 6;
           }
 
@@ -1453,7 +1452,7 @@ void orderweaponnum(short ind,int32_t x,int32_t y,int32_t num1, int32_t num2,uin
 
 void weaponnum(short ind,int32_t x,int32_t y,int32_t num1, int32_t num2,uint8_t  ha)
 {
-    char  dabuf[80] = {0};
+    uint8_t  dabuf[80] = {0};
 
     rotatesprite((x-7)<<16,y<<16,65536L,0,THREEBYFIVE+ind+1,ha-10,7,10+128,0,0,xdim-1,ydim-1);
     rotatesprite((x-3)<<16,y<<16,65536L,0,THREEBYFIVE+10,ha,0,10+128,0,0,xdim-1,ydim-1);
@@ -1462,7 +1461,7 @@ void weaponnum(short ind,int32_t x,int32_t y,int32_t num1, int32_t num2,uint8_t 
     if(num1 > 99) num1 = 99;
     if(num2 > 99) num2 = 99;
 
-    sprintf(dabuf,"%d",num1);
+    sprintf(dabuf,"%ld",num1);
     if(num1 > 9)
     {
         rotatesprite((x)<<16,y<<16,65536L,0,THREEBYFIVE+dabuf[0]-'0',ha,0,10+128,0,0,xdim-1,ydim-1);
@@ -1470,7 +1469,7 @@ void weaponnum(short ind,int32_t x,int32_t y,int32_t num1, int32_t num2,uint8_t 
     }
     else rotatesprite((x+4)<<16,y<<16,65536L,0,THREEBYFIVE+dabuf[0]-'0',ha,0,10+128,0,0,xdim-1,ydim-1);
 
-    sprintf(dabuf,"%d",num2);
+    sprintf(dabuf,"%ld",num2);
     if(num2 > 9)
     {
         rotatesprite((x+13)<<16,y<<16,65536L,0,THREEBYFIVE+dabuf[0]-'0',ha,0,10+128,0,0,xdim-1,ydim-1);
@@ -1649,14 +1648,14 @@ void weapon_amounts(struct player_struct *p,int32_t x,int32_t y,int32_t u)
 void digitalnumber(int32_t x,int32_t y,int32_t n,uint8_t  s,uint8_t  cs)
 {
     short i, j, k, p, c;
-    char  b[10];
+    uint8_t  b[10];
 
     //
     // uint8_t  * ltoa(int32_t l, uint8_t  * buffer, int radix);
     // is NON-STANDARD and equivalent to STANDARD
     // (void) sprintf(buffer, "%ld", l);
     //ltoa(n,b,10);
-    sprintf(b,"%d",n);
+    sprintf(b,"%ld",n);
     
     i = strlen(b);
     j = 0;
@@ -2228,27 +2227,27 @@ void coords(short snum)
             y = 16;
     }
 
-    sprintf((char*)tempbuf,"X= %d",ps[snum].posx);
+    sprintf(tempbuf,"X= %ld",ps[snum].posx);
     printext256(x,y,31,-1,tempbuf,1);
-    sprintf((char*)tempbuf,"Y= %d",ps[snum].posy);
+    sprintf(tempbuf,"Y= %ld",ps[snum].posy);
     printext256(x,y+7L,31,-1,tempbuf,1);
-    sprintf((char*)tempbuf,"Z= %d",ps[snum].posz);
+    sprintf(tempbuf,"Z= %ld",ps[snum].posz);
     printext256(x,y+14L,31,-1,tempbuf,1);
-    sprintf((char*)tempbuf,"A= %d",ps[snum].ang);
+    sprintf(tempbuf,"A= %ld",ps[snum].ang);
     printext256(x,y+21L,31,-1,tempbuf,1);
-    sprintf((char*)tempbuf,"ZV= %d",ps[snum].poszv);
+    sprintf(tempbuf,"ZV= %ld",ps[snum].poszv);
     printext256(x,y+28L,31,-1,tempbuf,1);
-    sprintf((char*)tempbuf,"OG= %d",ps[snum].on_ground);
+    sprintf(tempbuf,"OG= %ld",ps[snum].on_ground);
     printext256(x,y+35L,31,-1,tempbuf,1);
-    sprintf((char*)tempbuf,"AM= %d",ps[snum].ammo_amount[GROW_WEAPON]);
+    sprintf(tempbuf,"AM= %ld",ps[snum].ammo_amount[GROW_WEAPON]);
     printext256(x,y+43L,31,-1,tempbuf,1);
-    sprintf((char*)tempbuf,"LFW= %d",ps[snum].last_full_weapon);
+    sprintf(tempbuf,"LFW= %ld",ps[snum].last_full_weapon);
     printext256(x,y+50L,31,-1,tempbuf,1);
-    sprintf((char*)tempbuf,"SECTL= %d",sector[ps[snum].cursectnum].lotag);
+    sprintf(tempbuf,"SECTL= %ld",sector[ps[snum].cursectnum].lotag);
     printext256(x,y+57L,31,-1,tempbuf,1);
-    sprintf((char*)tempbuf,"SEED= %d",randomseed);
+    sprintf(tempbuf,"SEED= %ld",randomseed);
     printext256(x,y+64L,31,-1,tempbuf,1);
-    sprintf((char*)tempbuf,"THOLD= %d",ps[snum].transporter_hold);
+    sprintf(tempbuf,"THOLD= %ld",ps[snum].transporter_hold);
     printext256(x,y+64L+7,31,-1,tempbuf,1);
 }
 
@@ -2381,7 +2380,7 @@ void binscreen(void)
 void gameexit(char  *msg)
 {
     short i;
-    char  t[256];
+    uint8_t  t[256];
     
     strncpy(t,msg,256); t[255] = 0;
 
@@ -2526,8 +2525,7 @@ short strget(short x,short y,uint8_t  *t,short dalen,short c)
     if( c == 999 ) return(0);
     if( c == 998 )
     {
-        char  b[41];
-        uint8_t ii;
+        uint8_t  b[41],ii;
         for(ii=0;ii<inputloc;ii++)
             b[ii] = '*';
         b[ii] = 0;
@@ -5209,7 +5207,7 @@ short spawn( short j, short pn )
 
                             if(j == 0)
                             {
-                                sprintf(tempbuf,"Subway found no zero'd sectors with locators\nat (%d,%d).\n",sp->x,sp->y);
+                                sprintf(tempbuf,"Subway found no zero'd sectors with locators\nat (%ld,%ld).\n",sp->x,sp->y);
                                 gameexit(tempbuf);
                             }
 
@@ -5670,8 +5668,9 @@ void animatesprites(int32_t x,int32_t y,short a,int32_t smoothratio)
             case RECON:
 
                 k = getangle(s->x-x,s->y-y);
-
-				k = (((s->ang+3072+128-k)&2047)/170);
+                if( T1 < 4 )
+                    k = (((s->ang+3072+128-k)&2047)/170);
+                else k = (((s->ang+3072+128-k)&2047)/170);
 
                 if(k>6)
                 {
@@ -7963,7 +7962,7 @@ void writestring(int32_t a1,int32_t a2,int32_t a3,short a4,int32_t vx,int32_t vy
 
     fp = (FILE *)fopen("debug.txt","rt+");
 
-    fprintf(fp,"%d %d %d %d %d %d %d\n",a1,a2,a3,a4,vx,vy,vz);
+    fprintf(fp,"%ld %ld %ld %ld %ld %ld %ld\n",a1,a2,a3,a4,vx,vy,vz);
 
     fclose(fp);
 
@@ -8085,7 +8084,7 @@ void findGRPToUse(uint8_t * game_dir,uint8_t * baseDir,uint8_t * groupfilefullpa
 	else
 		sprintf(groupfilefullpath, "%s", baseDir);
     
-	printf("Searching '%s':\n\n",groupfilefullpath);
+	printf("Searching '%d':\n\n",groupfilefullpath);
 	hFind = FindFirstFile(groupfilefullpath,&FindFileData);
     
 	if ( hFind==INVALID_HANDLE_VALUE )
@@ -8107,7 +8106,7 @@ void findGRPToUse(uint8_t * game_dir,uint8_t * baseDir,uint8_t * groupfilefullpa
 			kbdKey = getch();
 		while(kbdKey < '1' || kbdKey > ('0' + i));
 		printf("%c\n", kbdKey);
-		grpID =  kbdKey-'1';
+		grpID =  groupfile[kbdKey-'1'];
 		
 	}
 	
@@ -8292,6 +8291,35 @@ int main(int argc,char  **argv)
 
     setvmode(0x03);
 
+// This is needed for the icculus.org ported Build Engine.
+#if !PLATFORM_DOS
+    //get the config entry for fullscreen
+
+
+	// Are we trying to load a mod?
+	if(game_dir[0] != '\0')
+	{
+		//FILE *fp = NULL;
+		uint8_t  setupfilename[128];
+
+	   //Yes
+		sprintf(setupfilename, "%s\\%s", game_dir, SETUPFILENAME);	
+		iScriptHandle = SCRIPT_Load(setupfilename);
+	}else
+	{
+		iScriptHandle = SCRIPT_Load(SETUPFILENAME);
+	}
+
+    if(iScriptHandle != -1)
+    {
+		SCRIPT_GetNumber(iScriptHandle, "Screen Setup", "Fullscreen",&BFullScreen);
+        SCRIPT_Free(iScriptHandle);
+        iScriptHandle = -1;
+    }
+
+    _platform_init(argc, argv, "Duke Nukem 3D", "Duke3D");
+#endif
+
 	setmmxoverlay(getenv("BUILD_NOPENTIUM") == NULL);
 
     todd[0] = 'T';
@@ -8317,12 +8345,12 @@ int main(int argc,char  **argv)
             puts("You don't have enough free memory to run Duke Nukem 3D.");
             puts("The DOS \"mem\" command should report 6,800K (or 6.8 megs)");
             puts("of \"total memory free\".\n");
-            printf("Duke Nukem 3D requires %d more bytes to run.\n",3162000-350000-totalmemory);
+            printf("Duke Nukem 3D requires %ld more bytes to run.\n",3162000-350000-totalmemory);
             Error(EXIT_SUCCESS, "");
         }
     }
     else
-        printf("Using %d bytes for heap.\n",totalmemory);
+        printf("Using %ld bytes for heap.\n",totalmemory);
 
 #ifndef ONELEVELDEMO
 // CTW - REMOVED
@@ -8799,7 +8827,7 @@ void opendemowrite(void)
     int32_t dummylong = 0;
     uint8_t  ver;
     short i;
-	char  fullpathdemofilename[16];
+	uint8_t  fullpathdemofilename[16];
 
     if(ud.recstat == 2) kclose(recfilep);
 
@@ -10123,14 +10151,14 @@ void dobonus(uint8_t  bonusonly)
         minitext(23,80,"   NAME                                           KILLS",8,2+8+16+128);
         for(i=0;i<playerswhenstarted;i++)
         {
-            sprintf(tempbuf,"%-4d",i+1);
+            sprintf(tempbuf,"%-4ld",i+1);
             minitext(92+(i*23),80,tempbuf,3,2+8+16+128);
         }
 
         for(i=0;i<playerswhenstarted;i++)
         {
             xfragtotal = 0;
-            sprintf(tempbuf,"%d",i+1);
+            sprintf(tempbuf,"%ld",i+1);
 
             minitext(30,90+t,tempbuf,0,2+8+16+128);
             minitext(38,90+t,ud.user_name[i],ps[i].palookup,2+8+16+128);
@@ -10139,25 +10167,25 @@ void dobonus(uint8_t  bonusonly)
             {
                 if(i == y)
                 {
-                    sprintf(tempbuf,"%-4d",ps[y].fraggedself);
+                    sprintf(tempbuf,"%-4ld",ps[y].fraggedself);
                     minitext(92+(y*23),90+t,tempbuf,2,2+8+16+128);
                     xfragtotal -= ps[y].fraggedself;
                 }
                 else
                 {
-                    sprintf(tempbuf,"%-4d",frags[i][y]);
+                    sprintf(tempbuf,"%-4ld",frags[i][y]);
                     minitext(92+(y*23),90+t,tempbuf,0,2+8+16+128);
                     xfragtotal += frags[i][y];
                 }
 
                 if(myconnectindex == connecthead)
                 {
-                    sprintf(tempbuf,"stats %d killed %d %d\n",i+1,y+1,frags[i][y]);
+                    sprintf(tempbuf,"stats %ld killed %ld %ld\n",i+1,y+1,frags[i][y]);
                     sendscore(tempbuf);
                 }
             }
 
-            sprintf(tempbuf,"%-4d",xfragtotal);
+            sprintf(tempbuf,"%-4ld",xfragtotal);
             minitext(101+(8*23),90+t,tempbuf,2,2+8+16+128);
 
             t += 7;
@@ -10172,7 +10200,7 @@ void dobonus(uint8_t  bonusonly)
                     yfragtotal += ps[i].fraggedself;
                 yfragtotal += frags[i][y];
             }
-            sprintf(tempbuf,"%-4d",yfragtotal);
+            sprintf(tempbuf,"%-4ld",yfragtotal);
             minitext(92+(y*23),96+(8*7),tempbuf,2,2+8+16+128);
         }
 
@@ -10337,7 +10365,7 @@ void dobonus(uint8_t  bonusonly)
                         bonuscnt++;
                         sound(PIPEBOMB_EXPLODE);
                     }
-                    sprintf(tempbuf,"%-3d",ps[myconnectindex].actors_killed);
+                    sprintf(tempbuf,"%-3ld",ps[myconnectindex].actors_killed);
                     gametext((320>>2)+70,93+9,tempbuf,0,2+8+16);
                     if(ud.player_skill > 3 )
                     {
@@ -10347,8 +10375,8 @@ void dobonus(uint8_t  bonusonly)
                     else
                     {
                         if( (ps[myconnectindex].max_actors_killed-ps[myconnectindex].actors_killed) < 0 )
-                            sprintf(tempbuf,"%-3d",0);
-                        else sprintf(tempbuf,"%-3d",ps[myconnectindex].max_actors_killed-ps[myconnectindex].actors_killed);
+                            sprintf(tempbuf,"%-3ld",0);
+                        else sprintf(tempbuf,"%-3ld",ps[myconnectindex].max_actors_killed-ps[myconnectindex].actors_killed);
                         gametext((320>>2)+70,99+4+9,tempbuf,0,2+8+16);
                     }
                 }
@@ -10366,11 +10394,11 @@ void dobonus(uint8_t  bonusonly)
                         bonuscnt++;
                         sound(PIPEBOMB_EXPLODE);
                     }
-                    sprintf(tempbuf,"%-3d",ps[myconnectindex].secret_rooms);
+                    sprintf(tempbuf,"%-3ld",ps[myconnectindex].secret_rooms);
                     gametext((320>>2)+70,120+9,tempbuf,0,2+8+16);
                     if( ps[myconnectindex].secret_rooms > 0 )
-                        sprintf(tempbuf,"%-3d",(100*ps[myconnectindex].secret_rooms/ps[myconnectindex].max_secret_rooms));
-                    sprintf(tempbuf,"%-3d",ps[myconnectindex].max_secret_rooms-ps[myconnectindex].secret_rooms);
+                        sprintf(tempbuf,"%-3ld",(100*ps[myconnectindex].secret_rooms/ps[myconnectindex].max_secret_rooms));
+                    sprintf(tempbuf,"%-3ld",ps[myconnectindex].max_secret_rooms-ps[myconnectindex].secret_rooms);
                     gametext((320>>2)+70,130+9,tempbuf,0,2+8+16);
                 }
             }
@@ -10708,7 +10736,7 @@ void takescreenshot(void)
 {
 	char  szFilename[256];
 	int i;
-	char  score[20];
+	uint8_t  score[20];
 	time_t time4file;
 	struct tm *tmHMS;
     
@@ -10729,7 +10757,7 @@ void takescreenshot(void)
 
 	if(ud.multimode>1) // if more than 1 player, we add name. Then add score if DM
 	{
-		strcat(tempbuf, " [");
+		strcat((uint8_t *)tempbuf, " [");
 		for(i=connecthead;i>=0;i=connectpoint2[i])
 		{
 			if(!ud.user_name[i][0])
@@ -10740,12 +10768,14 @@ void takescreenshot(void)
 			if(ud.m_coop==0 || ud.m_coop==2)  // if DM or DM No spawn. Add Score as well
 			{
 				strcat(tempbuf, "(");
-                snprintf(score, sizeof(score), "%d", ps[i].frag-ps[i].fraggedself-ps[i].fraggedself);
-				strcat(tempbuf, score);
-				strcat(tempbuf, ")");
+                snprintf(ps[i].frag-ps[i].fraggedself, sizeof(ps[i].frag-ps[i].fraggedself), "%d", score);
+				strcat(tempbuf, ps[i].frag-ps[i].fraggedself);
+				strcat(tempbuf, ") vs ");
 			}
+			else
+				strcat(tempbuf, " vs ");
 		}	
-		
+		tempbuf[strlen(tempbuf)-4]=0; // remove last vs
 		strcat(tempbuf, "]");
 	}
 	strcat(tempbuf, ".bmp");
