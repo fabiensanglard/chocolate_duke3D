@@ -74,7 +74,7 @@ void FX_StopRecord( void ){}
 //Dummy music
 #include "audiolib/music.h"
 
-uint8_t  *MUSIC_ErrorString(int ErrorNumber)
+char  *MUSIC_ErrorString(int ErrorNumber)
 {
 	return "";
 }

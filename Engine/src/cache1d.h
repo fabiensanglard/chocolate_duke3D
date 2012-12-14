@@ -44,7 +44,7 @@ int32_t compress(uint8_t  *lzwinbuf, int32_t uncompleng, uint8_t  *lzwoutbuf);
 int32_t uncompress(uint8_t  *lzwinbuf, int32_t compleng, uint8_t  *lzwoutbuf);
 
 extern uint8_t  game_dir[512];
-extern int32_t TCkopen4load(const uint8_t  *filename, int readfromGRP);
+extern int32_t TCkopen4load(const char  *filename, int readfromGRP);
 
 #endif  /* !defined _INCLUDE_CACHE1D_H_ */
 

@@ -1182,7 +1182,7 @@ void Setup_StableNetworking()
 }
 
 
-void _platform_init(int argc, uint8_t  **argv, const char  *title, const char  *iconName)
+void _platform_init(int argc, char  **argv, const char  *title, const char  *iconName)
 {
     int i;
 	int32_t timeElapsed;

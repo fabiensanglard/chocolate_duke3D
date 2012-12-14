@@ -539,7 +539,7 @@ void write2disk(int line, uint8_t * cfilename, uint8_t  *filename2write, uint8_t
 	fclose(pFile);
 }
 
-int32 SafeOpenAppend (const uint8_t  *_filename, int32 filetype)
+int32 SafeOpenAppend (const char  *_filename, int32 filetype)
 {
 	int	handle;
     uint8_t  filename[MAX_PATH];
@@ -596,7 +596,7 @@ int32 SafeOpenWrite (const char  *_filename, int32 filetype)
 	return handle;
 }
 
-int32 SafeOpenRead (const uint8_t  *_filename, int32 filetype)
+int32 SafeOpenRead (const char  *_filename, int32 filetype)
 {
 	int	handle;
     uint8_t  filename[MAX_PATH];
