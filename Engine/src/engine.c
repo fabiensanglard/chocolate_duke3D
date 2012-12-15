@@ -7073,7 +7073,7 @@ void updatesector(int32_t x, int32_t y, short *lastKnownSector)
     int32_t i, j;
 
     //First check the last sector where (old_x,old_y) was before being updated to (x,y)
-    if (inside(x,y,*lastKnownSector) )
+    if (inside(x,y,*lastKnownSector) == 1)
     {
         //We found it and (x,y) is still in the same sector: nothing to update !
         return;
