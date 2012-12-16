@@ -101,25 +101,6 @@ int32_t reciptable[2048], fpuasm;
 
 char  kensmessage[128];
 
-
-
-/* rcg02132001 Cygwin support. */
-#if (defined C_IDENTIFIERS_UNDERSCORED)
-#define SYM_sqrtable   "_sqrtable"
-#define SYM_walock     "_walock"
-#define SYM_shlookup   "_shlookup"
-#define SYM_pow2char   "_pow2char"
-#define SYM_gotpic     "_gotpic"
-#define SYM_dmval      "_dmval"
-#else
-#define SYM_sqrtable   "sqrtable"
-#define SYM_walock     "walock"
-#define SYM_shlookup   "shlookup"
-#define SYM_pow2char   "pow2char"
-#define SYM_gotpic     "gotpic"
-#define SYM_dmval      "dmval"
-#endif
-
 uint8_t  britable[16][64];
 uint8_t  textfont[1024], smalltextfont[1024];
 
@@ -187,8 +168,10 @@ int32_t globalzd, globalbufplc, globalyscale, globalorientation;
 int32_t globalx1, globaly1, globalx2, globaly2, globalx3, globaly3, globalzx;
 int32_t globalx, globaly, globalz;
 
-//Those two variables are using during portal flooding:
+//FCS:
+// Those two variables are using during portal flooding:
 // sectorBorder is the stack and sectorbordercnt is the stack counter.
+// There is no really point to have this on the heap. That would have been better on the stack.
 static short sectorborder[256], sectorbordercnt;
 
 static uint8_t  tablesloaded = 0;
@@ -228,7 +211,13 @@ typedef struct
 static permfifotype permfifo[MAXPERMS];
 static int32_t permhead = 0, permtail = 0;
 
-short numscans, numhits, numbunches;
+//FCS: Num walls to potentially render.
+short numscans ;
+
+short numbunches;
+
+//FCS: Number of colums to draw. ALWAYS set to the screen dimension width.
+short numhits;
 
 short editstatus = 0;
 short searchit;
@@ -344,7 +333,7 @@ static void scansector (short sectnum)
             }
         }
 
-        //Mark the current sector as "visited"
+        //Mark the current sector bit as "visited" in the bitvector
         gotsector[sectnum>>3] |= pow2char[sectnum&7];
 
         bunchfrst = numbunches;
@@ -2445,93 +2434,162 @@ static void dosetaspect(void)
     }
 }
 
-//FCS: Geez one more horrible algorithm to decipher :| :/ :( cry smiley.....
-int wallfront(int32_t l1, int32_t l2)
+
+/*
+  FCS: Geez one more horrible algorithm to decipher :| :/ :( cry smiley..... 
+  Algorithm:
+
+  1.
+  Take wall 1 vector [point1,point2] and using two cross products determine if the two endpoints of wall 2 are on the same side of Wall 1 plan.
+  If they are then we can determine according to globalposx and globalposy if  wall2 is before or after wall1's plan.
+  
+  2. Do the same thing again but this time with wall2's plan. Try to find if wall1 is in front of behind wall2's plan.
+
+  Key concept: If a cross-product is equal to 0 this mean they are parallel.
+
+  Return: pvWallID1 in the potentially visible wall list is in front of pvWallID2 (in the same potentially visible list)
+*/
+int wallfront(int32_t pvWallID1, int32_t pvWallID2)
 {
     walltype *wal;
     int32_t x11, y11, x21, y21, x12, y12, x22, y22, dx, dy, t1, t2;
 
-    wal = &wall[thewall[l1]];
+	//It seems we are going to work in Worldspace coordinates.
+    wal = &wall[thewall[pvWallID1]];
     x11 = wal->x;
     y11 = wal->y;
     wal = &wall[wal->point2];
     x21 = wal->x;
     y21 = wal->y;
-    wal = &wall[thewall[l2]];
+    wal = &wall[thewall[pvWallID2]];
     x12 = wal->x;
     y12 = wal->y;
     wal = &wall[wal->point2];
     x22 = wal->x;
     y22 = wal->y;
 
+
+	//This is part 1
+
+	//Wall 1's vector
     dx = x21-x11;
     dy = y21-y11;
+
+	//This is a cross-product between Wall 1 vector and the [Wall 1 Point 1-> Wall 2 Point 1] vector 
     t1 = dmulscale2(x12-x11,dy,-dx,y12-y11); /* p1(l2) vs. l1 */
+	//This is a cross-product between Wall 1 vector and the [Wall 1 Point 1-> Wall 2 Point 2] vector 
     t2 = dmulscale2(x22-x11,dy,-dx,y22-y11); /* p2(l2) vs. l1 */
 
+	//If the vectors a parallel, then the cross-product is zero.
+    if (t1 == 0) {
+		//wall2's point1 is on wall1's plan.
+        t1 = t2;
+        if (t1 == 0) // Those two walls are on the same plan.
+		{
+			//Wall 2's point 2 is on wall1's plan.
+			return(-1);
+		}
+    }
+    if (t2 == 0) 
+		t2 = t1;
+
+	
+	//This XOR just determine if the cross-product have the same sign and hence if both points are on the same side of wall 1 plan.
+	//Test if both points of wall2 are on the same side of wall 1 (in front or behind).
+    if ((t1^t2) >= 0)
+    {
+		//cross-product have the same sign: Both points of wall2 are on the same side of wall1 : An answer is possible !!
+
+		//Now is time to take into account the camera position and determine which of wall1 or wall2 is seen first.
+        t2 = dmulscale2(globalposx-x11,dy,-dx,globalposy-y11); /* pos vs. l1 */
+
+		//Test the cross product sign difference.
+		//If (t2^t1) >= 0 then  both cross product had different sign so wall1 is in front of wall2
+		//otherwise wall2 is in front of wall1
+        return((t2^t1) >= 0);
+    }
+
+
+	//This is part 2
+	//Do it again but this time will wall2's plan.
+
+	//Wall 2's vector
+    dx = x22-x12;
+    dy = y22-y12;
+
+    t1 = dmulscale2(x11-x12,dy,-dx,y11-y12); /* p1(l1) vs. l2 */
+    t2 = dmulscale2(x21-x12,dy,-dx,y21-y12); /* p2(l1) vs. l2 */
     if (t1 == 0) {
         t1 = t2;
         if (t1 == 0) 
 			return(-1);
     }
-
-    if (t2 == 0) t2 = t1;
-    if ((t1^t2) >= 0)
-    {
-        t2 = dmulscale2(globalposx-x11,dy,-dx,globalposy-y11); /* pos vs. l1 */
-        return((t2^t1) >= 0);
-    }
-
-    dx = x22-x12;
-    dy = y22-y12;
-    t1 = dmulscale2(x11-x12,dy,-dx,y11-y12); /* p1(l1) vs. l2 */
-    t2 = dmulscale2(x21-x12,dy,-dx,y21-y12); /* p2(l1) vs. l2 */
-    if (t1 == 0) {
-        t1 = t2;
-        if (t1 == 0) return(-1);
-    }
-    if (t2 == 0) t2 = t1;
+    if (t2 == 0) 
+		t2 = t1;
     if ((t1^t2) >= 0)
     {
         t2 = dmulscale2(globalposx-x12,dy,-dx,globalposy-y12); /* pos vs. l2 */
         return((t2^t1) < 0);
     }
+
+	//FCS: No wall is in front of the other's plan: This means they are crossing.
     return(-2);
 }
 
 
-//Return 1 if bunch b1 is in from of bunch b2.
-static int bunchfront(int32_t b1, int32_t b2)
+//Return 1 if bunch firstBunchID is in from of bunch secondBunchID.
+static int bunchfront(int32_t firstBunchID, int32_t secondBunchID)
 {
-    int32_t x1b1, x2b1, x1b2, x2b2, b1f, b2f, i;
+    int32_t x1b1, x2b1, x1b2, x2b2, b2f;
 
-    b1f = bunchfirst[b1];
-    x1b1 = xb1[b1f];
-    x2b2 = xb2[bunchlast[b2]]+1;
     
+    x1b1 = xb1[bunchfirst[firstBunchID]];
+    x2b2 = xb2[bunchlast[secondBunchID]]+1; 
     if (x1b1 >= x2b2)
+	{
+		//Bunch 1 left side is completely on the right of bunch2's right in screenspace: They do not overlap.
         return(-1);
+	}
+
     
-    b2f = bunchfirst[b2];
-    x1b2 = xb1[b2f];
-    x2b1 = xb2[bunchlast[b1]]+1;
-    if (x1b2 >= x2b1) return(-1);
+    x1b2 = xb1[bunchfirst[secondBunchID]];
+    x2b1 = xb2[bunchlast[firstBunchID]]+1;
+    if (x1b2 >= x2b1) 
+	{
+		//Bunch 2 left side is completely on the right of bunch 1 right side: They do not overlap.
+		return(-1);
+	}
+
 
     if (x1b1 >= x1b2)
     {
-        for(i=b2f; xb2[i]<x1b1; i=p2[i]);
-        return(wallfront(b1f,i));
+		//Get the last wall in the bunch2.
+		int lastWallID;
+        for(lastWallID=bunchfirst[secondBunchID]; 
+			xb2[lastWallID]<x1b1; 
+			lastWallID=p2[lastWallID]);
+
+        return(wallfront(bunchfirst[firstBunchID],lastWallID));
     }
-    
-    for(i=b1f; xb2[i]<x1b2; i=p2[i]);
-    return(wallfront(i,b2f));
+	else
+	{
+		//Get the last wall in the bunch.
+		int lastWallID;
+		for(lastWallID=bunchfirst[firstBunchID]; 
+			xb2[lastWallID]<x1b2; 
+			lastWallID=p2[lastWallID]);
+
+		return(wallfront(lastWallID,bunchfirst[secondBunchID]));
+	}
 }
 
 int pixelRenderable = 100000000;
 void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,
                short daang, int32_t dahoriz, short dacursectnum)
 {
-    int32_t i, j, z, cz, fz, closest;
+    int32_t i, j, z, closest;
+	//Ceiling and Floor height at the player position.
+	int32_t cz, fz;
     short *shortptr1, *shortptr2;
 
 	// When visualizing the rendering process, part of the screen
@@ -2617,8 +2675,10 @@ void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,
 
     frameoffset = frameplace+viewoffset;
 
+	//Clear the bit vector that keep track of what sector has been flooded in.
     clearbufbyte(&gotsector[0],(long)((numsectors+7)>>3),0L);
 
+	//Clear the occlusion array.
     shortptr1 = (short *)&startumost[windowx1];
     shortptr2 = (short *)&startdmost[windowx1];
     i = xdimen-1;
@@ -2631,8 +2691,11 @@ void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,
     umost[0] = shortptr1[0]-windowy1;
     dmost[0] = shortptr2[0]-windowy1;
 
+	//NumHits is the number of column to draw.
     numhits = xdimen;
+	//Num walls to potentially render.
     numscans = 0;
+
     numbunches = 0;
     maskwallcnt = 0;
     smostwallcnt = 0;
@@ -2643,17 +2706,25 @@ void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,
         globalcursectnum -= MAXSECTORS;
     else
     {
+		// Even if the player leaves the map, the engine will keep on rendering from the last visited sector.
+		// Save it.
         i = globalcursectnum;
         updatesector(globalposx,globalposy,&globalcursectnum);
-        if (globalcursectnum < 0) globalcursectnum = i;
+		//Seem the player has left the map since updatesector cannot locate him -> Restore to the last known sector.
+        if (globalcursectnum < 0) 
+			globalcursectnum = i;
     }
 
     globparaceilclip = 1;
     globparaflorclip = 1;
+
+	//Update the ceiling and floor Z coordinate for the player's 2D position.
     getzsofslope(globalcursectnum,globalposx,globalposy,&cz,&fz);
+
     if (globalposz < cz) globparaceilclip = 0;
     if (globalposz > fz) globparaflorclip = 0;
 
+	//Build the list of potentially visible wall in to "bunches".
     scansector(globalcursectnum);
 
     if (inpreparemirror)
@@ -2698,31 +2769,42 @@ void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,
         mirrorsy2 = max(dmost[mirrorsx1],dmost[mirrorsx2]);
     }
 
-    // Scan sector has generated bunches, it is not time to see which one to render.
-    // numhits is the number of column to draw (if the screen is 320x200) then numhits starts at 200.
-    // Due to rounding error, not all column may be drawn so an additional stop condition is here:
+    // scansector has generated the bunches, it is now time to see which ones to render.
+    // numhits is the number of column of pixels to draw: (if the screen is 320x200 then numhits starts at 200).
+    // Due to rounding error, not all columns may be drawn so an additional stop condition is here:
     // When every bunches have been tested for rendition.
     while ((numbunches > 0) && (numhits > 0))
     {
         // tempbuf is used to mark which bunches have been elected as "closest".
-        // if tempbug[x] == 1 then it should be discarded.
+        // if tempbug[x] == 1 then it should be skipped.
         clearbuf(&tempbuf[0],(long)((numbunches+3)>>2),0L);
-        tempbuf[0] = 1;
 
-        closest = 0;              /* Almost works, but not quite :( */
+		/* Almost works, but not quite :( */
+		closest = 0; 
+        tempbuf[closest] = 1;       
         for(i=1; i<numbunches; i++)
         {
-            if ((j = bunchfront(i,closest)) < 0) continue;
+            if ((j = bunchfront(i,closest)) < 0) 
+				continue;
             tempbuf[i] = 1;
-            if (j == 0) tempbuf[closest] = 1, closest = i;
+            if (j == 0){
+				tempbuf[closest] = 1;
+				closest = i;
+			}
         }
         
-        for(i=0; i<numbunches; i++) /* Double-check */
+		/* Double-check */
+        for(i=0; i<numbunches; i++) 
         {
-            if (tempbuf[i]) continue;
-            if ((j = bunchfront(i,closest)) < 0) continue;
+            if (tempbuf[i]) 
+				continue;
+            if ((j = bunchfront(i,closest)) < 0) 
+				continue;
             tempbuf[i] = 1;
-            if (j == 0) tempbuf[closest] = 1, closest = i, i = 0;
+            if (j == 0){
+				tempbuf[closest] = 1;
+				closest = i, i = 0;
+			}
         }
 
         //Draw every solid walls with ceiling/floor in the bunch "closest"
@@ -2734,7 +2816,7 @@ void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,
                 show2dwall[thewall[z]>>3] |= pow2char[thewall[z]&7];
         }
 
-        //Since we just rendered a bunch, lower the current stack element
+        //Since we just rendered a bunch, lower the current stack element so we can treat the next item
         numbunches--;
         //...and move the bunch at the top of the stack so we won't iterate on it again...
         bunchfirst[closest] = bunchfirst[numbunches];

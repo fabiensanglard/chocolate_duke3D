@@ -486,15 +486,12 @@ int connect_to_everyone()
 		{
 			for(i = 0; i < gcom->numplayers-1; ++i)
 			{
-				ENetPeer *peer;
+
 				char szHostName[64];
-	
 	
 				address.host = allowed_addresses[i].host; //ip;
 				address.port = allowed_addresses[i].port; //m_nPort;
 
-	
-	
 				enet_address_get_host(&address, szHostName, 64);
 				printf("Creating peer: %s:%d\n", szHostName, address.port);
 	
@@ -750,7 +747,7 @@ void HandleEvent(ENetEvent *pEvent)
 							{
 								PacketPeerGreeting packet;
 								unsigned int nPeerIndex;
-								int i;
+
 
 								if(pEvent->packet->data[0] != HEADER_PEER_GREETING)
 								{
