@@ -820,11 +820,11 @@ static void ceilscan (int32_t x1, int32_t x2, int32_t sectnum)
         msethlineshift(picsiz[globalpicnum]&15,picsiz[globalpicnum]>>4);
         break;
     case 256:
-        settransnormal();
+		settrans(TRANS_NORMAL);
         tsethlineshift(picsiz[globalpicnum]&15,picsiz[globalpicnum]>>4);
         break;
     case 384:
-        settransreverse();
+        settrans(TRANS_REVERSE);
         tsethlineshift(picsiz[globalpicnum]&15,picsiz[globalpicnum]>>4);
         break;
     }
@@ -1022,11 +1022,11 @@ static void florscan (int32_t x1, int32_t x2, int32_t sectnum)
         msethlineshift(picsiz[globalpicnum]&15,picsiz[globalpicnum]>>4);
         break;
     case 256:
-        settransnormal();
+        settrans(TRANS_NORMAL);
         tsethlineshift(picsiz[globalpicnum]&15,picsiz[globalpicnum]>>4);
         break;
     case 384:
-        settransreverse();
+        settrans(TRANS_REVERSE);
         tsethlineshift(picsiz[globalpicnum]&15,picsiz[globalpicnum]>>4);
         break;
     }
@@ -3320,23 +3320,11 @@ int setgamemode(uint8_t  davidoption, int32_t daxdim, int32_t daydim)
         Error(EXIT_SUCCESS, "");
     }
     return(_setgamemode(davidoption, daxdim, daydim));
-} /* setgamemode */
+}
 
 
-static int dommxoverlay = 1;
+
 static int initengine_called = 0;
-
-void setmmxoverlay(int isenabled)
-{
-    if (!initengine_called)
-        dommxoverlay = (isenabled) ? 1 : 0;
-} /* setmmxoverlay */
-
-
-int getmmxoverlay(void)
-{
-    return(dommxoverlay);
-} /* getmmxoverlay */
 
 
 void initengine(void)
@@ -3346,9 +3334,6 @@ void initengine(void)
 
 
     initengine_called = 1;
-
-    if (dommxoverlay)
-        mmxoverlay();
 
     loadtables();
 
@@ -3881,8 +3866,11 @@ static void dorotatesprite (int32_t sx, int32_t sy, int32_t z, short a, short pi
         else
         {
             tsetupspritevline(palookupoffs,(xv>>16)*ysiz,xv<<16,ysiz,yv,0L);
-            if (dastat&32) settransreverse();
-            else settransnormal();
+
+            if (dastat&32) 
+				settrans(TRANS_REVERSE);
+            else 
+				settrans(TRANS_NORMAL);
         }
 
         for(x=x1; x<x2; x++)
@@ -4534,8 +4522,10 @@ static void drawmaskwall(short damaskwallcnt)
     {
         if (globalorientation&128)
         {
-            if (globalorientation&512) settransreverse();
-            else settransnormal();
+            if (globalorientation&512) 
+				settrans(TRANS_REVERSE);
+            else 
+				settrans(TRANS_NORMAL);
         }
         transmaskwallscan(xb1[z],xb2[z]);
     }
@@ -4653,8 +4643,11 @@ static void drawsprite (int32_t snum)
     globalshade = tspr->shade;
     if (cstat&2)
     {
-        if (cstat&512) settransreverse();
-        else settransnormal();
+
+        if (cstat&512) 
+			settrans(TRANS_REVERSE);
+        else 
+			settrans(TRANS_NORMAL);
     }
 
     xoff = (long)((int8_t )((picanm[tilenum]>>8)&255))+((long)tspr->xoffset);

@@ -8320,7 +8320,7 @@ int main(int argc,char  **argv)
     _platform_init(argc, argv, "Duke Nukem 3D", "Duke3D");
 #endif
 
-	setmmxoverlay(getenv("BUILD_NOPENTIUM") == NULL);
+	
 
     todd[0] = 'T';
     sixteen[0] = 'D';

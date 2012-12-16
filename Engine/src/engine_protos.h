@@ -109,8 +109,8 @@ extern void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz, short daan
 extern int loadboard(char  *filename, int32_t *daposx, int32_t *daposy, int32_t *daposz, short *daang, short *dacursectnum);
 extern int saveboard(char  *filename, int32_t *daposx, int32_t *daposy, int32_t *daposz, short *daang, short *dacursectnum);
 extern int setgamemode(uint8_t  davidoption, int32_t daxdim, int32_t daydim);
-extern void setmmxoverlay(int isenabled);
-extern int getmmxoverlay(void);
+
+
 extern void initengine(void);
 extern void uninitengine(void);
 extern void nextpage(void);

@@ -17,14 +17,6 @@ extern int32_t asm2;
 extern int32_t asm3;
 extern int32_t asm4;
 
-
-/* #pragma aux mmxoverlay modify [eax ebx ecx edx] */
-int32_t mmxoverlay(void)
-{
-    return 0;
-} /* mmxoverlay */
-
-/* #pragma aux sethlinesizes parm [eax][ebx][ecx] */
 static uint8_t machxbits_al;
 static uint8_t machxbits_bl;
 static int32_t machxbits_ecx;
@@ -33,7 +25,7 @@ void sethlinesizes(int32_t i1, int32_t i2, int32_t i3)
     machxbits_al = i1;
     machxbits_bl = i2;
     machxbits_ecx = i3;
-} /* sethlinesizes */
+} 
 
 static uint8_t* pal_eax;
 void setuphlineasm4(int32_t i1, int32_t i2) { }
@@ -255,7 +247,7 @@ int32_t tvlineasm1(int32_t i1, int32_t i2, int32_t numPixels, int32_t i4, int32_
 	return i4;
 } /* tvlineasm1 */
 
-/* #pragma aux setuptvlineasm2 parm [eax][ebx][ecx] */
+
 static uint8_t  tran2shr;
 static uint32_t tran2pal_ebx;
 static uint32_t tran2pal_ecx;
@@ -685,6 +677,8 @@ void tsethlineshift(int32_t i1, int32_t i2)
 }
 
 
+
+
 static int32_t slopemach_ebx;
 static int32_t slopemach_ecx;
 static int32_t slopemach_edx;
@@ -710,6 +704,8 @@ extern int32_t globalx3, globaly3;
 extern int32_t fpuasm;
 #define low32(a) ((a&0xffffffff))
 #define high32(a) ((int)(((__int64)a&(__int64)0xffffffff00000000)>>32))
+
+
 
 /* #pragma aux slopevlin parm [eax][ebx][ecx][edx][esi][edi] */
 //FCS: Render RENDER_SLOPPED_CEILING_AND_FLOOR
@@ -773,17 +769,10 @@ void slopevlin(int32_t i1, uint32_t i2, int32_t i3, int32_t i4, int32_t i5, int3
 	    ebx = asm4;
 	    ebx -= 8;	// BITSOFPRECISIONPOW
     } while ((int32_t)ebx > 0);
-} /* slopevlin */
+}
 
 
-void settransnormal(void)
-{
-	transrev = 0;
-} 
 
-
-void settransreverse(void)
-{
-	transrev = 1;
-} 
-
+void settrans(int32_t type){
+	transrev = type;
+}

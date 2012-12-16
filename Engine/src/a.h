@@ -18,7 +18,7 @@
 extern "C" {
 #endif
 
-int32_t mmxoverlay(void);
+
 int32_t sethlinesizes(int32_t,int32_t,int32_t);
 int32_t setpalookupaddress(uint8_t  *);
 int32_t setuphlineasm4(int32_t,int32_t);
@@ -56,8 +56,9 @@ int32_t thlineskipmodify(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
 int32_t tsethlineshift(int32_t,int32_t);
 int32_t setupslopevlin(int32_t,int32_t,int32_t);
 int32_t slopevlin(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
-int32_t settransnormal(void);
-int32_t settransreverse(void);
+#define TRANS_NORMAL  0
+#define TRANS_REVERSE 1
+int32_t settrans(int32_t type);
 
 
 

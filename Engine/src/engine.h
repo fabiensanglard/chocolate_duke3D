@@ -53,8 +53,8 @@ int insertspritestat(short statnum);
 int changespritesect(short spritenum, short newsectnum);
 int changespritestat(short spritenum, short newstatnum);
 void loadtile(short tilenume);
-void setmmxoverlay(int isenabled);
-int getmmxoverlay(void);
+
+
 void nextpage(void);
 void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,
                short daang, int32_t dahoriz, short dacursectnum);
