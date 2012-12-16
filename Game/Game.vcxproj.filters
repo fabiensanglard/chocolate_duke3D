@@ -68,12 +68,6 @@
     <ClCompile Include="src\sounds.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\midi\win_midiout.cpp">
-      <Filter>Midi</Filter>
-    </ClCompile>
-    <ClCompile Include="src\midi\xmidi.cpp">
-      <Filter>Midi</Filter>
-    </ClCompile>
     <ClCompile Include="src\audiolib\dsl.c">
       <Filter>Audiolib</Filter>
     </ClCompile>
@@ -109,6 +103,9 @@
     </ClCompile>
     <ClCompile Include="src\cvars.c">
       <Filter>Console Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\midi\sdl_midi.c">
+      <Filter>Midi</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -171,15 +168,6 @@
     </ClInclude>
     <ClInclude Include="src\util_lib.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\midi\databuf.h">
-      <Filter>Midi</Filter>
-    </ClInclude>
-    <ClInclude Include="src\midi\win_midiout.h">
-      <Filter>Midi</Filter>
-    </ClInclude>
-    <ClInclude Include="src\midi\xmidi.h">
-      <Filter>Midi</Filter>
     </ClInclude>
     <ClInclude Include="src\audiolib\assert.h">
       <Filter>Audiolib</Filter>

@@ -127,14 +127,13 @@
     <ClCompile Include="src\global.c" />
     <ClCompile Include="src\keyboard.c" />
     <ClCompile Include="src\menues.c" />
+    <ClCompile Include="src\midi\sdl_midi.c" />
     <ClCompile Include="src\player.c" />
     <ClCompile Include="src\premap.c" />
     <ClCompile Include="src\rts.c" />
     <ClCompile Include="src\scriplib.c" />
     <ClCompile Include="src\sector.c" />
     <ClCompile Include="src\sounds.c" />
-    <ClCompile Include="src\midi\win_midiout.cpp" />
-    <ClCompile Include="src\midi\xmidi.cpp" />
     <ClCompile Include="src\audiolib\dsl.c" />
     <ClCompile Include="src\audiolib\fx_man.c">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
@@ -172,9 +171,6 @@
     <ClInclude Include="src\sounds.h" />
     <ClInclude Include="src\types.h" />
     <ClInclude Include="src\util_lib.h" />
-    <ClInclude Include="src\midi\databuf.h" />
-    <ClInclude Include="src\midi\win_midiout.h" />
-    <ClInclude Include="src\midi\xmidi.h" />
     <ClInclude Include="src\audiolib\assert.h" />
     <ClInclude Include="src\_functio.h" />
     <ClInclude Include="src\console.h" />
