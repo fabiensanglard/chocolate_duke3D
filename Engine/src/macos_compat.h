@@ -11,10 +11,6 @@
 
 #define PLATFORM_SUPPORTS_SDL
 
-#define __far
-#define __interrupt
-#define interrupt
-#define far
 #define kmalloc(x) malloc(x)
 #define kkmalloc(x) malloc(x)
 #define kfree(x) free(x)

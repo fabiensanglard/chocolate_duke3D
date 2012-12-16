@@ -145,7 +145,7 @@ void _updateScreenRect(int32_t x, int32_t y, int32_t w, int32_t h);
 int setupmouse(void);
 void readmousexy(short *x, short *y);
 void readmousebstatus(short *bstatus);
-void __interrupt __far keyhandler(void);
+void keyhandler(void);
 uint8_t  _readlastkeyhit(void);
 
 /* timer krap. */
@@ -153,7 +153,7 @@ int inittimer(int);
 void uninittimer(void);
 
 /* this is implemented in the game, and your driver calls it. */
-void __interrupt __far timerhandler(void);
+void timerhandler(void);
 
 /* resolution inits. sdl_driver.c ... */
 int32_t _setgamemode(uint8_t  davidoption, int32_t daxdim, int32_t daydim);

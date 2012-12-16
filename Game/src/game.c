@@ -101,7 +101,7 @@ char  firstdemofile[80] = { '\0' };
         scale(x2,xdim,320)-1,scale(y2,ydim,200)-1);                        \
 }
 
-void __interrupt __far newint24( int errval, int ax, int bp, int si );
+void newint24( int errval, int ax, int bp, int si );
 
 int recfilep,totalreccnt;
 uint8_t  debug_on = 0,actor_tog = 0,*rtsptr,memorycheckoveride=0;

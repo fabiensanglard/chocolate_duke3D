@@ -17,14 +17,6 @@
 #define __EXPORT__
 #endif
 
-#if ((defined PLATFORM_SUPPORTS_SDL) && (!defined PLATFORM_TIMER_HZ))
-#define PLATFORM_TIMER_HZ 100
-#endif
-
-#if (!defined PLATFORM_TIMER_HZ)
-#error You need to define PLATFORM_TIMER_HZ for your platform.
-#endif
-
 #if (defined __WATCOMC__)
 #define snprintf _snprintf
 #endif

@@ -17,9 +17,6 @@ typedef int32_t int32_t __int64;
 #define STUBBED(x)
 #endif
 
-#define __far
-#define __interrupt
-
 #define PATH_SEP_CHAR '\\'
 #define PATH_SEP_STR  "\\"
 
