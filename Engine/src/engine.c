@@ -104,6 +104,34 @@ char  kensmessage[128];
 uint8_t  britable[16][64];
 uint8_t  textfont[1024], smalltextfont[1024];
 
+
+enum vector_index_e {VEC_X=0,VECY=1};
+enum screenSpaceCoo_index_e {VEC_COL_X=0,VEC_DIST=1};
+typedef float vector_t[2];
+
+// This is the structure emitted for each wall that is potentially visible.
+// A stack of those is populated when the sectors are scanned.
+typedef struct pvWall_s{
+    vector_t cameraSpaceCoo[2]; //Camera space coordinates of the wall endpoints. Access with vector_index_e.
+    short sectorId;        //The index of the sector this wall belongs to in the map database.
+    short worldWallId;     //The index of the wall in the map database.
+    vector_t screenSpaceCoo[2]; //Screen space coordinate of the wall endpoints. Access with screenSpaceCoo_index_e.
+} pvWall_t;
+
+// Potentially Visible walls are stored in this stack.
+pvWall_t pvWalls[MAXWALLSB];
+
+/*
+//This is the structure emitted for each bunch detected during scanning.
+typedef struct bunch_s{
+    short firstWallId;
+    short lastWallId;
+} bunch_t;
+
+//Stack containing the bunchs.
+bunch_t bunchList[MAXWALLSB];
+*/
+
 //xb1 and xb2 seems to be storing the column of the wall endpoint
 //yb1 and yb2 store the Y distance from the camera.
 static int32_t xb1[MAXWALLSB], yb1[MAXWALLSB], xb2[MAXWALLSB], yb2[MAXWALLSB];
@@ -115,6 +143,12 @@ static int32_t rx1[MAXWALLSB], ry1[MAXWALLSB], rx2[MAXWALLSB], ry2[MAXWALLSB];
 static short p2[MAXWALLSB], thesector[MAXWALLSB], thewall[MAXWALLSB];
 
 static short bunchfirst[MAXWALLSB], bunchlast[MAXWALLSB];
+
+
+
+
+
+
 
 static short smost[MAXYSAVES], smostcnt;
 static short smoststart[MAXWALLSB];
@@ -172,7 +206,9 @@ int32_t globalx, globaly, globalz;
 // Those two variables are using during portal flooding:
 // sectorBorder is the stack and sectorbordercnt is the stack counter.
 // There is no really point to have this on the heap. That would have been better on the stack.
-static short sectorborder[256], sectorbordercnt;
+
+//static short sectorborder[256], sectorbordercnt;
+//FCS: Moved this on the stack
 
 static uint8_t  tablesloaded = 0;
 int32_t pageoffset, ydim16, qsetmode = 0;
@@ -305,15 +341,20 @@ static void scansector (short sectnum)
     int32_t xs, ys, x1, y1, x2, y2, xp1, yp1, xp2=0, yp2=0, tempint;
     short z, zz, startwall, endwall, numscansbefore, scanfirst, bunchfrst;
     short nextsectnum;
-
+    
+    //The stack storing sectors to visit.
+    short sectorsToVisit[256], numSectorsToVisit;
+    
+    
     if (sectnum < 0) return;
 
     if (automapping) show2dsector[sectnum>>3] |= pow2char[sectnum&7];
 
-    sectorborder[0] = sectnum, sectorbordercnt = 1;
+    sectorsToVisit[0] = sectnum;
+    numSectorsToVisit = 1;
     do
     {
-        sectnum = sectorborder[--sectorbordercnt];
+        sectnum = sectorsToVisit[--numSectorsToVisit];
 
         //Add every script in the current sector as potentially visible.
         for(z=headspritesect[sectnum]; z>=0; z=nextspritesect[z])
@@ -334,7 +375,7 @@ static void scansector (short sectnum)
         }
 
         //Mark the current sector bit as "visited" in the bitvector
-        gotsector[sectnum>>3] |= pow2char[sectnum&7];
+        visitedSectors[sectnum>>3] |= pow2char[sectnum&7];
 
         bunchfrst = numbunches;
         numscansbefore = numscans;
@@ -360,7 +401,7 @@ static void scansector (short sectnum)
             // If this is a portal...
             if ((nextsectnum >= 0) && ((wal->cstat&32) == 0))
                 //If this portal has not been visited yet.
-                if ((gotsector[nextsectnum>>3]&pow2char[nextsectnum&7]) == 0)
+                if ((visitedSectors[nextsectnum>>3]&pow2char[nextsectnum&7]) == 0)
                 {
                     //Cross product -> Z component
                     tempint = x1*y2-x2*y1;
@@ -373,7 +414,7 @@ static void scansector (short sectnum)
                         //(x2-x1)*(x2-x1)+(y2-y1)*(y2-y1) is the squared length of the wall
                         // ??? What is this test ?? How acute the angle is ?
                         if (mulscale5(tempint,tempint) <= (x2-x1)*(x2-x1)+(y2-y1)*(y2-y1))
-                            sectorborder[sectorbordercnt++] = nextsectnum;
+                            sectorsToVisit[numSectorsToVisit++] = nextsectnum;
                     }
                 }
 
@@ -497,7 +538,7 @@ skipitaddwall:
             bunchlast[z] = zz;
         }
 
-    } while (sectorbordercnt > 0);
+    } while (numSectorsToVisit > 0);
     // do this until the stack of sectors to visit if empty.
 }
 
@@ -2308,7 +2349,7 @@ static void drawalls(int32_t bunch)
                 }
             }
             if (numhits < 0) return;
-            if ((!(wal->cstat&32)) && ((gotsector[nextsectnum>>3]&pow2char[nextsectnum&7]) == 0))
+            if ((!(wal->cstat&32)) && ((visitedSectors[nextsectnum>>3]&pow2char[nextsectnum&7]) == 0))
             {
                 if (umost[x2] < dmost[x2])
                     scansector((short) nextsectnum);
@@ -2584,8 +2625,11 @@ static int bunchfront(int32_t firstBunchID, int32_t secondBunchID)
 }
 
 int pixelRenderable = 100000000;
-void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,
-               short daang, int32_t dahoriz, short dacursectnum)
+
+/*  
+      FCS: Draw every walls in Front to Back Order.
+*/
+void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,short daang, int32_t dahoriz, short dacursectnum)
 {
     int32_t i, j, z, closest;
 	//Ceiling and Floor height at the player position.
@@ -2612,7 +2656,7 @@ void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,
     globalposx = daposx;
     globalposy = daposy;
     globalposz = daposz;
-    globalang = (daang&2047);
+    globalang = (daang&2047); //FCS: Mask and keep only 11 bits of angle value.
 
     globalhoriz = mulscale16(dahoriz-100,xdimenscale)+(ydimen>>1);
     globaluclip = (0-globalhoriz)*xdimscale;
@@ -2676,7 +2720,7 @@ void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,
     frameoffset = frameplace+viewoffset;
 
 	//Clear the bit vector that keep track of what sector has been flooded in.
-    clearbufbyte(&gotsector[0],(long)((numsectors+7)>>3),0L);
+    clearbufbyte(visitedSectors,(long)((numsectors+7)>>3),0L);
 
 	//Clear the occlusion array.
     shortptr1 = (short *)&startumost[windowx1];
@@ -4698,10 +4742,6 @@ static void drawsprite (int32_t snum)
     short tilenum, spritenum;
     uint8_t  swapped, daclip;
 
-#ifdef SUPERBUILD
-    int32_t *longptr;
-#endif
-
     tspr = tspriteptr[snum];
 
     xb = spritesx[snum];
@@ -4712,7 +4752,9 @@ static void drawsprite (int32_t snum)
 
     if ((cstat&48) != 48)
     {
-        if (picanm[tilenum]&192) tilenum += animateoffs(tilenum,(short) (spritenum+32768));
+        if (picanm[tilenum]&192)
+            tilenum += animateoffs(tilenum,(short) (spritenum+32768));
+        
         if ((tilesizx[tilenum] <= 0) || (tilesizy[tilenum] <= 0) || (spritenum < 0))
             return;
     }
@@ -4739,7 +4781,8 @@ static void drawsprite (int32_t snum)
 
     if ((cstat&48) == 0)
     {
-        if (yp <= (4<<8)) return;
+        if (yp <= (4<<8))
+            return;
 
         siz = divscale19(xdimenscale,yp);
 
@@ -4754,10 +4797,13 @@ static void drawsprite (int32_t snum)
             return;  /* Watch out for divscale overflow */
 
         x1 = xb-(xsiz>>1);
-        if (xspan&1) x1 += mulscale31(siz,xv);  /* Odd xspans */
+        if (xspan&1)
+            x1 += mulscale31(siz,xv);  /* Odd xspans */
         i = mulscale30(siz,xv*xoff);
-        if ((cstat&4) == 0) x1 -= i;
-        else x1 += i;
+        if ((cstat&4) == 0)
+            x1 -= i;
+        else
+            x1 += i;
 
         y1 = mulscale16(tspr->z-globalposz,siz);
         y1 -= mulscale14(siz,tspr->yrepeat*yoff);
@@ -4784,10 +4830,12 @@ static void drawsprite (int32_t snum)
             startum = globalhoriz+mulscale24(siz,sec->ceilingz-globalposz)-1;
         else
             startum = 0;
+        
         if ((sec->floorstat&3) == 0)
             startdm = globalhoriz+mulscale24(siz,sec->floorz-globalposz)+1;
         else
             startdm = 0x7fffffff;
+        
         if ((y1>>8) > startum) startum = (y1>>8);
         if ((y2>>8) < startdm) startdm = (y2>>8);
 
@@ -4821,11 +4869,18 @@ static void drawsprite (int32_t snum)
         daclip = 0;
         for(i=smostwallcnt-1; i>=0; i--)
         {
-            if (smostwalltype[i]&daclip) continue;
+            if (smostwalltype[i]&daclip)
+                continue;
+            
             j = smostwall[i];
-            if ((xb1[j] > rx) || (xb2[j] < lx)) continue;
-            if ((yp <= yb1[j]) && (yp <= yb2[j])) continue;
-            if (spritewallfront(tspr,(long)thewall[j]) && ((yp <= yb1[j]) || (yp <= yb2[j]))) continue;
+            if ((xb1[j] > rx) || (xb2[j] < lx))
+                continue;
+            
+            if ((yp <= yb1[j]) && (yp <= yb2[j]))
+                continue;
+            
+            if (spritewallfront(tspr,(long)thewall[j]) && ((yp <= yb1[j]) || (yp <= yb2[j])))
+                continue;
 
             dalx2 = max(xb1[j],lx);
             darx2 = min(xb2[j],rx);
@@ -4835,7 +4890,8 @@ static void drawsprite (int32_t snum)
             case 0:
                 if (dalx2 <= darx2)
                 {
-                    if ((dalx2 == lx) && (darx2 == rx)) return;
+                    if ((dalx2 == lx) && (darx2 == rx))
+                        return;
                     clearbufbyte(&dwall[dalx2],(darx2-dalx2+1)*sizeof(dwall[0]),0L);
                 }
                 break;
@@ -5536,18 +5592,27 @@ static void drawsprite (int32_t snum)
     if (automapping == 1) show2dsprite[spritenum>>3] |= pow2char[spritenum&7];
 }
 
-
+/*
+     FCS: Draw every transparent sprites in Back To Front Order. Also draw decals on the walls...
+ */
 void drawmasks(void)
 {
     int32_t i, j, k, l, gap, xs, ys, xp, yp, yoff, yspan;
     /* int32_t zs, zp; */
 
-    for(i=spritesortcnt-1; i>=0; i--) tspriteptr[i] = &tsprite[i];
+    //Copy sprite address in a sprite proxy structure (pointers are easier to re-arrange than structs).
+    for(i=spritesortcnt-1; i>=0; i--)
+        tspriteptr[i] = &tsprite[i];
+    
+    
+    //Generate screenspace coordinate (X column and Y distance).
     for(i=spritesortcnt-1; i>=0; i--)
     {
+        //Translate and rotate the sprite in Camera space coordinate.
         xs = tspriteptr[i]->x-globalposx;
         ys = tspriteptr[i]->y-globalposy;
         yp = dmulscale6(xs,cosviewingrangeglobalang,ys,sinviewingrangeglobalang);
+        
         if (yp > (4<<8))
         {
             xp = dmulscale6(ys,cosglobalang,-xs,singlobalang);
@@ -5556,6 +5621,7 @@ void drawmasks(void)
         else if ((tspriteptr[i]->cstat&48) == 0)
         {
             spritesortcnt--;  /* Delete face sprite if on wrong side! */
+            //Move the sprite at the end of the array and decrease array length.
             if (i != spritesortcnt)
             {
                 tspriteptr[i] = tspriteptr[spritesortcnt];
@@ -5567,13 +5633,16 @@ void drawmasks(void)
         spritesy[i] = yp;
     }
 
+    //FCS: Bubble sort ?! REally ?!?!?
     gap = 1;
     while (gap < spritesortcnt) gap = (gap<<1)+1;
     for(gap>>=1; gap>0; gap>>=1)    /* Sort sprite list */
         for(i=0; i<spritesortcnt-gap; i++)
             for(l=i; l>=0; l-=gap)
             {
-                if (spritesy[l] <= spritesy[l+gap]) break;
+                if (spritesy[l] <= spritesy[l+gap])
+                    break;
+                
                 swaplong((int32_t *)&tspriteptr[l],(int32_t *)&tspriteptr[l+gap]);
                 swaplong(&spritesx[l],&spritesx[l+gap]);
                 swaplong(&spritesy[l],&spritesy[l+gap]);
@@ -5586,7 +5655,9 @@ void drawmasks(void)
     i = 0;
     for(j=1; j<=spritesortcnt; j++)
     {
-        if (spritesy[j] == ys) continue;
+        if (spritesy[j] == ys)
+            continue;
+        
         ys = spritesy[j];
         if (j > i+1)
         {
@@ -8515,7 +8586,8 @@ void drawmapview(int32_t dax, int32_t day, int32_t zoome, short ang)
     beforedrawrooms = 0;
     totalarea += (windowx2+1-windowx1)*(windowy2+1-windowy1);
 
-    clearbuf(&gotsector[0],(long)((numsectors+31)>>5),0L);
+    //This seems to be dead code.
+    //clearbuf(visitedSectors,(long)((numsectors+31)>>5),0L);
 
     cx1 = (windowx1<<12);
     cy1 = (windowy1<<12);
@@ -8565,7 +8637,8 @@ void drawmapview(int32_t dax, int32_t day, int32_t zoome, short ang)
                     tsprite[sortnum++].owner = i;
                 }
 
-            gotsector[s>>3] |= pow2char[s&7];
+            //This seems to be dead code.
+            //visitedSectors[s>>3] |= pow2char[s&7];
 
             globalorientation = (long)sec->floorstat;
             if ((globalorientation&1) != 0) continue;

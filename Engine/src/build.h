@@ -209,7 +209,7 @@ EXTERN uint8_t  automapping;
 EXTERN uint8_t  gotpic[(MAXTILES+7)>>3];
 
 //This is the bit vector that marks visited sector during portal flooding. Size is hence (MAXSECTORS / 8)
-EXTERN uint8_t  gotsector[(MAXSECTORS+7)>>3];
+EXTERN uint8_t  visitedSectors[(MAXSECTORS+7)>>3];
 
 /*************************************************************************
 POSITION VARIABLES:
