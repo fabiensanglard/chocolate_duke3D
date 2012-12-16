@@ -124,61 +124,6 @@ extern "C" {
 
 #define BASECONTROLSCALEVALUE (1<<16)
 
-enum
-   {
-   gametype_network=3,
-   gametype_serial=1,
-   gametype_modem=2
-   };
-
-enum
-   {
-   connecttype_dialing=0,
-   connecttype_answer=1,
-   connecttype_alreadyconnected=2
-   };
-
-enum
-   {
-   screenbuffer_320x200,
-   screenbuffer_640x400,
-   screenbuffer_640x480,
-   screenbuffer_800x600,
-   screenbuffer_1024x768,
-   screenbuffer_1280x1024,
-   screenbuffer_1600x1200
-   };
-
-enum
-   {
-   vesa_320x200,
-   vesa_360x200,
-   vesa_320x240,
-   vesa_360x240,
-   vesa_320x400,
-   vesa_360x400,
-   vesa_640x350,
-   vesa_640x400,
-   vesa_640x480,
-   vesa_800x600,
-   vesa_1024x768,
-   vesa_1280x1024,
-   vesa_1600x1200
-   };
-
-enum
-   {
-   screenmode_chained,
-   screenmode_vesa,
-   screenmode_buffered,
-   screenmode_tseng,
-   screenmode_paradise,
-   screenmode_s3,
-   screenmode_crystal,
-   screenmode_redblue,
-   };
-
-
 #ifdef __cplusplus
 };
 #endif

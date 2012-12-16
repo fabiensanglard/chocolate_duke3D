@@ -150,7 +150,12 @@ static int32_t spritesy[MAXSPRITESONSCREEN+1];
 static int32_t spritesz[MAXSPRITESONSCREEN];
 static spritetype *tspriteptr[MAXSPRITESONSCREEN];
 
-short umost[MAXXDIM+1], dmost[MAXXDIM+1];
+//FCS: (up-most pixel on column x that can still be drawn to)
+short umost[MAXXDIM+1];
+
+//FCS: (down-most pixel +1 on column x that can still be drawn to)
+short dmost[MAXXDIM+1];
+
 static short bakumost[MAXXDIM+1], bakdmost[MAXXDIM+1];
 short uplc[MAXXDIM+1], dplc[MAXXDIM+1];
 static short uwall[MAXXDIM+1], dwall[MAXXDIM+1];
@@ -2029,7 +2034,8 @@ static void drawalls(int32_t bunch)
         andwstat2 &= wallmost(dplc,z,sectnum,(uint8_t )1);
     }
 
-    if ((andwstat1&3) != 3)     /* draw ceilings */
+	/* draw ceilings */
+    if ((andwstat1&3) != 3)     
     {
         if ((sec->ceilingstat&3) == 2)
             grouscan(xb1[bunchfirst[bunch]],xb2[bunchlast[bunch]],sectnum,0);
@@ -2038,7 +2044,9 @@ static void drawalls(int32_t bunch)
         else
             parascan(xb1[bunchfirst[bunch]],xb2[bunchlast[bunch]],sectnum,0,bunch);
     }
-    if ((andwstat2&12) != 12)   /* draw floors */
+
+	/* draw floors */
+    if ((andwstat2&12) != 12)   
     {
         if ((sec->floorstat&3) == 2)
             grouscan(xb1[bunchfirst[bunch]],xb2[bunchlast[bunch]],sectnum,1);
@@ -2048,6 +2056,8 @@ static void drawalls(int32_t bunch)
             parascan(xb1[bunchfirst[bunch]],xb2[bunchlast[bunch]],sectnum,1,bunch);
     }
 
+	//return;
+
     /* DRAW WALLS SECTION! */
     for(z=bunchfirst[bunch]; z>=0; z=p2[z])
     {
@@ -2055,8 +2065,11 @@ static void drawalls(int32_t bunch)
         x2 = xb2[z];
         if (umost[x2] >= dmost[x2])
         {
+
             for(x=x1; x<x2; x++)
-                if (umost[x] < dmost[x]) break;
+                if (umost[x] < dmost[x]) 
+					break;
+
             if (x >= x2)
             {
                 smostwall[smostwallcnt] = z;
@@ -2436,7 +2449,7 @@ static void dosetaspect(void)
     }
 }
 
-//FCS: Geez one more horrible algorithm to decipher :/ :( cry smiley.....
+//FCS: Geez one more horrible algorithm to decipher :| :/ :( cry smiley.....
 int wallfront(int32_t l1, int32_t l2)
 {
     walltype *wal;
@@ -2459,10 +2472,13 @@ int wallfront(int32_t l1, int32_t l2)
     dy = y21-y11;
     t1 = dmulscale2(x12-x11,dy,-dx,y12-y11); /* p1(l2) vs. l1 */
     t2 = dmulscale2(x22-x11,dy,-dx,y22-y11); /* p2(l2) vs. l1 */
+
     if (t1 == 0) {
         t1 = t2;
-        if (t1 == 0) return(-1);
+        if (t1 == 0) 
+			return(-1);
     }
+
     if (t2 == 0) t2 = t1;
     if ((t1^t2) >= 0)
     {
@@ -2515,12 +2531,20 @@ static int bunchfront(int32_t b1, int32_t b2)
     return(wallfront(i,b2f));
 }
 
-
+int pixelRenderable = 100000000;
 void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,
                short daang, int32_t dahoriz, short dacursectnum)
 {
     int32_t i, j, z, cz, fz, closest;
     short *shortptr1, *shortptr2;
+
+	pixelRenderable+=10;
+	if (pixelRenderable >= MAX_PIXEL_RENDERERED)
+		pixelRenderable =  0 ;
+
+	//pixelsAllowed = pixelRenderable;
+	pixelsAllowed = 100000000;
+	printf("%d\n",pixelsAllowed);
 
     beforedrawrooms = 0;
     totalarea += (windowx2+1-windowx1)*(windowy2+1-windowy1);
@@ -8096,7 +8120,7 @@ static void fillpolygon(int32_t npoints)
     globalposx += oy*globalx1;
     globalposy += oy*globaly2;
 
-    setuphlineasm4(asm1,asm2);
+    
 
     ptr = smost;
     for(y=miny; y<=maxy; y++)

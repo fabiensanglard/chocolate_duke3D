@@ -313,22 +313,6 @@ OTHER VARIABLES:
 
 #define PORTSIG  "Port by Ryan C. Gordon, Andrew Henderson, Dan Olson, Fabien Sanglard and a cast of thousands."
 
-
-//FCS: In order to see how the engine renders different part of the screen you can set the following macros
-//VISUALIZE RENDERER
-#define RENDER_DRAW_WALL_BORDERS 1
-#define RENDER_DRAW_WALL_INSIDE 1
-#define RENDER_DRAW_CEILING_AND_FLOOR 1
-#define RENDER_DRAW_TOP_AND_BOTTOM_COLUMN 1
-#define RENDER_SLOPPED_CEILING_AND_FLOOR 1
-
-#if RENDER_DRAW_WALL_BORDERS && RENDER_DRAW_WALL_INSIDE && RENDER_DRAW_CEILING_AND_FLOOR  && RENDER_DRAW_TOP_AND_BOTTOM_COLUMN && RENDER_SLOPPED_CEILING_AND_FLOOR
-   #define CLEAR_FRAMEBUFFER 0
-#else
-   #define CLEAR_FRAMEBUFFER 1
-#endif
-//END VISUALIZE RENDERER
-
 //Global.c
 void Error (int errorType, char  *error, ...);
 int FindDistance2D(int ix, int iy);
