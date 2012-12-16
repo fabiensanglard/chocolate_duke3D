@@ -36,7 +36,6 @@
 		2D7B627716788F9B00E35E54 /* global.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B625416788F9B00E35E54 /* global.c */; };
 		2D7B627816788F9B00E35E54 /* keyboard.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B625616788F9B00E35E54 /* keyboard.c */; };
 		2D7B627916788F9B00E35E54 /* menues.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B625816788F9B00E35E54 /* menues.c */; };
-		2D7B627A16788F9B00E35E54 /* win_midiout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B625B16788F9B00E35E54 /* win_midiout.cpp */; };
 		2D7B627C16788F9B00E35E54 /* player.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B626116788F9B00E35E54 /* player.c */; };
 		2D7B627D16788F9B00E35E54 /* premap.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B626216788F9B00E35E54 /* premap.c */; };
 		2D7B627E16788F9B00E35E54 /* rts.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B626316788F9B00E35E54 /* rts.c */; };
@@ -144,7 +143,6 @@
 		2D7B625616788F9B00E35E54 /* keyboard.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = keyboard.c; path = ../../Game/src/keyboard.c; sourceTree = "<group>"; };
 		2D7B625716788F9B00E35E54 /* keyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = keyboard.h; path = ../../Game/src/keyboard.h; sourceTree = "<group>"; };
 		2D7B625816788F9B00E35E54 /* menues.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = menues.c; path = ../../Game/src/menues.c; sourceTree = "<group>"; };
-		2D7B625B16788F9B00E35E54 /* win_midiout.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = win_midiout.cpp; sourceTree = "<group>"; };
 		2D7B625F16788F9B00E35E54 /* mouse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mouse.h; path = ../../Game/src/mouse.h; sourceTree = "<group>"; };
 		2D7B626016788F9B00E35E54 /* names.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = names.h; path = ../../Game/src/names.h; sourceTree = "<group>"; };
 		2D7B626116788F9B00E35E54 /* player.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = player.c; path = ../../Game/src/player.c; sourceTree = "<group>"; };
@@ -347,7 +345,6 @@
 		2D7B625916788F9B00E35E54 /* midi */ = {
 			isa = PBXGroup;
 			children = (
-				2D7B625B16788F9B00E35E54 /* win_midiout.cpp */,
 				2D4FB6FE167D430F00915887 /* sdl_midi.c */,
 			);
 			name = midi;
@@ -448,7 +445,6 @@
 				2D7B627716788F9B00E35E54 /* global.c in Sources */,
 				2D7B627816788F9B00E35E54 /* keyboard.c in Sources */,
 				2D7B627916788F9B00E35E54 /* menues.c in Sources */,
-				2D7B627A16788F9B00E35E54 /* win_midiout.cpp in Sources */,
 				2D7B627C16788F9B00E35E54 /* player.c in Sources */,
 				2D7B627D16788F9B00E35E54 /* premap.c in Sources */,
 				2D7B627E16788F9B00E35E54 /* rts.c in Sources */,

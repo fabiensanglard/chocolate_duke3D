@@ -81,7 +81,7 @@ int   MUSIC_SongPlaying( void );
 void  MUSIC_Continue( void );
 void  MUSIC_Pause( void );
 int   MUSIC_StopSong( void );
-int   MUSIC_PlaySong( uint8_t* songData, int loopflag );
+int   MUSIC_PlaySong( char* songData, int loopflag );
 void  MUSIC_SetContext( int context );
 int   MUSIC_GetContext( void );
 void  MUSIC_SetSongTick( uint32_t PositionInTicks );
