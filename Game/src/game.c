@@ -6133,10 +6133,6 @@ void cheats(void)
     if( (ps[myconnectindex].gm&MODE_TYPE) || (ps[myconnectindex].gm&MODE_MENU))
         return;
 
-#ifdef BETA
-    return;
-#endif
-
     if ( ps[myconnectindex].cheat_phase == 1)
     {
        while (KB_KeyWaiting())
@@ -7505,37 +7501,38 @@ void Logo(void)
 		//MIDI start here
 		playmusic(&env_music_fn[0][0]);
 		
+		//"REALITY IS OUR GAME" Screen
 	    for(i=0;i<64;i+=7) 
 			palto(0,0,0,i);
-
 	    ps[myconnectindex].palette = drealms;
-
 	    palto(0,0,0,63);
 	    rotatesprite(0,0,65536L,0,DREALMS,0,0,2+8+16+64, 0,0,xdim-1,ydim-1);
 	    nextpage(); 
 		for(i=63;i>0;i-=7) 
 			palto(0,0,0,i);
-
-
 	    totalclock = 0;
 	    while( totalclock < (120*7) && !KB_KeyWaiting() )
 	        getpackets();
 	
+
+
+
+
 	    for(i=0;i<64;i+=7) 
 			palto(0,0,0,i);
 	    clearview(0L);
 	    nextpage();
-
-	
 	    ps[myconnectindex].palette = titlepal;
 	    flushperms();
 	    rotatesprite(0,0,65536L,0,BETASCREEN,0,0,2+8+16+64,0,0,xdim-1,ydim-1);
 	    KB_FlushKeyboardQueue();
 	    nextpage();
-	    for(i=63;i>0;i-=7) palto(0,0,0,i);
+	    for(i=63;i>0;i-=7) 
+			palto(0,0,0,i);
+
 	    totalclock = 0;
 	
-
+		//Animate screen (Duke picture wiht "DUKE" "NUKEM 3D" coming from far away and hitting the screen"
 	    while(totalclock < (860+120) && !KB_KeyWaiting())
 	    {
 	        rotatesprite(0,0,65536L,0,BETASCREEN,0,0,2+8+16+64,0,0,xdim-1,ydim-1);
@@ -7636,10 +7633,16 @@ void loadtmb(void)
     int32_t fil, l;
 
     fil = kopen4load("d3dtimbr.tmb",0);
-    if(fil == -1) return;
+
+    if(fil == -1) 
+		return;
+
     l = kfilelength(fil);
+
     kread(fil,(uint8_t  *)tmb,l);
+
     MUSIC_RegisterTimbreBank(tmb);
+
     kclose(fil);
 }
 
@@ -8459,6 +8462,8 @@ int main(int argc,char  **argv)
 			Logo(); //play logo, (game must be started via menus).
 		}
 	}
+
+
  
 	else if(ud.warp_on == 1) //if cmd arguments /V and /L are given.
     {
@@ -8521,9 +8526,10 @@ int main(int argc,char  **argv)
 
     ud.warp_on = 0;
 
-    while ( !(ps[myconnectindex].gm&MODE_END) ) //The whole loop!!!!!!!!!!!!!!!!!!
+	//The main game loop is here.
+    while ( !(ps[myconnectindex].gm&MODE_END) )
     {
-    		sampletimer();
+    	sampletimer();
         if( ud.recstat == 2 || ud.multimode > 1 || ( ud.show_help == 0 && (ps[myconnectindex].gm&MODE_MENU) != MODE_MENU ) )
             if( ps[myconnectindex].gm&MODE_GAME )
 			{
@@ -8581,9 +8587,8 @@ int main(int argc,char  **argv)
         cheats();
 
         if( !CONSOLE_IsActive() )
-        {
           nonsharedkeys();
-        }
+        
 
         if( (ud.show_help == 0 && ud.multimode < 2 && !(ps[myconnectindex].gm&MODE_MENU) ) || ud.multimode > 1 || ud.recstat == 2)
             i = min(max((totalclock-ototalclock)*(65536L/TICSPERFRAME),0),65536);
@@ -8593,16 +8598,11 @@ int main(int argc,char  **argv)
         displayrooms(screenpeek,i);
         displayrest(i);
 
-//        if( KB_KeyPressed(sc_F) )
-//        {
-//            KB_ClearKeyDown(sc_F);
-//            addplayer();
-//        }
-
         if(ps[myconnectindex].gm&MODE_DEMO)
             goto MAIN_LOOP_RESTART;
 
-        if(debug_on) caches();
+        if(debug_on) 
+			caches();
 
         checksync();
 

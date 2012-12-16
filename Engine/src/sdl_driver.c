@@ -36,26 +36,6 @@
 
 #include "icon.h"
 
-/**/
-/*
-void (*callcommit)(void);
-void (*initcrc)(void);
-int32_t (*getcrc)(uint8_t  *buffer, short bufleng);
-void (*initmultiplayers)(uint8_t  damultioption, uint8_t  dacomrateoption, uint8_t  dapriority);
-void (*sendpacket)(int32_t other, uint8_t  *bufptr, int32_t messleng);
-void (*setpackettimeout)(int32_t datimeoutcount, int32_t daresendagaincount);
-void (*uninitmultiplayers)(void);
-void (*sendlogon)(void);
-void (*sendlogoff)(void);
-int  (*getoutputcirclesize)(void);
-void (*setsocket)(short newsocket);
-short (*getpacket)(short *other, uint8_t  *bufptr);
-void (*flushpackets)(void);
-void (*genericmultifunction)(int32_t other, uint8_t  *bufptr, int32_t messleng, int32_t command);
-*/
-/**/
-
-
 // NATIVE TIMER FUNCTION DECLARATION
 /*
  FCS: The timer section sadly uses Native high precision calls to implement timer functions.
@@ -281,10 +261,6 @@ void genericmultifunction(int32_t other, char  *bufptr, int32_t messleng, int32_
 #endif
 }
 
-#if (defined USE_OPENGL)
-#include "buildgl.h"
-#endif
-
 #if ((defined PLATFORM_WIN32))
 #include <windows.h>
 #endif
@@ -376,22 +352,6 @@ static void sdldebug(const char  *fmt, ...)
         va_end(ap);
     } /* if */
 } /* sdldebug */
-
-
-#if (defined USE_OPENGL)
-void sgldebug(const uint8_t  *fmt, ...)
-{
-    va_list ap;
-
-    if (_sdl_debug_file)
-    {
-        va_start(ap, fmt);
-        __out_sdldebug("BUILDSDL/GL", fmt, ap);
-        va_end(ap);
-    } /* if */
-} /* sgldebug */
-#endif
-
 
 static void __append_sdl_surface_flag(SDL_Surface *_surface, char  *str,
                                       size_t strsize, Uint32 flag,
@@ -1069,9 +1029,6 @@ void set_sdl_renderer(void)
 {
     const char  *envr = getenv(BUILD_RENDERER);
 
-#ifdef USE_OPENGL
-    int need_opengl_lib = 0;
-#endif
 
     if ((envr == NULL) || (strcmp(envr, ENVRSTR_RENDERER_SOFTWARE) == 0))
         renderer = RENDERER_SOFTWARE;
@@ -1092,23 +1049,6 @@ void set_sdl_renderer(void)
 		Error(EXIT_FAILURE, "BUILDSDL: SDL_Init() failed!\n"
 							"BUILDSDL: SDL_GetError() says \"%s\".\n", SDL_GetError());
     } /* if */
-
-#ifdef USE_OPENGL
-    if (need_opengl_lib)
-    {
-        if (opengl_load_library() == -1)
-        {
-            SDL_Quit();
-            fprintf(stderr, "BUILDSDL/GL: Failed to load OpenGL library!\n");
-            if (getenv(BUILD_SDLDEBUG) == NULL)
-            {
-                fprintf(stderr, "BUILDSDL/GL: Try setting environment variable"
-                                " %s for more info.\n", BUILD_SDLDEBUG);
-            } /* if */
-            _exit(42);
-        } /* if */
-    } /* if */
-#endif
 
 } /* set_sdl_renderer */
 
@@ -1402,13 +1342,6 @@ int _setgamemode(uint8_t  davidoption, int32_t daxdim, int32_t daydim)
 	SDL_Surface     *image;
 	Uint32          colorkey;
 
-#ifdef USE_OPENGL
-    static int shown_gl_strings = 0;
-    int gl = using_opengl();
-    if (gl)
-        sdl_flags |= SDL_OPENGL;
-#endif
-
 	// Install icon
 	image = SDL_LoadBMP_RW(SDL_RWFromMem(iconBMP, sizeof(iconBMP)), 1);
 	// image = SDL_LoadBMP("nuclear2.bmp");
@@ -1441,33 +1374,6 @@ int _setgamemode(uint8_t  davidoption, int32_t daxdim, int32_t daydim)
     }
 
     go_to_new_vid_mode((int) davidoption, daxdim, daydim);
-
-    #ifdef USE_OPENGL
-        if (gl)
-        {
-            if (!shown_gl_strings)
-            {
-                sgldebug("GL_VENDOR [%s]", (uint8_t  *) dglGetString(GL_VENDOR));
-                sgldebug("GL_RENDERER [%s]", (uint8_t  *) dglGetString(GL_RENDERER));
-                sgldebug("GL_VERSION [%s]", (uint8_t  *) dglGetString(GL_VERSION));
-                sgldebug("GL_EXTENSIONS [%s]", (uint8_t  *) dglGetString(GL_EXTENSIONS));
-                shown_gl_strings = 1;
-            } /* if */
-
-            dglViewport(0, 0, daxdim, daydim);
-            dglEnable(GL_TEXTURE_2D);
-            dglPixelTransferi(GL_MAP_COLOR, GL_TRUE);
-            dglPixelTransferi(GL_INDEX_SHIFT, 0);
-            dglPixelTransferi(GL_INDEX_OFFSET, 0);
-            dglClearDepth(1.0);
-            dglDepthFunc(GL_LESS);
-            dglEnable(GL_DEPTH_TEST);
-            dglShadeModel(GL_SMOOTH);
-            dglMatrixMode(GL_PROJECTION);
-            dglLoadIdentity();
-            dglMatrixMode(GL_MODELVIEW);
-        } /* if */
-    #endif
 
     qsetmode = 200;
     last_render_ticks = getticks();
@@ -1763,23 +1669,6 @@ int VBE_setPalette(int32_t start, int32_t num, uint8_t  *palettebuffer)
     SDL_Color *sdlp = &fmt_swap[start];
     uint8_t  *p = palettebuffer;
     int i;
-
-#if (defined USE_OPENGL)
-    int gl = using_opengl();
-    GLfloat gl_reds[256];
-    GLfloat gl_greens[256];
-    GLfloat gl_blues[256];
-    GLfloat gl_alphas[256];
-
-    if (gl)
-    {
-        dglGetPixelMapfv(GL_PIXEL_MAP_I_TO_R, gl_reds);
-        dglGetPixelMapfv(GL_PIXEL_MAP_I_TO_G, gl_greens);
-        dglGetPixelMapfv(GL_PIXEL_MAP_I_TO_B, gl_blues);
-        dglGetPixelMapfv(GL_PIXEL_MAP_I_TO_A, gl_alphas);
-    } /* if */
-#endif
-
     assert( (start + num) <= (sizeof (fmt_swap) / sizeof (SDL_Color)) );
 
     for (i = 0; i < num; i++)
@@ -1788,29 +1677,9 @@ int VBE_setPalette(int32_t start, int32_t num, uint8_t  *palettebuffer)
         sdlp->g = (Uint8) ((((float) *p++) / 63.0) * 255.0);
         sdlp->r = (Uint8) ((((float) *p++) / 63.0) * 255.0);
         sdlp->unused = *p++;   /* This byte is unused in BUILD, too. */
-
-#if (defined USE_OPENGL)
-        if (gl)
-        {
-            gl_reds[i+start]   = ((GLfloat) sdlp->r) / 255.0f;
-            gl_greens[i+start] = ((GLfloat) sdlp->g) / 255.0f;
-            gl_blues[i+start]  = ((GLfloat) sdlp->b) / 255.0f;
-            gl_alphas[i+start] = 1.0f;
-        } /* if */
-#endif
-
         sdlp++;
     } /* for */
 
-#if (defined USE_OPENGL)
-    if (gl)
-    {
-        dglPixelMapfv(GL_PIXEL_MAP_I_TO_R, start + num, gl_reds);
-        dglPixelMapfv(GL_PIXEL_MAP_I_TO_G, start + num, gl_greens);
-        dglPixelMapfv(GL_PIXEL_MAP_I_TO_B, start + num, gl_blues);
-        dglPixelMapfv(GL_PIXEL_MAP_I_TO_A, start + num, gl_alphas);
-    } /* if */
-#endif
     return(SDL_SetColors(surface, fmt_swap, start, num));
 } /* VBE_setPalette */
 
@@ -1917,12 +1786,6 @@ void _nextpage(void)
 		SDL_UpdateRect(surface, 0, 0, 0, 0);
     }
 
-#ifdef USE_OPENGL
-    else if (renderer == RENDERER_OPENGL3D)
-    {
-        opengl_swapbuffers();
-    } /* else if */
-#endif
 
     if ((debug_hall_of_mirrors) && (qsetmode == 200) && (frameplace))
     {
@@ -2012,15 +1875,7 @@ void fillscreen16(int32_t offset, int32_t color, int32_t blocksize)
     Uint8 *wanted_end;
     Uint8 *pixels;
 
-#if (defined USE_OPENGL)
-    if (renderer == RENDERER_OPENGL3D)
-    {
-        /* !!! dglClearColor() ... */
-        return;
-    } /* if */
-#endif
-
-    if (SDL_MUSTLOCK(surface))
+	if (SDL_MUSTLOCK(surface))
         SDL_LockSurface(surface);
 
     pixels = get_framebuffer();
