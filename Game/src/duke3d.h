@@ -37,6 +37,11 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 #include <malloc.h>
 #endif
 
+#ifdef _WIN32
+#include "../../Engine/src/windows/inttypes.h"
+#else
+#include <inttypes.h>
+#endif
 
 #include <fcntl.h>
 #include <time.h>

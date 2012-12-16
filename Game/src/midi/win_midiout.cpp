@@ -1052,10 +1052,11 @@ int MUSIC_StopSong(void)
     return(MUSIC_Ok);
 } // MUSIC_StopSong
 
-
-int MUSIC_PlaySong(uint8_t  *song, int loopflag)
+       
+int MUSIC_PlaySong(char  *songFilename, int loopflag)
 {
-    //SDL_RWops *rw;
+    int32_t GRPFileHandle;
+    SDL_RWops *rw;
 
     MUSIC_StopSong();
 
@@ -1069,12 +1070,7 @@ int MUSIC_PlaySong(uint8_t  *song, int loopflag)
     // !!! FIXME:  offset from the end of the block), and since we don't have
     // !!! FIXME:  this information, we have to give it SOMETHING.
 
-    /* !!! ARGH! There's no LoadMUS_RW  ?!
-    rw = SDL_RWFromMem((void *) song, (10 * 1024) * 1024);  // yikes.
-    music_musicchunk = Mix_LoadMUS_RW(rw);
-    Mix_PlayMusic(music_musicchunk, (loopflag == MUSIC_PlayOnce) ? 0 : -1);
-    */
-
+   
 	if(midi_device)
 	midi_device->stop_stream(0);
 
@@ -1086,7 +1082,7 @@ int MUSIC_PlaySong(uint8_t  *song, int loopflag)
 		if(midi_device)
 		midi_device->start_track(eventlist, loopflag?true:false);
 	}
-
+    
 //STUBBED("Need to use PlaySongROTT.  :(");
 
     return(MUSIC_Ok);
@@ -1118,11 +1114,10 @@ int MUSIC_PlayExtSong(char  *fn)
 			nMusicState = MUSIC_STATUS_PLAYING;
 		}
 	}
-return(MUSIC_Ok);
+    
+    return(MUSIC_Ok);
 
-//STUBBED("Need to use PlaySongROTT.  :(");
-
-} // MUSIC_PlaySong
+} 
 
 
 extern uint8_t  ApogeePath[256];

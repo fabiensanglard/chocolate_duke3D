@@ -10,6 +10,9 @@
 #include <inttypes.h>
 #include <stdio.h>
 #include "engine_protos.h"
+#include "audiolib/music.h"
+
+//Dummy sound system for when a system has no sound system yet.
 /*
 uint8_t  *FX_ErrorString( int ErrorNumber ){
    static uint8_t  nope = '\0';
@@ -73,9 +76,9 @@ void FX_StopRecord( void ){}
  */
 
 
-//Dummy music
-#include "audiolib/music.h"
+//Dummy music for when a system has no music system yet. 
 
+/*
 char  *MUSIC_ErrorString(int ErrorNumber)
 {
 	return "";
@@ -208,5 +211,5 @@ void PlayMusic(char* filename)
     
     kclose(fd);
 }
-
+*/
 

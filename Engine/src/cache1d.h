@@ -46,6 +46,7 @@ int32_t uncompress(uint8_t  *lzwinbuf, int32_t compleng, uint8_t  *lzwoutbuf);
 extern char  game_dir[512];
 extern int32_t TCkopen4load(const char  *filename, int readfromGRP);
 
+
 #endif  /* !defined _INCLUDE_CACHE1D_H_ */
 
 /* end of cache1d.h ... */
