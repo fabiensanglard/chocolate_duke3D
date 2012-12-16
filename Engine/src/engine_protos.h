@@ -76,7 +76,7 @@ extern void clear2dscreen(void);
 extern void _idle(void);
 extern void *_getVideoBase(void);
 extern void setactivepage(int32_t dapagenum);
-extern void limitrate(void);
+
 extern int inittimer(int);
 extern void uninittimer(void);
 extern void initkeys(void);

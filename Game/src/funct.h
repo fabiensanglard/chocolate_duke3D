@@ -372,8 +372,7 @@ extern void operatefta(void);
 extern void FTA(short q,struct player_struct *p, int mode);
 //#line "game.c" 1668
 extern void showtwoscreens(void );
-//#line "game.c" 1691
-extern void binscreen(void );
+
 //#line "game.c" 1705
 extern void gameexit(char  *t);
 //#line "game.c" 1752

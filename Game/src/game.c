@@ -2335,14 +2335,25 @@ void showtwoscreens(void)
 	    ps[myconnectindex].palette = palette;
 	    for(i=0;i<64;i+=7) palto(0,0,0,i);
 	    KB_FlushKeyboardQueue();
+
 	    rotatesprite(0,0,65536L,0,3291,0,0,2+8+16+64, 0,0,xdim-1,ydim-1);
-	    nextpage(); for(i=63;i>0;i-=7) palto(0,0,0,i);
+
+	    nextpage(); 
+		for(i=63;i>0;i-=7) palto(0,0,0,i);
+
 	    while( !KB_KeyWaiting() ); // getpackets(); // Net already off. Trying to get packets here makes sporadic crash..
 	
-	    for(i=0;i<64;i+=7) palto(0,0,0,i);
+	    for(i=0;i<64;i+=7) 
+			palto(0,0,0,i);
+
 	    KB_FlushKeyboardQueue();
+
 	    rotatesprite(0,0,65536L,0,3290,0,0,2+8+16+64, 0,0,xdim-1,ydim-1);
-	    nextpage(); for(i=63;i>0;i-=7) palto(0,0,0,i);
+	    nextpage(); 
+		
+		for(i=63;i>0;i-=7) 
+			palto(0,0,0,i);
+
 	    while( !KB_KeyWaiting() ); // getpackets();
 	}
 	else if(PLUTOPAK)
@@ -2350,30 +2361,24 @@ void showtwoscreens(void)
 		setview(0,0,xdim-1,ydim-1);
 	    flushperms();
 	    ps[myconnectindex].palette = palette;
-	    for(i=0;i<64;i+=7) palto(0,0,0,i);
+
+	    for(i=0;i<64;i+=7) 
+			palto(0,0,0,i);
+
 	    KB_FlushKeyboardQueue();
+
 	    clearview(0L);
 	    rotatesprite(0,0,65536L,0,TENSCREEN,0,0,2+8+16+64, 0,0,xdim-1,ydim-1);
-	    nextpage(); for(i=63;i>0;i-=7) palto(0,0,0,i);
+	    nextpage();
+
+		for(i=63;i>0;i-=7) 
+			palto(0,0,0,i);
+
 	    totalclock = 0;
-	    while( !KB_KeyWaiting() /*&& totalclock < 2400*/); // getpackets();
-	// re-added --mk. This makes nice souvenirs!
+
+	    while( !KB_KeyWaiting() ); 
+	
 	}
-}
-
-void binscreen(void)
-{
-#ifdef PLATFORM_DOS
-    int32_t fil;
-	if (VOLUMEONE)
-	    fil = kopen4load("dukesw.bin",1);
-	else
-	    fil = kopen4load("duke3d.bin",1);
-
-	if(fil == -1) return;
-    kread(fil,(uint8_t  *)0xb8000,4000);
-    kclose(fil);
-#endif
 }
 
 
@@ -2415,15 +2420,6 @@ void gameexit(char  *msg)
     if(playerswhenstarted > 1)
         uninitmultiplayers();  /* deinits network transport. */
 
-#ifdef ONELEVELDEMO
-    doorders();
-    // DDOI
-    //t = "You have been playing a ONE LEVEL demo of Duke Nukem 3D.";
-    strncpy(t, "You have been playing a ONE LEVEL demo of Duke Nukem 3D.", 256);
-    t[255] = 0;
-    // DDOI
-#endif
-
 // CTW - MODIFICATION
 /*  if( *t != 0 && *(t+1) != 'V' && *(t+1) != 'Y' && playonten == 0 )
         showtwoscreens();*/
@@ -2439,7 +2435,7 @@ void gameexit(char  *msg)
     if(*t != 0)
     {
         setvmode(0x3);
-        binscreen();
+        
 // CTW - MODIFICATION
 /*      if(playonten == 0)
         {
@@ -3114,11 +3110,16 @@ static void SE40_Draw(int spnum,int32_t x,int32_t y,int32_t z,short a,short h,in
 
  for(j=0;j<MAXSPRITES;j++)
  {
-  if(
-     sprite[j].picnum==1 &&
-     sprite[j].lotag==k &&
-     sprite[j].hitag==sprite[floor1].hitag
-    ) {floor2=j; ok++; break;}
+	  if(
+		 sprite[j].picnum==1 &&
+		 sprite[j].lotag==k &&
+		 sprite[j].hitag==sprite[floor1].hitag
+		) 
+	  {
+		  floor2=j; 
+		  ok++; 
+		  break;
+	  }
  }
 
 // if(ok==2) { Message("no floor2",RED); return; }
@@ -3212,9 +3213,6 @@ void displayrooms(short snum,int32_t smoothratio)
     short tang;
 
     p = &ps[snum];
-
-//    if(screencapt == 0 && (p->gm&MODE_MENU) && ( (current_menu/100) == 3 ) || (current_menu >= 1000 && current_menu < 2999 ) )
-  //      return;
 
     if(pub > 0)
     {
@@ -6260,10 +6258,6 @@ void cheats(void)
 
                     case 2:  // dnscotty###
                     case 10: // skill#
-#ifdef ONELEVELDEMO
-    ps[myconnectindex].cheat_phase = 0;
-    break;
-#endif
 
                         if(k == 2)
                         {
@@ -7471,22 +7465,10 @@ void printstr(short x, short y, uint8_t  string[81], uint8_t  attribute)
         }
 }
 
-/*
-void cacheicon(void)
-{
-    if(cachecount > 0)
-    {
-        if( (ps[myconnectindex].gm&MODE_MENU) == 0 )
-            rotatesprite((320-7)<<16,(200-23)<<16,32768L,0,SPINNINGNUKEICON,0,0,2,windowx1,windowy1,windowx2,windowy2);
-        cachecount = 0;
-    }
-}
-       */
-
 void Logo(void)
 {
     short i,soundanm;
-
+	
     soundanm = 0;
 
     ready2send = 0;
@@ -7504,11 +7486,13 @@ void Logo(void)
 
 	if(ud.showcinematics && numplayers < 2)
 	{
+		////This plays the explosion from the nuclear sign at the beginning.
 		if(!VOLUMEONE)
 		{
 		    if(!KB_KeyWaiting() && nomorelogohack == 0)
 		    {
 		        getpackets();
+				
 		        playanm("logo.anm",5);
 		        palto(0,0,0,63);
 		        KB_FlushKeyboardQueue();
@@ -7518,20 +7502,30 @@ void Logo(void)
 		    nextpage();
 		}
 		
+		//MIDI start here
 		playmusic(&env_music_fn[0][0]);
 		
-	    for(i=0;i<64;i+=7) palto(0,0,0,i);
+	    for(i=0;i<64;i+=7) 
+			palto(0,0,0,i);
+
 	    ps[myconnectindex].palette = drealms;
+
 	    palto(0,0,0,63);
 	    rotatesprite(0,0,65536L,0,DREALMS,0,0,2+8+16+64, 0,0,xdim-1,ydim-1);
-	    nextpage(); for(i=63;i>0;i-=7) palto(0,0,0,i);
+	    nextpage(); 
+		for(i=63;i>0;i-=7) 
+			palto(0,0,0,i);
+
+
 	    totalclock = 0;
 	    while( totalclock < (120*7) && !KB_KeyWaiting() )
 	        getpackets();
 	
-	    for(i=0;i<64;i+=7) palto(0,0,0,i);
+	    for(i=0;i<64;i+=7) 
+			palto(0,0,0,i);
 	    clearview(0L);
 	    nextpage();
+
 	
 	    ps[myconnectindex].palette = titlepal;
 	    flushperms();
@@ -7541,6 +7535,7 @@ void Logo(void)
 	    for(i=63;i>0;i-=7) palto(0,0,0,i);
 	    totalclock = 0;
 	
+
 	    while(totalclock < (860+120) && !KB_KeyWaiting())
 	    {
 	        rotatesprite(0,0,65536L,0,BETASCREEN,0,0,2+8+16+64,0,0,xdim-1,ydim-1);
@@ -7573,6 +7568,7 @@ void Logo(void)
 	
 			if(PLUTOPAK) // FIX_00064: Cinematics explosions were not right for 1.3/1.3d grp.
 			{
+				
 				if( totalclock >= 280 && totalclock < 395 )
 				{
 					rotatesprite(160<<16,(151)<<16,(410-totalclock)<<12,0,PLUTOPAKSPRITE+1,0,0,2+8,0,0,xdim-1,ydim-1);
@@ -7667,9 +7663,6 @@ void ShutDown( void )
     CONSOLE_Term();
 }
 
-static uint8_t  todd[] = "Duke Nukem 3D(tm) Copyright 1989, 1996 Todd Replogle and 3D Realms Entertainment";
-static uint8_t  trees[] = "I want to make a game with trees";
-static uint8_t  sixteen[] = "16 Possible Dukes";
 
 /*
 ===================
@@ -8152,7 +8145,7 @@ int main(int argc,char  **argv)
 	int32 iScriptHandle;
 	int32_t filehandle;
 
-	uint8_t  HEAD[2048], HEAD2[2048], HEADA[2048];
+	
 	uint8_t  kbdKey;
 	uint8_t  *exe;
 
@@ -8289,52 +8282,10 @@ int main(int argc,char  **argv)
 
     copyprotect();
 
-    setvmode(0x03);
+    //setvmode(0x03);
 
-// This is needed for the icculus.org ported Build Engine.
-#if !PLATFORM_DOS
-    //get the config entry for fullscreen
-
-
-	// Are we trying to load a mod?
-	if(game_dir[0] != '\0')
-	{
-		//FILE *fp = NULL;
-		uint8_t  setupfilename[128];
-
-	   //Yes
-		sprintf(setupfilename, "%s\\%s", game_dir, SETUPFILENAME);	
-		iScriptHandle = SCRIPT_Load(setupfilename);
-	}else
-	{
-		iScriptHandle = SCRIPT_Load(SETUPFILENAME);
-	}
-
-    if(iScriptHandle != -1)
-    {
-		SCRIPT_GetNumber(iScriptHandle, "Screen Setup", "Fullscreen",&BFullScreen);
-        SCRIPT_Free(iScriptHandle);
-        iScriptHandle = -1;
-    }
 
     _platform_init(argc, argv, "Duke Nukem 3D", "Duke3D");
-#endif
-
-	
-
-    todd[0] = 'T';
-    sixteen[0] = 'D';
-    trees[0] = 'I';
-
-	sprintf(HEAD, "   Duke Nukem 3D Shareware v1.3\n");
-
-	if(PLUTOPAK)
-	sprintf(HEAD2, "   Duke Nukem 3D v1.4/1.5 Atomic Edition\n");
-	else
-	sprintf(HEAD2, "   Duke Nukem 3D Full Version 1.3d\n");
-
-	sprintf(HEADA, "   Duke Nukem 3D AUSSIE Shareware v1.3\n");
-	sprintf(HEADA, "   Duke Nukem 3D AUSSIE Full Version\n");
 
     totalmemory = Z_AvailHeap();
 
@@ -8352,28 +8303,8 @@ int main(int argc,char  **argv)
     else
         printf("Using %ld bytes for heap.\n",totalmemory);
 
-#ifndef ONELEVELDEMO
-// CTW - REMOVED
-/*  if(movesperpacket == 4)
-        TENtext();*/
-// CTW END - REMOVED
-#endif
-
     RegisterShutdownFunction( ShutDown );
 
-#ifdef ONELEVELDEMO
-    puts("DUKE NUKEM 3D SINGLE-LEVEL PROMOTIONAL EDITION\n");
-    puts("This single-level promotional edition of Duke Nukem 3D (tm) may not be");
-    puts("distributed domestically (North America) by any publication other than");
-    puts("Computer Gaming World, a Ziff-Davis publication.  It is a promotional");
-    puts("version, licensed for a single month's run, and may not be redistributed");
-    puts("by any online service, BBS, commercial publisher, magazine or distributor.");
-    puts("International distribution rights are reserved.\n");
-    puts("Please read LICENSE.DOC for further information about this special version.");
-    puts("NOTE: DUKE NUKEM 3D CONTAINS MATURE CONTENT.\n");
-    puts("Press any key to continue.");
-    getch();
-#endif
 
     Startup();
 
@@ -8427,21 +8358,13 @@ int main(int argc,char  **argv)
     ud.last_level = -1;
 
    RTS_Init(ud.rtsname);
-   if(numlumps) printf("Using .RTS file:%s\n",ud.rtsname);
+   if(numlumps) 
+	   printf("Using .RTS file:%s\n",ud.rtsname);
 
    if (CONTROL_JoystickEnabled)
-       CONTROL_CenterJoystick
-          (
-          CenterCenter,
-          UpperLeft,
-          LowerRight,
-          CenterThrottle,
-          CenterRudder
-          );
-
-        puts("Loading palette/lookups.");
-
-
+       CONTROL_CenterJoystick(CenterCenter,UpperLeft,LowerRight,CenterThrottle,CenterRudder);
+        
+   puts("Loading palette/lookups.");
     if( setgamemode(ScreenMode,ScreenWidth,ScreenHeight) < 0 )
     {
         printf("\nVESA driver for ( %i * %i ) not found/supported!\n",xdim,ydim);
@@ -8451,14 +8374,15 @@ int main(int argc,char  **argv)
         setgamemode(ScreenMode,ScreenWidth,ScreenHeight);
     }
 
-        printf("genspriteremaps()\n");
 
+    printf("genspriteremaps()\n");
     genspriteremaps();
 
 
     setbrightness(ud.brightness>>2,&ps[myconnectindex].palette[0]);
 
-    ESCESCAPE;
+    if(KB_KeyPressed( sc_Escape ) ) 
+		gameexit(" ");
 
     FX_StopAllSounds();
     clearsoundlocks();
@@ -8477,7 +8401,7 @@ int main(int argc,char  **argv)
             ud.warp_on = 0;
     }
 
-    //getpackets();
+    
 
     MAIN_LOOP_RESTART:
 
@@ -8616,9 +8540,6 @@ int main(int argc,char  **argv)
 
             if( ps[myconnectindex].gm&MODE_EOL )
             {
-#ifdef ONELEVELDEMO
-                gameexit(" ");
-#endif
                 closedemowrite();
 
                 ready2send = 0;

@@ -127,7 +127,7 @@ enum
 
 #define SCREENSHOTPATH "screenshots"
 
-// #define ONELEVELDEMO
+
 
 // #define TEN
 // #define BETA
@@ -306,8 +306,6 @@ extern int g_iTicksPerFrame;
 #define T4  hittype[i].temp_data[3]
 #define T5  hittype[i].temp_data[4]
 #define T6  hittype[i].temp_data[5]
-
-#define ESCESCAPE if(KB_KeyPressed( sc_Escape ) ) gameexit(" ");
 
 #define IFWITHIN(B,E) if((PN)>=(B) && (PN)<=(E))
 #define KILLIT(KX) {deletesprite(KX);goto BOLT;}

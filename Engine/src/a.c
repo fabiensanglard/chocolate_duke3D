@@ -9,7 +9,7 @@
 #include "build.h"
 #include "a.h"
 
-int pixelsAllowed;
+uint32_t pixelsAllowed = 10000000000;
 
 #define shrd(a,b,c) (((b)<<(32-(c))) | ((a)>>(c)))
 #define shld(a,b,c) (((b)>>(32-(c))) | ((a)<<(c)))
@@ -55,15 +55,15 @@ void hlineasm4(int32_t _count, uint32_t unused_source, int32_t _shade, uint32_t 
 
     while (count) {
 
-		if (pixelsAllowed <= 0)
-			return;
+		
+			
 
-		pixelsAllowed--;
 
 	    source = i5 >> shifter;
 	    source = shld(source,i4,bits);
 	    source = lookup[source];
-	    *dest = pal[shade|source];
+		if (pixelsAllowed-- > 0)
+			*dest = pal[shade|source];
 	    dest--;
 	    i5 -= _asm1;
 	    i4 -= _asm2;
@@ -97,10 +97,7 @@ void rhlineasm4(int32_t i1, int32_t i2, int32_t i3, uint32_t i4, uint32_t i5, in
     numPixels = i1;
     do {
 		
-		if (pixelsAllowed <= 0)
-			return;
-
-		pixelsAllowed--;
+		
 
 	    i3 = ((i3&0xffffff00)|(*((uint8_t *)i2)));
 	    i4 -= rmach_eax;
@@ -110,7 +107,10 @@ void rhlineasm4(int32_t i1, int32_t i2, int32_t i3, uint32_t i4, uint32_t i5, in
 	    else i2 -= rmach_ecx;
 	    ebp &= rmach_esi;
 	    i1 = ((i1&0xffffff00)|(((uint8_t *)i3)[rmach_edx]));
-	    ((uint8_t *)rmach6b)[numPixels] = (i1&0xff);
+
+		if (pixelsAllowed-- > 0)
+			 ((uint8_t *)rmach6b)[numPixels] = (i1&0xff);
+
 	    i2 -= ebp;
 	    numPixels--;
     } while (numPixels);
@@ -142,10 +142,7 @@ void rmhlineasm4(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int
     numPixels = i1;
     do {
 
-		if (pixelsAllowed <= 0)
-			return;
-
-		pixelsAllowed--;
+	
 
 	    i3 = ((i3&0xffffff00)|(*((uint8_t *)i2)));
 	    i4 -= rmmach_eax;
@@ -155,8 +152,11 @@ void rmhlineasm4(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int
 	    else i2 -= rmmach_ecx;
 	    ebp &= rmmach_esi;
 	    if ((i3&0xff) != 255) {
-		    i1 = ((i1&0xffffff00)|(((uint8_t  *)i3)[rmmach_edx]));
-		    ((uint8_t  *)rmach6b)[numPixels] = (i1&0xff);
+			if (pixelsAllowed-- > 0)
+			{
+				i1 = ((i1&0xffffff00)|(((uint8_t  *)i3)[rmmach_edx]));
+				((uint8_t  *)rmach6b)[numPixels] = (i1&0xff);
+			}
 	    }
 	    i2 -= ebp;
 	    numPixels--;
@@ -186,24 +186,26 @@ int32_t prevlineasm1(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5,
     uint8_t  *source = (uint8_t  *)i5;
     uint8_t  *dest = (uint8_t  *)i6;
 
-	
-
     if (i3 == 0)
     {
 		if (!RENDER_DRAW_TOP_AND_BOTTOM_COLUMN)
 		return 0;
 
-		if (pixelsAllowed <= 0)
-			return;
+		
 
-		pixelsAllowed--;
+		
 
 	    i1 += i4;
         //FCS
         //((uint32_t)i4) >>= mach3_al;
         i4 = ((uint32_t)i4) >> mach3_al;
 	    i4 = (i4&0xffffff00) | (source[i4]&0xff);
-	    *dest = ((uint8_t *)i2)[i4];
+
+		if (pixelsAllowed-- > 0)
+			*dest = ((uint8_t *)i2)[i4];
+
+		
+
 	    return i1;
     } else {
 	    return vlineasm1(i1,i2,i3,i4,i5,i6);
@@ -223,18 +225,17 @@ int32_t vlineasm1(int32_t vince, int32_t palookupoffse, int32_t numPixels, int32
     numPixels++;
     while (numPixels)
     {
-		if (pixelsAllowed <= 0)
-			return vplce;
-
-		pixelsAllowed--;
+		
 
 
 	    temp = ((unsigned)vplce) >> mach3_al;
         
 	    temp = ((uint8_t  *)bufplce)[temp];
       
-        *dest = ((uint8_t *)palookupoffse)[temp];
-	    vplce += vince;
+		if (pixelsAllowed-- > 0)
+			*dest = ((uint8_t *)palookupoffse)[temp];
+	    
+		vplce += vince;
 	    dest += fixchain;
 	    numPixels--;
     }
@@ -262,21 +263,16 @@ int32_t tvlineasm1(int32_t i1, int32_t i2, int32_t numPixels, int32_t i4, int32_
 		temp >>= transmach3_al;
 		temp = source[temp];
 
-		
-		if (pixelsAllowed <= 0)
-			return i4;
-
-		pixelsAllowed--;
-
-		
-
+	
 		if (temp != 255)
 		{
 			unsigned short val;
 			val = ((uint8_t  *)i2)[temp];
 			val |= ((*dest)<<8);
-			if (transrev) val = ((val>>8)|(val<<8));
-			*dest = ((uint8_t  *)tmach)[val];
+			if (transrev) 
+				val = ((val>>8)|(val<<8));
+			if (pixelsAllowed-- > 0)
+				*dest = ((uint8_t  *)tmach)[val];
 		}
 		i4 += i1;
 		dest += fixchain;
@@ -310,11 +306,7 @@ void tvlineasm2(uint32_t i1, uint32_t i2, uint32_t i3, uint32_t i4, uint32_t i5,
 	i6 -= asm2;
 
 	do {
-		if (pixelsAllowed <= 0)
-			return;
-
-		pixelsAllowed--;
-
+		
 		i1 = i5 >> tran2shr;
 		i2 = ebp >> tran2shr;
 		i5 += tran2inca;
@@ -326,17 +318,23 @@ void tvlineasm2(uint32_t i1, uint32_t i2, uint32_t i3, uint32_t i4, uint32_t i5,
 				unsigned short val;
 				val = ((uint8_t  *)tran2pal_ecx)[i4];
 				val |= (((uint8_t  *)i6)[tran2edi1]<<8);
-				if (transrev) val = ((val>>8)|(val<<8));
-				((uint8_t  *)i6)[tran2edi1] =
-					((uint8_t  *)tmach)[val];
+
+				if (transrev) 
+					val = ((val>>8)|(val<<8));
+
+				if (pixelsAllowed-- > 0)
+					((uint8_t  *)i6)[tran2edi1] = ((uint8_t  *)tmach)[val];
 			}
 		} else if (i4 == 255) { // skipdraw2
 			unsigned short val;
 			val = ((uint8_t  *)tran2pal_ebx)[i3];
 			val |= (((uint8_t  *)i6)[tran2edi]<<8);
-			if (transrev) val = ((val>>8)|(val<<8));
-			((uint8_t  *)i6)[tran2edi] =
-				((uint8_t  *)tmach)[val];
+
+			if (transrev) val = 
+				((val>>8)|(val<<8));
+
+			if (pixelsAllowed-- > 0)
+				((uint8_t  *)i6)[tran2edi] = ((uint8_t  *)tmach)[val];
 		} else {
 			unsigned short l = ((uint8_t  *)i6)[tran2edi]<<8;
 			unsigned short r = ((uint8_t  *)i6)[tran2edi1]<<8;
@@ -346,10 +344,12 @@ void tvlineasm2(uint32_t i1, uint32_t i2, uint32_t i3, uint32_t i4, uint32_t i5,
 				l = ((l>>8)|(l<<8));
 				r = ((r>>8)|(r<<8));
 			}
-			((uint8_t  *)i6)[tran2edi] =
-				((uint8_t  *)tmach)[l];
-			((uint8_t  *)i6)[tran2edi1] =
-				((uint8_t  *)tmach)[r];
+			if (pixelsAllowed-- > 0)
+			{
+				((uint8_t  *)i6)[tran2edi] =((uint8_t  *)tmach)[l];
+				((uint8_t  *)i6)[tran2edi1] =((uint8_t  *)tmach)[r];
+				pixelsAllowed--;
+			}
 		}
 		i6 += fixchain;
 	} while (i6 > i6 - fixchain);
@@ -368,19 +368,15 @@ int32_t mvlineasm1(int32_t vince, int32_t palookupoffse, int32_t i3, int32_t vpl
 	// FIX_00087: 1024x768 mode being slow. Undone FIX_00070 and fixed font issue again
     for(;i3>=0;i3--)
     {
-		if (pixelsAllowed <= 0)
-			return vplce;
-
-		pixelsAllowed--;
-
-	    temp = ((unsigned)vplce) >> machmv;
+		temp = ((unsigned)vplce) >> machmv;
 	    temp = ((uint8_t  *)bufplce)[temp];
 
 	    if (temp != 255) 
 		{
+			if (pixelsAllowed-- > 0)
 			*dest = ((uint8_t *)palookupoffse)[temp];
-			pixelsAllowed--;
 		}
+
 	    vplce += vince;
 	    dest += fixchain;
     }
@@ -412,14 +408,11 @@ void vlineasm4(int32_t i1, int32_t i2)
         do {
             for (i = 0; i < 4; i++)
             {
-				if (pixelsAllowed <= 0)
-			        return;
-
-		        pixelsAllowed--;
-
+				
         	    temp = ((unsigned)vplce[i]) >> mach3_al;
         	    temp = (((uint8_t *)(bufplce[i]))[temp]);
-        	    dest[index+i] = ((uint8_t *)(palookupoffse[i]))[temp];
+				if (pixelsAllowed-- > 0)
+        			dest[index+i] = ((uint8_t *)(palookupoffse[i]))[temp];
 	            vplce[i] += vince[i];
             }
             dest += fixchain;
@@ -448,15 +441,14 @@ void mvlineasm4(int32_t i1, int32_t i2)
 
         for (i = 0; i < 4; i++)
         {
-			if (pixelsAllowed == 0)
-			   continue;
-
-		    pixelsAllowed--;
-
+			
 	      temp = ((unsigned)vplce[i]) >> machmv;
 	      temp = (((uint8_t *)(bufplce[i]))[temp]);
 	      if (temp != 255)
-		      dest[index+i] = ((uint8_t *)(palookupoffse[i]))[temp];
+		  {
+			  if (pixelsAllowed-- > 0)
+				dest[index+i] = ((uint8_t *)(palookupoffse[i]))[temp];
+		  }
 	      vplce[i] += vince[i];
         }
         dest += fixchain;
@@ -496,10 +488,11 @@ setup:
 
 draw:
     i1 = (i1&0xffffff00) | (((uint8_t  *)spal_eax)[i1]&0xff);
-    *dest = i1;
 
-	if (pixelsAllowed <= 0) return;
-	pixelsAllowed--;
+	if (pixelsAllowed-- > 0)
+		*dest = i1;
+
+	
 
     dest += fixchain;
 
@@ -509,7 +502,9 @@ draw:
     if (!((i4 - smach_ecx) > i4) && i4 != 0)
 	    goto setup;
 
-    if (i4 == 0) return;
+    if (i4 == 0) 
+		return;
+
     i2 += smach_eax;
     i1 = (i1&0xffffff00) | (*source&0xff);
 
@@ -552,12 +547,10 @@ setup:
     if ((i1&0xff) != 255)
     {
 	    i1 = (i1&0xffffff00) | (((uint8_t  *)spal_eax)[i1]&0xff);
-	    *dest = i1;
+		if (pixelsAllowed-- > 0)
+		  *dest = i1;
 
-		if (pixelsAllowed <= 0)
-			return;
-
-		pixelsAllowed--;
+	
     }
     dest += fixchain;
 
@@ -614,15 +607,14 @@ void tspritevline(int32_t i1, int32_t i2, int32_t numPixels, uint32_t i4, int32_
 					val = ((val>>8)|(val<<8));
 
 				i1 = ((uint8_t  *)tmach)[val];
-				*((uint8_t  *)i6) = (i1&0xff);
+
+				if (pixelsAllowed-- > 0)
+					*((uint8_t  *)i6) = (i1&0xff);
 			}
 			i6 += fixchain;
 		}
 
-		if (pixelsAllowed <= 0)
-			return;
-
-		pixelsAllowed--;
+		
 	}
 } 
 
@@ -653,18 +645,17 @@ void mhlineskipmodify(int32_t i1, uint32_t i2, uint32_t i3, int32_t i4, int32_t 
 	    ebx = i2 >> mshift_al;
 	    ebx = shld (ebx, (unsigned)i5, mshift_bl);
 	    i1 = ((uint8_t  *)mmach_eax)[ebx];
-	    if ((i1&0xff) != 0xff)
-		    *((uint8_t  *)i6) = (((uint8_t *)mmach_asm3)[i1]);
+
+		if (pixelsAllowed-- > 0)
+			if ((i1&0xff) != 0xff)
+				*((uint8_t  *)i6) = (((uint8_t *)mmach_asm3)[i1]);
 
 	    i2 += mmach_asm1;
 	    i5 += mmach_asm2;
 	    i6++;
 	    counter--;
 
-		if (pixelsAllowed <= 0)
-			return;
-
-		pixelsAllowed--;
+		
     }
 }
 
@@ -706,8 +697,12 @@ void thlineskipmodify(int32_t i1, uint32_t i2, uint32_t i3, int32_t i4, int32_t 
 	    {
 		    unsigned short val = (((uint8_t *)tmach_asm3)[i1]);
 		    val |= (*((uint8_t  *)i6)<<8);
-		    if (transrev) val = ((val>>8)|(val<<8));
-		    *((uint8_t  *)i6) = (((uint8_t *)tmach)[val]);
+
+		    if (transrev) 
+				val = ((val>>8)|(val<<8));
+
+			if (pixelsAllowed-- > 0)
+			 *((uint8_t  *)i6) = (((uint8_t *)tmach)[val]);
 	    }
 
 	    i2 += tmach_asm1;
@@ -715,10 +710,7 @@ void thlineskipmodify(int32_t i1, uint32_t i2, uint32_t i3, int32_t i4, int32_t 
 	    i6++;
 	    counter--;
 
-		if (pixelsAllowed <= 0)
-			return;
-
-		pixelsAllowed--;
+		
     }
 } 
 
@@ -813,14 +805,14 @@ void slopevlin(int32_t i1, uint32_t i2, int32_t i3, int32_t i4, int32_t i5, int3
 		    i3 -= 4;
 		    eax = ((eax&0xffffff00)|(*((uint8_t  *)(ebx+edx))));
 		    ebx = esi;
-		    *((uint8_t  *)i1) = (eax&0xff);
+
+			if (pixelsAllowed-- > 0)
+				*((uint8_t  *)i1) = (eax&0xff);
+
 		    edx = edi;
 		    ecx = ((ecx&0xffffff00)|((ecx-1)&0xff));
 
-			if (pixelsAllowed <= 0)
-			return;
-
-			pixelsAllowed--;
+			
 	    }
 	    ebx = asm4;
 	    ebx -= 8;	// BITSOFPRECISIONPOW

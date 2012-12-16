@@ -4177,22 +4177,12 @@ void palto(uint8_t  r,uint8_t  g,uint8_t  b,int32_t e)
     int i;
     uint8_t  temparray[768];
 
-    for(i=0;i<768;i+=3)
+    for(i=0;i<(256*3);i+=3)
     {
-        temparray[i  ] =
-            ps[myconnectindex].palette[i+0]+((((long)r-(long)ps[myconnectindex].palette[i+0])*(long)(e&127))>>6);
-        temparray[i+1] =
-            ps[myconnectindex].palette[i+1]+((((long)g-(long)ps[myconnectindex].palette[i+1])*(long)(e&127))>>6);
-        temparray[i+2] =
-            ps[myconnectindex].palette[i+2]+((((long)b-(long)ps[myconnectindex].palette[i+2])*(long)(e&127))>>6);
+        temparray[i  ] =ps[myconnectindex].palette[i+0]+((((long)r-(long)ps[myconnectindex].palette[i+0])*(long)(e&127))>>6);
+        temparray[i+1] =ps[myconnectindex].palette[i+1]+((((long)g-(long)ps[myconnectindex].palette[i+1])*(long)(e&127))>>6);
+        temparray[i+2] =ps[myconnectindex].palette[i+2]+((((long)b-(long)ps[myconnectindex].palette[i+2])*(long)(e&127))>>6);
     }
-
-// CTW - MODIFICATION
-/*  if( (e&128) == 0 )
-        if ((vidoption != 1) || (vgacompatible == 1)) limitrate();*/
-    if( (e&128) == 0 )
-        if ((ScreenMode != 1) || (vgacompatible == 1)) limitrate();
-// CTW END - MODIFICATION
 
     setbrightness(ud.brightness>>2,temparray);
 }
@@ -4626,11 +4616,9 @@ void endanimvol43(int32_t fr)
 int32_t lastanimhack=0;
 void playanm(char  *fn,uint8_t  t)
 {
-        uint8_t  *animbuf, *palptr;
+    uint8_t  *animbuf, *palptr;
     int32_t i, j, k, length=0, numframes=0;
     int32 handle=-1;
-
-//    return;
 
     if(t != 7 && t != 9 && t != 10 && t != 11)
         KB_FlushKeyboardQueue();
@@ -4641,9 +4629,12 @@ void playanm(char  *fn,uint8_t  t)
         goto ENDOFANIMLOOP;
     }
 
-        handle = TCkopen4load(fn,0);
-        if(handle == -1) return;
-        length = kfilelength(handle);
+    handle = TCkopen4load(fn,0);
+
+    if(handle == -1) 
+		return;
+
+    length = kfilelength(handle);
 
     walock[MAXTILES-3-t] = 219+t;
 
@@ -4657,28 +4648,28 @@ void playanm(char  *fn,uint8_t  t)
     tilesizx[MAXTILES-3-t] = 200;
     tilesizy[MAXTILES-3-t] = 320;
 
-        kread(handle,animbuf,length);
-        kclose(handle);
+    kread(handle,animbuf,length);
+    kclose(handle);
 
-        ANIM_LoadAnim (animbuf);
-        numframes = ANIM_NumFrames();
+    ANIM_LoadAnim (animbuf);
+    numframes = ANIM_NumFrames();
 
-        palptr = ANIM_GetPalette();
-        for(i=0;i<256;i++)
-        {
-                j = (i<<2); k = j-i;
-                tempbuf[j+0] = (palptr[k+2]>>2);
-                tempbuf[j+1] = (palptr[k+1]>>2);
-                tempbuf[j+2] = (palptr[k+0]>>2);
-                tempbuf[j+3] = 0;
-        }
+    palptr = ANIM_GetPalette();
+    for(i=0;i<256;i++)
+    {
+            j = (i<<2); k = j-i;
+            tempbuf[j+0] = (palptr[k+2]>>2);
+            tempbuf[j+1] = (palptr[k+1]>>2);
+            tempbuf[j+2] = (palptr[k+0]>>2);
+            tempbuf[j+3] = 0;
+    }
 
-        VBE_setPalette(0L,256L,tempbuf);
+    VBE_setPalette(0L,256L,tempbuf);
 
     ototalclock = totalclock + 10;
 
-        for(i=1;i<numframes;i++)
-        {
+    for(i=1;i<numframes;i++)
+    {
        while(totalclock < ototalclock)
        {
           if( KB_KeyWaiting() )

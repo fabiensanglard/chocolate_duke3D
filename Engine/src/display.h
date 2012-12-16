@@ -136,7 +136,7 @@ void drawpixels(int32_t offset, Uint16 pixels);
 void drawpixelses(int32_t offset, Uint32 pixelses);
 void drawpixel16(int32_t offset);
 void fillscreen16 (int32_t input1, int32_t input2, int32_t input3);
-void limitrate(void);
+
 void setactivepage(int32_t dapagenum);
 void clear2dscreen(void);
 void _updateScreenRect(int32_t x, int32_t y, int32_t w, int32_t h);

@@ -2538,6 +2538,12 @@ void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,
     int32_t i, j, z, cz, fz, closest;
     short *shortptr1, *shortptr2;
 
+	// When visualizing the rendering process, part of the screen
+	// are not updated: In order to avoid the "ghost effect", we
+	// clear the framebuffer to black.
+	if (CLEAR_FRAMEBUFFER)
+		clear2dscreen();
+
 	pixelRenderable+=10;
 	if (pixelRenderable >= MAX_PIXEL_RENDERERED)
 		pixelRenderable =  0 ;
