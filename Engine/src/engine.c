@@ -23,10 +23,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#if (defined USE_OPENGL)
-#include "buildgl.h"
-#endif
-
 #include "pragmas.h"
 
 #include "platform.h"
@@ -2635,25 +2631,6 @@ void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,
     umost[0] = shortptr1[0]-windowy1;
     dmost[0] = shortptr2[0]-windowy1;
 
-    /*
-     * every cycle counts...and the CRC gets checked at the start, so this only
-     *  would trigger only if they've changed it in memory after loading (and what
-     *  would anyone do that for on purpose?), or if they've just defeated the
-     *  first CRC check...but if they've hacked the binary/source in that way,
-     *  then they'll just take this check out, too. In short, it ain't worth it.
-     *
-     *    --ryan.
-     */
-#if 0
-    if (smostwallcnt < 0)
-        if (getkensmessagecrc(FP_OFF(kensmessage)) != 0x56c764d4)
-        {
-            setvmode(0x3);
-            printf("Nice try.\n");
-            Error(EXIT_SUCCESS, "");
-        }
-#endif
-
     numhits = xdimen;
     numscans = 0;
     numbunches = 0;
@@ -3343,12 +3320,7 @@ static void loadpalette(void)
 int setgamemode(uint8_t  davidoption, int32_t daxdim, int32_t daydim)
 {
     strcpy(kensmessage,"!!!! BUILD engine&tools programmed by Ken Silverman of E.G. RI.  (c) Copyright 1995 Ken Silverman.  Summary:  BUILD = Ken. !!!!");
-    if (getkensmessagecrc(FP_OFF(kensmessage)) != 0x56c764d4)
-    {
-        setvmode(0x3);
-        printf("Nice try.\n");
-        Error(EXIT_SUCCESS, "");
-    }
+   
     return(_setgamemode(davidoption, daxdim, daydim));
 }
 

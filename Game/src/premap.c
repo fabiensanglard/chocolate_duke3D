@@ -357,7 +357,8 @@ void vscrn(void)
 	 if(ud.screen_size < 0) ud.screen_size = 0;
 	 else if(ud.screen_size > 63) ud.screen_size = 64;
 
-     if(ud.screen_size == 0) flushperms();
+     if(ud.screen_size == 0) 
+		 flushperms();
 
 	 ss = max(ud.screen_size-8,0);
 
@@ -367,7 +368,8 @@ void vscrn(void)
 	 y1 = ss; y2 = 200;
 	 y1 += countfragbars();
 
-	 if (ud.screen_size >= 8) y2 -= (ss+34);
+	 if (ud.screen_size >= 8) 
+		 y2 -= (ss+34);
 
 	 y1 = scale(y1,ydim,200);
 	 y2 = scale(y2,ydim,200);

@@ -22,9 +22,6 @@ static __inline void swapchar2(uint8_t  *p1, uint8_t  *p2, int xsiz)
     swapchar(p1 + 1, p2 + xsiz);
 }
 
-
-uint32_t getkensmessagecrc(int32_t param);
-
 static __inline int32_t msqrtasm(uint32_t c)
 {
 	uint32_t a,b;

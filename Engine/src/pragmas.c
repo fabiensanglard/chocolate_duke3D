@@ -4,11 +4,6 @@
 #include "platform.h"
 #include "pragmas.h"
 
-uint32_t getkensmessagecrc(int32_t param) {
-    return(0x56c764d4);
-}
-
-
 void clearbuf(void *d, int32_t c, int32_t a)
 {
 	int32_t *p = (int32_t*)d;
