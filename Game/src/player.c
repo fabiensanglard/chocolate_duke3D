@@ -379,8 +379,6 @@ void shoot(short i,short atwith)
                 }
             }
 
-//            writestring(sx,sy,sz,sect,sintable[(sa+512)&2047],sintable[sa&2047],zvel<<6);
-
             hitscan(sx,sy,sz,sect,
                 sintable[(sa+512)&2047],
                 sintable[sa&2047],zvel<<6,

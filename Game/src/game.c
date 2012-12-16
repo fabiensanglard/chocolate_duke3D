@@ -7951,114 +7951,11 @@ void getnames(void)
         gameexit("Please put Duke Nukem 3D Atomic Edition CD in drive.");
 }
 
-void writestring(int32_t a1,int32_t a2,int32_t a3,short a4,int32_t vx,int32_t vy,int32_t vz)
-{
 
-    FILE *fp;
-
-    fp = (FILE *)fopen("debug.txt","rt+");
-
-    fprintf(fp,"%ld %ld %ld %ld %ld %ld %ld\n",a1,a2,a3,a4,vx,vy,vz);
-
-    fclose(fp);
-
-}
-
-
-uint8_t  testcd( uint8_t  *fn )
-{
-#if PLATFORM_DOS
- short drive_count, drive;
- int32_t dalen = 0;
- struct find_t dafilet;
- int fil;
-
- union _REGS ir;
- union _REGS or;
- struct _SREGS sr;
-
- if( IDFSIZE != 9961476 )
- {
-     drive = toupper(*fn)-'A';
-
-     ir.w.ax = 0x1500;
-     ir.w.bx = 0;                             /* check that MSCDEX is installed */
-     int386(0x2f, &ir, &or);
-     drive_count = or.w.bx;
-
-     if( drive_count == 0 )
-         return 1;
-
-     ir.w.ax = 0x150b;
-     ir.w.bx = 0;
-     ir.w.cx = drive;
-     int386(0x2f, &ir, &or);
-
-     if (or.w.ax == 0 || or.w.bx != 0xadad)
-         return 1;
-
-     ir.w.ax = 0x1502;
-     ir.w.bx = FP_OFF(buf);
-     sr.es = FP_SEG(buf);
-     ir.w.cx = drive;
-     int386x(0x2f, &ir, &or, &sr);
-
-     if( or.h.al == 0 || or.h.al == 30)
-         return 1;
-
-  }
-
-  fil = open(fn,O_RDONLY,S_IREAD);
-
-  if ( fil < 0 ) return 1;
-
-  // ( DO A SEE/Byte check here.) (Not coded in this version)
-
-
-  dalen = filelength(fil);
-
-  close(fil);
-
-  return( dalen != IDFSIZE );
-
-#else
-    STUBBED("CD detection.");
-    return 0;
-#endif
-}
-
-
-void copyprotect(void)
-{
-    FILE *fp;
-    char  idfile[256];
-
-    return;
-
-    cp = 0;
-
-    fp = (FILE *)fopen("cdrom.ini","rt");
-    if(fp == (FILE *) NULL)
-    {
-        cp = 1;
-        return;
-    }
-
-    fscanf(fp,"%s",idfile);
-    fclose(fp);
-
-    strcat(idfile,IDFILENAME);
-
-    if( testcd(idfile) )
-    {
-        cp = 1;
-        return;
-    }
-}
-
+const char* const baseDir="duke3d*.grp";
 #ifdef _WIN32
 
-void findGRPToUse(uint8_t * game_dir,uint8_t * baseDir,uint8_t * groupfilefullpath)
+void findGRPToUse(uint8_t * groupfilefullpath)
 {
     WIN32_FIND_DATA FindFileData;
 	HANDLE hFind =  INVALID_HANDLE_VALUE;
@@ -8115,12 +8012,50 @@ void findGRPToUse(uint8_t * game_dir,uint8_t * baseDir,uint8_t * groupfilefullpa
 
 #else
 
-void findGRPToUse(uint8_t * game_dir,uint8_t * baseDir,uint8_t * groupfilefullpath){
+int dukeGRP_Match(char* filename,int length)
+{
+    char* cursor = filename+length-4;
     
-    //uint8_t  *grpName="DUKE3D.GRP";
-    //sprintf(groupfilefullpath, "%s\\%s", game_dir, grpName);
-    sprintf(groupfilefullpath, "%s","/Users/fabiensanglard/Desktop/DUKE3D.GRP");
-    printf("The ONLY GRP location for this port is '%s'.\n",groupfilefullpath);
+    if (strncasecmp(cursor,".grp",4))
+        return 0;
+    
+    return !strncasecmp(filename,"duke3d",6);
+}
+
+
+#include <dirent.h>
+void findGRPToUse(char * groupfilefullpath){
+    
+    char directoryToScan[512];
+    struct dirent* dirEntry ;
+    
+    directoryToScan[0] = '\0';
+    
+    if (game_dir[0] != '\0')
+    {
+        strcat(directoryToScan,game_dir);
+        if (directoryToScan[strlen(directoryToScan)-1] != '/')
+            strcat(directoryToScan,"/");
+    }
+    else{
+        strcat(directoryToScan, "./");    
+    }
+    
+    printf("Scanning directory '%s' for a GRP file like '%s'.\n",directoryToScan,baseDir);
+    
+    DIR* dir =  opendir(directoryToScan);
+    
+    while ((dirEntry = readdir(dir)) != NULL)
+    {
+        
+        
+        if (dukeGRP_Match(dirEntry->d_name,dirEntry->d_namlen))
+        {
+            sprintf(groupfilefullpath,"%s",dirEntry->d_name);
+            return;
+        }
+        
+    }
 }
 
 #endif
@@ -8129,12 +8064,13 @@ static int load_duke3d_groupfile(void)
 {
 	// FIX_00032: Added multi base GRP manager. Use duke3d*.grp to handle multiple grp.
     
-	uint8_t  groupfilefullpath[512];
-
-	uint8_t  *baseDir="duke3d*.grp";
-	//uint8_t  *baseDir="DUKE3D.GRP";
+	char  groupfilefullpath[512];
+    groupfilefullpath[0] = '\0';
     
-    findGRPToUse(game_dir,baseDir,groupfilefullpath);
+    findGRPToUse(groupfilefullpath);
+    
+    if (groupfilefullpath[0] == '\0')
+        return false;
 	
 
 	FixFilePath(groupfilefullpath);
@@ -8282,11 +8218,6 @@ int main(int argc,char  **argv)
 
 
 	checkcommandline(argc,argv);
-
-    copyprotect();
-
-    //setvmode(0x03);
-
 
     _platform_init(argc, argv, "Duke Nukem 3D", "Duke3D");
 
