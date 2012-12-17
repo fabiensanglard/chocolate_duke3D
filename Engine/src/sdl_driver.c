@@ -513,9 +513,7 @@ static void init_new_res_vars(int32_t davidoption)
    		screen = NULL;
    	} /* if */
 
-	// FIX_00085: Optimized Video driver. FPS increases by +20%.
-//    if (davidoption != -1)
-//    {
+
     	switch(vidoption)
     	{
     		case 1:i = xdim*ydim; break;
@@ -525,24 +523,6 @@ static void init_new_res_vars(int32_t davidoption)
     	}
     	j = ydim*4*sizeof(int32_t);  /* Leave room for horizlookup&horizlookup2 */
 
-  //  	screenalloctype = 0;
-//	    if ((screen = (uint8_t  *)kkmalloc(i+(j<<1))) == NULL)
-//    	{
-//	    	 allocache((int32_t *)&screen,i+(j<<1),&permanentlock);
-//    		 screenalloctype = 1;
-//    	}
-
-        /* !!! FIXME: Should screen get allocated above if in opengl3d mode? */
-
-//        if (renderer == RENDERER_OPENGL3D)
-//            frameplace = (int32_t) NULL;
-//        else
-//        {
-//            frameplace = FP_OFF(screen);
-//          	horizlookup = (int32_t *)(frameplace+i);
-//           	horizlookup2 = (int32_t *)(frameplace+i+j);
-//        } /* else */
-//    } /* if */
 		if(horizlookup)
 			free(horizlookup);
 
@@ -553,29 +533,34 @@ static void init_new_res_vars(int32_t davidoption)
 		horizlookup2 = (int32_t*)malloc(j);
 
     j = 0;
+    
+    //Build lookup table (X screespace -> frambuffer offset. 
   	for(i = 0; i <= ydim; i++)
     {
         ylookup[i] = j;
         j += bytesperline;
-    } /* for */
+    }
 
    	horizycent = ((ydim*4)>>1);
 
-		/* Force drawrooms to call dosetaspect & recalculate stuff */
+    /* Force drawrooms to call dosetaspect & recalculate stuff */
 	oxyaspect = oxdimen = oviewingrange = -1;
 
-	setvlinebpl(bytesperline);
+    //Let the Assembly module how many pixels to skip when drawing a column
+	setBytesPerLine(bytesperline);
 
-    //if (davidoption != -1)
-    //{
-    	setview(0L,0L,xdim-1,ydim-1);
-    //	clearallviews(0L);
-    //} /* if */
-
+    
+    setview(0L,0L,xdim-1,ydim-1);
+    
 	setbrightness((uint8_t ) curbrightness, (uint8_t  *) &palette[0]);
 
-	if (searchx < 0) { searchx = halfxdimen; searchy = (ydimen>>1); }
-} /* init_new_res_vars */
+	if (searchx < 0) {
+        searchx = halfxdimen;
+        searchy = (ydimen>>1);
+    }
+    
+}
+
 
 
 static void go_to_new_vid_mode(int davidoption, int w, int h)

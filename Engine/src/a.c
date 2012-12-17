@@ -29,45 +29,41 @@ void sethlinesizes(int32_t i1, int32_t i2, int32_t i3)
     machxbits_ecx = i3;
 } 
 
-static uint8_t* pal_eax;
-
-void setpalookupaddress(uint8_t *i1) { pal_eax = i1; }
 
 //FCS:   Draw ceiling/floors
-void hlineasm4(int32_t _count, int32_t _shade, uint32_t _i4, uint32_t _i5, int32_t i6)
+void hlineasm4(int32_t numPixels, int32_t shade, uint32_t i4, uint32_t i5, int32_t destination)
 {
-    /* force into registers (probably only useful on PowerPC)... */
-    uint8_t *dest = (uint8_t *) i6;
-    uint32_t i4 = _i4;
-    uint32_t i5 = _i5;
+
+    uint8_t *dest = (uint8_t *) destination;
+    
+    
     int32_t shifter = ((256-machxbits_al) & 0x1f);
     uint32_t source;
-    int32_t shade = _shade & 0xffffff00;
-    int32_t count = _count + 1;
-    register uint8_t  bits = machxbits_bl;
-    register uint8_t  *lookup = (uint8_t *) machxbits_ecx;
-    register uint8_t  *pal = (uint8_t *) pal_eax;
-    int32_t _asm1 = asm1;
-    int32_t _asm2 = asm2;
+    uint8_t  bits = machxbits_bl;
+    uint8_t  *lookup = (uint8_t *) machxbits_ecx;
+    
 
+    shade = shade & 0xffffff00;
+    numPixels++;
+    
 	if (!RENDER_DRAW_CEILING_AND_FLOOR)
 		return;
 
-    while (count) {
-
-		
-			
-
+    while (numPixels) {
 
 	    source = i5 >> shifter;
 	    source = shld(source,i4,bits);
 	    source = lookup[source];
+        
 		if (pixelsAllowed-- > 0)
-			*dest = pal[shade|source];
+			*dest = globalpalwritten[shade|source];
+        
 	    dest--;
-	    i5 -= _asm1;
-	    i4 -= _asm2;
-	    count--;
+        
+	    i5 -= asm1;
+	    i4 -= asm2;
+        
+	    numPixels--;
 		
     }
 }
@@ -151,6 +147,8 @@ void rmhlineasm4(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int
 	    if ((i5 + rmmach_ebx) < i5) i2 -= (rmmach_ecx+1);
 	    else i2 -= rmmach_ecx;
 	    ebp &= rmmach_esi;
+        
+        //Check if this colorIndex is the transparent color (255).
 	    if ((i3&0xff) != 255) {
 			if (pixelsAllowed-- > 0)
 			{
@@ -158,24 +156,27 @@ void rmhlineasm4(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int
 				((uint8_t  *)rmach6b)[numPixels] = (i1&0xff);
 			}
 	    }
+        
 	    i2 -= ebp;
 	    numPixels--;
+        
     } while (numPixels);
 } 
 
 
-
-static int32_t fixchain;
-void setvlinebpl(int32_t i1)
+//Variable used to draw column.
+//This is how much you have to skip in the framebuffer in order to be one pixel below.
+static int32_t bytesperline;
+void setBytesPerLine(int32_t _bytesperline)
 {
-    fixchain = i1;
+    bytesperline = _bytesperline;
 } 
 
 
-static int32_t tmach;
-void fixtransluscence(int32_t i1)
+static uint8_t* transPalette;
+void fixtransluscence(uint8_t* transLuscentPalette)
 {
-    tmach = i1;
+    transPalette = transLuscentPalette;
 } 
 
 static uint8_t  mach3_al;
@@ -189,11 +190,7 @@ int32_t prevlineasm1(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5,
     if (i3 == 0)
     {
 		if (!RENDER_DRAW_TOP_AND_BOTTOM_COLUMN)
-		return 0;
-
-		
-
-		
+            return 0;
 
 	    i1 += i4;
         //FCS
@@ -214,10 +211,10 @@ int32_t prevlineasm1(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5,
 
 
 //FCS: This is used to draw wall border vertical lines
-int32_t vlineasm1(int32_t vince, int32_t palookupoffse, int32_t numPixels, int32_t vplce, int32_t bufplce, int32_t i6)
+int32_t vlineasm1(int32_t vince, int32_t palookupoffse, int32_t numPixels, int32_t vplce, int32_t bufplce, int32_t frameBufferDestination)
 {
     uint32_t temp;
-    uint8_t  *dest = (uint8_t  *)i6;
+    uint8_t  *dest = (uint8_t  *)frameBufferDestination;
 
     if (!RENDER_DRAW_WALL_BORDERS)
 		return vplce;
@@ -236,7 +233,7 @@ int32_t vlineasm1(int32_t vince, int32_t palookupoffse, int32_t numPixels, int32
 			*dest = ((uint8_t *)palookupoffse)[temp];
 	    
 		vplce += vince;
-	    dest += fixchain;
+	    dest += bytesperline;
 	    numPixels--;
     }
     return vplce;
@@ -251,10 +248,10 @@ void setuptvlineasm(int32_t i1)
 
 
 static int transrev = 0;
-int32_t tvlineasm1(int32_t i1, int32_t i2, int32_t numPixels, int32_t i4, int32_t i5, int32_t i6)
+int32_t tvlineasm1(int32_t i1, int32_t i2, int32_t numPixels, int32_t i4, int32_t i5, int32_t _dest)
 {
 	uint8_t  *source = (uint8_t  *)i5;
-	uint8_t  *dest = (uint8_t  *)i6;
+	uint8_t  *dest = (uint8_t  *)_dest;
 
 	numPixels++;
 	while (numPixels)
@@ -263,19 +260,25 @@ int32_t tvlineasm1(int32_t i1, int32_t i2, int32_t numPixels, int32_t i4, int32_
 		temp >>= transmach3_al;
 		temp = source[temp];
 
-	
+	    //255 is the index for transparent color index. Skip drawing this pixel. 
 		if (temp != 255)
 		{
-			uint16_t val;
-			val = ((uint8_t  *)i2)[temp];
-			val |= ((*dest)<<8);
+			uint16_t colorIndex;
+            
+			colorIndex = ((uint8_t  *)i2)[temp];
+			colorIndex |= ((*dest)<<8);
+            
 			if (transrev) 
-				val = ((val>>8)|(val<<8));
+				colorIndex = ((colorIndex>>8)|(colorIndex<<8));
+            
 			if (pixelsAllowed-- > 0)
-				*dest = ((uint8_t  *)tmach)[val];
+				*dest = transPalette[colorIndex];
 		}
+        
 		i4 += i1;
-		dest += fixchain;
+        
+        //We are drawing a column ?!
+		dest += bytesperline;
 		numPixels--;
 	}
 	return i4;
@@ -323,7 +326,7 @@ void tvlineasm2(uint32_t i1, uint32_t i2, uint32_t i3, uint32_t i4, uint32_t i5,
 					val = ((val>>8)|(val<<8));
 
 				if (pixelsAllowed-- > 0)
-					((uint8_t  *)i6)[tran2edi1] = ((uint8_t  *)tmach)[val];
+					((uint8_t  *)i6)[tran2edi1] = transPalette[val];
 			}
 		} else if (i4 == 255) { // skipdraw2
 			uint16_t val;
@@ -334,7 +337,7 @@ void tvlineasm2(uint32_t i1, uint32_t i2, uint32_t i3, uint32_t i4, uint32_t i5,
 				((val>>8)|(val<<8));
 
 			if (pixelsAllowed-- > 0)
-				((uint8_t  *)i6)[tran2edi] = ((uint8_t  *)tmach)[val];
+				((uint8_t  *)i6)[tran2edi] = transPalette[val];
 		} else {
 			uint16_t l = ((uint8_t  *)i6)[tran2edi]<<8;
 			uint16_t r = ((uint8_t  *)i6)[tran2edi1]<<8;
@@ -346,13 +349,13 @@ void tvlineasm2(uint32_t i1, uint32_t i2, uint32_t i3, uint32_t i4, uint32_t i5,
 			}
 			if (pixelsAllowed-- > 0)
 			{
-				((uint8_t  *)i6)[tran2edi] =((uint8_t  *)tmach)[l];
-				((uint8_t  *)i6)[tran2edi1] =((uint8_t  *)tmach)[r];
+				((uint8_t  *)i6)[tran2edi] = transPalette[l];
+				((uint8_t  *)i6)[tran2edi1] =transPalette[r];
 				pixelsAllowed--;
 			}
 		}
-		i6 += fixchain;
-	} while (i6 > i6 - fixchain);
+		i6 += bytesperline;
+	} while (i6 > i6 - bytesperline);
 	asm1 = i5;
 	asm2 = ebp;
 } 
@@ -378,7 +381,7 @@ int32_t mvlineasm1(int32_t vince, int32_t palookupoffse, int32_t i3, int32_t vpl
 		}
 
 	    vplce += vince;
-	    dest += fixchain;
+	    dest += bytesperline;
     }
     return vplce;
 } /* mvlineasm1 */
@@ -415,8 +418,8 @@ void vlineasm4(int32_t i1, int32_t i2)
         			dest[index+i] = ((uint8_t *)(palookupoffse[i]))[temp];
 	            vplce[i] += vince[i];
             }
-            dest += fixchain;
-        } while (((uint32_t)dest - fixchain) < ((uint32_t)dest));
+            dest += bytesperline;
+        } while (((uint32_t)dest - bytesperline) < ((uint32_t)dest));
     }
 } 
 
@@ -427,12 +430,12 @@ void setupmvlineasm(int32_t i1)
 } 
 
 
-void mvlineasm4(int32_t i1, int32_t i2)
+void mvlineasm4(int32_t column, int32_t framebufferOffset)
 {
     int i;
     uint32_t temp;
-    uint32_t index = (i2 + ylookup[i1]);
-    uint8_t  *dest = (uint8_t *)(-ylookup[i1]);
+    uint32_t index = (framebufferOffset + ylookup[column]);
+    uint8_t  *dest = (uint8_t *)(-ylookup[column]);
 
     do {
 
@@ -451,9 +454,9 @@ void mvlineasm4(int32_t i1, int32_t i2)
 		  }
 	      vplce[i] += vince[i];
         }
-        dest += fixchain;
+        dest += bytesperline;
 
-    } while (((uint32_t)dest - fixchain) < ((uint32_t)dest));
+    } while (((uint32_t)dest - bytesperline) < ((uint32_t)dest));
 } /* mvlineasm4 */
 
 
@@ -494,7 +497,7 @@ draw:
 
 	
 
-    dest += fixchain;
+    dest += bytesperline;
 
     i4 += smach_ecx;
     i4--;
@@ -552,7 +555,7 @@ setup:
 
 	
     }
-    dest += fixchain;
+    dest += bytesperline;
 
     i4 += smach_ecx;
     i4--;
@@ -582,7 +585,7 @@ void tsetupspritevline(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i
 } 
 
 
-void tspritevline(int32_t i1, int32_t i2, int32_t numPixels, uint32_t i4, int32_t i5, int32_t i6)
+void tspritevline(int32_t i1, int32_t i2, int32_t numPixels, uint32_t i4, int32_t i5, int32_t dest)
 {
 	while (numPixels)
 	{
@@ -601,17 +604,17 @@ void tspritevline(int32_t i1, int32_t i2, int32_t numPixels, uint32_t i4, int32_
 			{
 				uint16_t val;
 				val = ((uint8_t *)tspal)[i1];
-				val |= ((*((uint8_t  *)i6))<<8);
+				val |= ((*((uint8_t  *)dest))<<8);
 
 				if (transrev) 
 					val = ((val>>8)|(val<<8));
 
-				i1 = ((uint8_t  *)tmach)[val];
+				i1 = transPalette[val];
 
 				if (pixelsAllowed-- > 0)
-					*((uint8_t  *)i6) = (i1&0xff);
+					*((uint8_t  *)dest) = (i1&0xff);
 			}
-			i6 += fixchain;
+			dest += bytesperline;
 		}
 
 		
@@ -702,7 +705,7 @@ void thlineskipmodify(int32_t i1, uint32_t i2, uint32_t i3, int32_t i4, int32_t 
 				val = ((val>>8)|(val<<8));
 
 			if (pixelsAllowed-- > 0)
-			 *((uint8_t  *)i6) = (((uint8_t *)tmach)[val]);
+			 *((uint8_t  *)i6) = transPalette[val];
 	    }
 
 	    i2 += tmach_asm1;

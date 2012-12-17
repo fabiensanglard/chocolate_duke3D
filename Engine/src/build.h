@@ -155,7 +155,11 @@ EXTERN int32_t spritesortcnt;
 EXTERN spritetype tsprite[MAXSPRITESONSCREEN];
 
 EXTERN uint8_t  vidoption;
-EXTERN int32_t xdim, ydim, ylookup[MAXYDIM+1], numpages;
+EXTERN int32_t xdim, ydim, numpages;
+
+// Fast way to retrive the start of a column in the framebuffer, given a screenspace X coordinate.
+EXTERN int32_t ylookup[MAXYDIM+1];
+
 EXTERN int32_t yxaspect, viewingrange;
 
 EXTERN int32_t validmodecnt;
@@ -183,6 +187,7 @@ EXTERN short prevspritesect[MAXSPRITES], prevspritestat[MAXSPRITES];
 EXTERN short nextspritesect[MAXSPRITES], nextspritestat[MAXSPRITES];
 
 EXTERN short tilesizx[MAXTILES], tilesizy[MAXTILES];
+// An array of locks for each pic
 EXTERN uint8_t  walock[MAXTILES];
 EXTERN int32_t numtiles, picanm[MAXTILES], waloff[MAXTILES];
 
@@ -206,6 +211,7 @@ EXTERN uint8_t  show2dwall[(MAXWALLS+7)>>3];
 EXTERN uint8_t  show2dsprite[(MAXSPRITES+7)>>3];
 EXTERN uint8_t  automapping;
 
+//Bitvector marking picture used for rendition.
 EXTERN uint8_t  gotpic[(MAXTILES+7)>>3];
 
 //This is the bit vector that marks visited sector during portal flooding. Size is hence (MAXSECTORS / 8)

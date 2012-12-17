@@ -17,10 +17,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+    
+extern uint8_t  *globalpalwritten;
 
 void sethlinesizes(int32_t,int32_t,int32_t);
-void setpalookupaddress(uint8_t  *);
+
 
 void hlineasm4(int32_t,int32_t,uint32_t,uint32_t,int32_t);
 void setuprhlineasm4(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
@@ -29,8 +30,8 @@ void setuprmhlineasm4(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
 void rmhlineasm4(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
 
 
-void setvlinebpl(int32_t);
-void fixtransluscence(int32_t);
+void setBytesPerLine(int32_t);
+void fixtransluscence(uint8_t*);
 int32_t prevlineasm1(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
 int32_t vlineasm1(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
 void setuptvlineasm(int32_t);

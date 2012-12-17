@@ -787,24 +787,32 @@ void getpackets(void)
 void faketimerhandler()
 {
     int32_t i, j, k;
-//    short who;
     input *osyn, *nsyn;
 
+    //Check if we should quit the game.
     if(qe == 0 && KB_KeyPressed(sc_LeftControl) && KB_KeyPressed(sc_LeftAlt) && KB_KeyPressed(sc_Delete))
     {
         qe = 1;
         gameexit("Quick Exit.");
     }
 
+    //Has it been 120ticks ?
     if ((totalclock < ototalclock+TICSPERFRAME) || (ready2send == 0)) 
 		return; // Returns here when playing a demo.
+    
+    //YES : Add 120tick
     ototalclock += TICSPERFRAME;
 
-    getpackets(); if (getoutputcirclesize() >= 16) return;
+    //Check network stuff.
+    getpackets();
+    if (getoutputcirclesize() >= 16)
+        return;
 
+    
     for(i=connecthead;i>=0;i=connectpoint2[i])
         if (i != myconnectindex)
-            if (movefifoend[i] < movefifoend[myconnectindex]-200) return;
+            if (movefifoend[i] < movefifoend[myconnectindex]-200)
+                return;
 
      if( !CONSOLE_IsActive())
      {
@@ -823,6 +831,7 @@ void faketimerhandler()
           movefifoend[myconnectindex]++;
           return;
      }
+    
      nsyn = &inputfifo[movefifoend[myconnectindex]&(MOVEFIFOSIZ-1)][myconnectindex];
      nsyn[0].fvel = avgfvel/movesperpacket;
      nsyn[0].svel = avgsvel/movesperpacket;
