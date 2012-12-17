@@ -374,7 +374,7 @@ struct animwalltype
 extern struct animwalltype animwall[MAXANIMWALLS];
 extern short numanimwalls,probey,lastprobey;
 
-extern uint8_t  *mymembuf;
+char  *mymembuf;
 extern uint8_t  typebuflen;
 char typebuf[41];
 extern uint8_t  MusicPtr[72000];

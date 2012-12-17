@@ -1753,7 +1753,7 @@ void menus(void)
                         tempbuf[1] = lastsavedpos;
                         for(x=connecthead;x>=0;x=connectpoint2[x])
                             if(x != myconnectindex)
-                                sendpacket(x,(uint8_t)tempbuf,2);
+                                sendpacket(x,(uint8_t*)tempbuf,2);
 
                         getpackets();
 
@@ -2900,7 +2900,7 @@ else
 				sound(EXITMENUSOUND);
 			}
 
-			if (0<=x && x<NUMGAMEFUNCTIONS || waiting4key) // set a key
+			if ( (0<=x && x<NUMGAMEFUNCTIONS) || waiting4key) // set a key
 			{
 				if(!waiting4key)
 				{ 

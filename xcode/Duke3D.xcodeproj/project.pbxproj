@@ -72,6 +72,7 @@
 /* Begin PBXFileReference section */
 		2D2A07B8167EFA4900064107 /* music.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = music.h; path = ../../Game/src/audiolib/music.h; sourceTree = "<group>"; };
 		2D2A07BA167EFB5500064107 /* premap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = premap.h; path = ../../Game/src/premap.h; sourceTree = "<group>"; };
+		2D2A07BB167F1ABA00064107 /* global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = global.h; path = ../../Game/src/global.h; sourceTree = "<group>"; };
 		2D4FB6FE167D430F00915887 /* sdl_midi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sdl_midi.c; sourceTree = "<group>"; };
 		2D7B61DE167886FB00E35E54 /* Duke3D */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Duke3D; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D7B61F11678885A00E35E54 /* a.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = a.c; path = ../../Engine/src/a.c; sourceTree = "<group>"; };
@@ -341,6 +342,7 @@
 				2D7B62FD167905C400E35E54 /* dukeunix.h */,
 				2D7B62FE16790E8000E35E54 /* dummy_audiolib.c */,
 				2D2A07BA167EFB5500064107 /* premap.h */,
+				2D2A07BB167F1ABA00064107 /* global.h */,
 			);
 			name = Game;
 			sourceTree = "<group>";

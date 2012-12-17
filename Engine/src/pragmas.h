@@ -108,25 +108,25 @@ DEFFUN(31)\
 DEFFUN(32)
 
 #define DEFFUN(N) \
-static __inline int mulscale##N(int32_t input1, int32_t input2) \
+static __inline int32_t mulscale##N(int32_t input1, int32_t input2) \
 { return mulscale(input1,input2,N); }
 DEFFUNCS
 #undef DEFFUN
 
 #define DEFFUN(N) \
-static __inline int dmulscale##N(int32_t input1, int32_t input2,int32_t input3,int32_t input4) \
+static __inline int32_t dmulscale##N(int32_t input1, int32_t input2,int32_t input3,int32_t input4) \
 { return dmulscale(input1,input2,input3,input4,N); }
 DEFFUNCS
 #undef DEFFUN
 
 #define DEFFUN(N) \
-static __inline int tmulscale##N(int32_t i1, int32_t i2,int32_t i3,int32_t i4,int32_t i5,int32_t i6) \
+static __inline int32_t tmulscale##N(int32_t i1, int32_t i2,int32_t i3,int32_t i4,int32_t i5,int32_t i6) \
 { return tmulscale(i1,i2,i3,i4,i5,i6,N); }
 DEFFUNCS
 #undef DEFFUN
 
 #define DEFFUN(N) \
-static __inline int divscale##N(int32_t input1, int32_t input2) \
+static __inline int32_t divscale##N(int32_t input1, int32_t input2) \
 { return divscale(input1,input2,N); }
 DEFFUNCS
 #undef DEFFUN

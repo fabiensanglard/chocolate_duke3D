@@ -53,6 +53,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 #include <sys/types.h>
 #include <sys/stat.h>
 
+#include "global.h"
 
 
 // this is So lame
@@ -105,8 +106,8 @@ char  firstdemofile[80] = { '\0' };
 void newint24( int errval, int ax, int bp, int si );
 
 int recfilep,totalreccnt;
-uint8_t  debug_on = 0,actor_tog = 0,*rtsptr,memorycheckoveride=0;
-
+uint8_t  debug_on = 0,actor_tog = 0,memorycheckoveride=0;
+char *rtsptr;
 
 
 extern uint8_t  syncstate;
@@ -456,6 +457,9 @@ char  *grpVersion2char(uint8_t  grp_to_identify)
 	return(id);
 }
 
+//This is a function from the Engine module, used in getpackets.
+void sampletimer(void);
+
 void getpackets(void)
 {
     int32_t i, j, k, l;
@@ -656,7 +660,7 @@ void getpackets(void)
 
                 if (SoundToggle == 0 || ud.lockout == 1 || FXDevice == NumSoundCards)
                     break;
-                rtsptr = (uint8_t  *)RTS_GetSound(packbuf[1]-1);
+                rtsptr = (char  *)RTS_GetSound(packbuf[1]-1);
                 if (*rtsptr == 'C')
                     FX_PlayVOC3D(rtsptr,0,0,0,255,-packbuf[1]);
                 else
@@ -6748,7 +6752,7 @@ void nonsharedkeys(void)
             if(ud.lockout == 0)
                 if(SoundToggle && ALT_IS_PRESSED && ( RTS_NumSounds() > 0 ) && rtsplaying == 0 && VoiceToggle )
             {
-                rtsptr = (uint8_t  *)RTS_GetSound (i-1);
+                rtsptr = (char  *)RTS_GetSound (i-1);
                 if(*rtsptr == 'C')
                     FX_PlayVOC3D( rtsptr,0,0,0,255,-i);
                 else FX_PlayWAV3D( rtsptr,0,0,0,255,-i);
@@ -10608,6 +10612,7 @@ void takescreenshot(void)
 
 	if(ud.multimode>1) // if more than 1 player, we add name. Then add score if DM
 	{
+        tempbuf[0] = '\0';
 		strcat((char *)tempbuf, " [");
 		for(i=connecthead;i>=0;i=connectpoint2[i])
 		{
@@ -10619,8 +10624,8 @@ void takescreenshot(void)
 			if(ud.m_coop==0 || ud.m_coop==2)  // if DM or DM No spawn. Add Score as well
 			{
 				strcat(tempbuf, "(");
-                snprintf(ps[i].frag-ps[i].fraggedself, sizeof(ps[i].frag-ps[i].fraggedself), "%s", score);
-				strcat(tempbuf, ps[i].frag-ps[i].fraggedself);
+                snprintf(score, sizeof(score), "%d",ps[i].frag-ps[i].fraggedself);
+				strcat(tempbuf, score);
 				strcat(tempbuf, ") vs ");
 			}
 			else

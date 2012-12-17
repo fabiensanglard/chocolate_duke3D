@@ -33,6 +33,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 #include "types.h"
 #include "util_lib.h"
 #include "duke3d.h"
+#include "global.h"
 
 
 #define LOUDESTVOLUME 150

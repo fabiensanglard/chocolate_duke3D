@@ -631,7 +631,7 @@ static void prepwall(int32_t z, walltype *wal)
 }
 
 
-static int getpalookup(int32_t davis, int32_t dashade)
+static int32_t getpalookup(int32_t davis, int32_t dashade)
 {
     return(min(max(dashade+(davis>>8),0),numpalookups-1));
 }
@@ -649,7 +649,7 @@ static void hline (int32_t xr, int32_t yp)
     r = horizlookup2[yp-globalhoriz+horizycent];
     asm1 = globalx1*r;
     asm2 = globaly2*r;
-    s = ((int32_t)getpalookup((int32_t)mulscale16(r,globvis),globalshade)<<8);
+    s = (getpalookup(mulscale16(r,globvis),globalshade)<<8);
 
     hlineasm4(xr-xl,s,globalx2*r+globalypanning,globaly1*r+globalxpanning,ylookup[yp]+xr+frameoffset);
 }
@@ -665,7 +665,7 @@ static void slowhline (int32_t xr, int32_t yp)
     asm1 = globalx1*r;
     asm2 = globaly2*r;
 
-    asm3 = (long)globalpalwritten + ((long)getpalookup((long)mulscale16(r,globvis),globalshade)<<8);
+    asm3 = (int32_t)globalpalwritten + (getpalookup(mulscale16(r,globvis),globalshade)<<8);
     if (!(globalorientation&256))
     {
         mhline(globalbufplc,globaly1*r+globalxpanning-asm1*(xr-xl),(xr-xl)<<16,0L,
@@ -922,19 +922,27 @@ static void florscan (int32_t x1, int32_t x2, int32_t sectnum)
     }
 
     globalzd = globalposz-sec->floorz;
-    if (globalzd > 0) return;
+    if (globalzd > 0)
+        return;
     globalpicnum = sec->floorpicnum;
     if ((unsigned)globalpicnum >= (unsigned)MAXTILES) globalpicnum = 0;
     setgotpic(globalpicnum);
-    if ((tilesizx[globalpicnum] <= 0) || (tilesizy[globalpicnum] <= 0)) return;
+    
+    if ((tilesizx[globalpicnum] <= 0) || (tilesizy[globalpicnum] <= 0))
+        return;
+    
     if (picanm[globalpicnum]&192) globalpicnum += animateoffs((short)globalpicnum,(short)sectnum);
 
-    if (waloff[globalpicnum] == 0) loadtile(globalpicnum);
+    if (waloff[globalpicnum] == 0)
+        loadtile(globalpicnum);
+    
     globalbufplc = waloff[globalpicnum];
 
     globalshade = (long)sec->floorshade;
     globvis = globalcisibility;
-    if (sec->visibility != 0) globvis = mulscale4(globvis,(long)((uint8_t )(sec->visibility+16)));
+    if (sec->visibility != 0){
+        globvis = mulscale4(globvis,(long)((sec->visibility+16)));
+    }
     globalorientation = (long)sec->floorstat;
 
 
@@ -1145,33 +1153,47 @@ static void wallscan(int32_t x1, int32_t x2,
     tsizx = tilesizx[globalpicnum];
     tsizy = tilesizy[globalpicnum];
     setgotpic(globalpicnum);
-    if ((tsizx <= 0) || (tsizy <= 0)) return;
-    if ((uwal[x1] > ydimen) && (uwal[x2] > ydimen)) return;
-    if ((dwal[x1] < 0) && (dwal[x2] < 0)) return;
+    
+    if ((tsizx <= 0) || (tsizy <= 0))
+        return;
+    
+    if ((uwal[x1] > ydimen) && (uwal[x2] > ydimen))
+        return;
+    
+    if ((dwal[x1] < 0) && (dwal[x2] < 0))
+        return;
 
-    if (waloff[globalpicnum] == 0) loadtile(globalpicnum);
+    if (waloff[globalpicnum] == 0)
+        loadtile(globalpicnum);
 
     xnice = (pow2long[picsiz[globalpicnum]&15] == tsizx);
-    if (xnice) tsizx--;
+    if (xnice)
+        tsizx--;
+    
     ynice = (pow2long[picsiz[globalpicnum]>>4] == tsizy);
-    if (ynice) tsizy = (picsiz[globalpicnum]>>4);
+    if (ynice)
+        tsizy = (picsiz[globalpicnum]>>4);
 
     fpalookup = (long)FP_OFF(palookup[globalpal]);
 
     setupvlineasm(globalshiftval);
 
+    //Starting on the left column of the wall, check the occlusion arrays.
     x = x1;
-    while ((umost[x] > dmost[x]) && (x <= x2)) x++;
+    while ((umost[x] > dmost[x]) && (x <= x2))
+        x++;
 
     for(; (x<=x2)&&((x+frameoffset)&3); x++)
     {
         y1ve[0] = max(uwal[x],umost[x]);
         y2ve[0] = min(dwal[x],dmost[x]);
-        if (y2ve[0] <= y1ve[0]) continue;
+        if (y2ve[0] <= y1ve[0])
+            continue;
 
         palookupoffse[0] = fpalookup+(getpalookup((long)mulscale16(swal[x],globvis),globalshade)<<8);
 
         bufplce[0] = lwal[x] + globalxpanning;
+        
         if (bufplce[0] >= tsizx)
         {
             if (xnice == 0)
@@ -1190,6 +1212,7 @@ static void wallscan(int32_t x1, int32_t x2,
 
         vlineasm1(vince[0],palookupoffse[0],y2ve[0]-y1ve[0]-1,vplce[0],bufplce[0]+waloff[globalpicnum],x+frameoffset+ylookup[y1ve[0]]);
     }
+    
     for(; x<=x2-3; x+=4)
     {
         bad = 0;
@@ -1606,10 +1629,13 @@ static void grouscan (int32_t dax1, int32_t dax2, int32_t sectnum, uint8_t  dast
         daz = sec->floorz;
     }
 
-    if ((picanm[globalpicnum]&192) != 0) globalpicnum += animateoffs(globalpicnum,(short) sectnum);
+    if ((picanm[globalpicnum]&192) != 0)
+        globalpicnum += animateoffs(globalpicnum,(short) sectnum);
     setgotpic(globalpicnum);
-    if ((tilesizx[globalpicnum] <= 0) || (tilesizy[globalpicnum] <= 0)) return;
-    if (waloff[globalpicnum] == 0) loadtile(globalpicnum);
+    if ((tilesizx[globalpicnum] <= 0) || (tilesizy[globalpicnum] <= 0))
+        return;
+    if (waloff[globalpicnum] == 0)
+        loadtile(globalpicnum);
 
     wal = &wall[sec->wallptr];
     wx = wall[wal->point2].x - wal->x;
@@ -1974,12 +2000,6 @@ static int wallmost(short *mostbuf, int32_t w, int32_t sectnum, uint8_t  dastat)
         intz = oz1 + mulscale30(oz2-oz1,t);
         xcross = xb1[w] + scale(mulscale30(yb2[w],t),xb2[w]-xb1[w],inty);
 
-        /*
-         * t = divscale30((x1<<4)-xcross*yb1[w],xcross*(yb2[w]-yb1[w])-((x2-x1)<<4));
-         * inty = yb1[w] + mulscale30(yb2[w]-yb1[w],t);
-         * intz = z1 + mulscale30(z2-z1,t);
-         */
-
         if ((bad&3) == 2)
         {
             if (xb1[w] <= xcross) {
@@ -2007,12 +2027,6 @@ static int wallmost(short *mostbuf, int32_t w, int32_t sectnum, uint8_t  dastat)
         inty = yb1[w] + mulscale30(yb2[w]-yb1[w],t);
         intz = oz1 + mulscale30(oz2-oz1,t);
         xcross = xb1[w] + scale(mulscale30(yb2[w],t),xb2[w]-xb1[w],inty);
-
-        /*
-         * t = divscale30((x1<<4)-xcross*yb1[w],xcross*(yb2[w]-yb1[w])-((x2-x1)<<4));
-         * inty = yb1[w] + mulscale30(yb2[w]-yb1[w],t);
-         * intz = z1 + mulscale30(z2-z1,t);
-         */
 
         if ((bad&12) == 8)
         {
@@ -2089,8 +2103,6 @@ static void drawalls(int32_t bunch)
         else
             parascan(xb1[bunchfirst[bunch]],xb2[bunchlast[bunch]],sectnum,1,bunch);
     }
-
-	//return;
 
     /* DRAW WALLS SECTION! */
     for(z=bunchfirst[bunch]; z>=0; z=p2[z])
@@ -2279,7 +2291,7 @@ static void drawalls(int32_t bunch)
                         wal = &wall[wallnum];
                         globalorientation = (long)wal->cstat;
                         globalpicnum = wal->picnum;
-                        if ((unsigned)globalpicnum >= (unsigned)MAXTILES) globalpicnum = 0;
+                        if ((uint32_t)globalpicnum >= (unsigned)MAXTILES) globalpicnum = 0;
                         globalxpanning = (long)wal->xpanning;
                         globalypanning = (long)wal->ypanning;
                         if (picanm[globalpicnum]&192) globalpicnum += animateoffs(globalpicnum,(short)(wallnum+16384));
@@ -2292,7 +2304,7 @@ static void drawalls(int32_t bunch)
                     {
                         globalorientation = (long)wal->cstat;
                         globalpicnum = wal->picnum;
-                        if ((unsigned)globalpicnum >= (unsigned)MAXTILES) globalpicnum = 0;
+                        if ((uint32_t)globalpicnum >= (unsigned)MAXTILES) globalpicnum = 0;
                         globalxpanning = (long)wal->xpanning;
                         globalypanning = (long)wal->ypanning;
                         if (picanm[globalpicnum]&192) globalpicnum += animateoffs(globalpicnum,(short)(wallnum+16384));

@@ -197,7 +197,7 @@ typedef struct
 
 typedef struct
    {
-   unsigned char DATA[ 4 ];
+   char DATA[ 4 ];
    unsigned long size;
    } data_header;
 

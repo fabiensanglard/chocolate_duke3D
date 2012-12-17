@@ -29,10 +29,10 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 #include <string.h>
 #include <stdarg.h>
 #include <errno.h>
-
+#include "global.h"
 #include "duke3d.h"
 
-uint8_t  *mymembuf;
+char  *mymembuf;
 uint8_t  MusicPtr[72000];
 
 
@@ -664,13 +664,7 @@ void *SafeMalloc (int32_t size)
 {
 	void *ptr;
 
-#if 0
-   if (zonememorystarted==false)
-      Error(EXIT_FAILURE, "Called SafeMalloc without starting zone memory\n");
-	ptr = Z_Malloc (size,PU_STATIC,NULL);
-#else
     ptr = malloc(size);
-#endif
 
 	if (!ptr)
       Error (EXIT_FAILURE, "SafeMalloc failure for %lu bytes",size);
@@ -682,13 +676,7 @@ void SafeRealloc (void **x, int32 size)
 {
 	void *ptr;
 
-#if 0
-   if (zonememorystarted==false)
-      Error(EXIT_FAILURE, "Called SafeMalloc without starting zone memory\n");
-	ptr = Z_Malloc (size,PU_STATIC,NULL);
-#else
     ptr = realloc(*x, size);
-#endif
 
 	if (!ptr)
       Error (EXIT_FAILURE, "SafeRealloc failure for %lu bytes",size);
@@ -700,13 +688,7 @@ void *SafeLevelMalloc (int32_t size)
 {
 	void *ptr;
 
-#if 0
-   if (zonememorystarted==false)
-      Error(EXIT_FAILURE, "Called SafeLevelMalloc without starting zone memory\n");
-   ptr = Z_LevelMalloc (size,PU_STATIC,NULL);
-#else
     ptr = malloc(size);
-#endif
 
 	if (!ptr)
       Error (EXIT_FAILURE, "SafeLevelMalloc failure for %lu bytes",size);
@@ -719,49 +701,9 @@ void SafeFree (void * ptr)
    if ( ptr == NULL )
       Error (EXIT_FAILURE, "SafeFree : Tried to free a freed pointer\n");
 
-#if 0
-	Z_Free (ptr);
-#else
     free(ptr);
-#endif
+
 }
-
-
-#ifndef LITTLE_ENDIAN
-#define LITTLE_ENDIAN 1234
-#endif
-
-#ifndef BIG_ENDIAN
-#define BIG_ENDIAN 4321
-#endif
-
-#if PLATFORM_DOS
-#ifndef BYTE_ORDER
-#define BYTE_ORDER LITTLE_ENDIAN
-#endif
-#endif
-
-#if PLATFORM_WIN32
-#ifndef BYTE_ORDER
-#define BYTE_ORDER LITTLE_ENDIAN
-#endif
-#endif
-
-#ifndef BYTE_ORDER
-#error Please define your platform.
-#endif
-
-#if (BYTE_ORDER == LITTLE_ENDIAN)
-#define KeepShort IntelShort
-#define SwapShort MotoShort
-#define Keepint32_t IntelLong
-#define Swapint32_t MotoLong
-#else
-#define KeepShort MotoShort
-#define SwapShort IntelShort
-#define Keepint32_t MotoLong
-#define Swapint32_t IntelLong
-#endif
 
 short	SwapShort (short l)
 {

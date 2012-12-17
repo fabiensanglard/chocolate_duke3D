@@ -2725,19 +2725,19 @@ void processinput(short snum)
 		ud.playing_demo_rev == BYTEVERSION_116 || 
 		ud.playing_demo_rev == BYTEVERSION_117) &&
 		sb_snum&(1<<6) ||
-		ACTION(gamefunc_Look_Left) && (p->gm&MODE_GAME) && 
-		!(p->gm&MODE_MENU) && !(p->gm&MODE_TYPE) && !(ud.pause_on) && (ud.recstat != 2))
+		(ACTION(gamefunc_Look_Left) && (p->gm&MODE_GAME) && 
+		!(p->gm&MODE_MENU) && !(p->gm&MODE_TYPE) && !(ud.pause_on) && (ud.recstat != 2)))
 	{
 		p->look_ang -= 152;
 		p->rotscrnang += 24;
 	}
 
 	// 1<<7 : ANTIWEAPONSWITCH
-	if(	(ud.playing_demo_rev == BYTEVERSION_27 ||
+	if(	((ud.playing_demo_rev == BYTEVERSION_27 ||
 		ud.playing_demo_rev == BYTEVERSION_28 || 
 		ud.playing_demo_rev == BYTEVERSION_116 || 
 		ud.playing_demo_rev == BYTEVERSION_117) &&
-		sb_snum&(1<<7) || 
+		sb_snum&(1<<7)) ||
 		(
          ACTION(gamefunc_Look_Right) && (p->gm&MODE_GAME) &&
 		!(p->gm&MODE_MENU) && !(p->gm&MODE_TYPE) && !(ud.pause_on) && (ud.recstat != 2)
