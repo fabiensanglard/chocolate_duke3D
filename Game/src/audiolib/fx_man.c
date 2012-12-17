@@ -326,10 +326,7 @@ int FX_Shutdown
    Sets the function to call when a voice is done.
 ---------------------------------------------------------------------*/
 
-int FX_SetCallBack
-   (
-   void ( *function )( int32_t )
-   )
+int FX_SetCallBack(void ( *function )( int32_t ))
 
    {
    int status;
@@ -857,8 +854,8 @@ int FX_PlayLoopedRaw
    (
    char *ptr,
    uint32_t length,
-   uint8_t *loopstart,
-   uint8_t *loopend,
+   char *loopstart,
+   char *loopend,
    uint32_t rate,
    int32_t pitchoffset,
    int32_t vol,

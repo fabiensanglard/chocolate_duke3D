@@ -38,16 +38,15 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 
 #ifndef _util_lib_public
 #define _util_lib_public
+
+
 #ifdef __cplusplus
-extern "C" {
+    extern "C" {
 #endif
 
-#if (defined(__MSDOS__) && !defined(__FLAT__))
-extern  int16    _argc;
-#else
+
 extern  int32    _argc;
-#endif
-extern  uint8_t  **  _argv;
+extern  char  **  _argv;
 
 void RegisterShutdownFunction( void (* shutdown) (void) );
 void   Error (int errorType, char  *error, ...);
@@ -70,4 +69,6 @@ void HeapSort(uint8_t  * base, int32 nel, int32 width, int32 (*compare)(), void 
 #ifdef __cplusplus
 };
 #endif
+
+
 #endif

@@ -2589,7 +2589,7 @@ int wallfront(int32_t pvWallID1, int32_t pvWallID2)
 //Return 1 if bunch firstBunchID is in from of bunch secondBunchID.
 static int bunchfront(int32_t firstBunchID, int32_t secondBunchID)
 {
-    int32_t x1b1, x2b1, x1b2, x2b2, b2f;
+    int32_t x1b1, x2b1, x1b2, x2b2;
 
     
     x1b1 = xb1[bunchfirst[firstBunchID]];
@@ -7573,7 +7573,7 @@ void draw2dscreen(int32_t posxe, int32_t posye, short ange, int32_t zoome, short
  *  other cause flicker, so I have this function here so the shadow can
  *  be drawn with _noupdate, and the actual string is draw with an update.
  */
-static void __printext256(int32_t xpos, int32_t ypos, short col, short backcol, uint8_t  name[82], uint8_t  fontsize, int should_update)
+static void __printext256(int32_t xpos, int32_t ypos, short col, short backcol, char  name[82], uint8_t  fontsize, int should_update)
 {
     int32_t stx, i, x, y, charxsiz;
     uint8_t  *fontptr, *letptr, *ptr;

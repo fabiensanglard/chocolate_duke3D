@@ -123,8 +123,8 @@ int FX_PlayWAV3D( char *ptr, int pitchoffset, int angle, int distance,
 int FX_PlayRaw( char *ptr, uint32_t length, uint32_t rate,
        int32_t pitchoffset, int32_t vol, int32_t left, int32_t right, int32_t priority,
        uint32_t callbackval );
-int FX_PlayLoopedRaw( char *ptr, uint32_t length, uint8_t *loopstart,
-       uint8_t *loopend, uint32_t rate, int32_t pitchoffset, int32_t vol, int32_t left,
+int FX_PlayLoopedRaw( char *ptr, uint32_t length, char *loopstart,
+       char *loopend, uint32_t rate, int32_t pitchoffset, int32_t vol, int32_t left,
        int32_t right, int32_t priority, uint32_t callbackval );
 int32_t FX_Pan3D( int handle, int angle, int distance );
 int32_t FX_SoundActive( int32_t handle );

@@ -312,7 +312,7 @@ void getlabel(void)
 int32_t keyword(void)
 {
     int32_t i;
-    uint8_t  *temptextptr;
+    char  *temptextptr;
 
     temptextptr = textptr;
 
@@ -360,7 +360,7 @@ int32_t transword(void) //Returns its code #
 
     for(i=0;i<NUMKEYWORDS;i++)
     {
-        if( strcmp( (const uint8_t *)tempbuf,keyw[i]) == 0 )
+        if( strcmp( (const char *)tempbuf,keyw[i]) == 0 )
         {
             *scriptptr = i;
             textptr += l;
@@ -1539,7 +1539,7 @@ void copydefaultcons(void)
     }
 }
 
-void loadefs(char  *filenam, uint8_t  *mptr, int readfromGRP)
+void loadefs(char  *filenam, char  *mptr, int readfromGRP)
 {
     int32_t fs,fp;
 	uint8_t  kbdKey;
@@ -1559,7 +1559,7 @@ void loadefs(char  *filenam, uint8_t  *mptr, int readfromGRP)
 
         fs = kfilelength(fp);
 
-        last_used_text = textptr = (uint8_t  *) mptr;
+        last_used_text = textptr = (char  *) mptr;
         last_used_size = fs;
 
         kread(fp,(uint8_t  *)textptr,fs);
@@ -1597,7 +1597,7 @@ void loadefs(char  *filenam, uint8_t  *mptr, int readfromGRP)
     else
     {
         total_lines += line_number;
-        printf("Code Size:%ld bytes(%ld labels).\n",(long)((scriptptr-script)<<2)-4,labelcnt);
+        printf("Code Size:%ld bytes(%d labels).\n",(long)((scriptptr-script)<<2)-4,labelcnt);
 		ud.conSize[0] = (long)(scriptptr-script)-1;
 
 		// FIX_00062: Better support and identification for GRP and CON files for 1.3/1.3d/1.4/1.5
@@ -2496,7 +2496,7 @@ uint8_t  parse(void)
             break;
         case 68:
             insptr++;
-            printf("%ld\n",*insptr);
+            printf("%d\n",*insptr);
             insptr++;
             break;
         case 69:

@@ -205,7 +205,7 @@ int32_t myxbak[MOVEFIFOSIZ], myybak[MOVEFIFOSIZ], myzbak[MOVEFIFOSIZ];
 int32_t myhorizbak[MOVEFIFOSIZ],dukefriction = 0xcc00, show_shareware;
 
 short myangbak[MOVEFIFOSIZ];
-char  myname[2048] = {"XDUKE"};
+char  myname[2048] = "XDUKE";
 uint8_t  camerashitable,freezerhurtowner=0,lasermode;
 // CTW - MODIFICATION
 // uint8_t  networkmode = 255, movesperpacket = 1,gamequit = 0,playonten = 0,everyothertime;

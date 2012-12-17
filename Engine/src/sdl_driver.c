@@ -272,7 +272,7 @@ typedef enum
     RENDERER_TOTAL
 } sdl_renderer_type;
 
-const uint8_t  *renderer_name[RENDERER_TOTAL];
+const char  *renderer_name[RENDERER_TOTAL];
 
 #define ENVRSTR_RENDERER_SOFTWARE  "software"
 #define ENVRSTR_RENDERER_OPENGL3D  "opengl3d"
@@ -1110,7 +1110,7 @@ void Setup_StableNetworking()
 void _platform_init(int argc, char  **argv, const char  *title, const char  *iconName)
 {
     int i;
-	int32_t timeElapsed;
+	int64_t timeElapsed;
 	char  dummyString[4096];
 
     _argc = argc;
@@ -1352,7 +1352,7 @@ int _setgamemode(uint8_t  davidoption, int32_t daxdim, int32_t daydim)
 
     if (daxdim > MAXXDIM || daydim > MAXYDIM)
     {
-		printf("%ld x %ld is too big. Changed to %d x %d\n", daxdim, daydim, MAXXDIM,MAXYDIM);
+		printf("%d x %d is too big. Changed to %d x %d\n", daxdim, daydim, MAXXDIM,MAXYDIM);
 	    daxdim = MAXXDIM;
 	    daydim = MAXYDIM;
     } 
@@ -1368,7 +1368,7 @@ int _setgamemode(uint8_t  davidoption, int32_t daxdim, int32_t daydim)
 
 	if(!validated)
     {
-		printf("%ld x %ld unsupported. Changed to 640 x 480\n", daxdim, daydim);
+		printf("%d x %d unsupported. Changed to 640 x 480\n", daxdim, daydim);
 	    daxdim = 640;
 	    daydim = 480;
     }
@@ -1422,7 +1422,7 @@ static __inline void get_max_screen_res(int32_t *max_w, int32_t *max_h)
 {
     int32_t w = DEFAULT_MAXRESWIDTH;
     int32_t h = DEFAULT_MAXRESHEIGHT;
-    const uint8_t  *envr = getenv(BUILD_MAXSCREENRES);
+    const char  *envr = getenv(BUILD_MAXSCREENRES);
 
     if (envr != NULL)
     {
@@ -1442,7 +1442,7 @@ static __inline void get_max_screen_res(int32_t *max_w, int32_t *max_h)
 } /* get_max_screen_res */
 
 
-static void add_vesa_mode(const uint8_t  *typestr, int w, int h)
+static void add_vesa_mode(const char  *typestr, int w, int h)
 {
     sdldebug("Adding %s resolution (%dx%d).", typestr, w, h);
     validmode[validmodecnt] = validmodecnt;

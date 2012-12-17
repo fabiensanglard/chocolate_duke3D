@@ -17,6 +17,8 @@
 
 #include "joystick.h"
 
+#include "audiolib/music.h"
+
 // Bind our Cvars at startup. You can still add bindings after this call, but
 // it is recommanded that you bind your default CVars here.
 void CVARDEFS_Init()
@@ -211,7 +213,7 @@ void CVARDEFS_FunctionName(void* var)
             {
 	            if (i != myconnectindex)
 		            //Send it to everyone
-					sendpacket(i,&tempbuf[0],length);
+					sendpacket(i,(uint8_t*)tempbuf,length);
             }
         }	
 	} 

@@ -632,7 +632,8 @@ extern uint8_t  restorepalette;
 
 extern short buttonstat;
 extern int32_t cachecount;
-extern char  boardfilename[128],waterpal[768],slimepal[768],titlepal[768],drealms[768],endingpal[768];
+extern uint8_t  waterpal[768],slimepal[768],titlepal[768],drealms[768],endingpal[768];
+extern char boardfilename[128];
 extern uint8_t  betaname[80];
 extern uint8_t  cachedebug,earthquaketime;
 extern uint8_t  networkmode;

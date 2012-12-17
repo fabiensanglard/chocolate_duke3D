@@ -449,7 +449,6 @@ void MV_ServiceVoc
 {
 	VoiceNode *voice;
 	VoiceNode *next;
-	char      *buffer;
 
 	
 	// Toggle which buffer we'll mix next
@@ -2667,35 +2666,8 @@ void MV_CreateVolumeTable
    level.
 ---------------------------------------------------------------------*/
 
-void MV_CalcVolume
-   (
-   int MaxVolume
-   )
-
+void MV_CalcVolume(int MaxVolume)
    {
-   int volume;
-
-#if 0
-   for( volume = 0; volume < 128; volume++ )
-      {
-      MV_HarshClipTable[ volume ] = 0;
-      MV_HarshClipTable[ volume + 384 ] = 255;
-      }
-   for( volume = 0; volume < 256; volume++ )
-      {
-      MV_HarshClipTable[ volume + 128 ] = volume;
-      }
-#endif
-
-   // For each volume level, create a translation table with the
-   // appropriate volume calculated.
-   // this is ugly
-#if 0
-   for( volume = 0; volume <= MV_MaxVolume; volume++ )
-      {
-      MV_CreateVolumeTable( volume, volume, MaxVolume );
-      }
-#endif
    }
 
 

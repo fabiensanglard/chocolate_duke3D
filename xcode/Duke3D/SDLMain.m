@@ -37,7 +37,7 @@ extern OSErr	CPSSetFrontProcess( CPSProcessSerNum *psn);
 #endif /* SDL_USE_CPS */
 
 static int    gArgc;
-static uint8_t   **gArgv;
+static char   **gArgv;
 static BOOL   gFinderLaunch;
 static BOOL   gCalledAppMainline = FALSE;
 
@@ -86,7 +86,7 @@ static NSString *getApplicationName(void)
 {
     if (shouldChdir)
     {
-        uint8_t  parentdir[MAXPATHLEN];
+        char  parentdir[MAXPATHLEN];
 		CFURLRef url = CFBundleCopyBundleURL(CFBundleGetMainBundle());
 		CFURLRef url2 = CFURLCreateCopyDeletingLastPathComponent(0, url);
 		if (CFURLGetFileSystemRepresentation(url2, true, (UInt8 *)parentdir, MAXPATHLEN)) {
@@ -252,10 +252,10 @@ static void CustomApplicationMain (int argc, uint8_t  **argv)
  */
 - (BOOL)application:(NSApplication *)theApplication openFile:(NSString *)filename
 {
-    const uint8_t  *temparg;
+    const char  *temparg;
     size_t arglen;
     uint8_t  *arg;
-    uint8_t  **newargv;
+    char  **newargv;
     
     if (!gFinderLaunch)  /* MacOS is passing command line args. */
         return FALSE;
@@ -359,7 +359,7 @@ int main (int argc, char  **argv)
     /* Copy the arguments into a global variable */
     /* This is passed if we are launched by double-clicking */
     if ( argc >= 2 && strncmp (argv[1], "-psn", 4) == 0 ) {
-        gArgv = (uint8_t  **) SDL_malloc(sizeof (uint8_t  *) * 2);
+        gArgv = (char  **) SDL_malloc(sizeof (uint8_t  *) * 2);
         gArgv[0] = argv[0];
         gArgv[1] = NULL;
         gArgc = 1;
@@ -367,7 +367,7 @@ int main (int argc, char  **argv)
     } else {
         int i;
         gArgc = argc;
-        gArgv = (uint8_t  **) SDL_malloc(sizeof (uint8_t  *) * (argc+1));
+        gArgv = (char  **) SDL_malloc(sizeof (uint8_t  *) * (argc+1));
         for (i = 0; i <= argc; i++)
             gArgv[i] = argv[i];
         gFinderLaunch = NO;

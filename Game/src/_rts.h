@@ -39,7 +39,7 @@ typedef struct
 
 typedef struct
    {
-   uint8_t  identification[4];              // should be IWAD
+   char  identification[4];              // should be IWAD
    int32 numlumps;
    int32 infotableofs;
    } wadinfo_t;

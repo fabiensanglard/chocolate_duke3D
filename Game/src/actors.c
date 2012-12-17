@@ -5171,8 +5171,8 @@ void moveeffectors(void)   //STATNUM 3
 
                 if(s->owner == -1)
                 {
-                    sprintf((uint8_t *)tempbuf,"Could not find any locators for SE# 6 and 14 with a hitag of %ld.\n",t[3]);
-                    gameexit((uint8_t *)tempbuf);
+                    sprintf((char *)tempbuf,"Could not find any locators for SE# 6 and 14 with a hitag of %d.\n",t[3]);
+                    gameexit((char *)tempbuf);
                 }
 
                 j = ldist(&sprite[s->owner],s);

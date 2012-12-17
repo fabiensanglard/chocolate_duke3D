@@ -72,7 +72,7 @@ int32 RTS_SoundLength (int32 lump);
 ====================
 */
 
-uint8_t  * RTS_GetSoundName (int32 i);
+char  * RTS_GetSoundName (int32 i);
 /*
 ====================
 =

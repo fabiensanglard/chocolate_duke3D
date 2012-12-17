@@ -26,6 +26,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 
 #include "duke3d.h"
 #include "cache1d.h"
+#include "game.h"
 
 extern uint8_t  everyothertime;
 short which_palookup = 9;
@@ -1299,7 +1300,7 @@ void genspriteremaps(void)
     {
         kread(fp,(int8_t *)&look_pos,1);
         kread(fp,tempbuf,256);
-        makepalookup((long)look_pos,tempbuf,0,0,0,1);
+        makepalookup((long)look_pos,(uint8_t*)tempbuf,0,0,0,1);
     }
 
     kread(fp,&waterpal[0],768);
@@ -1647,7 +1648,7 @@ if (!VOLUMEONE)
 
 		for(i=connecthead;i>=0;i=connectpoint2[i])
 			if( i != myconnectindex )
-				sendpacket(i,&buf[0],3);
+				sendpacket(i,(uint8_t*)buf,3);
 	 }
 
 	 ud.mapCRC[myconnectindex] = mapCRC;

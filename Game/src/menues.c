@@ -30,6 +30,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 #include "control.h"
 #include "cache1d.h"
 #include "SDL.h"
+#include "premap.h"
 
 extern SDL_Surface *surface;
 extern short inputloc;
@@ -217,9 +218,9 @@ int loadpheader(uint8_t  spot,int32 *vn,int32 *ln,int32 *psk,int32 *nump)
 int loadplayer(int8_t spot)
 {
      short k,music_changed;
-     uint8_t  fn[] = "game0.sav";
-     uint8_t  mpfn[] = "gameA_00.sav";
-     uint8_t  *fnptr, scriptptrs[MAXSCRIPTSIZE];
+     char  fn[] = "game0.sav";
+     char  mpfn[] = "gameA_00.sav";
+     char  *fnptr, scriptptrs[MAXSCRIPTSIZE];
      int32_t fil, bv, i, j, x;
      int32 nump;
 
@@ -1752,7 +1753,7 @@ void menus(void)
                         tempbuf[1] = lastsavedpos;
                         for(x=connecthead;x>=0;x=connectpoint2[x])
                             if(x != myconnectindex)
-                                sendpacket(x,tempbuf,2);
+                                sendpacket(x,(uint8_t)tempbuf,2);
 
                         getpackets();
 
@@ -2526,7 +2527,7 @@ else
             c = (320>>1)-120;
             rotatesprite(320<<15,19<<16,65536L,0,MENUBAR,16,0,10,0,0,xdim-1,ydim-1);
             menutext(320>>1,24,0,0,"SETUP SOUNDS");
-            onbar = ( (probey == 2)&&SoundToggle || (probey == 3)&&MusicToggle );
+            onbar = ((probey == 2)&&SoundToggle) || ((probey == 3)&&MusicToggle) ;
 
             x = probe(c+6,43,16,8);
 
@@ -3733,7 +3734,7 @@ else
 
                 for(c=connecthead;c>=0;c=connectpoint2[c])
                     if(c != myconnectindex)
-                        sendpacket(c,tempbuf,x+10);
+                        sendpacket(c,(uint8_t*)tempbuf,x+10);
 
                 newgame(ud.m_volume_number,ud.m_level_number,ud.m_player_skill+1);
                 enterlevel(MODE_GAME);
@@ -4039,7 +4040,7 @@ if(!VOLUMEONE)
                         resetinventory(c);
 
                         if(c != myconnectindex)
-                            sendpacket(c,tempbuf,11);
+                            sendpacket(c,(uint8_t*)tempbuf,11);
                     }
 
                     newgame(ud.m_volume_number,ud.m_level_number,ud.m_player_skill+1);
@@ -4076,7 +4077,7 @@ if(!VOLUMEONE)
                         resetinventory(c);
 
                         if(c != myconnectindex)
-                            sendpacket(c,tempbuf,11);
+                            sendpacket(c,(uint8_t*)tempbuf,11);
                     }
 
                     newgame(ud.m_volume_number,ud.m_level_number,ud.m_player_skill+1);
@@ -4664,7 +4665,7 @@ void playanm(char  *fn,uint8_t  t)
             tempbuf[j+3] = 0;
     }
 
-    VBE_setPalette(0L,256L,tempbuf);
+    VBE_setPalette(0L,256L,(uint8_t*)tempbuf);
 
     ototalclock = totalclock + 10;
 

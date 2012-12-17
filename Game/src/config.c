@@ -698,7 +698,7 @@ void CONFIG_ReadSetup( void )
 
        for(dummy=0;dummy<10;dummy++)
        {
-           sprintf(buf,"WeaponChoice%ld",dummy);
+           sprintf(buf,"WeaponChoice%d",dummy);
            SCRIPT_GetNumber( scripthandle, "Misc", buf, &ud.mywchoice[dummy]);
        }
     }

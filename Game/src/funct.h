@@ -131,7 +131,7 @@ extern int32 RTS_NumSounds(void );
 //#line "rts.c" 141
 extern int32 RTS_SoundLength(int32 lump);
 //#line "rts.c" 157
-extern uint8_t  *RTS_GetSoundName(int32 i);
+extern char  *RTS_GetSoundName(int32 i);
 //#line "rts.c" 174
 extern void RTS_ReadLump(int32 lump,void *dest);
 //#line "rts.c" 194
@@ -286,7 +286,7 @@ extern uint8_t  parsecommand(int readfromGRP );
 //#line "gamedef.c" 1227
 extern void passone(int readfromGRP);
 //#line "gamedef.c" 1239
-extern void loadefs(char  *fn,uint8_t  *mptr, int readfromGRP);
+extern void loadefs(char  *fn,char  *mptr, int readfromGRP);
 //#line "gamedef.c" 1342
 extern uint8_t  dodge(spritetype *s);
 //#line "gamedef.c" 1374
@@ -376,7 +376,7 @@ extern void showtwoscreens(void );
 //#line "game.c" 1705
 extern void gameexit(char  *t);
 //#line "game.c" 1752
-extern short strget(short x,short y,uint8_t  *t,short dalen,short c);
+extern short strget(short x,short y,char  *t,short dalen,short c);
 //#line "game.c" 1819
 extern void displayrest(int32_t smoothratio);
 //#line "game.c" 2047
@@ -402,7 +402,7 @@ extern void cheats(void );
 //#line "game.c" 5303
 extern void nonsharedkeys(void );
 //#line "game.c" 5863
-extern void comlinehelp(uint8_t  **argv);
+extern void comlinehelp(char  **argv);
 //#line "game.c" 5889
 extern void checkcommandline(int argc,char  **argv);
 //#line "game.c" 6078

@@ -570,7 +570,7 @@ char  * SCRIPT_Entry( int32 scripthandle, char  * sectionname, int32 which )
 {
 	scriptnode_t *node = NULL;
 	int32 entrynum = 0;
-	uint8_t * val = NULL;
+	char * val = NULL;
 
 	if(scripthandle >= MAX_SCRIPTS || scripthandle < 0)
 		return "";

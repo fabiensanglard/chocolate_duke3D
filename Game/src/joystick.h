@@ -5,6 +5,7 @@ extern "C" {
 #endif
 
     void   JOYSTICK_UpdateHats( void );
+    void _joystick_init(void);
     void _joystick_deinit(void);
     int _joystick_update(void);
     int _joystick_axis(int axis);
