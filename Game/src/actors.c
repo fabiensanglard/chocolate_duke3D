@@ -3141,7 +3141,7 @@ void moveactors(void)
     int32_t x, m, l, *t;
     short a, i, j, nexti, nextj, sect, p;
     spritetype *s;
-    unsigned short k;
+    uint16_t k;
 
     i = headspritestat[1];
     while(i >= 0)

@@ -21,7 +21,7 @@
 #define snprintf _snprintf
 #endif
 
-unsigned short _swap16(unsigned short D);
+uint16_t _swap16(uint16_t D);
 unsigned int _swap32(unsigned int D);
 #if defined(PLATFORM_MACOSX) && defined(__ppc__)
 #define PLATFORM_BIGENDIAN 1

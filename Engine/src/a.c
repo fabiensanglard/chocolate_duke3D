@@ -266,7 +266,7 @@ int32_t tvlineasm1(int32_t i1, int32_t i2, int32_t numPixels, int32_t i4, int32_
 	
 		if (temp != 255)
 		{
-			unsigned short val;
+			uint16_t val;
 			val = ((uint8_t  *)i2)[temp];
 			val |= ((*dest)<<8);
 			if (transrev) 
@@ -315,7 +315,7 @@ void tvlineasm2(uint32_t i1, uint32_t i2, uint32_t i3, uint32_t i4, uint32_t i5,
 		i4 = ((uint8_t  *)tran2bufb)[i2];
 		if (i3 == 255) { // skipdraw1
 			if (i4 != 255) { // skipdraw3
-				unsigned short val;
+				uint16_t val;
 				val = ((uint8_t  *)tran2pal_ecx)[i4];
 				val |= (((uint8_t  *)i6)[tran2edi1]<<8);
 
@@ -326,7 +326,7 @@ void tvlineasm2(uint32_t i1, uint32_t i2, uint32_t i3, uint32_t i4, uint32_t i5,
 					((uint8_t  *)i6)[tran2edi1] = ((uint8_t  *)tmach)[val];
 			}
 		} else if (i4 == 255) { // skipdraw2
-			unsigned short val;
+			uint16_t val;
 			val = ((uint8_t  *)tran2pal_ebx)[i3];
 			val |= (((uint8_t  *)i6)[tran2edi]<<8);
 
@@ -336,8 +336,8 @@ void tvlineasm2(uint32_t i1, uint32_t i2, uint32_t i3, uint32_t i4, uint32_t i5,
 			if (pixelsAllowed-- > 0)
 				((uint8_t  *)i6)[tran2edi] = ((uint8_t  *)tmach)[val];
 		} else {
-			unsigned short l = ((uint8_t  *)i6)[tran2edi]<<8;
-			unsigned short r = ((uint8_t  *)i6)[tran2edi1]<<8;
+			uint16_t l = ((uint8_t  *)i6)[tran2edi]<<8;
+			uint16_t r = ((uint8_t  *)i6)[tran2edi1]<<8;
 			l |= ((uint8_t  *)tran2pal_ebx)[i3];
 			r |= ((uint8_t  *)tran2pal_ecx)[i4];
 			if (transrev) {
@@ -599,7 +599,7 @@ void tspritevline(int32_t i1, int32_t i2, int32_t numPixels, uint32_t i4, int32_
 			// tstartsvline
 			if (i1 != 0xff)
 			{
-				unsigned short val;
+				uint16_t val;
 				val = ((uint8_t *)tspal)[i1];
 				val |= ((*((uint8_t  *)i6))<<8);
 
@@ -695,7 +695,7 @@ void thlineskipmodify(int32_t i1, uint32_t i2, uint32_t i3, int32_t i4, int32_t 
 	    i1 = ((uint8_t  *)tmach_eax)[ebx];
 	    if ((i1&0xff) != 0xff)
 	    {
-		    unsigned short val = (((uint8_t *)tmach_asm3)[i1]);
+		    uint16_t val = (((uint8_t *)tmach_asm3)[i1]);
 		    val |= (*((uint8_t  *)i6)<<8);
 
 		    if (transrev) 

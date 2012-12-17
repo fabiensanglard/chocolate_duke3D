@@ -27,7 +27,7 @@ void agecache(void);
 void reportandexit(char  *errormessage);
 int32_t initgroupfile(const char  *filename);
 void uninitgroupfile(void);
-unsigned short crc16(uint8_t  *data_p, unsigned short length);
+uint16_t crc16(uint8_t  *data_p, uint16_t length);
 unsigned int crc32_update(uint8_t  *buf, unsigned int length, unsigned int crc_to_update);
 int32_t kopen4load(const char  *filename, int readfromGRP);
 int32_t kread(int32_t handle, void *buffer, int32_t leng);

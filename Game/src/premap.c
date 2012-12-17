@@ -231,7 +231,7 @@ void cachegoodsprites(void)
             tloadtile(i);
 }
 
-uint8_t  getsound(unsigned short num)
+uint8_t  getsound(uint16_t num)
 {
     short fp;
     int32_t   l;

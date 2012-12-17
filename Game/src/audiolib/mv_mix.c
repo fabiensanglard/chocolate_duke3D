@@ -1,7 +1,7 @@
 #include "multivoc.h"
 
 extern char  *MV_MixDestination;
-extern unsigned long MV_MixPosition;
+extern uint32_t MV_MixPosition;
 extern int *MV_GLast, *MV_GPos, *MV_GVal;
 
 extern int MV_LeftVolume;
@@ -113,8 +113,8 @@ static int MV_cubic16to8(const short *src, int position, int rate)
 	return do_cubic ? (MV_cubic(position) >> 8) + 0x80 : (gval(3) >> 8) + 0x80;
 }
 
-void MV_Mix8BitMono( unsigned long position, unsigned long rate,
-   const char *start, unsigned long length )
+void MV_Mix8BitMono( uint32_t position, uint32_t rate,
+   const char *start, uint32_t length )
 {
 	const unsigned char *src;
 	unsigned char *dest;
@@ -141,8 +141,8 @@ void MV_Mix8BitMono( unsigned long position, unsigned long rate,
 	MV_MixDestination = (char *)dest;
 }
 
-void MV_Mix8BitStereo( unsigned long position,
-   unsigned long rate, const char *start, unsigned long length )
+void MV_Mix8BitStereo( uint32_t position,
+   uint32_t rate, const char *start, uint32_t length )
 {
 	const unsigned char *src;
 	unsigned char *dest;
@@ -175,8 +175,8 @@ void MV_Mix8BitStereo( unsigned long position,
 	MV_MixDestination = (char *)dest;
 }
 
-void MV_Mix16BitMono( unsigned long position,
-   unsigned long rate, const char *start, unsigned long length )
+void MV_Mix16BitMono( uint32_t position,
+   uint32_t rate, const char *start, uint32_t length )
 {
 	const unsigned char *src;
 	short *dest;
@@ -203,8 +203,8 @@ void MV_Mix16BitMono( unsigned long position,
 	MV_MixDestination = (char *)dest;
 }
 
-void MV_Mix16BitStereo( unsigned long position,
-   unsigned long rate, const char *start, unsigned long length )
+void MV_Mix16BitStereo( uint32_t position,
+   uint32_t rate, const char *start, uint32_t length )
 {
 	const unsigned char *src;
 	short *dest;
@@ -237,8 +237,8 @@ void MV_Mix16BitStereo( unsigned long position,
 	MV_MixDestination = (char *)dest;
 }
 
-void MV_Mix8BitMono16( unsigned long position, unsigned long rate,
-   const char *start, unsigned long length )
+void MV_Mix8BitMono16( uint32_t position, uint32_t rate,
+   const char *start, uint32_t length )
 {
 	const short *src;
 	unsigned char *dest;
@@ -265,8 +265,8 @@ void MV_Mix8BitMono16( unsigned long position, unsigned long rate,
 	MV_MixDestination = (char *)dest;
 }
 
-void MV_Mix8BitStereo16( unsigned long position,
-   unsigned long rate, const char *start, unsigned long length )
+void MV_Mix8BitStereo16( uint32_t position,
+   uint32_t rate, const char *start, uint32_t length )
 {
 	const short *src;
 	unsigned char *dest;
@@ -299,8 +299,8 @@ void MV_Mix8BitStereo16( unsigned long position,
 	MV_MixDestination = (char *)dest;
 }
 
-void MV_Mix16BitMono16( unsigned long position,
-   unsigned long rate, const char *start, unsigned long length )
+void MV_Mix16BitMono16( uint32_t position,
+   uint32_t rate, const char *start, uint32_t length )
 {
 	const short *src;
 	short *dest;
@@ -327,8 +327,8 @@ void MV_Mix16BitMono16( unsigned long position,
 	MV_MixDestination = (char *)dest;
 }
 
-void MV_Mix16BitStereo16( unsigned long position,
-   unsigned long rate, const char *start, unsigned long length )
+void MV_Mix16BitStereo16( uint32_t position,
+   uint32_t rate, const char *start, uint32_t length )
 {
 	const short *src;
 	short *dest;
@@ -361,8 +361,8 @@ void MV_Mix16BitStereo16( unsigned long position,
 	MV_MixDestination = (char *)dest;
 }
 
-void MV_MixFPMono8( unsigned long position,
-   unsigned long rate, const char *start, unsigned long length )
+void MV_MixFPMono8( uint32_t position,
+   uint32_t rate, const char *start, uint32_t length )
 {
 	const unsigned char *src;
 	double *dest;
@@ -387,8 +387,8 @@ void MV_MixFPMono8( unsigned long position,
 	MV_MixDestination = (char *)dest;
 }
 
-void MV_MixFPStereo8( unsigned long position,
-   unsigned long rate, const char *start, unsigned long length )
+void MV_MixFPStereo8( uint32_t position,
+   uint32_t rate, const char *start, uint32_t length )
 {
 	const unsigned char *src;
 	double *dest;
@@ -417,8 +417,8 @@ void MV_MixFPStereo8( unsigned long position,
 
 }
 
-void MV_MixFPMono16( unsigned long position,
-   unsigned long rate, const char *start, unsigned long length )
+void MV_MixFPMono16( uint32_t position,
+   uint32_t rate, const char *start, uint32_t length )
 {
 	const short *src;
 	double *dest;
@@ -443,8 +443,8 @@ void MV_MixFPMono16( unsigned long position,
 	MV_MixDestination = (char *)dest;
 }
 
-void MV_MixFPStereo16( unsigned long position,
-   unsigned long rate, const char *start, unsigned long length )
+void MV_MixFPStereo16( uint32_t position,
+   uint32_t rate, const char *start, uint32_t length )
 {
 	const short *src;
 	double *dest;

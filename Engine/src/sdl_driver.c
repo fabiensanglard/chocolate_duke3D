@@ -1816,7 +1816,7 @@ void drawpixel(int32_t offset, uint8_t  pixel)
 
 
 /* !!! These are incorrect. */
-void drawpixels(int32_t offset, unsigned short pixels)
+void drawpixels(int32_t offset, uint16_t pixels)
 {
     Uint8 *surface_end;
     Uint16 *pos;
@@ -1892,7 +1892,7 @@ void fillscreen16(int32_t offset, int32_t color, int32_t blocksize)
         offset = 0;
 
     if (wanted_end > surface_end)
-        blocksize = ((unsigned long) surface_end) - ((unsigned long) pixels + offset);
+        blocksize = ((uint32_t) surface_end) - ((uint32_t) pixels + offset);
 
     memset(pixels + offset, (int) color, blocksize);
 

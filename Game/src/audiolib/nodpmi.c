@@ -41,7 +41,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
    Returns the vector of a real mode interrupt.
 ---------------------------------------------------------------------*/
 
-unsigned long DPMI_GetRealModeVector
+uint32_t DPMI_GetRealModeVector
    (
    int num
    )
@@ -51,20 +51,7 @@ unsigned long DPMI_GetRealModeVector
    }
 
 
-/*---------------------------------------------------------------------
-   Function: DPMI_SetRealModeVector
 
-   Sets the vector of a real mode interrupt.
----------------------------------------------------------------------*/
-
-void DPMI_SetRealModeVector
-   (
-   int num,
-   unsigned long vector
-   )
-
-   {
-   }
 
 
 /*---------------------------------------------------------------------

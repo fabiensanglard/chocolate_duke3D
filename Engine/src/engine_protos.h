@@ -66,7 +66,7 @@ extern void _updateScreenRect(int32_t x, int32_t y, int32_t w, int32_t h);
 extern void _nextpage(void);
 extern uint8_t  readpixel(int32_t offset);
 extern void drawpixel(int32_t offset, uint8_t  pixel);
-extern void drawpixels(int32_t offset, unsigned short pixels);
+extern void drawpixels(int32_t offset, uint16_t pixels);
 extern void drawpixelses(int32_t offset, unsigned int pixelses);
 extern void setcolor16(int col);
 extern void drawpixel16(int32_t offset);

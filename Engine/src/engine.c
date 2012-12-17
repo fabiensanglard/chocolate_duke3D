@@ -84,7 +84,7 @@ int32_t tilefileoffs[MAXTILES];
 int32_t artsize = 0, cachesize = 0;
 
 static short radarang[1280], radarang2[MAXXDIM+1];
-static unsigned short sqrtable[4096], shlookup[4096+256];
+static uint16_t sqrtable[4096], shlookup[4096+256];
 uint8_t  pow2char[8] = {1,2,4,8,16,32,64,-128};
 int32_t pow2long[32] =
 {
@@ -268,15 +268,15 @@ static int32_t mirrorsx1, mirrorsy1, mirrorsx2, mirrorsy2;
 
 int32_t totalclocklock;
 
-unsigned short mapCRC;
+uint16_t mapCRC;
 
 #include "a.h"
 
 static __inline int32_t nsqrtasm(uint32_t  param)
 {
-    unsigned short *shlookup_a = (unsigned short*)shlookup;
-    unsigned short *sqrtable_a = (unsigned short*)sqrtable;
-    unsigned short cx;
+    uint16_t *shlookup_a = (uint16_t*)shlookup;
+    uint16_t *sqrtable_a = (uint16_t*)sqrtable;
+    uint16_t cx;
 
     if (param & 0xff000000)
         cx = shlookup_a[(param>>24)+4096];
@@ -319,7 +319,7 @@ int32_t krecip(int32_t num)
     return(krecipasm(num));
 }
 
-unsigned short _swap16(unsigned short D)
+uint16_t _swap16(uint16_t D)
 {
     return((D<<8)|(D>>8));
 }
@@ -3330,7 +3330,7 @@ static void initksqrt(void)
             j <<= 2;
             k++;
         }
-        sqrtable[i] = (unsigned short)(msqrtasm((i<<18)+131072)<<1);
+        sqrtable[i] = (uint16_t)(msqrtasm((i<<18)+131072)<<1);
         shlookup[i] = (k<<1)+((10-k)<<8);
         if (i < 256) shlookup[i+4096] = ((k+6)<<1)+((10-(k+6))<<8);
     }

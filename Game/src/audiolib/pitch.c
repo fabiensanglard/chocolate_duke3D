@@ -36,7 +36,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define MAXDETUNE 25
 
-static unsigned long PitchTable[ 12 ][ MAXDETUNE ] =
+static uint32_t PitchTable[ 12 ][ MAXDETUNE ] =
    {
       { 0x10000, 0x10097, 0x1012f, 0x101c7, 0x10260, 0x102f9, 0x10392, 0x1042c,
       0x104c6, 0x10561, 0x105fb, 0x10696, 0x10732, 0x107ce, 0x1086a, 0x10907,
@@ -139,13 +139,13 @@ void PITCH_Init
    Returns a fixed-point value to scale number the specified amount.
 ---------------------------------------------------------------------*/
 
-unsigned long PITCH_GetScale
+uint32_t PITCH_GetScale
    (
    int pitchoffset
    )
 
    {
-   unsigned long scale;
+   uint32_t scale;
    int octaveshift;
    int noteshift;
    int note;

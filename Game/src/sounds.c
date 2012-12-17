@@ -208,7 +208,8 @@ void MusicShutdown( void )
       }
    }
 
-int USRHOOKS_GetMem(uint8_t  **ptr, uint32_t size )
+
+int USRHOOKS_GetMem(void  **ptr, uint32_t size )
 {
    *ptr = malloc(size);
 
@@ -219,7 +220,7 @@ int USRHOOKS_GetMem(uint8_t  **ptr, uint32_t size )
 
 }
 
-int USRHOOKS_FreeMem(uint8_t  *ptr)
+int USRHOOKS_FreeMem(void  *ptr)
 {
    free(ptr);
    return( USRHOOKS_Ok);
@@ -262,7 +263,7 @@ void playmusic(char  *fn)
     PlayMusic(fn);
 }
 
-uint8_t  loadsound(unsigned short num)
+uint8_t  loadsound(uint16_t num)
 {
     int32_t   fp, l;
 
@@ -400,11 +401,11 @@ int xyzsound(short num,short i,int32_t x,int32_t y,int32_t z)
 
     if( soundm[num]&1 )
     {
-        unsigned short start;
+        uint16_t start;
 
         if(Sound[num].num > 0) return -1;
 
-        start = *(unsigned short *)(Sound[num].ptr + 0x14);
+        start = *(uint16_t *)(Sound[num].ptr + 0x14);
 
         if(*Sound[num].ptr == 'C')
             voice = FX_PlayLoopedVOC( Sound[num].ptr, start, start + soundsiz[num],
@@ -466,13 +467,13 @@ void sound(short num)
     {
         if(*Sound[num].ptr == 'C')
         {
-            start = (int32_t)*(unsigned short *)(Sound[num].ptr + 0x14);
+            start = (int32_t)*(uint16_t *)(Sound[num].ptr + 0x14);
             voice = FX_PlayLoopedVOC( Sound[num].ptr, start, start + soundsiz[num],
                     pitch,LOUDESTVOLUME,LOUDESTVOLUME,LOUDESTVOLUME,soundpr[num],num);
         }
         else
         {
-            start = (int32_t)*(unsigned short *)(Sound[num].ptr + 0x14);
+            start = (int32_t)*(uint16_t *)(Sound[num].ptr + 0x14);
             voice = FX_PlayLoopedWAV( Sound[num].ptr, start, start + soundsiz[num],
                     pitch,LOUDESTVOLUME,LOUDESTVOLUME,LOUDESTVOLUME,soundpr[num],num);
         }
@@ -489,7 +490,7 @@ void sound(short num)
     Sound[num].lock--;
 }
 
-int spritesound(unsigned short num, short i)
+int spritesound(uint16_t num, short i)
 {
     if(num >= NUM_SOUNDS) return -1;
     return xyzsound(num,i,SX,SY,SZ);

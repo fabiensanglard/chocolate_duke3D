@@ -89,7 +89,7 @@ int32 CommandSoundToggleOff = 0;
 int32 CommandMusicToggleOff = 0;
 
 // For addfaz's stun server. use /stun to activate
-unsigned short g_bStun = 0;
+uint16_t g_bStun = 0;
 
 char confilename[128] = {"GAME.CON"};
 char boardfilename[128] = {0};
@@ -754,7 +754,7 @@ void getpackets(void)
 #endif
 
 			case 132: // get map CRC of opponents (to debug out of synch) 
-				ud.mapCRC[other] = (unsigned short)packbuf[1] + (unsigned short)(packbuf[2]<<8);
+				ud.mapCRC[other] = (uint16_t)packbuf[1] + (uint16_t)(packbuf[2]<<8);
 				break;
 
 			case 133: // client refused to disable the autoaim by host

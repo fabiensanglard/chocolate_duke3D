@@ -58,8 +58,8 @@ enum MUSIC_ERRORS
 
 typedef struct
    {
-   unsigned long tickposition;
-   unsigned long milliseconds;
+   uint32_t tickposition;
+   uint32_t milliseconds;
    unsigned int  measure;
    unsigned int  beat;
    unsigned int  tick;

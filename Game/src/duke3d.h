@@ -331,6 +331,10 @@ typedef struct
     int voice;
 } SOUNDOWNER;
 
+#include "audiolib/usrhooks.h"
+/*
+
+
 #define __USRHOOKS_H
 
 enum USRHOOKS_Errors
@@ -339,6 +343,7 @@ enum USRHOOKS_Errors
    USRHOOKS_Error   = -1,
    USRHOOKS_Ok      = 0
    };
+*/
 
 #pragma pack(push)
 #pragma pack(1)
@@ -418,7 +423,7 @@ struct user_defs
 	uint8_t  playing_demo_rev;
 
 	uint32_t groupefil_crc32[MAXPLAYERS][MAXGROUPFILES];
-	unsigned short conSize[MAXPLAYERS];
+	uint16_t conSize[MAXPLAYERS];
 
 #ifdef CHECK_XDUKE_REV
 	uint8_t  rev[MAXPLAYERS][10];

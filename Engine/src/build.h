@@ -149,7 +149,7 @@ EXTERN sectortype sector[MAXSECTORS];
 EXTERN walltype wall[MAXWALLS];
 EXTERN spritetype sprite[MAXSPRITES];
 
-EXTERN unsigned short mapCRC;
+EXTERN uint16_t mapCRC;
 
 EXTERN int32_t spritesortcnt;
 EXTERN spritetype tsprite[MAXSPRITESONSCREEN];

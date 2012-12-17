@@ -1597,7 +1597,7 @@ void loadefs(char  *filenam, char  *mptr, int readfromGRP)
     else
     {
         total_lines += line_number;
-        printf("Code Size:%ld bytes(%d labels).\n",(int32_t)((scriptptr-script)<<2)-4,labelcnt);
+        printf("Code Size:%d bytes(%d labels).\n",(int32_t)((scriptptr-script)<<2)-4,labelcnt);
 		ud.conSize[0] = (int32_t)(scriptptr-script)-1;
 
 		// FIX_00062: Better support and identification for GRP and CON files for 1.3/1.3d/1.4/1.5

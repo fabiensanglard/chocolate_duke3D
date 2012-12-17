@@ -673,7 +673,7 @@ playbackstatus MV_GetNextVOCBlock
             // Repeat begin
             if ( voice->LoopEnd == NULL )
                {
-               voice->LoopCount = *( unsigned short * )ptr;
+               voice->LoopCount = *( uint16_t * )ptr;
                voice->LoopStart = ptr + blocklength;
                }
             ptr += blocklength;
@@ -706,7 +706,7 @@ playbackstatus MV_GetNextVOCBlock
          case 8 :
             // Extended block
             voice->bits  = 8;
-            tc = *( unsigned short * )ptr;
+            tc = *( uint16_t * )ptr;
             packtype = *( ptr + 2 );
             voicemode = *( ptr + 3 );
             ptr += blocklength;
@@ -718,7 +718,7 @@ playbackstatus MV_GetNextVOCBlock
             samplespeed = *( unsigned long * )ptr;
             BitsPerSample = ( unsigned )*( ptr + 4 );
             Channels = ( unsigned )*( ptr + 5 );
-            Format = ( unsigned )*( unsigned short * )( ptr + 6 );
+            Format = ( unsigned )*( uint16_t * )( ptr + 6 );
 
             if ( ( BitsPerSample == 8 ) && ( Channels == 1 ) &&
                ( Format == VOC_8BIT ) )
@@ -2567,7 +2567,7 @@ int MV_PlayLoopedVOC
    voice->wavetype    = VOC;
    voice->bits        = 8;
    voice->GetSound    = MV_GetNextVOCBlock;
-   voice->NextBlock   = ptr + *( unsigned short int * )( ptr + 0x14 );
+   voice->NextBlock   = ptr + *( uint16_t  * )( ptr + 0x14 );
    voice->DemandFeed  = NULL;
    voice->LoopStart   = NULL;
    voice->LoopCount   = 0;

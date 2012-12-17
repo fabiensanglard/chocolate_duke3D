@@ -31,6 +31,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef __DPMI_H
 #define __DPMI_H
 
+#ifdef _WIN32
+#include "../../../Engine/src/windows/inttypes.h"
+#else
+#include <inttypes.h>
+#endif
+
 enum DPMI_Errors
    {
    DPMI_Warning = -2,
@@ -40,27 +46,27 @@ enum DPMI_Errors
 
 typedef struct
    {
-   unsigned long  EDI;
-   unsigned long  ESI;
-   unsigned long  EBP;
-   unsigned long  Reserved;
-   unsigned long  EBX;
-   unsigned long  EDX;
-   unsigned long  ECX;
-   unsigned long  EAX;
-   unsigned short Flags;
-   unsigned short ES;
-   unsigned short DS;
-   unsigned short FS;
-   unsigned short GS;
-   unsigned short IP;
-   unsigned short CS;
-   unsigned short SP;
-   unsigned short SS;
+   uint32_t  EDI;
+   uint32_t  ESI;
+   uint32_t  EBP;
+   uint32_t  Reserved;
+   uint32_t  EBX;
+   uint32_t  EDX;
+   uint32_t  ECX;
+   uint32_t  EAX;
+   uint32_t Flags;
+   uint32_t ES;
+   uint32_t DS;
+   uint32_t FS;
+   uint32_t GS;
+   uint32_t IP;
+   uint16_t CS;
+   uint16_t SP;
+   uint16_t SS;
    } dpmi_regs;
 
-unsigned long DPMI_GetRealModeVector( int num );
-void DPMI_SetRealModeVector( int num, unsigned long vector );
+uint32_t DPMI_GetRealModeVector( int num );
+
 int  DPMI_CallRealModeFunction( dpmi_regs *callregs );
 int  DPMI_GetDOSMemory( void **ptr, int *descriptor, unsigned length );
 int  DPMI_FreeDOSMemory( int descriptor );
@@ -74,29 +80,5 @@ int  DPMI_UnlockMemoryRegion( void *start, void *end );
 
 #define DPMI_Unlock( variable ) \
    ( DPMI_UnlockMemory( &( variable ), sizeof( variable ) ) )
-
-#ifdef PLAT_DOS
-#pragma aux DPMI_GetDOSMemory = \
-   "mov    eax, 0100h",         \
-   "add    ebx, 15",            \
-   "shr    ebx, 4",             \
-   "int    31h",                \
-   "jc     DPMI_Exit",          \
-   "movzx  eax, ax",            \
-   "shl    eax, 4",             \
-   "mov    [ esi ], eax",       \
-   "mov    [ edi ], edx",       \
-   "sub    eax, eax",           \
-   "DPMI_Exit:",                \
-   parm [ esi ] [ edi ] [ ebx ] modify exact [ eax ebx edx ];
-
-#pragma aux DPMI_FreeDOSMemory = \
-   "mov    eax, 0101h",          \
-   "int    31h",                 \
-   "jc     DPMI_Exit",           \
-   "sub    eax, eax",            \
-   "DPMI_Exit:",                 \
-   parm [ edx ] modify exact [ eax ];
-#endif
 
 #endif

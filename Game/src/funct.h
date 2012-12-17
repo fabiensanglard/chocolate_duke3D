@@ -39,21 +39,21 @@ extern void MusicStartup(void );
 //#line "sounds.c" 166
 extern void MusicShutdown(void );
 //#line "sounds.c" 181
-extern int USRHOOKS_GetMem(uint8_t  **ptr,uint32_t size);
+extern int USRHOOKS_GetMem(void  **ptr,uint32_t size);
 //#line "sounds.c" 192
-extern int USRHOOKS_FreeMem(uint8_t  *ptr);
+extern int USRHOOKS_FreeMem(void  *ptr);
 //#line "sounds.c" 200
 extern void intomenusounds(void );
 //#line "sounds.c" 227
 extern void playmusic(char  *fn);
 //#line "sounds.c" 251
-extern uint8_t  loadsound(unsigned short num);
+extern uint8_t  loadsound(uint16_t num);
 //#line "sounds.c" 277
 extern int xyzsound(short num,short i,int32_t x,int32_t y,int32_t z);
 //#line "sounds.c" 407
 extern void sound(short num);
 //#line "sounds.c" 463
-extern int spritesound(unsigned short num,short i);
+extern int spritesound(uint16_t num,short i);
 //#line "sounds.c" 469
 extern void stopsound(short num);
 //#line "sounds.c" 478
@@ -172,7 +172,7 @@ extern void waitforeverybody(void);
 //#line "premap.c" 1131
 extern uint8_t  checksum(int32_t sum);
 //#line "premap.c" 1163
-extern uint8_t  getsound(unsigned short num);
+extern uint8_t  getsound(uint16_t num);
 //#line "premap.c" 1189
 extern void precachenecessarysounds(void );
 //#line "premap.c" 1201

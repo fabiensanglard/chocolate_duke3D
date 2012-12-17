@@ -415,7 +415,7 @@ unsigned int crc32_update(uint8_t  *buf, unsigned int length, unsigned int crc_t
 
 #define POLY 0x8408   /* 1021H bit reversed */
 
-unsigned short crc16(uint8_t  *data_p, unsigned short length)
+uint16_t crc16(uint8_t  *data_p, uint16_t length)
 {
       uint8_t  i;
       unsigned int data;
