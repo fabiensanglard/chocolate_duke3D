@@ -847,7 +847,7 @@ void CONFIG_WriteSetup( void )
    SCRIPT_PutNumber( scripthandle, "Controls", "MouseAimingFlipped",ud.mouseflip,false,false);
    SCRIPT_PutNumber( scripthandle, "Controls","MouseAiming",MouseAiming,false,false);
    SCRIPT_PutNumber( scripthandle, "Controls","GameMouseAiming",(int32) ps[myconnectindex].aim_mode,false,false);
-   SCRIPT_PutNumber( scripthandle, "Controls","AimingFlag",(long) myaimmode,false,false);
+   SCRIPT_PutNumber( scripthandle, "Controls","AimingFlag",(int32_t) myaimmode,false,false);
    
 	// FIX_00016: Build in Keyboard/mouse setup. Mouse now faster.
 	for(i=0; i<MAXMOUSEBUTTONS; i++)

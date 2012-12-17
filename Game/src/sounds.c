@@ -466,13 +466,13 @@ void sound(short num)
     {
         if(*Sound[num].ptr == 'C')
         {
-            start = (long)*(unsigned short *)(Sound[num].ptr + 0x14);
+            start = (int32_t)*(unsigned short *)(Sound[num].ptr + 0x14);
             voice = FX_PlayLoopedVOC( Sound[num].ptr, start, start + soundsiz[num],
                     pitch,LOUDESTVOLUME,LOUDESTVOLUME,LOUDESTVOLUME,soundpr[num],num);
         }
         else
         {
-            start = (long)*(unsigned short *)(Sound[num].ptr + 0x14);
+            start = (int32_t)*(unsigned short *)(Sound[num].ptr + 0x14);
             voice = FX_PlayLoopedWAV( Sound[num].ptr, start, start + soundsiz[num],
                     pitch,LOUDESTVOLUME,LOUDESTVOLUME,LOUDESTVOLUME,soundpr[num],num);
         }

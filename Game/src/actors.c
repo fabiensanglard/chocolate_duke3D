@@ -693,7 +693,7 @@ int movesprite(short spritenum, int32_t xchange, int32_t ychange, int32_t zchang
                 clipmove(&sprite[spritenum].x,&sprite[spritenum].y,&daz,&dasectnum,((xchange*TICSPERFRAME)<<11),((ychange*TICSPERFRAME)<<11),8L,(4<<8),(4<<8),cliptype);
         else
             retval =
-                clipmove(&sprite[spritenum].x,&sprite[spritenum].y,&daz,&dasectnum,((xchange*TICSPERFRAME)<<11),((ychange*TICSPERFRAME)<<11),(long)(sprite[spritenum].clipdist<<2),(4<<8),(4<<8),cliptype);
+                clipmove(&sprite[spritenum].x,&sprite[spritenum].y,&daz,&dasectnum,((xchange*TICSPERFRAME)<<11),((ychange*TICSPERFRAME)<<11),(int32_t)(sprite[spritenum].clipdist<<2),(4<<8),(4<<8),cliptype);
     }
 
     if( dasectnum >= 0)
@@ -6486,9 +6486,9 @@ void moveeffectors(void)   //STATNUM 3
                 if( t[0] == 0 ) break;
 
                 if( s->ang == 1536 )
-                    l = (long) &sc->ceilingz;
+                    l = (int32_t) &sc->ceilingz;
                 else
-                    l = (long) &sc->floorz;
+                    l = (int32_t) &sc->floorz;
 
                 if( t[0] == 1 ) //Decide if the s->sectnum should go up or down
                 {
@@ -6858,7 +6858,7 @@ void moveeffectors(void)   //STATNUM 3
                 break;
             case 29:
                 s->hitag += 64;
-                l = mulscale12((long)s->yvel,sintable[s->hitag&2047]);
+                l = mulscale12((int32_t)s->yvel,sintable[s->hitag&2047]);
                 sc->floorz = s->z + l;
                 break;
             case 31: // True Drop Floor

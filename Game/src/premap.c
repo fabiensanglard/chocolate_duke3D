@@ -1300,7 +1300,7 @@ void genspriteremaps(void)
     {
         kread(fp,(int8_t *)&look_pos,1);
         kread(fp,tempbuf,256);
-        makepalookup((long)look_pos,(uint8_t*)tempbuf,0,0,0,1);
+        makepalookup((int32_t)look_pos,(uint8_t*)tempbuf,0,0,0,1);
     }
 
     kread(fp,&waterpal[0],768);

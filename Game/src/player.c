@@ -1822,7 +1822,7 @@ void getinput(short snum)
          loc.svel = svel = 0;
          loc.avel = angvel = 0;
          loc.horz = horiz = 0;
-         loc.bits = (((long)gamequit)<<26);
+         loc.bits = (((int32_t)gamequit)<<26);
          info.dz = info.dyaw = 0;
          return;
     }
@@ -1937,7 +1937,7 @@ void getinput(short snum)
     loc.bits |=   myaimmode<<23;
     loc.bits |=   ACTION(gamefunc_Holo_Duke)<<24;
     loc.bits |=   ACTION(gamefunc_Jetpack)<<25;
-    loc.bits |=   (((long)gamequit)<<26);
+    loc.bits |=   (((int32_t)gamequit)<<26);
     loc.bits |=   ACTION(gamefunc_Inventory_Right)<<27;
     loc.bits |=   ACTION(gamefunc_TurnAround)<<28;
     loc.bits |=   ACTION(gamefunc_Open)<<29;
@@ -4201,7 +4201,7 @@ void computergetinput(int32_t snum, input *syn)
                     hitscan(sprite[j].x,sprite[j].y,sprite[j].z,sprite[j].sectnum,
                      mulscale14(sprite[j].xvel,sintable[(sprite[j].ang+512)&2047]),
                      mulscale14(sprite[j].xvel,sintable[sprite[j].ang&2047]),
-                     (long)sprite[j].zvel,
+                     (int32_t)sprite[j].zvel,
                      &dasect,&dawall,&daspr,&x3,&y3,&z3,CLIPMASK1);
                 }
             }

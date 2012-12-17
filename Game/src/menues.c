@@ -337,8 +337,8 @@ int loadplayer(int8_t spot)
      kdfread(po,sizeof(po),1,fil);
          kdfread(&numanimwalls,sizeof(numanimwalls),1,fil);
          kdfread(&animwall,sizeof(animwall),1,fil);
-         kdfread(&msx[0],sizeof(long),sizeof(msx)/sizeof(long),fil);
-         kdfread(&msy[0],sizeof(long),sizeof(msy)/sizeof(long),fil);
+         kdfread(&msx[0],sizeof(int32_t),sizeof(msx)/sizeof(int32_t),fil);
+         kdfread(&msy[0],sizeof(int32_t),sizeof(msy)/sizeof(int32_t),fil);
      kdfread((short *)&spriteqloc,sizeof(short),1,fil);
      kdfread((short *)&spriteqamount,sizeof(short),1,fil);
      kdfread((short *)&spriteq[0],sizeof(short),spriteqamount,fil);
@@ -359,7 +359,7 @@ int loadplayer(int8_t spot)
      for(i=0;i<MAXSCRIPTSIZE;i++)
         if( scriptptrs[i] )
      {
-         j = (long)script[i]+(long)&script[0];
+         j = (int32_t)script[i]+(int32_t)&script[0];
          script[i] = j;
      }
 
@@ -367,7 +367,7 @@ int loadplayer(int8_t spot)
      for(i=0;i<MAXTILES;i++)
          if(actorscrptr[i])
      {
-        j = (long)actorscrptr[i]+(long)&script[0];
+        j = (int32_t)actorscrptr[i]+(int32_t)&script[0];
         actorscrptr[i] = (int32_t *)j;
      }
 
@@ -376,7 +376,7 @@ int loadplayer(int8_t spot)
 
      for(i=0;i<MAXSPRITES;i++)
      {
-        j = (long)(&script[0]);
+        j = (int32_t)(&script[0]);
         if( scriptptrs[i]&1 ) T2 += j;
         if( scriptptrs[i]&2 ) T5 += j;
         if( scriptptrs[i]&4 ) T6 += j;
@@ -389,7 +389,7 @@ int loadplayer(int8_t spot)
          kdfread(&animatecnt,sizeof(animatecnt),1,fil);
          kdfread(&animatesect[0],2,MAXANIMATES,fil);
          kdfread(&animateptr[0],4,MAXANIMATES,fil);
-     for(i = animatecnt-1;i>=0;i--) animateptr[i] = (int32_t *)((long)animateptr[i]+(long)(&sector[0]));
+     for(i = animatecnt-1;i>=0;i--) animateptr[i] = (int32_t *)((int32_t)animateptr[i]+(int32_t)(&sector[0]));
          kdfread(&animategoal[0],4,MAXANIMATES,fil);
          kdfread(&animatevel[0],4,MAXANIMATES,fil);
 
@@ -622,8 +622,8 @@ int saveplayer(int8_t spot)
      dfwrite(po,sizeof(po),1,fil);
          dfwrite(&numanimwalls,sizeof(numanimwalls),1,fil);
          dfwrite(&animwall,sizeof(animwall),1,fil);
-         dfwrite(&msx[0],sizeof(long),sizeof(msx)/sizeof(long),fil);
-         dfwrite(&msy[0],sizeof(long),sizeof(msy)/sizeof(long),fil);
+         dfwrite(&msx[0],sizeof(int32_t),sizeof(msx)/sizeof(int32_t),fil);
+         dfwrite(&msy[0],sizeof(int32_t),sizeof(msy)/sizeof(int32_t),fil);
      dfwrite(&spriteqloc,sizeof(short),1,fil);
      dfwrite(&spriteqamount,sizeof(short),1,fil);
      dfwrite(&spriteq[0],sizeof(short),spriteqamount,fil);
@@ -641,10 +641,10 @@ int saveplayer(int8_t spot)
 
      for(i=0;i<MAXSCRIPTSIZE;i++)
      {
-          if( (long)script[i] >= (long)(&script[0]) && (long)script[i] < (long)(&script[MAXSCRIPTSIZE]) )
+          if( (int32_t)script[i] >= (int32_t)(&script[0]) && (int32_t)script[i] < (int32_t)(&script[MAXSCRIPTSIZE]) )
           {
                 scriptptrs[i] = 1;
-                j = (long)script[i] - (long)&script[0];
+                j = (int32_t)script[i] - (int32_t)&script[0];
                 script[i] = j;
           }
           else scriptptrs[i] = 0;
@@ -656,21 +656,21 @@ int saveplayer(int8_t spot)
      for(i=0;i<MAXSCRIPTSIZE;i++)
         if( scriptptrs[i] )
      {
-        j = script[i]+(long)&script[0];
+        j = script[i]+(int32_t)&script[0];
         script[i] = j;
      }
 
      for(i=0;i<MAXTILES;i++)
          if(actorscrptr[i])
      {
-        j = (long)actorscrptr[i]-(long)&script[0];
+        j = (int32_t)actorscrptr[i]-(int32_t)&script[0];
         actorscrptr[i] = (int32_t *)j;
      }
      dfwrite(&actorscrptr[0],4,MAXTILES,fil);
      for(i=0;i<MAXTILES;i++)
          if(actorscrptr[i])
      {
-         j = (long)actorscrptr[i]+(long)&script[0];
+         j = (int32_t)actorscrptr[i]+(int32_t)&script[0];
          actorscrptr[i] = (int32_t *)j;
      }
 
@@ -680,19 +680,19 @@ int saveplayer(int8_t spot)
 
         if(actorscrptr[PN] == 0) continue;
 
-        j = (long)&script[0];
+        j = (int32_t)&script[0];
 
-        if(T2 >= j && T2 < (long)(&script[MAXSCRIPTSIZE]) )
+        if(T2 >= j && T2 < (int32_t)(&script[MAXSCRIPTSIZE]) )
         {
             scriptptrs[i] |= 1;
             T2 -= j;
         }
-        if(T5 >= j && T5 < (long)(&script[MAXSCRIPTSIZE]) )
+        if(T5 >= j && T5 < (int32_t)(&script[MAXSCRIPTSIZE]) )
         {
             scriptptrs[i] |= 2;
             T5 -= j;
         }
-        if(T6 >= j && T6 < (long)(&script[MAXSCRIPTSIZE]) )
+        if(T6 >= j && T6 < (int32_t)(&script[MAXSCRIPTSIZE]) )
         {
             scriptptrs[i] |= 4;
             T6 -= j;
@@ -705,7 +705,7 @@ int saveplayer(int8_t spot)
     for(i=0;i<MAXSPRITES;i++)
     {
         if(actorscrptr[PN] == 0) continue;
-        j = (long)&script[0];
+        j = (int32_t)&script[0];
 
         if(scriptptrs[i]&1)
             T2 += j;
@@ -720,9 +720,9 @@ int saveplayer(int8_t spot)
      dfwrite(&pskyoff[0],sizeof(pskyoff[0]),MAXPSKYTILES,fil);
          dfwrite(&animatecnt,sizeof(animatecnt),1,fil);
          dfwrite(&animatesect[0],2,MAXANIMATES,fil);
-         for(i = animatecnt-1;i>=0;i--) animateptr[i] = (int32_t *)((long)animateptr[i]-(long)(&sector[0]));
+         for(i = animatecnt-1;i>=0;i--) animateptr[i] = (int32_t *)((int32_t)animateptr[i]-(int32_t)(&sector[0]));
          dfwrite(&animateptr[0],4,MAXANIMATES,fil);
-         for(i = animatecnt-1;i>=0;i--) animateptr[i] = (int32_t *)((long)animateptr[i]+(long)(&sector[0]));
+         for(i = animatecnt-1;i>=0;i--) animateptr[i] = (int32_t *)((int32_t)animateptr[i]+(int32_t)(&sector[0]));
          dfwrite(&animategoal[0],4,MAXANIMATES,fil);
          dfwrite(&animatevel[0],4,MAXANIMATES,fil);
 
@@ -4180,9 +4180,9 @@ void palto(uint8_t  r,uint8_t  g,uint8_t  b,int32_t e)
 
     for(i=0;i<(256*3);i+=3)
     {
-        temparray[i  ] =ps[myconnectindex].palette[i+0]+((((long)r-(long)ps[myconnectindex].palette[i+0])*(long)(e&127))>>6);
-        temparray[i+1] =ps[myconnectindex].palette[i+1]+((((long)g-(long)ps[myconnectindex].palette[i+1])*(long)(e&127))>>6);
-        temparray[i+2] =ps[myconnectindex].palette[i+2]+((((long)b-(long)ps[myconnectindex].palette[i+2])*(long)(e&127))>>6);
+        temparray[i  ] =ps[myconnectindex].palette[i+0]+((((int32_t)r-(int32_t)ps[myconnectindex].palette[i+0])*(int32_t)(e&127))>>6);
+        temparray[i+1] =ps[myconnectindex].palette[i+1]+((((int32_t)g-(int32_t)ps[myconnectindex].palette[i+1])*(int32_t)(e&127))>>6);
+        temparray[i+2] =ps[myconnectindex].palette[i+2]+((((int32_t)b-(int32_t)ps[myconnectindex].palette[i+2])*(int32_t)(e&127))>>6);
     }
 
     setbrightness(ud.brightness>>2,temparray);
@@ -4292,7 +4292,7 @@ void drawoverheadmap(int32_t cposx, int32_t cposy, int32_t czoom, short cang)
                         {
                             x1 = sprx; y1 = spry;
                             tilenum = spr->picnum;
-                            xoff = (long)((int8_t  )((picanm[tilenum]>>8)&255))+((long)spr->xoffset);
+                            xoff = (int32_t)((int8_t  )((picanm[tilenum]>>8)&255))+((int32_t)spr->xoffset);
                             if ((spr->cstat&4) > 0) xoff = -xoff;
                             k = spr->ang; l = spr->xrepeat;
                             dax = sintable[k&2047]*l; day = sintable[(k+1536)&2047]*l;
@@ -4317,8 +4317,8 @@ void drawoverheadmap(int32_t cposx, int32_t cposy, int32_t czoom, short cang)
                     case 32:
 
                                                 tilenum = spr->picnum;
-                                                xoff = (long)((int8_t  )((picanm[tilenum]>>8)&255))+((long)spr->xoffset);
-                                                yoff = (long)((int8_t  )((picanm[tilenum]>>16)&255))+((long)spr->yoffset);
+                                                xoff = (int32_t)((int8_t  )((picanm[tilenum]>>8)&255))+((int32_t)spr->xoffset);
+                                                yoff = (int32_t)((int8_t  )((picanm[tilenum]>>16)&255))+((int32_t)spr->yoffset);
                                                 if ((spr->cstat&4) > 0) xoff = -xoff;
                                                 if ((spr->cstat&8) > 0) yoff = -yoff;
 

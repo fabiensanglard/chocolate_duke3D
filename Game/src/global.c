@@ -730,7 +730,7 @@ int32_t	Swapint32_t (int32_t l)
 	b3 = (l>>16)&255;
 	b4 = (l>>24)&255;
 
-	return ((long)b1<<24) + ((long)b2<<16) + ((long)b3<<8) + b4;
+	return ((int32_t)b1<<24) + ((int32_t)b2<<16) + ((int32_t)b3<<8) + b4;
 }
 
 int32_t	Keepint32_t (int32_t l)

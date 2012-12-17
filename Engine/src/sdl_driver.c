@@ -499,12 +499,12 @@ static void init_new_res_vars(int32_t davidoption)
 	activepage = visualpage = 0;
 
     if (renderer == RENDERER_OPENGL3D)
-        frameplace = (long) NULL;
+        frameplace = (int32_t) NULL;
     else
 		// FIX_00083: Sporadic crash on fullscreen/window mode toggle
 		// frameoffset wasn't always updated fast enought. Build were using the old 
 		// pointer of frameoffset.  
-        frameoffset = frameplace = (long) ( ((Uint8 *) surface->pixels) );
+        frameoffset = frameplace = (int32_t) ( ((Uint8 *) surface->pixels) );
 
   	if (screen != NULL)
    	{
@@ -523,7 +523,7 @@ static void init_new_res_vars(int32_t davidoption)
     		case 6: xdim = 320; ydim = 200; i = 131072; break;
     		default: assert(0);
     	}
-    	j = ydim*4*sizeof(long);  /* Leave room for horizlookup&horizlookup2 */
+    	j = ydim*4*sizeof(int32_t);  /* Leave room for horizlookup&horizlookup2 */
 
   //  	screenalloctype = 0;
 //	    if ((screen = (uint8_t  *)kkmalloc(i+(j<<1))) == NULL)
@@ -535,7 +535,7 @@ static void init_new_res_vars(int32_t davidoption)
         /* !!! FIXME: Should screen get allocated above if in opengl3d mode? */
 
 //        if (renderer == RENDERER_OPENGL3D)
-//            frameplace = (long) NULL;
+//            frameplace = (int32_t) NULL;
 //        else
 //        {
 //            frameplace = FP_OFF(screen);
@@ -1600,8 +1600,7 @@ static __inline void output_vesa_modelist(void)
 
     for (i = 0; i < validmodecnt; i++)
     {
-        sprintf(numbuf, " (%ldx%ld)",
-                  (long) validmodexdim[i], (long) validmodeydim[i]);
+        sprintf(numbuf, " (%dx%d)",(int32_t) validmodexdim[i], (int32_t) validmodeydim[i]);
 
         if ( (strlen(buffer) + strlen(numbuf)) >= (sizeof (buffer) - 1) )
             strcpy(buffer + (sizeof (buffer) - 5), " ...");
@@ -1865,7 +1864,7 @@ void setcolor16(int col)
 
 void drawpixel16(int32_t offset)
 {
-    drawpixel(((long) surface->pixels + offset), drawpixel_color);
+    drawpixel(((int32_t) surface->pixels + offset), drawpixel_color);
 } /* drawpixel16 */
 
 
@@ -2192,7 +2191,7 @@ int inittimer(int tickspersecond)
 	timerfreq = t;
 	timerticspersec = tickspersecond;
 	TIMER_GetPlatformTicks(&t);
-	timerlastsample = (long)(t*timerticspersec / timerfreq);
+	timerlastsample = (int32_t)(t*timerticspersec / timerfreq);
 
 	usertimercallback = NULL;
     
@@ -2223,7 +2222,7 @@ void sampletimer(void)
 	TIMER_GetPlatformTicks(&i);
     
     
-	n = (long)(i*timerticspersec / timerfreq) - timerlastsample;
+	n = (int32_t)(i*timerticspersec / timerfreq) - timerlastsample;
 	if (n>0) {
 		totalclock += n;
 		timerlastsample += n;

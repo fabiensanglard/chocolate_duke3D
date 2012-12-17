@@ -483,7 +483,7 @@ uint8_t  parsecommand(int readfromGRP)
             {
                 getlabel();
                 scriptptr--;
-                labelcode[labelcnt] = (long) scriptptr;
+                labelcode[labelcnt] = (int32_t) scriptptr;
                 labelcnt++;
 
                 parsing_state = 1;
@@ -628,7 +628,7 @@ uint8_t  parsecommand(int readfromGRP)
                         break;
                     }
                 if(i == labelcnt)
-                    labelcode[labelcnt++] = (long) scriptptr;
+                    labelcode[labelcnt++] = (int32_t) scriptptr;
                 for(j=0;j<2;j++)
                 {
                     if(keyword() >= 0) break;
@@ -786,7 +786,7 @@ uint8_t  parsecommand(int readfromGRP)
                     }
 
                 if(i == labelcnt)
-                    labelcode[labelcnt++] = (long) scriptptr;
+                    labelcode[labelcnt++] = (int32_t) scriptptr;
 
                 for(j=0;j<3;j++)
                 {
@@ -840,7 +840,7 @@ uint8_t  parsecommand(int readfromGRP)
                     }
 
                 if(i == labelcnt)
-                    labelcode[labelcnt++] = (long) scriptptr;
+                    labelcode[labelcnt++] = (int32_t) scriptptr;
 
                 for(j=0;j<5;j++)
                 {
@@ -1017,7 +1017,7 @@ uint8_t  parsecommand(int readfromGRP)
                 tempscrptr = scriptptr;
                 scriptptr++; //Leave a spot for the fail location
                 parsecommand(readfromGRP);
-                *tempscrptr = (long) scriptptr;
+                *tempscrptr = (int32_t) scriptptr;
             }
             else
             {
@@ -1098,7 +1098,7 @@ uint8_t  parsecommand(int readfromGRP)
 
             parsecommand(readfromGRP);
 
-            *tempscrptr = (long) scriptptr;
+            *tempscrptr = (int32_t) scriptptr;
 
             checking_ifelse++;
             return 0;
@@ -1585,7 +1585,7 @@ void loadefs(char  *filenam, char  *mptr, int readfromGRP)
     total_lines = 0;
 
     passone(readfromGRP); //Tokenize
-    *script = (long) scriptptr;
+    *script = (int32_t) scriptptr;
 
     if(warning|error)
         printf("Found %hhd warning(s), %c error(s).\n",warning,error);
@@ -1597,8 +1597,8 @@ void loadefs(char  *filenam, char  *mptr, int readfromGRP)
     else
     {
         total_lines += line_number;
-        printf("Code Size:%ld bytes(%d labels).\n",(long)((scriptptr-script)<<2)-4,labelcnt);
-		ud.conSize[0] = (long)(scriptptr-script)-1;
+        printf("Code Size:%ld bytes(%d labels).\n",(int32_t)((scriptptr-script)<<2)-4,labelcnt);
+		ud.conSize[0] = (int32_t)(scriptptr-script)-1;
 
 		// FIX_00062: Better support and identification for GRP and CON files for 1.3/1.3d/1.4/1.5
 		if( ud.conSize[0] == 16208 && labelcnt == 1794 && conVersion == 15)
@@ -2870,7 +2870,7 @@ uint8_t  parse(void)
                         j = 0;
                 }
 
-                parseifelse((long) j);
+                parseifelse((int32_t) j);
 
             }
             break;

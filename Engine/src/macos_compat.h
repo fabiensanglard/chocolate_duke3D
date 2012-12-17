@@ -20,7 +20,7 @@
 #undef FP_OFF
 #endif
 
-#define FP_OFF(x) ((long) (x))
+#define FP_OFF(x) ((int32_t) (x))
 
 #ifndef max
 #define max(x, y)  (((x) > (y)) ? (x) : (y))

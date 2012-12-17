@@ -513,7 +513,7 @@ void getpackets(void)
                     {
                         if (playerquitflag[i] == 0) continue;
                         if (i == myconnectindex)
-                            otherminlag = (long)((int8_t  )packbuf[j]);
+                            otherminlag = (int32_t)((int8_t  )packbuf[j]);
                         j++;
                     }
 
@@ -535,10 +535,10 @@ void getpackets(void)
                     if (l&1)   nsyn[i].fvel = packbuf[j]+((short)packbuf[j+1]<<8), j += 2;
                     if (l&2)   nsyn[i].svel = packbuf[j]+((short)packbuf[j+1]<<8), j += 2;
                     if (l&4)   nsyn[i].avel = (int8_t  )packbuf[j++];
-                    if (l&8)   nsyn[i].bits = ((nsyn[i].bits&0xffffff00)|((long)packbuf[j++]));
-                    if (l&16)  nsyn[i].bits = ((nsyn[i].bits&0xffff00ff)|((long)packbuf[j++])<<8);
-                    if (l&32)  nsyn[i].bits = ((nsyn[i].bits&0xff00ffff)|((long)packbuf[j++])<<16);
-                    if (l&64)  nsyn[i].bits = ((nsyn[i].bits&0x00ffffff)|((long)packbuf[j++])<<24);
+                    if (l&8)   nsyn[i].bits = ((nsyn[i].bits&0xffffff00)|((int32_t)packbuf[j++]));
+                    if (l&16)  nsyn[i].bits = ((nsyn[i].bits&0xffff00ff)|((int32_t)packbuf[j++])<<8);
+                    if (l&32)  nsyn[i].bits = ((nsyn[i].bits&0xff00ffff)|((int32_t)packbuf[j++])<<16);
+                    if (l&64)  nsyn[i].bits = ((nsyn[i].bits&0x00ffffff)|((int32_t)packbuf[j++])<<24);
                     if (l&128) nsyn[i].horz = (int8_t  )packbuf[j++];
 
                     if (nsyn[i].bits&(1<<26)) playerquitflag[i] = 0;
@@ -577,10 +577,10 @@ void getpackets(void)
                 if (k&1)   nsyn[other].fvel = packbuf[j]+((short)packbuf[j+1]<<8), j += 2;
                 if (k&2)   nsyn[other].svel = packbuf[j]+((short)packbuf[j+1]<<8), j += 2;
                 if (k&4)   nsyn[other].avel = (int8_t  )packbuf[j++];
-                if (k&8)   nsyn[other].bits = ((nsyn[other].bits&0xffffff00)|((long)packbuf[j++]));
-                if (k&16)  nsyn[other].bits = ((nsyn[other].bits&0xffff00ff)|((long)packbuf[j++])<<8);
-                if (k&32)  nsyn[other].bits = ((nsyn[other].bits&0xff00ffff)|((long)packbuf[j++])<<16);
-                if (k&64)  nsyn[other].bits = ((nsyn[other].bits&0x00ffffff)|((long)packbuf[j++])<<24);
+                if (k&8)   nsyn[other].bits = ((nsyn[other].bits&0xffffff00)|((int32_t)packbuf[j++]));
+                if (k&16)  nsyn[other].bits = ((nsyn[other].bits&0xffff00ff)|((int32_t)packbuf[j++])<<8);
+                if (k&32)  nsyn[other].bits = ((nsyn[other].bits&0xff00ffff)|((int32_t)packbuf[j++])<<16);
+                if (k&64)  nsyn[other].bits = ((nsyn[other].bits&0x00ffffff)|((int32_t)packbuf[j++])<<24);
                 if (k&128) nsyn[other].horz = (int8_t  )packbuf[j++];
                 movefifoend[other]++;
 
@@ -705,7 +705,7 @@ void getpackets(void)
                         {
                             if (i == myconnectindex)
 							{
-								otherminlag = (long)((int8_t  )packbuf[j]);
+								otherminlag = (int32_t)((int8_t  )packbuf[j]);
 							}
 							
                             j++;
@@ -719,10 +719,10 @@ void getpackets(void)
                 if (k&1)   nsyn[other].fvel = packbuf[j]+((short)packbuf[j+1]<<8), j += 2;
                 if (k&2)   nsyn[other].svel = packbuf[j]+((short)packbuf[j+1]<<8), j += 2;
                 if (k&4)   nsyn[other].avel = (int8_t  )packbuf[j++];
-                if (k&8)   nsyn[other].bits = ((nsyn[other].bits&0xffffff00)|((long)packbuf[j++]));
-                if (k&16)  nsyn[other].bits = ((nsyn[other].bits&0xffff00ff)|((long)packbuf[j++])<<8);
-                if (k&32)  nsyn[other].bits = ((nsyn[other].bits&0xff00ffff)|((long)packbuf[j++])<<16);
-                if (k&64)  nsyn[other].bits = ((nsyn[other].bits&0x00ffffff)|((long)packbuf[j++])<<24);
+                if (k&8)   nsyn[other].bits = ((nsyn[other].bits&0xffffff00)|((int32_t)packbuf[j++]));
+                if (k&16)  nsyn[other].bits = ((nsyn[other].bits&0xffff00ff)|((int32_t)packbuf[j++])<<8);
+                if (k&32)  nsyn[other].bits = ((nsyn[other].bits&0xff00ffff)|((int32_t)packbuf[j++])<<16);
+                if (k&64)  nsyn[other].bits = ((nsyn[other].bits&0x00ffffff)|((int32_t)packbuf[j++])<<24);
                 if (k&128) nsyn[other].horz = (int8_t  )packbuf[j++];
                 movefifoend[other]++;
 
@@ -2753,15 +2753,15 @@ void displayrest(int32_t smoothratio)
                      {
                          if (screenpeek == myconnectindex && numplayers > 1)
                          {
-                             cposx = omyx+mulscale16((long)(myx-omyx),smoothratio);
-                             cposy = omyy+mulscale16((long)(myy-omyy),smoothratio);
-                             cang = omyang+mulscale16((long)(((myang+1024-omyang)&2047)-1024),smoothratio);
+                             cposx = omyx+mulscale16((int32_t)(myx-omyx),smoothratio);
+                             cposy = omyy+mulscale16((int32_t)(myy-omyy),smoothratio);
+                             cang = omyang+mulscale16((int32_t)(((myang+1024-omyang)&2047)-1024),smoothratio);
                          }
                          else
                          {
-                              cposx = pp->oposx+mulscale16((long)(pp->posx-pp->oposx),smoothratio);
-                              cposy = pp->oposy+mulscale16((long)(pp->posy-pp->oposy),smoothratio);
-                              cang = pp->oang+mulscale16((long)(((pp->ang+1024-pp->oang)&2047)-1024),smoothratio);
+                              cposx = pp->oposx+mulscale16((int32_t)(pp->posx-pp->oposx),smoothratio);
+                              cposy = pp->oposy+mulscale16((int32_t)(pp->posy-pp->oposy),smoothratio);
+                              cang = pp->oang+mulscale16((int32_t)(((pp->ang+1024-pp->oang)&2047)-1024),smoothratio);
                          }
                     }
                     else
@@ -3249,7 +3249,7 @@ void displayrooms(short snum,int32_t smoothratio)
         if(s->yvel < 0) s->yvel = -100;
         else if(s->yvel > 199) s->yvel = 300;
 
-        cang = hittype[ud.camerasprite].tempang+mulscale16((long)(((s->ang+1024-hittype[ud.camerasprite].tempang)&2047)-1024),smoothratio);
+        cang = hittype[ud.camerasprite].tempang+mulscale16((int32_t)(((s->ang+1024-hittype[ud.camerasprite].tempang)&2047)-1024),smoothratio);
 
         se40code(s->x,s->y,s->z,cang,s->yvel,smoothratio);
 
@@ -3303,20 +3303,20 @@ void displayrooms(short snum,int32_t smoothratio)
 
           if ( (snum == myconnectindex) && (numplayers > 1) )
                   {
-                                cposx = omyx+mulscale16((long)(myx-omyx),smoothratio);
-                                cposy = omyy+mulscale16((long)(myy-omyy),smoothratio);
-                                cposz = omyz+mulscale16((long)(myz-omyz),smoothratio);
-                                cang = omyang+mulscale16((long)(((myang+1024-omyang)&2047)-1024),smoothratio);
-                                choriz = omyhoriz+omyhorizoff+mulscale16((long)(myhoriz+myhorizoff-omyhoriz-omyhorizoff),smoothratio);
+                                cposx = omyx+mulscale16((int32_t)(myx-omyx),smoothratio);
+                                cposy = omyy+mulscale16((int32_t)(myy-omyy),smoothratio);
+                                cposz = omyz+mulscale16((int32_t)(myz-omyz),smoothratio);
+                                cang = omyang+mulscale16((int32_t)(((myang+1024-omyang)&2047)-1024),smoothratio);
+                                choriz = omyhoriz+omyhorizoff+mulscale16((int32_t)(myhoriz+myhorizoff-omyhoriz-omyhorizoff),smoothratio);
                                 sect = mycursectnum;
                   }
                   else
                   {
-                                cposx = p->oposx+mulscale16((long)(p->posx-p->oposx),smoothratio);
-                                cposy = p->oposy+mulscale16((long)(p->posy-p->oposy),smoothratio);
-                                cposz = p->oposz+mulscale16((long)(p->posz-p->oposz),smoothratio);
-                                cang = p->oang+mulscale16((long)(((p->ang+1024-p->oang)&2047)-1024),smoothratio);
-                                choriz = p->ohoriz+p->ohorizoff+mulscale16((long)(p->horiz+p->horizoff-p->ohoriz-p->ohorizoff),smoothratio);
+                                cposx = p->oposx+mulscale16((int32_t)(p->posx-p->oposx),smoothratio);
+                                cposy = p->oposy+mulscale16((int32_t)(p->posy-p->oposy),smoothratio);
+                                cposz = p->oposz+mulscale16((int32_t)(p->posz-p->oposz),smoothratio);
+                                cang = p->oang+mulscale16((int32_t)(((p->ang+1024-p->oang)&2047)-1024),smoothratio);
+                                choriz = p->ohoriz+p->ohorizoff+mulscale16((int32_t)(p->horiz+p->horizoff-p->ohoriz-p->ohorizoff),smoothratio);
                   }
                   cang += p->look_ang;
 
@@ -3332,7 +3332,7 @@ void displayrooms(short snum,int32_t smoothratio)
                   }
 
                   else if( p->over_shoulder_on == 0 )
-                                cposz += p->opyoff+mulscale16((long)(p->pyoff-p->opyoff),smoothratio);
+                                cposz += p->opyoff+mulscale16((int32_t)(p->pyoff-p->opyoff),smoothratio);
                   else view(p,&cposx,&cposy,&cposz,&sect,cang,choriz);
 
         cz = hittype[p->i].ceilingz;
@@ -5697,10 +5697,10 @@ void animatesprites(int32_t x,int32_t y,short a,int32_t smoothratio)
                     t->cstat |= 2;
                     if ( screenpeek == myconnectindex && numplayers >= 2 )
                     {
-                        t->x = omyx+mulscale16((long)(myx-omyx),smoothratio);
-                        t->y = omyy+mulscale16((long)(myy-omyy),smoothratio);
-                        t->z = omyz+mulscale16((long)(myz-omyz),smoothratio)+(40<<8);
-                        t->ang = omyang+mulscale16((long)(((myang+1024-omyang)&2047)-1024),smoothratio);
+                        t->x = omyx+mulscale16((int32_t)(myx-omyx),smoothratio);
+                        t->y = omyy+mulscale16((int32_t)(myy-omyy),smoothratio);
+                        t->z = omyz+mulscale16((int32_t)(myz-omyz),smoothratio)+(40<<8);
+                        t->ang = omyang+mulscale16((int32_t)(((myang+1024-omyang)&2047)-1024),smoothratio);
                         t->sectnum = mycursectnum;
                     }
                 }
@@ -7459,7 +7459,7 @@ void printstr(short x, short y, uint8_t  string[81], uint8_t  attribute)
         while (string[i] != 0)
         {
                 character = string[i];
-                printchrasm(0xb8000+(long)pos,1L,((long)attribute<<8)+(long)character);
+                printchrasm(0xb8000+(int32_t)pos,1L,((int32_t)attribute<<8)+(int32_t)character);
                 i++;
                 pos+=2;
         }
@@ -8584,7 +8584,7 @@ uint8_t  opendemoread(uint8_t  which_demo) // 0 = mine
 		 }
 	 }
 
-     kread(recfilep,&ud.reccnt,sizeof(long));
+     kread(recfilep,&ud.reccnt,sizeof(int32_t));
      kread(recfilep,&ver,sizeof(uint8_t ));
 	
 	 printf("%s has version = %d\n", fname, ver);
@@ -8770,7 +8770,7 @@ void closedemowrite(void)
             dfwrite(recsync,sizeof(input)*ud.multimode,ud.reccnt/ud.multimode,frecfilep);
 
             fseek(frecfilep,SEEK_SET,0L);
-            fwrite(&totalreccnt,sizeof(long),1,frecfilep);
+            fwrite(&totalreccnt,sizeof(int32_t),1,frecfilep);
             ud.recstat = ud.m_recstat = 0;
         }
         fclose(frecfilep);

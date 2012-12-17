@@ -371,7 +371,7 @@ Address32To64(
     LPADDRESS64 a64
     )
 {
-    a64->Offset = (ULONG64)(LONG64)(LONG)a32->Offset;
+    a64->Offset = (ULONG64)(LONG64)(int32_t)a32->Offset;
     a64->Segment = a32->Segment;
     a64->Mode = a32->Mode;
 }
