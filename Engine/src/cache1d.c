@@ -85,9 +85,9 @@ void allocache (int32_t *newhandle, int32_t newbytes, uint8_t  *newlockptr)
 {
 	int32_t i, z, zz, bestz=0, daval, bestval, besto=0, o1, o2, sucklen, suckz;
 
-	newbytes = ((newbytes+15)&0xfffffff0);
+	newbytes = newbytes+15;
 
-	if ((unsigned)newbytes > (unsigned)cachesize)
+	if ((uint32_t)newbytes > (uint32_t)cachesize)
 	{
 		printf("Cachesize: %d\n",cachesize);
 		printf("*Newhandle: 0x%x, Newbytes: %d, *Newlock: %d\n",(unsigned int)newhandle,newbytes,*newlockptr);

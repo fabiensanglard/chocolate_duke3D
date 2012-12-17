@@ -228,7 +228,7 @@ int32_t vlineasm1(int32_t vince, int32_t palookupoffse, int32_t numPixels, int32
 		
 
 
-	    temp = ((unsigned)vplce) >> mach3_al;
+	    temp = ((uint32_t)vplce) >> mach3_al;
         
 	    temp = ((uint8_t  *)bufplce)[temp];
       
@@ -368,7 +368,7 @@ int32_t mvlineasm1(int32_t vince, int32_t palookupoffse, int32_t i3, int32_t vpl
 	// FIX_00087: 1024x768 mode being slow. Undone FIX_00070 and fixed font issue again
     for(;i3>=0;i3--)
     {
-		temp = ((unsigned)vplce) >> machmv;
+		temp = ((uint32_t)vplce) >> machmv;
 	    temp = ((uint8_t  *)bufplce)[temp];
 
 	    if (temp != 255) 
@@ -409,14 +409,14 @@ void vlineasm4(int32_t i1, int32_t i2)
             for (i = 0; i < 4; i++)
             {
 				
-        	    temp = ((unsigned)vplce[i]) >> mach3_al;
+        	    temp = ((uint32_t)vplce[i]) >> mach3_al;
         	    temp = (((uint8_t *)(bufplce[i]))[temp]);
 				if (pixelsAllowed-- > 0)
         			dest[index+i] = ((uint8_t *)(palookupoffse[i]))[temp];
 	            vplce[i] += vince[i];
             }
             dest += fixchain;
-        } while (((unsigned)dest - fixchain) < ((unsigned)dest));
+        } while (((uint32_t)dest - fixchain) < ((uint32_t)dest));
     }
 } 
 
@@ -442,7 +442,7 @@ void mvlineasm4(int32_t i1, int32_t i2)
         for (i = 0; i < 4; i++)
         {
 			
-	      temp = ((unsigned)vplce[i]) >> machmv;
+	      temp = ((uint32_t)vplce[i]) >> machmv;
 	      temp = (((uint8_t *)(bufplce[i]))[temp]);
 	      if (temp != 255)
 		  {
@@ -453,7 +453,7 @@ void mvlineasm4(int32_t i1, int32_t i2)
         }
         dest += fixchain;
 
-    } while (((unsigned)dest - fixchain) < ((unsigned)dest));
+    } while (((uint32_t)dest - fixchain) < ((uint32_t)dest));
 } /* mvlineasm4 */
 
 
@@ -643,7 +643,7 @@ void mhlineskipmodify(int32_t i1, uint32_t i2, uint32_t i3, int32_t i4, int32_t 
     while (counter >= 0)
     {
 	    ebx = i2 >> mshift_al;
-	    ebx = shld (ebx, (unsigned)i5, mshift_bl);
+	    ebx = shld (ebx, (uint32_t)i5, mshift_bl);
 	    i1 = ((uint8_t  *)mmach_eax)[ebx];
 
 		if (pixelsAllowed-- > 0)
@@ -691,7 +691,7 @@ void thlineskipmodify(int32_t i1, uint32_t i2, uint32_t i3, int32_t i4, int32_t 
     while (counter >= 0)
     {
 	    ebx = i2 >> tshift_al;
-	    ebx = shld (ebx, (unsigned)i5, tshift_bl);
+	    ebx = shld (ebx, (uint32_t)i5, tshift_bl);
 	    i1 = ((uint8_t  *)tmach_eax)[ebx];
 	    if ((i1&0xff) != 0xff)
 	    {

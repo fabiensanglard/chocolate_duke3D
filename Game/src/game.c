@@ -9501,7 +9501,7 @@ uint8_t  domovethings(void)
     {
         multiflag = 2;
         multiwhat = (sync[i].bits>>18)&1;
-        multipos = (unsigned) (sync[i].bits>>19)&15;
+        multipos = (uint32_t) (sync[i].bits>>19)&15;
         multiwho = i;
 
         if( multiwhat )

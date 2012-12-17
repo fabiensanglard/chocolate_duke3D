@@ -411,7 +411,7 @@ static void scansector (short sectnum)
                     // Using cross product, determine if the portal is facing us or not.
                     // If it is: Add it to the stack and bump the stack counter.
                     // This line is equivalent to tempint < 0x40000
-                    if (((unsigned)tempint+262144) < 524288) // ??? What is this test ?? How acute the angle is ?
+                    if (((uint32_t)tempint+262144) < 524288) // ??? What is this test ?? How acute the angle is ?
                     {
                         //(x2-x1)*(x2-x1)+(y2-y1)*(y2-y1) is the squared length of the wall
                         // ??? What is this test ?? How acute the angle is ?
@@ -722,7 +722,7 @@ static void ceilscan (int32_t x1, int32_t x2, int32_t sectnum)
     globalzd = sec->ceilingz-globalposz;
     if (globalzd > 0) return;
     globalpicnum = sec->ceilingpicnum;
-    if ((unsigned)globalpicnum >= (unsigned)MAXTILES) globalpicnum = 0;
+    if ((uint32_t)globalpicnum >= (uint32_t)MAXTILES) globalpicnum = 0;
     setgotpic(globalpicnum);
     if ((tilesizx[globalpicnum] <= 0) || (tilesizy[globalpicnum] <= 0)) return;
     if (picanm[globalpicnum]&192) globalpicnum += animateoffs((short)globalpicnum,(short)sectnum);
@@ -925,7 +925,7 @@ static void florscan (int32_t x1, int32_t x2, int32_t sectnum)
     if (globalzd > 0)
         return;
     globalpicnum = sec->floorpicnum;
-    if ((unsigned)globalpicnum >= (unsigned)MAXTILES) globalpicnum = 0;
+    if ((uint32_t)globalpicnum >= (uint32_t)MAXTILES) globalpicnum = 0;
     setgotpic(globalpicnum);
     
     if ((tilesizx[globalpicnum] <= 0) || (tilesizy[globalpicnum] <= 0))
@@ -1489,7 +1489,7 @@ static void parascan(int32_t dax1, int32_t dax2, int32_t sectnum,
         botptr = dmost;
     }
 
-    if ((unsigned)globalpicnum >= (unsigned)MAXTILES) globalpicnum = 0;
+    if ((uint32_t)globalpicnum >= (uint32_t)MAXTILES) globalpicnum = 0;
     if (picanm[globalpicnum]&192) globalpicnum += animateoffs(globalpicnum,(short)sectnum);
     globalshiftval = (picsiz[globalpicnum]>>4);
     if (pow2long[globalshiftval] != tilesizy[globalpicnum]) globalshiftval++;
@@ -2193,7 +2193,7 @@ static void drawalls(int32_t bunch)
 
                     globalorientation = (int32_t)wal->cstat;
                     globalpicnum = wal->picnum;
-                    if ((unsigned)globalpicnum >= (unsigned)MAXTILES) globalpicnum = 0;
+                    if ((uint32_t)globalpicnum >= (uint32_t)MAXTILES) globalpicnum = 0;
                     globalxpanning = (int32_t)wal->xpanning;
                     globalypanning = (int32_t)wal->ypanning;
                     globalshiftval = (picsiz[globalpicnum]>>4);
@@ -2291,7 +2291,7 @@ static void drawalls(int32_t bunch)
                         wal = &wall[wallnum];
                         globalorientation = (int32_t)wal->cstat;
                         globalpicnum = wal->picnum;
-                        if ((uint32_t)globalpicnum >= (unsigned)MAXTILES) globalpicnum = 0;
+                        if ((uint32_t)globalpicnum >= (uint32_t)MAXTILES) globalpicnum = 0;
                         globalxpanning = (int32_t)wal->xpanning;
                         globalypanning = (int32_t)wal->ypanning;
                         if (picanm[globalpicnum]&192) globalpicnum += animateoffs(globalpicnum,(short)(wallnum+16384));
@@ -2304,7 +2304,7 @@ static void drawalls(int32_t bunch)
                     {
                         globalorientation = (int32_t)wal->cstat;
                         globalpicnum = wal->picnum;
-                        if ((uint32_t)globalpicnum >= (unsigned)MAXTILES) globalpicnum = 0;
+                        if ((uint32_t)globalpicnum >= (uint32_t)MAXTILES) globalpicnum = 0;
                         globalxpanning = (int32_t)wal->xpanning;
                         globalypanning = (int32_t)wal->ypanning;
                         if (picanm[globalpicnum]&192) globalpicnum += animateoffs(globalpicnum,(short)(wallnum+16384));
@@ -2402,7 +2402,7 @@ static void drawalls(int32_t bunch)
             globalorientation = (int32_t)wal->cstat;
             if (nextsectnum < 0) globalpicnum = wal->picnum;
             else globalpicnum = wal->overpicnum;
-            if ((unsigned)globalpicnum >= (unsigned)MAXTILES) globalpicnum = 0;
+            if ((uint32_t)globalpicnum >= (uint32_t)MAXTILES) globalpicnum = 0;
             globalxpanning = (int32_t)wal->xpanning;
             globalypanning = (int32_t)wal->ypanning;
             if (picanm[globalpicnum]&192) globalpicnum += animateoffs(globalpicnum,(short)(wallnum+16384));
@@ -4135,7 +4135,7 @@ void loadtile(short tilenume)
     uint8_t  *ptr;
     int32_t i, dasiz;
 
-    if ((unsigned)tilenume >= (unsigned)MAXTILES) return;
+    if ((uint32_t)tilenume >= (uint32_t)MAXTILES) return;
     dasiz = tilesizx[tilenume]*tilesizy[tilenume];
     if (dasiz <= 0) return;
 
@@ -4179,7 +4179,7 @@ int allocatepermanenttile(short tilenume, int32_t xsiz, int32_t ysiz)
 {
     int32_t j, dasiz;
 
-    if ((xsiz <= 0) || (ysiz <= 0) || ((unsigned)tilenume >= (unsigned)MAXTILES))
+    if ((xsiz <= 0) || (ysiz <= 0) || ((uint32_t)tilenume >= (uint32_t)MAXTILES))
         return(0);
 
     dasiz = xsiz*ysiz;
@@ -4604,7 +4604,7 @@ static void drawmaskwall(short damaskwallcnt)
 
     globalorientation = (int32_t)wal->cstat;
     globalpicnum = wal->overpicnum;
-    if ((unsigned)globalpicnum >= (unsigned)MAXTILES) globalpicnum = 0;
+    if ((uint32_t)globalpicnum >= (uint32_t)MAXTILES) globalpicnum = 0;
     globalxpanning = (int32_t)wal->xpanning;
     globalypanning = (int32_t)wal->ypanning;
     if (picanm[globalpicnum]&192) globalpicnum += animateoffs(globalpicnum,(short)(thewall[z]+16384));
@@ -4957,7 +4957,7 @@ static void drawsprite (int32_t snum)
 
         globalorientation = 0;
         globalpicnum = tilenum;
-        if ((unsigned)globalpicnum >= (unsigned)MAXTILES) globalpicnum = 0;
+        if ((uint32_t)globalpicnum >= (uint32_t)MAXTILES) globalpicnum = 0;
         globalxpanning = 0L;
         globalypanning = 0L;
         globvis = globalvisibility;
@@ -5109,7 +5109,7 @@ static void drawsprite (int32_t snum)
 
         globalorientation = 0;
         globalpicnum = tilenum;
-        if ((unsigned)globalpicnum >= (unsigned)MAXTILES) globalpicnum = 0;
+        if ((uint32_t)globalpicnum >= (uint32_t)MAXTILES) globalpicnum = 0;
         globalxpanning = 0L;
         globalypanning = 0L;
         globvis = globalvisibility;
@@ -5568,7 +5568,7 @@ static void drawsprite (int32_t snum)
 
         globalorientation = cstat;
         globalpicnum = tilenum;
-        if ((unsigned)globalpicnum >= (unsigned)MAXTILES) globalpicnum = 0;
+        if ((uint32_t)globalpicnum >= (uint32_t)MAXTILES) globalpicnum = 0;
         /* if (picanm[globalpicnum]&192) globalpicnum += animateoffs((short)globalpicnum,spritenum+32768); */
 
         if (waloff[globalpicnum] == 0) loadtile(globalpicnum);
@@ -6034,9 +6034,9 @@ int cansee(int32_t x1, int32_t y1, int32_t z1, short sect1,
             bot = y21*x34-x21*y34;
             if (bot <= 0) continue;
             t = y21*x31-x21*y31;
-            if ((unsigned)t >= (unsigned)bot) continue;
+            if ((uint32_t)t >= (uint32_t)bot) continue;
             t = y31*x34-x31*y34;
-            if ((unsigned)t >= (unsigned)bot) continue;
+            if ((uint32_t)t >= (uint32_t)bot) continue;
 
             nexts = wal->nextsector;
             if ((nexts < 0) || (wal->cstat&32)) return(0);
@@ -8669,7 +8669,7 @@ void drawmapview(int32_t dax, int32_t day, int32_t zoome, short ang)
                 setpalookupaddress(globalpalwritten);
             }
             globalpicnum = sec->floorpicnum;
-            if ((unsigned)globalpicnum >= (unsigned)MAXTILES) globalpicnum = 0;
+            if ((uint32_t)globalpicnum >= (uint32_t)MAXTILES) globalpicnum = 0;
             setgotpic(globalpicnum);
             if ((tilesizx[globalpicnum] <= 0) || (tilesizy[globalpicnum] <= 0)) continue;
             if ((picanm[globalpicnum]&192) != 0) globalpicnum += animateoffs((short)globalpicnum,s);
@@ -8838,7 +8838,7 @@ void drawmapview(int32_t dax, int32_t day, int32_t zoome, short ang)
             }
 
             globalpicnum = spr->picnum;
-            if ((unsigned)globalpicnum >= (unsigned)MAXTILES) globalpicnum = 0;
+            if ((uint32_t)globalpicnum >= (uint32_t)MAXTILES) globalpicnum = 0;
             setgotpic(globalpicnum);
             if ((tilesizx[globalpicnum] <= 0) || (tilesizy[globalpicnum] <= 0)) continue;
             if ((picanm[globalpicnum]&192) != 0) globalpicnum += animateoffs((short)globalpicnum,s);

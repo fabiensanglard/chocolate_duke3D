@@ -109,16 +109,16 @@ bandwidth of the host. The outgoingBandwidth field specifies the upstream bandwi
 The peers field contains an array of the peers that have been allocated for this host. The 
 peerCount field specifies the number of peers that have been allocated for this host.
 
-unsigned ENET_HOST_TO_NET_8 (unsigned);
-unsigned ENET_HOST_TO_NET_16 (unsigned);
-unsigned ENET_HOST_TO_NET_32 (unsigned);
+unsigned ENET_HOST_TO_NET_8 (uint32_t);
+unsigned ENET_HOST_TO_NET_16 (uint32_t);
+unsigned ENET_HOST_TO_NET_32 (uint32_t);
 
   Macros that convert from host byte-order to network byte-order (big
 endian) for unsigned integers of 8 bits, 16 bits, and 32 bits repectively. 
 
-unsigned ENET_NET_TO_HOST_8 (unsigned);
-unsigned ENET_NET_TO_HOST_16 (unsigned);
-unsigned ENET_NET_TO_HOST_32 (unsigned);
+unsigned ENET_NET_TO_HOST_8 (uint32_t);
+unsigned ENET_NET_TO_HOST_16 (uint32_t);
+unsigned ENET_NET_TO_HOST_32 (uint32_t);
 
   Macros that convert from network byte-order (big endian) to host 
 byte-order for unsigned integers of 8 bits, 16 bits, and 32 bits repectively.
