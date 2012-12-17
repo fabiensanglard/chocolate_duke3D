@@ -34,7 +34,7 @@ static uint8_t* pal_eax;
 void setpalookupaddress(uint8_t *i1) { pal_eax = i1; }
 
 //FCS:   Draw ceiling/floors
-void hlineasm4(int32_t _count, uint32_t unused_source, int32_t _shade, uint32_t _i4, uint32_t _i5, int32_t i6)
+void hlineasm4(int32_t _count, int32_t _shade, uint32_t _i4, uint32_t _i5, int32_t i6)
 {
     /* force into registers (probably only useful on PowerPC)... */
     uint8_t *dest = (uint8_t *) i6;

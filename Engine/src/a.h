@@ -22,7 +22,7 @@ extern "C" {
 void sethlinesizes(int32_t,int32_t,int32_t);
 void setpalookupaddress(uint8_t  *);
 
-void hlineasm4(int32_t,uint32_t,int32_t,uint32_t,uint32_t,int32_t);
+void hlineasm4(int32_t,int32_t,uint32_t,uint32_t,int32_t);
 void setuprhlineasm4(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
 void rhlineasm4(int32_t,int32_t,int32_t,uint32_t,uint32_t,int32_t);
 void setuprmhlineasm4(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);

@@ -346,9 +346,11 @@ static void scansector (short sectnum)
     short sectorsToVisit[256], numSectorsToVisit;
     
     
-    if (sectnum < 0) return;
+    if (sectnum < 0)
+        return;
 
-    if (automapping) show2dsector[sectnum>>3] |= pow2char[sectnum&7];
+    if (automapping)
+        show2dsector[sectnum>>3] |= pow2char[sectnum&7];
 
     sectorsToVisit[0] = sectnum;
     numSectorsToVisit = 1;
@@ -446,8 +448,8 @@ static void scansector (short sectnum)
             if (dmulscale32(xp1,yp2,-xp2,yp1) >= 0) goto skipitaddwall;
 
             // The wall is still not eligible for rendition: Let's do some more Frustrum culling !!
-            if (xp1 >= -yp1)
-            {
+            if (xp1 >= -yp1){
+                
                 if ((xp1 > yp1) || (yp1 == 0))
                     goto skipitaddwall;
 
@@ -461,30 +463,33 @@ static void scansector (short sectnum)
 
                 yb1[numscans] = yp1;
             }
-            else
-            {
+            else{
+                
                 if (xp2 < -yp2)
                     goto skipitaddwall;
 
                 xb1[numscans] = 0;
                 tempint = yp1-yp2+xp1-xp2;
+                
                 if (tempint == 0)
                     goto skipitaddwall;
+                
                 yb1[numscans] = yp1 + scale(yp2-yp1,xp1+yp1,tempint);
             }
+            
             if (yb1[numscans] < 256)
                 goto skipitaddwall;
 
-            if (xp2 <= yp2)
-            {
+            if (xp2 <= yp2){
+                
                 if ((xp2 < -yp2) || (yp2 == 0)) goto skipitaddwall;
                 xb2[numscans] = halfxdimen + scale(xp2,halfxdimen,yp2) - 1;
                 if (xp2 >= 0) xb2[numscans]++;   /* Fix for SIGNED divide */
                 if (xb2[numscans] >= xdimen) xb2[numscans] = xdimen-1;
                 yb2[numscans] = yp2;
             }
-            else
-            {
+            else{
+                
                 if (xp1 > yp1) goto skipitaddwall;
                 xb2[numscans] = xdimen-1;
                 tempint = xp2-xp1+yp1-yp2;
@@ -506,6 +511,7 @@ static void scansector (short sectnum)
 
             p2[numscans] = numscans+1;
             numscans++;
+            
 skipitaddwall:
 
             if ((wall[z].point2 < z) && (scanfirst < numscans))
@@ -636,14 +642,16 @@ static void hline (int32_t xr, int32_t yp)
     int32_t xl, r, s;
 
     xl = lastx[yp];
-    if (xl > xr) return;
+    
+    if (xl > xr)
+        return;
+    
     r = horizlookup2[yp-globalhoriz+horizycent];
     asm1 = globalx1*r;
     asm2 = globaly2*r;
     s = ((int32_t)getpalookup((int32_t)mulscale16(r,globvis),globalshade)<<8);
 
-    hlineasm4(xr-xl,0L,s,globalx2*r+globalypanning,globaly1*r+globalxpanning,
-              ylookup[yp]+xr+frameoffset);
+    hlineasm4(xr-xl,s,globalx2*r+globalypanning,globaly1*r+globalxpanning,ylookup[yp]+xr+frameoffset);
 }
 
 
@@ -8281,7 +8289,7 @@ static void fillpolygon(int32_t npoints)
                 by = ox*asm2 - globalposy;
 
                 p = ylookup[y]+x2+frameplace;
-                hlineasm4(x2-x1,-1L,globalshade<<8,by,bx,p);
+                hlineasm4(x2-x1,globalshade<<8,by,bx,p);
             }
             else
             {
