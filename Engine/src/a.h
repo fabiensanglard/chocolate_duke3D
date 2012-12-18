@@ -20,6 +20,7 @@ extern "C" {
     
 extern uint8_t  *globalpalwritten;
 extern int16_t  globalshiftval;
+extern int32_t vplce[4], vince[4], palookupoffse[4], bufplce[4];
     
 void sethlinesizes(int32_t,int32_t,int32_t);
 
@@ -45,13 +46,13 @@ void vlineasm4(int32_t,int32_t);
 void setupmvlineasm(int32_t);
 void mvlineasm4(int32_t,int32_t);
 void setupspritevline(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
-void spritevline(int32_t,uint32_t,int32_t,uint32_t,int32_t,int32_t);
+void spritevline(int32_t,uint32_t,int32_t,uint32_t,uint8_t*,uint8_t*);
 void msetupspritevline(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
-void mspritevline(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
-void tsetupspritevline(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
-void tspritevline(int32_t,int32_t,int32_t,uint32_t,int32_t,int32_t);
-void mhline(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
-void mhlineskipmodify(int32_t,uint32_t,uint32_t,int32_t,int32_t,int32_t);
+void mspritevline(int32_t,int32_t,int32_t,int32_t,uint8_t  *,uint8_t  *);
+void tsetupspritevline(int32_t,int32_t,int32_t,int32_t,int32_t);
+void DrawSpriteVerticalLine(int32_t,int32_t,int32_t,uint32_t,int32_t,uint8_t*);
+void mhline(int32_t,int32_t,int32_t,int32_t,int32_t,uint8_t*);
+void mhlineskipmodify(uint32_t,int32_t,int32_t,int32_t,uint8_t*);
 void msethlineshift(int32_t,int32_t);
 void thline(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
 void thlineskipmodify(int32_t,uint32_t,uint32_t,int32_t,int32_t,int32_t);
