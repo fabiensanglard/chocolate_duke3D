@@ -19,7 +19,8 @@ extern "C" {
 #endif
     
 extern uint8_t  *globalpalwritten;
-
+extern int16_t  globalshiftval;
+    
 void sethlinesizes(int32_t,int32_t,int32_t);
 
 
@@ -34,7 +35,7 @@ void setBytesPerLine(int32_t);
 void fixtransluscence(uint8_t*);
 int32_t prevlineasm1(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
 int32_t vlineasm1(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
-void setuptvlineasm(int32_t);
+
 int32_t tvlineasm1(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
 void setuptvlineasm2(int32_t,int32_t,int32_t);
 void tvlineasm2(uint32_t,uint32_t,uint32_t,uint32_t,uint32_t,uint32_t);

@@ -244,25 +244,19 @@ int32_t vlineasm1(int32_t vince, int32_t palookupoffse, int32_t numPixels, int32
     return vplce;
 } 
 
-
-static uint8_t  transmach3_al = 32;
-void setuptvlineasm(int32_t i1)
-{
-    transmach3_al = (i1 & 0x1f);
-}
-
-
 static int transrev = 0;
 int32_t tvlineasm1(int32_t i1, int32_t i2, int32_t numPixels, int32_t i4, int32_t i5, int32_t _dest)
 {
 	uint8_t  *source = (uint8_t  *)i5;
 	uint8_t  *dest = (uint8_t  *)_dest;
 
+    uint8_t shiftValue = (globalshiftval & 0x1f);
+    
 	numPixels++;
 	while (numPixels)
 	{
 		uint32_t temp = i4;
-		temp >>= transmach3_al;
+		temp >>= shiftValue;
 		temp = source[temp];
 
 	    //255 is the index for transparent color index. Skip drawing this pixel. 
