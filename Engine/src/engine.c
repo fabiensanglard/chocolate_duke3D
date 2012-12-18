@@ -182,9 +182,9 @@ short umost[MAXXDIM+1];
 //FCS: (down-most pixel +1 on column x that can still be drawn to)
 short dmost[MAXXDIM+1];
 
-static short bakumost[MAXXDIM+1], bakdmost[MAXXDIM+1];
+static int16_t bakumost[MAXXDIM+1], bakdmost[MAXXDIM+1];
 short uplc[MAXXDIM+1], dplc[MAXXDIM+1];
-static short uwall[MAXXDIM+1], dwall[MAXXDIM+1];
+static int16_t uwall[MAXXDIM+1], dwall[MAXXDIM+1];
 static int32_t swplc[MAXXDIM+1], lplc[MAXXDIM+1];
 static int32_t swall[MAXXDIM+1], lwall[MAXXDIM+4];
 int32_t xdimen = -1, xdimenrecip, halfxdimen, xdimenscale, xdimscale;
@@ -198,7 +198,7 @@ static int32_t xsi[8], ysi[8];
 int32_t *horizlookup=0, *horizlookup2=0, horizycent;
 
 int32_t globalposx, globalposy, globalposz, globalhoriz;
-short globalang, globalcursectnum;
+int16_t globalang, globalcursectnum;
 int32_t globalpal, cosglobalang, singlobalang;
 int32_t cosviewingrangeglobalang, sinviewingrangeglobalang;
 uint8_t  *globalpalwritten;
@@ -212,7 +212,7 @@ int32_t asm1, asm2, asm3, asm4;
 int32_t vplce[4], vince[4], palookupoffse[4], bufplce[4];
 uint8_t  globalxshift, globalyshift;
 int32_t globalxpanning, globalypanning, globalshade;
-short globalpicnum, globalshiftval;
+int16_t globalpicnum, globalshiftval;
 int32_t globalzd, globalbufplc, globalyscale, globalorientation;
 int32_t globalx1, globaly1, globalx2, globaly2, globalx3, globaly3, globalzx;
 int32_t globalx, globaly, globalz;
@@ -228,8 +228,8 @@ int32_t globalx, globaly, globalz;
 static uint8_t  tablesloaded = 0;
 int32_t pageoffset, ydim16, qsetmode = 0;
 int32_t startposx, startposy, startposz;
-short startang, startsectnum;
-short pointhighlight, linehighlight, highlightcnt;
+int16_t startang, startsectnum;
+int16_t pointhighlight, linehighlight, highlightcnt;
 static int32_t lastx[MAXYDIM];
 uint8_t  *transluc = NULL, paletteloaded = 0;
 
@@ -241,7 +241,7 @@ static int32_t colnext[256];
 static uint8_t  coldist[8] = {0,1,2,3,4,3,2,1};
 static int32_t colscan[27];
 
-static short clipnum, hitwalls[4];
+static int16_t clipnum, hitwalls[4];
 int32_t hitscangoalx = (1<<29)-1, hitscangoaly = (1<<29)-1;
 
 typedef struct {
@@ -3111,8 +3111,6 @@ static void transmaskwallscan(int32_t x1, int32_t x2)
     if ((tilesizx[globalpicnum] <= 0) || (tilesizy[globalpicnum] <= 0)) return;
 
     if (waloff[globalpicnum] == 0) loadtile(globalpicnum);
-
-    setuptvlineasm(globalshiftval);
 
     x = x1;
     while ((startumost[x+windowx1] > startdmost[x+windowx1]) && (x <= x2)) x++;

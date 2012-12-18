@@ -84,7 +84,7 @@ void restoreinterpolations()  //Stick at end of drawscreen
 	for(i=numinterpolations-1;i>=0;i--) *curipos[i] = bakipos[i];
 }
 
-int32_t ceilingspace(short sectnum)
+int32_t ceilingspace(int16_t sectnum)
 {
     if( (sector[sectnum].ceilingstat&1) && sector[sectnum].ceilingpal == 0 )
     {
@@ -98,7 +98,7 @@ int32_t ceilingspace(short sectnum)
     return 0;
 }
 
-int32_t floorspace(short sectnum)
+int32_t floorspace(int16_t sectnum)
 {
     if( (sector[sectnum].floorstat&1) && sector[sectnum].ceilingpal == 0 )
     {
@@ -112,7 +112,7 @@ int32_t floorspace(short sectnum)
     return 0;
 }
 
-void addammo( short weapon,struct player_struct *p,short amount)
+void addammo( int16_t weapon,struct player_struct *p,int16_t amount)
 {
    p->ammo_amount[weapon] += amount;
 
@@ -120,7 +120,7 @@ void addammo( short weapon,struct player_struct *p,short amount)
         p->ammo_amount[weapon] = max_ammo_amount[weapon];
 }
 
-void addweapon( struct player_struct *p,short weapon)
+void addweapon( struct player_struct *p,int16_t weapon)
 {
 	int added_new_weapon = false;
 
