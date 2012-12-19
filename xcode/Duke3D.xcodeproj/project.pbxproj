@@ -235,6 +235,70 @@
 			name = enet;
 			sourceTree = "<group>";
 		};
+		2D2A07CF16828B7600064107 /* headers */ = {
+			isa = PBXGroup;
+			children = (
+				2D7B626416788F9B00E35E54 /* rts.h */,
+				2D7B626616788F9B00E35E54 /* scriplib.h */,
+				2D7B626816788F9B00E35E54 /* sounddebugdefs.h */,
+				2D7B626916788F9B00E35E54 /* soundefs.h */,
+				2D7B626B16788F9B00E35E54 /* sounds.h */,
+				2D7B626C16788F9B00E35E54 /* types.h */,
+				2D7B626D16788F9B00E35E54 /* util_lib.h */,
+				2D7B62FD167905C400E35E54 /* dukeunix.h */,
+				2D2A07BA167EFB5500064107 /* premap.h */,
+				2D2A07BB167F1ABA00064107 /* global.h */,
+				2D7B624916788F9B00E35E54 /* DbgHelp.h */,
+				2D7B624D16788F9B00E35E54 /* file_lib.h */,
+				2D7B625F16788F9B00E35E54 /* mouse.h */,
+				2D7B626016788F9B00E35E54 /* names.h */,
+				2D7B623A16788F9B00E35E54 /* _functio.h */,
+				2D7B623B16788F9B00E35E54 /* _rts.h */,
+				2D7B623E16788F9B00E35E54 /* animlib.h */,
+				2D7B624016788F9B00E35E54 /* config.h */,
+				2D7B624216788F9B00E35E54 /* console.h */,
+				2D7B624416788F9B00E35E54 /* control.h */,
+				2D7B624616788F9B00E35E54 /* cvar_defs.h */,
+				2D7B624816788F9B00E35E54 /* cvars.h */,
+				2D7B624A16788F9B00E35E54 /* develop.h */,
+				2D7B624B16788F9B00E35E54 /* duke3d.h */,
+				2D7B624C16788F9B00E35E54 /* dukewin.h */,
+				2D7B624E16788F9B00E35E54 /* funct.h */,
+				2D7B624F16788F9B00E35E54 /* function.h */,
+				2D7B625116788F9B00E35E54 /* game.h */,
+				2D7B625316788F9B00E35E54 /* gamedefs.h */,
+				2D7B625516788F9B00E35E54 /* joystick.h */,
+				2D7B625716788F9B00E35E54 /* keyboard.h */,
+			);
+			name = headers;
+			sourceTree = "<group>";
+		};
+		2D2A07D016828B7C00064107 /* implementations */ = {
+			isa = PBXGroup;
+			children = (
+				2D7B623C16788F9B00E35E54 /* actors.c */,
+				2D7B623D16788F9B00E35E54 /* animlib.c */,
+				2D7B623F16788F9B00E35E54 /* config.c */,
+				2D7B624116788F9B00E35E54 /* console.c */,
+				2D7B624316788F9B00E35E54 /* control.c */,
+				2D7B624516788F9B00E35E54 /* cvar_defs.c */,
+				2D7B624716788F9B00E35E54 /* cvars.c */,
+				2D7B625016788F9B00E35E54 /* game.c */,
+				2D7B625216788F9B00E35E54 /* gamedef.c */,
+				2D7B625416788F9B00E35E54 /* global.c */,
+				2D7B625616788F9B00E35E54 /* keyboard.c */,
+				2D7B625816788F9B00E35E54 /* menues.c */,
+				2D7B626116788F9B00E35E54 /* player.c */,
+				2D7B626216788F9B00E35E54 /* premap.c */,
+				2D7B626316788F9B00E35E54 /* rts.c */,
+				2D7B626516788F9B00E35E54 /* scriplib.c */,
+				2D7B626716788F9B00E35E54 /* sector.c */,
+				2D7B626A16788F9B00E35E54 /* sounds.c */,
+				2D7B62FE16790E8000E35E54 /* dummy_audiolib.c */,
+			);
+			name = implementations;
+			sourceTree = "<group>";
+		};
 		2D7B61D3167886FB00E35E54 = {
 			isa = PBXGroup;
 			children = (
@@ -311,58 +375,10 @@
 		2D7B623916788F7900E35E54 /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				2D2A07CF16828B7600064107 /* headers */,
+				2D2A07D016828B7C00064107 /* implementations */,
 				2D7C17CC167AD65800E1BBA1 /* Audiolib */,
-				2D7B623A16788F9B00E35E54 /* _functio.h */,
-				2D7B623B16788F9B00E35E54 /* _rts.h */,
-				2D7B623C16788F9B00E35E54 /* actors.c */,
-				2D7B623D16788F9B00E35E54 /* animlib.c */,
-				2D7B623E16788F9B00E35E54 /* animlib.h */,
-				2D7B623F16788F9B00E35E54 /* config.c */,
-				2D7B624016788F9B00E35E54 /* config.h */,
-				2D7B624116788F9B00E35E54 /* console.c */,
-				2D7B624216788F9B00E35E54 /* console.h */,
-				2D7B624316788F9B00E35E54 /* control.c */,
-				2D7B624416788F9B00E35E54 /* control.h */,
-				2D7B624516788F9B00E35E54 /* cvar_defs.c */,
-				2D7B624616788F9B00E35E54 /* cvar_defs.h */,
-				2D7B624716788F9B00E35E54 /* cvars.c */,
-				2D7B624816788F9B00E35E54 /* cvars.h */,
-				2D7B624916788F9B00E35E54 /* DbgHelp.h */,
-				2D7B624A16788F9B00E35E54 /* develop.h */,
-				2D7B624B16788F9B00E35E54 /* duke3d.h */,
-				2D7B624C16788F9B00E35E54 /* dukewin.h */,
-				2D7B624D16788F9B00E35E54 /* file_lib.h */,
-				2D7B624E16788F9B00E35E54 /* funct.h */,
-				2D7B624F16788F9B00E35E54 /* function.h */,
-				2D7B625016788F9B00E35E54 /* game.c */,
-				2D7B625116788F9B00E35E54 /* game.h */,
-				2D7B625216788F9B00E35E54 /* gamedef.c */,
-				2D7B625316788F9B00E35E54 /* gamedefs.h */,
-				2D7B625416788F9B00E35E54 /* global.c */,
-				2D7B625516788F9B00E35E54 /* joystick.h */,
-				2D7B625616788F9B00E35E54 /* keyboard.c */,
-				2D7B625716788F9B00E35E54 /* keyboard.h */,
-				2D7B625816788F9B00E35E54 /* menues.c */,
 				2D7B625916788F9B00E35E54 /* midi */,
-				2D7B625F16788F9B00E35E54 /* mouse.h */,
-				2D7B626016788F9B00E35E54 /* names.h */,
-				2D7B626116788F9B00E35E54 /* player.c */,
-				2D7B626216788F9B00E35E54 /* premap.c */,
-				2D7B626316788F9B00E35E54 /* rts.c */,
-				2D7B626416788F9B00E35E54 /* rts.h */,
-				2D7B626516788F9B00E35E54 /* scriplib.c */,
-				2D7B626616788F9B00E35E54 /* scriplib.h */,
-				2D7B626716788F9B00E35E54 /* sector.c */,
-				2D7B626816788F9B00E35E54 /* sounddebugdefs.h */,
-				2D7B626916788F9B00E35E54 /* soundefs.h */,
-				2D7B626A16788F9B00E35E54 /* sounds.c */,
-				2D7B626B16788F9B00E35E54 /* sounds.h */,
-				2D7B626C16788F9B00E35E54 /* types.h */,
-				2D7B626D16788F9B00E35E54 /* util_lib.h */,
-				2D7B62FD167905C400E35E54 /* dukeunix.h */,
-				2D7B62FE16790E8000E35E54 /* dummy_audiolib.c */,
-				2D2A07BA167EFB5500064107 /* premap.h */,
-				2D2A07BB167F1ABA00064107 /* global.h */,
 			);
 			name = Game;
 			sourceTree = "<group>";

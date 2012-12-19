@@ -101,11 +101,14 @@ char  * gamefunctions[] =
 // FIX_00011: duke3d.cfg not needed anymore to start the game. Will create a default one
 // if not found and use default keys.
 
-struct {
+struct keyEntry{
 	char * entryKey;
 	char * keyname1;
 	char * keyname2;
-} keydefaults[] = {
+} ;
+    
+    
+struct keyEntry    keydefaults[] = {
 	{ "Move_Forward", 	"Up", 		"Kpad8" }, 
 	{ "Move_Backward", 	"Down", 	"Kpad2" }, 
 	{ "Turn_Left", 		"Left", 	"Kpad4" }, 
