@@ -9,9 +9,6 @@
 
 #define ENGINE
 
-/* set this to something non-zero to get loadtile() debugging info on stderr. */
-#define BUILD_CACHEDEBUG 0
-
 #include <string.h>
 
 
@@ -32,7 +29,7 @@
 #endif
 
 #include "build.h"
-#include "cache1d.h"
+#include "cache.h"
 
 #include "engine.h"
 

@@ -4,6 +4,7 @@
 // This file has been modified from Ken Silverman's original release
 
 /* DDOI - This file is an attempt to reimplement a_nasm.asm in C */
+/* FCS: However did that work: This is far from perfect but you have my eternal respect !!! */
 
 #include "platform.h"
 #include "build.h"

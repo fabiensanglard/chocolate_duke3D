@@ -908,11 +908,3 @@ void Shutdown(void)
 }
 
 
-/*
- * From Ryan's buildengine CHANGELOG:
- *  Removed global var: cachedebug in engine.c, and put #define
- *  BUILD_CACHEDEBUG 0 at the top of the source. Flip it to 1 if you ever
- *  need to tinker in the cache code.
- */
-uint8_t  cachedebug = 0;
-

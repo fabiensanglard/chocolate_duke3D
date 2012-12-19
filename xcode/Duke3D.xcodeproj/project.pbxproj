@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		2D4FB6FF167D430F00915887 /* sdl_midi.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D4FB6FE167D430F00915887 /* sdl_midi.c */; };
 		2D7B621D1678885A00E35E54 /* draw.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B61F11678885A00E35E54 /* draw.c */; };
-		2D7B621E1678885A00E35E54 /* cache1d.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B61F41678885A00E35E54 /* cache1d.c */; };
+		2D7B621E1678885A00E35E54 /* cache.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B61F41678885A00E35E54 /* cache.c */; };
 		2D7B621F1678885A00E35E54 /* host.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B61FA1678885A00E35E54 /* host.c */; };
 		2D7B62201678885A00E35E54 /* list.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62061678885A00E35E54 /* list.c */; };
 		2D7B62211678885A00E35E54 /* memory.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62071678885A00E35E54 /* memory.c */; };
@@ -78,11 +78,9 @@
 		2D7B61F11678885A00E35E54 /* draw.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = draw.c; path = ../../Engine/src/draw.c; sourceTree = "<group>"; };
 		2D7B61F21678885A00E35E54 /* draw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = draw.h; path = ../../Engine/src/draw.h; sourceTree = "<group>"; };
 		2D7B61F31678885A00E35E54 /* build.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = build.h; path = ../../Engine/src/build.h; sourceTree = "<group>"; };
-		2D7B61F41678885A00E35E54 /* cache1d.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cache1d.c; path = ../../Engine/src/cache1d.c; sourceTree = "<group>"; };
-		2D7B61F51678885A00E35E54 /* cache1d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cache1d.h; path = ../../Engine/src/cache1d.h; sourceTree = "<group>"; };
+		2D7B61F41678885A00E35E54 /* cache.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cache.c; path = ../../Engine/src/cache.c; sourceTree = "<group>"; };
+		2D7B61F51678885A00E35E54 /* cache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cache.h; path = ../../Engine/src/cache.h; sourceTree = "<group>"; };
 		2D7B61F61678885A00E35E54 /* display.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = display.h; path = ../../Engine/src/display.h; sourceTree = "<group>"; };
-		2D7B61F81678885A00E35E54 /* api.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = api.txt; sourceTree = "<group>"; };
-		2D7B61F91678885A00E35E54 /* design.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = design.txt; sourceTree = "<group>"; };
 		2D7B61FA1678885A00E35E54 /* host.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = host.c; sourceTree = "<group>"; };
 		2D7B61FC1678885A00E35E54 /* enet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = enet.h; sourceTree = "<group>"; };
 		2D7B61FD1678885A00E35E54 /* list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = list.h; sourceTree = "<group>"; };
@@ -93,14 +91,11 @@
 		2D7B62021678885A00E35E54 /* unix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unix.h; sourceTree = "<group>"; };
 		2D7B62031678885A00E35E54 /* utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utility.h; sourceTree = "<group>"; };
 		2D7B62041678885A00E35E54 /* win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = win32.h; sourceTree = "<group>"; };
-		2D7B62051678885A00E35E54 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		2D7B62061678885A00E35E54 /* list.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = list.c; sourceTree = "<group>"; };
 		2D7B62071678885A00E35E54 /* memory.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = memory.c; sourceTree = "<group>"; };
 		2D7B62081678885A00E35E54 /* packet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = packet.c; sourceTree = "<group>"; };
 		2D7B62091678885A00E35E54 /* peer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = peer.c; sourceTree = "<group>"; };
 		2D7B620A1678885A00E35E54 /* protocol.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = protocol.c; sourceTree = "<group>"; };
-		2D7B620B1678885A00E35E54 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
-		2D7B620C1678885A00E35E54 /* tutorial.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tutorial.txt; sourceTree = "<group>"; };
 		2D7B620D1678885A00E35E54 /* unix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unix.c; sourceTree = "<group>"; };
 		2D7B620E1678885A00E35E54 /* win32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = win32.c; sourceTree = "<group>"; };
 		2D7B620F1678885A00E35E54 /* engine_protos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = engine_protos.h; path = ../../Engine/src/engine_protos.h; sourceTree = "<group>"; };
@@ -232,8 +227,8 @@
 				2D7B61F21678885A00E35E54 /* draw.h */,
 				2D7B61F11678885A00E35E54 /* draw.c */,
 				2D7B61F31678885A00E35E54 /* build.h */,
-				2D7B61F41678885A00E35E54 /* cache1d.c */,
-				2D7B61F51678885A00E35E54 /* cache1d.h */,
+				2D7B61F41678885A00E35E54 /* cache.c */,
+				2D7B61F51678885A00E35E54 /* cache.h */,
 				2D7B61F61678885A00E35E54 /* display.h */,
 				2D7B61F71678885A00E35E54 /* enet */,
 				2D7B620F1678885A00E35E54 /* engine_protos.h */,
@@ -253,18 +248,13 @@
 		2D7B61F71678885A00E35E54 /* enet */ = {
 			isa = PBXGroup;
 			children = (
-				2D7B61F81678885A00E35E54 /* api.txt */,
-				2D7B61F91678885A00E35E54 /* design.txt */,
 				2D7B61FA1678885A00E35E54 /* host.c */,
 				2D7B61FB1678885A00E35E54 /* include */,
-				2D7B62051678885A00E35E54 /* LICENSE */,
 				2D7B62061678885A00E35E54 /* list.c */,
 				2D7B62071678885A00E35E54 /* memory.c */,
 				2D7B62081678885A00E35E54 /* packet.c */,
 				2D7B62091678885A00E35E54 /* peer.c */,
 				2D7B620A1678885A00E35E54 /* protocol.c */,
-				2D7B620B1678885A00E35E54 /* README */,
-				2D7B620C1678885A00E35E54 /* tutorial.txt */,
 				2D7B620D1678885A00E35E54 /* unix.c */,
 				2D7B620E1678885A00E35E54 /* win32.c */,
 			);
@@ -427,7 +417,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D7B621D1678885A00E35E54 /* draw.c in Sources */,
-				2D7B621E1678885A00E35E54 /* cache1d.c in Sources */,
+				2D7B621E1678885A00E35E54 /* cache.c in Sources */,
 				2D7B621F1678885A00E35E54 /* host.c in Sources */,
 				2D7B62201678885A00E35E54 /* list.c in Sources */,
 				2D7B62211678885A00E35E54 /* memory.c in Sources */,

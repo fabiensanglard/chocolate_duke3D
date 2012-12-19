@@ -292,7 +292,7 @@ const char  *renderer_name[RENDERER_TOTAL];
 static sdl_renderer_type renderer = RENDERER_SOFTWARE;
 
 #include "draw.h"
-#include "cache1d.h"
+#include "cache.h"
 
 
 /*

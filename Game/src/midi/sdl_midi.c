@@ -10,7 +10,7 @@
 #include "../audiolib/music.h"
 #include "SDL.h"
 #include "SDL_Mixer.h"
-#include "cache1d.h"
+#include "cache.h"
 
 /*
  Because the music is stored in a GRP file that is never fully loaded in RAM

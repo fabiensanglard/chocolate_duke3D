@@ -25,7 +25,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 //-------------------------------------------------------------------------
 
 #include "duke3d.h"
-#include "cache1d.h"
+#include "cache.h"
 #include "game.h"
 
 extern uint8_t  everyothertime;
@@ -1542,7 +1542,7 @@ if (!VOLUMEONE)
 		}
 #endif
 
-    cachedebug = 0;
+
     automapping = 0;
 
     if(ud.recstat != 2) MUSIC_StopSong();

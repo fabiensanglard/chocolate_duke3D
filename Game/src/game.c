@@ -55,9 +55,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 
 #include "global.h"
 
-
-// this is So lame
-#include "cache1d.h"
+#include "cache.h"
 
 #define MINITEXT_BLUE	0
 #define MINITEXT_RED	2

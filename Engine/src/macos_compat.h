@@ -20,6 +20,8 @@
 #undef FP_OFF
 #endif
 
+// Horrible horrible macro: Watcom allowed memory pointer to be cast
+// to a 32bits integer. The code is unfortunately stuffed with this :( !
 #define FP_OFF(x) ((int32_t) (x))
 
 #ifndef max

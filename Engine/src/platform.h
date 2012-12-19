@@ -2,23 +2,19 @@
 #define _INCLUDE_PLATFORM_H_
 
 #if (defined PLATFORM_WIN32)
-#include "win32_compat.h"
+    #include "win32_compat.h"
 #elif (defined PLATFORM_UNIX)
-#include "unix_compat.h"
+    #include "unix_compat.h"
 #elif (defined PLATFORM_DOS)
-#include "doscmpat.h"
+    #include "doscmpat.h"
 #elif (defined __APPLE__)
-#include "macos_compat.h"
+    #include "macos_compat.h"
 #else
 #error Define your platform!
 #endif
 
 #if (!defined __EXPORT__)
-#define __EXPORT__
-#endif
-
-#if (defined __WATCOMC__)
-#define snprintf _snprintf
+    #define __EXPORT__
 #endif
 
 uint16_t _swap16(uint16_t D);

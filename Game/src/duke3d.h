@@ -47,7 +47,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 #include <time.h>
 #include <ctype.h>
 
-#include "cache1d.h"
+#include "cache.h"
 
 #if (!defined MAX_PATH)
   #if (defined MAXPATHLEN)
@@ -636,7 +636,7 @@ extern int32_t cachecount;
 extern uint8_t  waterpal[768],slimepal[768],titlepal[768],drealms[768],endingpal[768];
 extern char boardfilename[128];
 extern uint8_t  betaname[80];
-extern uint8_t  cachedebug,earthquaketime;
+extern uint8_t  earthquaketime;
 extern uint8_t  networkmode;
 extern uint8_t  lumplockbyte[11];
 

@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 /* Prototypes for the build engine */
 
-/* cache1d.c */
+
 extern void initcache(int32_t dacachestart, int32_t dacachesize);
 extern void allocache(int32_t *newhandle, int32_t newbytes, uint8_t  *newlockptr);
 extern void suckcache(int32_t *suckptr);

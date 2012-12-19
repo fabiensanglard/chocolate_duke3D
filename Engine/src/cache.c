@@ -17,7 +17,7 @@
 #include "display.h"
 
 #include "pragmas.h"
-#include "cache1d.h"
+#include "cache.h"
 #include "build.h"
 
 #include "../../Game/src/cvar_defs.h"
