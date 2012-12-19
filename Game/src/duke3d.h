@@ -279,11 +279,7 @@ extern int g_iTicksPerFrame;
 #define furthestdir 1024
 #define dodgebullet 4096
 
-#ifdef DBGRECORD
-#define TRAND krand(__LINE__,__FILE__)
-#else
 #define TRAND krand()
-#endif
 
 #define MAX_WEAPONS  12
 

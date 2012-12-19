@@ -7211,17 +7211,14 @@ void checkcommandline(int argc,char  **argv)
                         c++;
                         if(*c)
                         {
-							if(game_dir[0] != '\0')
-							{
+							if(game_dir[0] != '\0'){
 								sprintf(confilename, "%s\\%s", game_dir, c);
 							}
-							else
-							{
+							else{
 								strcpy(confilename,c);
 							}
 
-                            if(SafeFileExists(confilename) == 0)
-                            {
+                            if(SafeFileExists(confilename) == 0){
                                 Error(EXIT_SUCCESS, "Could not find con file '%s'.\n",confilename);
                             }
                             else printf("Using con file: '%s'\n",confilename);
@@ -7230,22 +7227,18 @@ void checkcommandline(int argc,char  **argv)
                     case 'g':
                     case 'G':
                         c++;
-                        if(*c)
-                        {
+                        if(*c){
 							char  fullpathgrpfile[16]; // 16 not enough
 							memset(fullpathgrpfile, 0, 16);
 
-                            if( strchr(c,'.') == 0)
-							{
+                            if( strchr(c,'.') == 0){
 								strcat(c,".grp"); // crap!
 							}
 
-							if(game_dir[0] != '\0')
-							{
+							if(game_dir[0] != '\0'){
 								sprintf(fullpathgrpfile, "%s\\%s", game_dir, c);
 							}
-							else
-							{
+							else{
 								strcpy(fullpathgrpfile, c);
 							}
 
@@ -7263,27 +7256,27 @@ void checkcommandline(int argc,char  **argv)
                     case 'n':
                     case 'N':
                         c++;
-                        if(*c == 's' || *c == 'S')
-                        {
+                        if(*c == 's' || *c == 'S'){
                             CommandSoundToggleOff = 2;
                             puts("Sound off.");
                         }
-                        else if(*c == 'm' || *c == 'M')
-                        {
+                        else
+                            if(*c == 'm' || *c == 'M'){
                             CommandMusicToggleOff = 1;
                             puts("Music off.");
-                        }
-                        else
-                        {
-                            comlinehelp(argv);
-                            Error(EXIT_SUCCESS, "");
-                        }
+                            }
+                            else{
+                                comlinehelp(argv);
+                                Error(EXIT_SUCCESS, "");
+                            }
                         break;
                     case 'i':
                     case 'I':
                         c++;
-                        if(*c == '0') networkmode = 0;
-                        if(*c == '1') networkmode = 1;
+                        if(*c == '0')
+                            networkmode = 0;
+                        if(*c == '1')
+                            networkmode = 1;
                         printf("Network Mode %d\n",networkmode);
                         break;
                     case 'c':
@@ -8698,13 +8691,11 @@ void opendemowrite(void)
     ver = BYTEVERSION;
 
 	// Are we loading a TC?
-	if(game_dir[0] != '\0')
-	{
+	if(game_dir[0] != '\0'){
 		// Yes
 		sprintf(fullpathdemofilename, "%s\\%s", game_dir, d);
 	}
-	else
-	{
+	else{
 		// No 
 		sprintf(fullpathdemofilename, "%s", d);
 	}
@@ -8746,20 +8737,9 @@ void opendemowrite(void)
 void record(void)
 {
     short i;
-#ifdef DBGRECORD
-	FILE *pFile;
-#endif
-
     for(i=connecthead;i>=0;i=connectpoint2[i])
          {
          copybufbyte(&sync[i],&recsync[ud.reccnt],sizeof(input));
-#ifdef DBGRECORD
-		 pFile = fopen("c:\\temp\\record.txt","a");
-			   fprintf(pFile,"i=%-5d a=%-2x b=%-8x f=%-4x h=%-2x s=%-4x s=%-8x\n", 
-				   ud.reccnt, recsync[ud.reccnt].avel&0xFF, recsync[ud.reccnt].bits&0xFFFFFFFF, recsync[ud.reccnt].fvel&0xFFFF,
-				   recsync[ud.reccnt].horz&0xFF, recsync[ud.reccnt].svel&0xFFFF, randomseed&0xFFFFFFFF);
-			   fclose(pFile);
-#endif
 			   ud.reccnt++;
                  totalreccnt++;
                  if (ud.reccnt >= RECSYNCBUFSIZ)
@@ -8803,9 +8783,7 @@ int32_t playback(void)
 {
     int32_t i,j,k,l,t;
     uint8_t  foundemo;
-#ifdef DBGRECORD
-	FILE * pFile;
-#endif
+
     if( ready2send ) 
 	{
 		return 0;
@@ -8896,13 +8874,7 @@ int32_t playback(void)
             for(j=connecthead;j>=0;j=connectpoint2[j])
             {
                copybufbyte(&recsync[i],&inputfifo[movefifoend[j]&(MOVEFIFOSIZ-1)][j],sizeof(input));
-#ifdef DBGRECORD
-			   pFile = fopen("c:\\temp\\playback.txt","a");
-			   fprintf(pFile,"i=%-5d a=%-2x b=%-8x f=%-4x h=%-2x s=%-4x s=%-8x\n", 
-				   i, recsync[i].avel&0xFF, recsync[i].bits&0xFFFFFFFF, recsync[i].fvel&0xFFFF,
-				   recsync[i].horz&0xFF, recsync[i].svel&0xFFFF, randomseed&0xFFFFFFFF);
-			   fclose(pFile);
-#endif
+
 			   movefifoend[j]++;
                i++;
                ud.reccnt--;
@@ -9501,9 +9473,6 @@ uint8_t  domovethings(void)
     short i, j;
     uint8_t  ch;
 
-#ifdef DBGRECORD
-	FILE *pFile;
-#endif
 
     for(i=connecthead;i>=0;i=connectpoint2[i])
         if( sync[i].bits&(1<<17) )
@@ -9644,14 +9613,7 @@ uint8_t  domovethings(void)
             syncval[myconnectindex][syncvalhead[myconnectindex]&(MOVEFIFOSIZ-1)] = ch;
             syncvalhead[myconnectindex]++;
 
-#ifdef DBGRECORD
-			pFile = fopen("c:\\temp\\synch.txt","a");
-		             for(i=connecthead;i>=0;i=connectpoint2[i])
-			   fprintf(pFile,"i=%-1d x=%-8x y=%-8x z=%-8x a=%-4x h=%-8x s=%-8x\n", 
-				   i, ps[i].posx, ps[i].posy, ps[i].posz, ps[i].ang, ps[i].horiz,
-				   randomseed&0xFFFFFFFF);
-			   fclose(pFile);
-#endif
+
       }
 
     if(ud.recstat == 1) record();

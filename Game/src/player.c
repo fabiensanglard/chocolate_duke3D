@@ -1871,10 +1871,6 @@ void getinput(short snum)
     loc.bits |=   ACTION(gamefunc_Aim_Up)<<3;
     loc.bits |=   ACTION(gamefunc_Aim_Down)<<4;
     loc.bits |=   ACTION(gamefunc_Run)<<5;
-#if 0  // this function won't be recorded anymore, but it's not really needed as it's *local*
-    loc.bits |=   ACTION(gamefunc_Look_Left)<<6;
-    loc.bits |=   ACTION(gamefunc_Look_Right)<<7;
-#endif
 	loc.bits |=   (ud.auto_aim==2)<<6; // 2 = normal, 1 = bullet only, 0 = disabled (not implemented)
 	loc.bits |=   ud.weaponautoswitch<<7;
 

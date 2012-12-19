@@ -285,7 +285,7 @@ int32_t totalclocklock;
 
 uint16_t mapCRC;
 
-#include "a.h"
+#include "draw.h"
 
 static __inline int32_t nsqrtasm(uint32_t  param)
 {
@@ -3853,7 +3853,7 @@ static void dorotatesprite (int32_t sx, int32_t sy, int32_t z, short a, short pi
         {
             obuffermode = buffermode;
             buffermode = 0;
-            setactivepage(activepage);
+
         }
     }
     else if (dastat&8)
@@ -4173,7 +4173,7 @@ static void dorotatesprite (int32_t sx, int32_t sy, int32_t z, short a, short pi
     if ((vidoption == 1) && (dastat&128) && (origbuffermode == 0))
     {
         buffermode = obuffermode;
-        setactivepage(activepage);
+
     }
 }
 
@@ -7728,35 +7728,9 @@ void printext256_noupdate(int32_t xpos, int32_t ypos, short col, short backcol, 
 }
 
 
-#ifdef DBGRECORD
-int krand(int line, uint8_t * file)
-{
-    int i, k=0;
-    uint8_t  filename[2048];
-    FILE *pFile;
-#else
 int krand()
 {
-#endif
-
     randomseed = (randomseed*27584621)+1;
-
-#ifdef  DBGRECORD
-    for(i=0; file[i]; i++)
-    {
-        if(file[i]=='\\')
-        {
-            i++;
-            k = 0;
-        }
-        filename[k++]=(file[i]=='.')?0:file[i];
-    }
-    // printf("%-5d %-8s %-8x\n", line, filename, randomseed);
-    pFile = fopen("c:\\temp\\krand.txt","a");
-    fprintf(pFile,"%-4d %-5s %-6x\n", line, filename, randomseed);
-    fclose(pFile);
-#endif
-
     return(((uint32_t )randomseed)>>16);
 }
 
@@ -9043,10 +9017,10 @@ void clearallviews(int32_t dacol)
     case 1:
         for(i=0; i<numpages; i++)
         {
-            setactivepage(i);
+
             clearbufbyte((void *)frameplace,imageSize,0L);
         }
-        setactivepage(activepage);
+
     case 2:
         clearbuf((void *)frameplace,(xdim*ydim)>>2,0L);
         break;

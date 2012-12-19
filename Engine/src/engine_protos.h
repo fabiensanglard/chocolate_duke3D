@@ -37,18 +37,17 @@ extern int32_t kread(int32_t handle, void *buffer, int32_t leng);
 extern int32_t klseek(int32_t handle, int32_t offset, int32_t whence);
 extern int32_t kfilelength(int32_t handle);
 extern void kclose(int32_t handle);
-extern void kdfread(void *buffer, size_t dasizeof, size_t count, int32_t fil);
+extern void kdfsread(void *buffer, size_t dasizeof, size_t count, int32_t fil);
 extern void dfread(void *buffer, size_t dasizeof, size_t count, FILE *fil);
 extern void dfwrite(void *buffer, size_t dasizeof, size_t count, FILE *fil);
 extern int32_t compress(uint8_t  *lzwinbuf, int32_t uncompleng, uint8_t  *lzwoutbuf);
 extern int32_t uncompress(uint8_t  *lzwinbuf, int32_t compleng, uint8_t  *lzwoutbuf);
 
 /* sdl_driver.c */
-extern int using_opengl(void);
 extern void _handle_events(void);
 extern uint8_t  _readlastkeyhit(void);
-extern int mprotect_align(const void *addr, size_t len, int prot);
-extern void unprotect_ASM_pages(void);
+
+
 extern void _platform_init(int argc, char  **argv, const char  *title, const char  *icon);
 extern int setvesa(int32_t x, int32_t y);
 extern int screencapture(char  *filename, uint8_t  inverseit);
@@ -58,7 +57,7 @@ extern void getvalidvesamodes(void);
 extern int VBE_setPalette(int32_t start, int32_t num, uint8_t  *palettebuffer);
 extern int VBE_getPalette(int32_t start, int32_t num, uint8_t  *palettebuffer);
 extern void _uninitengine(void);
-extern void uninitvesa(void);
+
 extern int setupmouse(void);
 extern void readmousexy(short *x, short *y);
 extern void readmousebstatus(short *bstatus);
@@ -75,7 +74,7 @@ extern void drawline16(int32_t XStart, int32_t YStart, int32_t XEnd, int32_t YEn
 extern void clear2dscreen(void);
 extern void _idle(void);
 extern void *_getVideoBase(void);
-extern void setactivepage(int32_t dapagenum);
+
 
 extern int inittimer(int);
 extern void uninittimer(void);
@@ -153,11 +152,9 @@ extern void draw2dgrid(int32_t posxe, int32_t posye, short ange, int32_t zoome, 
 extern void draw2dscreen(int32_t posxe, int32_t posye, short ange, int32_t zoome, short gride);
 extern void printext256(int32_t xpos, int32_t ypos, short col, short backcol, char  name[82], uint8_t  fontsize);
 extern void printext256_noupdate(int32_t xpos, int32_t ypos, short col, short backcol, char  name[82], uint8_t  fontsize);
-#ifdef DBGRECORD
-extern int krand(int line, uint8_t * file);
-#else
+
 extern int krand(void);
-#endif
+
 extern void getzrange(int32_t x, int32_t y, int32_t z, short sectnum, int32_t *ceilz, int32_t *ceilhit, int32_t *florz, int32_t *florhit, int32_t walldist, uint32_t  cliptype);
 extern void setview(int32_t x1, int32_t y1, int32_t x2, int32_t y2);
 extern void setaspect(int32_t daxrange, int32_t daaspect);

@@ -90,8 +90,4 @@ extern uint32_t pixelsAllowed;
 #endif
 //END VISUALIZE RENDERER
 
-#endif /* include-once-blocker. */
-
-/* end of a.h ... */
-
-
+#endif

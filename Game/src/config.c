@@ -100,8 +100,7 @@ void CONFIG_GetSetupFilename( void )
    setupfilename[0] = '\0';
 
    // Are we trying to load a mod?
-   if(game_dir[0] != '\0')
-   {
+   if(game_dir[0] != '\0'){
 		FILE *fp = NULL;
 
 	   //Yes
@@ -110,36 +109,24 @@ void CONFIG_GetSetupFilename( void )
 		// let's make sure it's actually there
 		fp = fopen(setupfilename, "r");
 		if(fp)
-		{
 			fclose(fp);
-		}else
-		{
+        else{
 			// It doesn't exist, so revert to the main one.
 			printf("Config file: %s does not exist, using main config.\n", setupfilename);
 			sprintf(setupfilename, "%s", SETUPFILENAME);
 		}
 
-   }else
-   {
+   }else{
 	   //No
 		strcpy (setupfilename, SETUPFILENAME);
    }
 
    printf("Using Setup file: '%s'\n",setupfilename);
    i=clock()+(3*CLOCKS_PER_SEC/4);
-   while (clock()<i)
-      {
+   while (clock()<i){
       ;
-      }
-#if 0 //STUB .CFG lookup
-   /*
-   for (i=0;i<numfiles;i++)
-      {
-      SafeFree(filenames[i]);
-      }
-   */
-#endif //STUB .CFG lookup
    }
+}
 
 /*
 ===================

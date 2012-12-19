@@ -24,7 +24,12 @@ void initcache(int32_t dacachestart, int32_t dacachesize);
 void allocache (int32_t *newhandle, int32_t newbytes, uint8_t  *newlockptr);
 void suckcache (int32_t *suckptr);
 void agecache(void);
+
+
 void reportandexit(char  *errormessage);
+
+
+//Filesystem
 int32_t initgroupfile(const char  *filename);
 void uninitgroupfile(void);
 uint16_t crc16(uint8_t  *data_p, uint16_t length);
@@ -47,9 +52,4 @@ extern char  game_dir[512];
 extern int32_t TCkopen4load(const char  *filename, int readfromGRP);
 
 
-#endif  /* !defined _INCLUDE_CACHE1D_H_ */
-
-/* end of cache1d.h ... */
-
-
-
+#endif

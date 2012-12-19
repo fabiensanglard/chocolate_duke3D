@@ -10,62 +10,6 @@
 
 #include "platform.h"
 
-#if (defined PLATFORM_SUPPORTS_SDL)
-#include "SDL.h"
-
-/* environment variables names... */
-/* These are only honored by the SDL driver. */
-#define BUILD_NOMOUSEGRAB    "BUILD_NOMOUSEGRAB"
-#define BUILD_WINDOWED       "BUILD_WINDOWED"
-#define BUILD_SDLDEBUG       "BUILD_SDLDEBUG"
-#define BUILD_RENDERER       "BUILD_RENDERER"
-#define BUILD_GLLIBRARY      "BUILD_GLLIBRARY"
-#define BUILD_USERSCREENRES  "BUILD_USERSCREENRES"
-#define BUILD_MAXSCREENRES   "BUILD_MAXSCREENRES"
-#define BUILD_HALLOFMIRRORS  "BUILD_HALLOFMIRRORS"
-#define BUILD_GLDUMP         "BUILD_GLDUMP"
-#define BUILD_SDLJOYSTICK    "BUILD_SDLJOYSTICK"
-
-/* This part sucks. */
-#if (defined __WATCOMC__)
-#pragma aux (__cdecl) SDL_Init;
-#pragma aux (__cdecl) SDL_PumpEvents;
-#pragma aux (__cdecl) SDL_PollEvent;
-#pragma aux (__cdecl) SDL_GetMouseState;
-#pragma aux (__cdecl) SDL_WM_GrabInput;
-#pragma aux (__cdecl) SDL_GetError;
-#pragma aux (__cdecl) SDL_SetEventFilter;
-#pragma aux (__cdecl) SDL_WM_SetCaption;
-#pragma aux (__cdecl) SDL_ClearError;
-#pragma aux (__cdecl) SDL_SetVideoMode;
-#pragma aux (__cdecl) SDL_ClearError;
-#pragma aux (__cdecl) SDL_Quit;
-#pragma aux (__cdecl) SDL_QuitSubSystem;
-#pragma aux (__cdecl) SDL_GetTicks;
-#pragma aux (__cdecl) SDL_GetVideoInfo;
-#pragma aux (__cdecl) SDL_ListModes;
-#pragma aux (__cdecl) SDL_SetColors;
-#pragma aux (__cdecl) SDL_ShowCursor;
-#pragma aux (__cdecl) SDL_LockSurface;
-#pragma aux (__cdecl) SDL_UnlockSurface;
-#pragma aux (__cdecl) SDL_FillRect;
-#pragma aux (__cdecl) SDL_Delay;
-#pragma aux (__cdecl) SDL_AddTimer;
-#pragma aux (__cdecl) SDL_RemoveTimer;
-#pragma aux (__cdecl) SDL_Flip;
-#pragma aux (__cdecl) SDL_UpdateRect;
-#pragma aux (__cdecl) SDL_GetVideoSurface;
-#pragma aux (__cdecl) SDL_VideoDriverName;
-#pragma aux (__cdecl) SDL_SetPalette;
-#pragma aux (__cdecl) SDL_VideoModeOK;
-#pragma aux (__cdecl) SDL_GetClipRect;
-#pragma aux (__cdecl) SDL_SetClipRect;
-#pragma aux (__cdecl) SDL_WM_ToggleFullScreen;
-#pragma aux (__cdecl) SDL_Linked_Version;
-#endif  /* defined __WATCOMC__ */
-
-#endif  /* defined PLATFORM_SUPPORTS_SDL */
-
 /* set these in your _platform_init() implementation. */
 extern int _argc;
 extern char  **_argv;
@@ -116,28 +60,20 @@ int _joystick_axis(int axis);
 int _joystick_hat(int hat);
 int _joystick_button(int button);
 
-/*
- * VESA replacement code: The Unix (not-actually-VESA) version of this is
- *  originally using SDL (Simple Directmedia Layer: http://www.libsdl.org/),
- *  and is stored in sdl_driver.c, but there's no reason another driver
- *  couldn't be dropped in, so int32_t as it implements these functions. Please
- *  reference sdl_driver.c and ves2.h (the original code) for all the nuances
- *  and global variables that need to get set up correctly.
- */
 void getvalidvesamodes(void);
 int VBE_getPalette(int32_t start, int32_t num, uint8_t  *dapal);
 int VBE_setPalette(int32_t start, int32_t num, uint8_t  *palettebuffer);
 int setvesa(int32_t x, int32_t y);
-void uninitvesa(void);
+
 void setvmode(int mode);
 uint8_t  readpixel(int32_t offset);
-void drawpixel(int32_t offset, Uint8 pixel);
-void drawpixels(int32_t offset, Uint16 pixels);
-void drawpixelses(int32_t offset, Uint32 pixelses);
+void drawpixel(int32_t offset, uint8_t pixel);
+void drawpixels(int32_t offset, uint16_t pixels);
+void drawpixelses(int32_t offset, uint32_t pixelses);
 void drawpixel16(int32_t offset);
 void fillscreen16 (int32_t input1, int32_t input2, int32_t input3);
 
-void setactivepage(int32_t dapagenum);
+
 void clear2dscreen(void);
 void _updateScreenRect(int32_t x, int32_t y, int32_t w, int32_t h);
 
@@ -163,10 +99,7 @@ uint32_t getticks();
 void drawline16(int32_t XStart, int32_t YStart, int32_t XEnd, int32_t YEnd, uint8_t  Color);
 void setcolor16(int i1);
 
-int using_opengl(void);
 
-#endif  /* _INCLUDE_DISPLAY_H_ */
-
-/* end of display.h ... */
+#endif
 
 

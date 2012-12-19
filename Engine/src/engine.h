@@ -123,11 +123,9 @@ int neartag(int32_t xs, int32_t ys, int32_t zs, short sectnum, short ange,
 int pushmove(int32_t *x, int32_t *y, int32_t *z, short *sectnum,
              int32_t walldist, int32_t ceildist, int32_t flordist,
              uint32_t  cliptype);
-#ifdef DBGRECORD
-int krand(int line, uint8_t * file);
-#else
+
 int krand(void);
-#endif
+
 void flushperms(void);
 void rotatesprite(int32_t sx, int32_t sy, int32_t z, short a, short picnum,
                   int8_t dashade, uint8_t  dapalnum, uint8_t  dastat,

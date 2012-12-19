@@ -24,6 +24,18 @@
 #error This platform apparently does not use SDL. Do not compile this.
 #endif
 
+
+#define BUILD_NOMOUSEGRAB    "BUILD_NOMOUSEGRAB"
+#define BUILD_WINDOWED       "BUILD_WINDOWED"
+#define BUILD_SDLDEBUG       "BUILD_SDLDEBUG"
+#define BUILD_RENDERER       "BUILD_RENDERER"
+#define BUILD_GLLIBRARY      "BUILD_GLLIBRARY"
+#define BUILD_USERSCREENRES  "BUILD_USERSCREENRES"
+#define BUILD_MAXSCREENRES   "BUILD_MAXSCREENRES"
+#define BUILD_HALLOFMIRRORS  "BUILD_HALLOFMIRRORS"
+#define BUILD_GLDUMP         "BUILD_GLDUMP"
+#define BUILD_SDLJOYSTICK    "BUILD_SDLJOYSTICK"
+
 #include "SDL.h"
 #include "build.h"
 #include "display.h"
@@ -279,7 +291,7 @@ const char  *renderer_name[RENDERER_TOTAL];
 
 static sdl_renderer_type renderer = RENDERER_SOFTWARE;
 
-#include "a.h"
+#include "draw.h"
 #include "cache1d.h"
 
 
@@ -461,11 +473,6 @@ Uint8 *get_framebuffer(void)
     return(NULL);
 } /* get_framebuffer */
 
-
-int using_opengl(void)
-{
-    return(renderer == RENDERER_OPENGL3D);
-} /* using_opengl */
 
 
 /*
@@ -1050,44 +1057,11 @@ static void init_renderer_names(void)
 //#include "mmulti_stable.h"
 void Setup_UnstableNetworking()
 {
-	/*
-	callcommit = unstable_callcommit;
-	initcrc = unstable_initcrc;
-	getcrc = unstable_getcrc;
-	initmultiplayers = unstable_initmultiplayers;
-	sendpacket = unstable_sendpacket;
-	setpackettimeout = unstable_setpackettimeout;
-	uninitmultiplayers = unstable_uninitmultiplayers;
-	sendlogon = unstable_sendlogon;
-	sendlogoff = unstable_sendlogoff;
-	getoutputcirclesize = unstable_getoutputcirclesize;
-	setsocket = unstable_setsocket;
-	getpacket = unstable_getpacket;
-	flushpackets = unstable_flushpackets;
-	genericmultifunction = unstable_genericmultifunction;
-	*/
 	nNetMode = 0;
 }
 
 void Setup_StableNetworking()
 {
-	/*
-	callcommit = stable_callcommit;
-	initcrc = stable_initcrc;
-	getcrc = stable_getcrc;
-	initmultiplayers = stable_initmultiplayers;
-	sendpacket = stable_sendpacket;
-	setpackettimeout = stable_setpackettimeout;
-	uninitmultiplayers = stable_uninitmultiplayers;
-	sendlogon = stable_sendlogon;
-	sendlogoff = stable_sendlogoff;
-	getoutputcirclesize = stable_getoutputcirclesize;
-	setsocket = stable_setsocket;
-	getpacket = stable_getpacket;
-	flushpackets = stable_flushpackets;
-	genericmultifunction = stable_genericmultifunction;
-	*/
-
 	nNetMode = 1;
 }
 
@@ -1693,10 +1667,6 @@ void _uninitengine(void)
 } /* _uninitengine */
 
 
-void uninitvesa(void)
-{
-   SDL_QuitSubSystem(SDL_INIT_VIDEO);
-} /* uninitvesa */
 
 
 int setupmouse(void)
@@ -2107,11 +2077,6 @@ void *_getVideoBase(void)
     return((void *) surface->pixels);
 }
 
-void setactivepage(int32_t dapagenum)
-{
-	/* !!! Is this really still needed? - DDOI */
-    /*fprintf(stderr, "%s, line %d; setactivepage(): STUB.\n", __FILE__, __LINE__);*/
-} /* setactivepage */
 
 //-------------------------------------------------------------------------------------------------
 //  TIMER
