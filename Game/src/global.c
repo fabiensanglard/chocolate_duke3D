@@ -556,8 +556,7 @@ int32 SafeOpenAppend (const char  *_filename, int32 filetype)
 #if (defined PLATFORM_WIN32)
     handle = open(filename,O_RDWR | O_BINARY | O_CREAT | O_APPEND );
 #else
-	handle = open(filename,O_RDWR | O_BINARY | O_CREAT | O_APPEND
-	, S_IREAD | S_IWRITE);
+	handle = open(filename,O_RDWR | O_BINARY | O_CREAT | O_APPEND , S_IREAD | S_IWRITE);
 #endif
 
 	if (handle == -1)

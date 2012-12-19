@@ -25,7 +25,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 //-------------------------------------------------------------------------
 
 #include "duke3d.h"
-#include "cache.h"
+#include "filesystem.h"
 #include "game.h"
 
 extern uint8_t  everyothertime;

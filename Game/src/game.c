@@ -56,6 +56,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 #include "global.h"
 
 #include "cache.h"
+#include "filesystem.h"
 
 #define MINITEXT_BLUE	0
 #define MINITEXT_RED	2
@@ -7683,9 +7684,9 @@ void compilecons(void)
 {
 	char  userconfilename[512];
 
-   mymembuf = (uint8_t  *)&hittype[0];
+   mymembuf = (char  *)hittype;
    labelcode = (int32_t *)&sector[0];
-   label = (uint8_t  *)&sprite[0];
+   label = (char  *)sprite;
 
 	sprintf(userconfilename, "%s", confilename);
 

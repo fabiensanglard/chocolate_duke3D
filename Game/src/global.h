@@ -58,4 +58,6 @@ void Shutdown(void);
 #define Swapint32_t IntelLong
 #endif
 
+void Error (int errorType, char  *error, ...);
+
 #endif

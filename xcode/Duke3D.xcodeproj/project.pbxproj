@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2D2A07CA168286D500064107 /* filesystem.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A07C9168286D400064107 /* filesystem.c */; };
 		2D4FB6FF167D430F00915887 /* sdl_midi.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D4FB6FE167D430F00915887 /* sdl_midi.c */; };
 		2D7B621D1678885A00E35E54 /* draw.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B61F11678885A00E35E54 /* draw.c */; };
 		2D7B621E1678885A00E35E54 /* cache.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B61F41678885A00E35E54 /* cache.c */; };
@@ -73,6 +74,8 @@
 		2D2A07B8167EFA4900064107 /* music.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = music.h; path = ../../Game/src/audiolib/music.h; sourceTree = "<group>"; };
 		2D2A07BA167EFB5500064107 /* premap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = premap.h; path = ../../Game/src/premap.h; sourceTree = "<group>"; };
 		2D2A07BB167F1ABA00064107 /* global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = global.h; path = ../../Game/src/global.h; sourceTree = "<group>"; };
+		2D2A07C9168286D400064107 /* filesystem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = filesystem.c; path = ../../Engine/src/filesystem.c; sourceTree = "<group>"; };
+		2D2A07CB168286F200064107 /* filesystem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = filesystem.h; path = ../../Engine/src/filesystem.h; sourceTree = "<group>"; };
 		2D4FB6FE167D430F00915887 /* sdl_midi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sdl_midi.c; sourceTree = "<group>"; };
 		2D7B61DE167886FB00E35E54 /* Duke3D */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Duke3D; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D7B61F11678885A00E35E54 /* draw.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = draw.c; path = ../../Engine/src/draw.c; sourceTree = "<group>"; };
@@ -190,6 +193,48 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2D2A07CC1682870D00064107 /* headers */ = {
+			isa = PBXGroup;
+			children = (
+				2D2A07CE1682875B00064107 /* enet */,
+				2D7B622F1678895A00E35E54 /* macos_compat.h */,
+				2D7B61F21678885A00E35E54 /* draw.h */,
+				2D7B61F31678885A00E35E54 /* build.h */,
+				2D2A07CB168286F200064107 /* filesystem.h */,
+				2D7B61F51678885A00E35E54 /* cache.h */,
+				2D7B61F61678885A00E35E54 /* display.h */,
+				2D7B620F1678885A00E35E54 /* engine_protos.h */,
+				2D7B62111678885A00E35E54 /* engine.h */,
+				2D7B62121678885A00E35E54 /* icon.h */,
+				2D7B62191678885A00E35E54 /* platform.h */,
+				2D7B621B1678885A00E35E54 /* pragmas.h */,
+			);
+			name = headers;
+			sourceTree = "<group>";
+		};
+		2D2A07CD1682871200064107 /* implementations */ = {
+			isa = PBXGroup;
+			children = (
+				2D7B61F71678885A00E35E54 /* enet */,
+				2D7B61F11678885A00E35E54 /* draw.c */,
+				2D2A07C9168286D400064107 /* filesystem.c */,
+				2D7B61F41678885A00E35E54 /* cache.c */,
+				2D7B62101678885A00E35E54 /* engine.c */,
+				2D7B621A1678885A00E35E54 /* pragmas.c */,
+				2D7B621C1678885A00E35E54 /* sdl_driver.c */,
+				2D7B630016791C0200E35E54 /* dummy_multi.c */,
+			);
+			name = implementations;
+			sourceTree = "<group>";
+		};
+		2D2A07CE1682875B00064107 /* enet */ = {
+			isa = PBXGroup;
+			children = (
+				2D7B61FB1678885A00E35E54 /* include */,
+			);
+			name = enet;
+			sourceTree = "<group>";
+		};
 		2D7B61D3167886FB00E35E54 = {
 			isa = PBXGroup;
 			children = (
@@ -224,23 +269,8 @@
 		2D7B61F01678884400E35E54 /* Engine */ = {
 			isa = PBXGroup;
 			children = (
-				2D7B61F21678885A00E35E54 /* draw.h */,
-				2D7B61F11678885A00E35E54 /* draw.c */,
-				2D7B61F31678885A00E35E54 /* build.h */,
-				2D7B61F41678885A00E35E54 /* cache.c */,
-				2D7B61F51678885A00E35E54 /* cache.h */,
-				2D7B61F61678885A00E35E54 /* display.h */,
-				2D7B61F71678885A00E35E54 /* enet */,
-				2D7B620F1678885A00E35E54 /* engine_protos.h */,
-				2D7B62101678885A00E35E54 /* engine.c */,
-				2D7B62111678885A00E35E54 /* engine.h */,
-				2D7B62121678885A00E35E54 /* icon.h */,
-				2D7B62191678885A00E35E54 /* platform.h */,
-				2D7B621A1678885A00E35E54 /* pragmas.c */,
-				2D7B621B1678885A00E35E54 /* pragmas.h */,
-				2D7B621C1678885A00E35E54 /* sdl_driver.c */,
-				2D7B622F1678895A00E35E54 /* macos_compat.h */,
-				2D7B630016791C0200E35E54 /* dummy_multi.c */,
+				2D2A07CC1682870D00064107 /* headers */,
+				2D2A07CD1682871200064107 /* implementations */,
 			);
 			name = Engine;
 			sourceTree = "<group>";
@@ -249,7 +279,6 @@
 			isa = PBXGroup;
 			children = (
 				2D7B61FA1678885A00E35E54 /* host.c */,
-				2D7B61FB1678885A00E35E54 /* include */,
 				2D7B62061678885A00E35E54 /* list.c */,
 				2D7B62071678885A00E35E54 /* memory.c */,
 				2D7B62081678885A00E35E54 /* packet.c */,
@@ -275,7 +304,8 @@
 				2D7B62031678885A00E35E54 /* utility.h */,
 				2D7B62041678885A00E35E54 /* win32.h */,
 			);
-			path = include;
+			name = include;
+			path = ../../Engine/src/enet/include;
 			sourceTree = "<group>";
 		};
 		2D7B623916788F7900E35E54 /* Game */ = {
@@ -460,6 +490,7 @@
 				2D7C17DE167AD6A500E1BBA1 /* user.c in Sources */,
 				2D7C17E0167ADE2000E1BBA1 /* pitch.c in Sources */,
 				2D4FB6FF167D430F00915887 /* sdl_midi.c in Sources */,
+				2D2A07CA168286D500064107 /* filesystem.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

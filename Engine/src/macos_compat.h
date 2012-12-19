@@ -11,6 +11,8 @@
 
 #define PLATFORM_SUPPORTS_SDL
 
+#include <stdlib.h>
+
 #define kmalloc(x) malloc(x)
 #define kkmalloc(x) malloc(x)
 #define kfree(x) free(x)
@@ -48,9 +50,11 @@
 #define strcmpi strcasecmp
 
 #include <assert.h>
-
+#include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/uio.h>
 #include <unistd.h>
+#include <fcntl.h>
+
 
 #endif

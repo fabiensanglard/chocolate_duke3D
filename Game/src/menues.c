@@ -28,7 +28,8 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 #include "mouse.h"
 #include "animlib.h"
 #include "control.h"
-#include "cache.h"
+
+#include "filesystem.h"
 #include "SDL.h"
 #include "premap.h"
 

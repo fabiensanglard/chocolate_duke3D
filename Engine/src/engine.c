@@ -30,6 +30,7 @@
 
 #include "build.h"
 #include "cache.h"
+#include "filesystem.h"
 
 #include "engine.h"
 
