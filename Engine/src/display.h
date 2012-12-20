@@ -11,8 +11,8 @@
 #include "platform.h"
 
 /* set these in your _platform_init() implementation. */
-extern int _argc;
-extern char  **_argv;
+int _argc;
+char  **_argv;
 
 /* !!! gads, look at all the namespace polution... */
 extern int32_t xres, yres, bytesperline, imageSize, maxpages;
@@ -24,10 +24,11 @@ extern int32_t *horizlookup, *horizlookup2, horizycent;
 extern int32_t oxdimen, oviewingrange, oxyaspect;
 extern int32_t curbrightness;
 extern int32_t qsetmode;
-extern int32_t frameplace, frameoffset, pageoffset, ydim16;
+extern int32_t frameplace, pageoffset, ydim16;
+extern int32_t frameoffset;
 extern uint8_t  textfont[1024], smalltextfont[1024];
 extern uint8_t  pow2char[8];
-extern volatile int32_t stereomode, visualpage, activepage, whiteband, blackband;
+extern int32_t stereomode, visualpage, activepage, whiteband, blackband;
 extern int32_t searchx, searchy;
 extern int32_t wx1, wy1, wx2, wy2, ydimen;
 extern int32_t xdimen, xdimenrecip, halfxdimen, xdimenscale, xdimscale;

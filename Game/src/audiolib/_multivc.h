@@ -121,7 +121,7 @@ typedef struct VoiceNode
    int           handle;
    int           priority;
 
-   void          ( *DemandFeed )( char **ptr, unsigned long *length );
+   void          ( *DemandFeed )( char **ptr, uint32_t *length );
 
 #if 0
    short        *LeftVolume;

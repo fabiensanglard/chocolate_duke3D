@@ -47,7 +47,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 #include <time.h>
 #include <ctype.h>
 
-#include "cache.h"
+#include "build.h"
 
 #if (!defined MAX_PATH)
   #if (defined MAXPATHLEN)
@@ -173,15 +173,11 @@ struct player_struct;
 #include "rts.h"
 #include "soundefs.h"
 
-#if PLATFORM_DOS
-#include "audiolib/task_man.h"
-#include "audiolib/sndcards.h"
-#endif
 #include "audiolib/music.h"
 
 #include "names.h"
 
-#include "engine.h"
+#include "../../Engine/src/engine.h"
 #include "pragmas.h"
 
 //#define TICRATE (120)
@@ -220,8 +216,6 @@ extern int g_iTicksPerFrame;
 #define    WHITE 15
 
 #define    PHEIGHT (38<<8)
-
-// #define P(X) printf("%ld\n",X);
 
 #define WAIT(X) ototalclock=totalclock+(X);while(totalclock<ototalclock)
 
@@ -615,7 +609,7 @@ extern int32_t frameplace, chainplace, chainnumpages;
 extern volatile int32_t checksume;
 
 #include "funct.h"
-#include "engine_protos.h"
+//#include "engine_protos.h"
 
 extern uint8_t  screencapt;
 extern short soundps[NUM_SOUNDS],soundpe[NUM_SOUNDS],soundvo[NUM_SOUNDS];
@@ -692,7 +686,7 @@ extern int32_t *curipos[MAXINTERPOLATIONS];
 extern short numclouds,clouds[128],cloudx[128],cloudy[128];
 extern int32_t cloudtotalclock,totalmemory;
 
-extern int32_t stereomode, stereowidth, stereopixelwidth;
+
 
 extern int32_t myaimmode, myaimstat, omyaimstat;
 

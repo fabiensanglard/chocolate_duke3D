@@ -2063,7 +2063,7 @@ void MV_StopRecord
 
 int MV_StartDemandFeedPlayback
    (
-   void ( *function )( char **ptr, unsigned long *length ),
+   void ( *function )( char **ptr, uint32_t *length ),
    int rate,
    int pitchoffset,
    int vol,

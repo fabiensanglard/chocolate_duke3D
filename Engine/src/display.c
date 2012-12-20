@@ -41,7 +41,7 @@
 #include "display.h"
 #include "pragmas.h"
 #include "engine.h"
-#include "engine_protos.h"
+//#include "engine_protos.h"
 
 #include "mmulti_unstable.h"
 #include "mmulti_stable.h"

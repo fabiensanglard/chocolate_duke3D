@@ -132,9 +132,9 @@ void preparemirror(int32_t dax, int32_t day, int32_t daz,
 void completemirror(void);
 int clipinsidebox(int32_t x, int32_t y, int16_t wallnum, int32_t walldist);
 
-#ifdef SUPERBUILD
-void qloadkvx(int32_t voxindex, uint8_t  *filename);
-#endif
+#include "cache.h"
+#include "filesystem.h"
+#include "display.h"
 
 #ifdef __cplusplus
 }

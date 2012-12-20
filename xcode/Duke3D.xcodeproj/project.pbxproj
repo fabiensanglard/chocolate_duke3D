@@ -21,7 +21,7 @@
 		2D7B62261678885A00E35E54 /* win32.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B620E1678885A00E35E54 /* win32.c */; };
 		2D7B62271678885A00E35E54 /* engine.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62101678885A00E35E54 /* engine.c */; };
 		2D7B622C1678885A00E35E54 /* pragmas.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B621A1678885A00E35E54 /* pragmas.c */; };
-		2D7B622D1678885A00E35E54 /* sdl_driver.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B621C1678885A00E35E54 /* sdl_driver.c */; };
+		2D7B622D1678885A00E35E54 /* display.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B621C1678885A00E35E54 /* display.c */; };
 		2D7B623616788ACE00E35E54 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D7B623416788AB200E35E54 /* Cocoa.framework */; };
 		2D7B623716788AE200E35E54 /* SDL_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D7B623216788AAB00E35E54 /* SDL_mixer.framework */; };
 		2D7B623816788AF800E35E54 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D7B623016788A9B00E35E54 /* SDL.framework */; };
@@ -101,14 +101,13 @@
 		2D7B620A1678885A00E35E54 /* protocol.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = protocol.c; sourceTree = "<group>"; };
 		2D7B620D1678885A00E35E54 /* unix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unix.c; sourceTree = "<group>"; };
 		2D7B620E1678885A00E35E54 /* win32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = win32.c; sourceTree = "<group>"; };
-		2D7B620F1678885A00E35E54 /* engine_protos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = engine_protos.h; path = ../../Engine/src/engine_protos.h; sourceTree = "<group>"; };
 		2D7B62101678885A00E35E54 /* engine.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = engine.c; path = ../../Engine/src/engine.c; sourceTree = "<group>"; };
 		2D7B62111678885A00E35E54 /* engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = engine.h; path = ../../Engine/src/engine.h; sourceTree = "<group>"; };
 		2D7B62121678885A00E35E54 /* icon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = icon.h; path = ../../Engine/src/icon.h; sourceTree = "<group>"; };
 		2D7B62191678885A00E35E54 /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = platform.h; path = ../../Engine/src/platform.h; sourceTree = "<group>"; };
 		2D7B621A1678885A00E35E54 /* pragmas.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pragmas.c; path = ../../Engine/src/pragmas.c; sourceTree = "<group>"; };
 		2D7B621B1678885A00E35E54 /* pragmas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pragmas.h; path = ../../Engine/src/pragmas.h; sourceTree = "<group>"; };
-		2D7B621C1678885A00E35E54 /* sdl_driver.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sdl_driver.c; path = ../../Engine/src/sdl_driver.c; sourceTree = "<group>"; };
+		2D7B621C1678885A00E35E54 /* display.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = display.c; path = ../../Engine/src/display.c; sourceTree = "<group>"; };
 		2D7B622F1678895A00E35E54 /* macos_compat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = macos_compat.h; path = ../../Engine/src/macos_compat.h; sourceTree = "<group>"; };
 		2D7B623016788A9B00E35E54 /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = /Library/Frameworks/SDL.framework; sourceTree = "<absolute>"; };
 		2D7B623216788AAB00E35E54 /* SDL_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_mixer.framework; path = /Library/Frameworks/SDL_mixer.framework; sourceTree = "<absolute>"; };
@@ -196,16 +195,15 @@
 		2D2A07CC1682870D00064107 /* headers */ = {
 			isa = PBXGroup;
 			children = (
-				2D2A07CE1682875B00064107 /* enet */,
-				2D7B622F1678895A00E35E54 /* macos_compat.h */,
-				2D7B61F21678885A00E35E54 /* draw.h */,
 				2D7B61F31678885A00E35E54 /* build.h */,
-				2D2A07CB168286F200064107 /* filesystem.h */,
 				2D7B61F51678885A00E35E54 /* cache.h */,
 				2D7B61F61678885A00E35E54 /* display.h */,
-				2D7B620F1678885A00E35E54 /* engine_protos.h */,
+				2D7B61F21678885A00E35E54 /* draw.h */,
+				2D2A07CE1682875B00064107 /* enet */,
 				2D7B62111678885A00E35E54 /* engine.h */,
+				2D2A07CB168286F200064107 /* filesystem.h */,
 				2D7B62121678885A00E35E54 /* icon.h */,
+				2D7B622F1678895A00E35E54 /* macos_compat.h */,
 				2D7B62191678885A00E35E54 /* platform.h */,
 				2D7B621B1678885A00E35E54 /* pragmas.h */,
 			);
@@ -215,14 +213,14 @@
 		2D2A07CD1682871200064107 /* implementations */ = {
 			isa = PBXGroup;
 			children = (
-				2D7B61F71678885A00E35E54 /* enet */,
-				2D7B61F11678885A00E35E54 /* draw.c */,
-				2D2A07C9168286D400064107 /* filesystem.c */,
 				2D7B61F41678885A00E35E54 /* cache.c */,
-				2D7B62101678885A00E35E54 /* engine.c */,
-				2D7B621A1678885A00E35E54 /* pragmas.c */,
-				2D7B621C1678885A00E35E54 /* sdl_driver.c */,
+				2D7B621C1678885A00E35E54 /* display.c */,
+				2D7B61F11678885A00E35E54 /* draw.c */,
 				2D7B630016791C0200E35E54 /* dummy_multi.c */,
+				2D7B61F71678885A00E35E54 /* enet */,
+				2D7B62101678885A00E35E54 /* engine.c */,
+				2D2A07C9168286D400064107 /* filesystem.c */,
+				2D7B621A1678885A00E35E54 /* pragmas.c */,
 			);
 			name = implementations;
 			sourceTree = "<group>";
@@ -238,20 +236,6 @@
 		2D2A07CF16828B7600064107 /* headers */ = {
 			isa = PBXGroup;
 			children = (
-				2D7B626416788F9B00E35E54 /* rts.h */,
-				2D7B626616788F9B00E35E54 /* scriplib.h */,
-				2D7B626816788F9B00E35E54 /* sounddebugdefs.h */,
-				2D7B626916788F9B00E35E54 /* soundefs.h */,
-				2D7B626B16788F9B00E35E54 /* sounds.h */,
-				2D7B626C16788F9B00E35E54 /* types.h */,
-				2D7B626D16788F9B00E35E54 /* util_lib.h */,
-				2D7B62FD167905C400E35E54 /* dukeunix.h */,
-				2D2A07BA167EFB5500064107 /* premap.h */,
-				2D2A07BB167F1ABA00064107 /* global.h */,
-				2D7B624916788F9B00E35E54 /* DbgHelp.h */,
-				2D7B624D16788F9B00E35E54 /* file_lib.h */,
-				2D7B625F16788F9B00E35E54 /* mouse.h */,
-				2D7B626016788F9B00E35E54 /* names.h */,
 				2D7B623A16788F9B00E35E54 /* _functio.h */,
 				2D7B623B16788F9B00E35E54 /* _rts.h */,
 				2D7B623E16788F9B00E35E54 /* animlib.h */,
@@ -260,15 +244,29 @@
 				2D7B624416788F9B00E35E54 /* control.h */,
 				2D7B624616788F9B00E35E54 /* cvar_defs.h */,
 				2D7B624816788F9B00E35E54 /* cvars.h */,
+				2D7B624916788F9B00E35E54 /* DbgHelp.h */,
 				2D7B624A16788F9B00E35E54 /* develop.h */,
 				2D7B624B16788F9B00E35E54 /* duke3d.h */,
+				2D7B62FD167905C400E35E54 /* dukeunix.h */,
 				2D7B624C16788F9B00E35E54 /* dukewin.h */,
+				2D7B624D16788F9B00E35E54 /* file_lib.h */,
 				2D7B624E16788F9B00E35E54 /* funct.h */,
 				2D7B624F16788F9B00E35E54 /* function.h */,
 				2D7B625116788F9B00E35E54 /* game.h */,
 				2D7B625316788F9B00E35E54 /* gamedefs.h */,
+				2D2A07BB167F1ABA00064107 /* global.h */,
 				2D7B625516788F9B00E35E54 /* joystick.h */,
 				2D7B625716788F9B00E35E54 /* keyboard.h */,
+				2D7B625F16788F9B00E35E54 /* mouse.h */,
+				2D7B626016788F9B00E35E54 /* names.h */,
+				2D2A07BA167EFB5500064107 /* premap.h */,
+				2D7B626416788F9B00E35E54 /* rts.h */,
+				2D7B626616788F9B00E35E54 /* scriplib.h */,
+				2D7B626816788F9B00E35E54 /* sounddebugdefs.h */,
+				2D7B626916788F9B00E35E54 /* soundefs.h */,
+				2D7B626B16788F9B00E35E54 /* sounds.h */,
+				2D7B626C16788F9B00E35E54 /* types.h */,
+				2D7B626D16788F9B00E35E54 /* util_lib.h */,
 			);
 			name = headers;
 			sourceTree = "<group>";
@@ -474,7 +472,7 @@
 				2D7B62261678885A00E35E54 /* win32.c in Sources */,
 				2D7B62271678885A00E35E54 /* engine.c in Sources */,
 				2D7B622C1678885A00E35E54 /* pragmas.c in Sources */,
-				2D7B622D1678885A00E35E54 /* sdl_driver.c in Sources */,
+				2D7B622D1678885A00E35E54 /* display.c in Sources */,
 				2D7B626E16788F9B00E35E54 /* actors.c in Sources */,
 				2D7B626F16788F9B00E35E54 /* animlib.c in Sources */,
 				2D7B627016788F9B00E35E54 /* config.c in Sources */,

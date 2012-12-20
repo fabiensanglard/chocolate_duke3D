@@ -41,12 +41,12 @@ extern int32_t asm4;
 
 static uint8_t machxbits_al;
 static uint8_t machxbits_bl;
-static int32_t machxbits_ecx;
-void sethlinesizes(int32_t i1, int32_t i2, int32_t i3)
+static uint8_t * machxbits_ecx;
+void sethlinesizes(int32_t i1, int32_t i2, uint8_t * textureAddress)
 {
     machxbits_al = i1;
     machxbits_bl = i2;
-    machxbits_ecx = i3;
+    machxbits_ecx = textureAddress;
 } 
 
 
@@ -102,7 +102,7 @@ void setuprhlineasm4(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5,
 } 
 
 
-void rhlineasm4(int32_t i1, int32_t i2, int32_t i3, uint32_t i4, uint32_t i5, int32_t dest)
+void rhlineasm4(int32_t i1, uint8_t* texture, int32_t i3, uint32_t i4, uint32_t i5, int32_t dest)
 {
     uint32_t ebp = dest - i1;
     uint32_t rmach6b = ebp-1;
@@ -115,19 +115,23 @@ void rhlineasm4(int32_t i1, int32_t i2, int32_t i3, uint32_t i4, uint32_t i5, in
 		
 		
 
-	    i3 = ((i3&0xffffff00)|(*((uint8_t *)i2)));
+	    i3 = ((i3&0xffffff00)|(*texture));
 	    i4 -= rmach_eax;
 	    ebp = (((i4+rmach_eax) < i4) ? -1 : 0);
 	    i5 -= rmach_ebx;
-	    if ((i5 + rmach_ebx) < i5) i2 -= (rmach_ecx+1);
-	    else i2 -= rmach_ecx;
+        
+	    if ((i5 + rmach_ebx) < i5)
+            texture -= (rmach_ecx+1);
+	    else
+            texture -= rmach_ecx;
+        
 	    ebp &= rmach_esi;
 	    i1 = ((i1&0xffffff00)|(((uint8_t *)i3)[rmach_edx]));
 
 		if (pixelsAllowed-- > 0)
 			 ((uint8_t *)rmach6b)[numPixels] = (i1&0xff);
 
-	    i2 -= ebp;
+	    texture -= ebp;
 	    numPixels--;
     } while (numPixels);
 }
@@ -208,10 +212,9 @@ void fixtransluscence(uint8_t* transLuscentPalette)
 static uint8_t  mach3_al;
 
 //FCS:  RENDER TOP AND BOTTOM COLUMN
-int32_t prevlineasm1(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6)
+int32_t prevlineasm1(int32_t i1, int32_t i2, int32_t i3, int32_t i4, uint8_t  *source, uint8_t  *dest)
 {
-    uint8_t  *source = (uint8_t  *)i5;
-    uint8_t  *dest = (uint8_t  *)i6;
+
 
     if (i3 == 0)
     {
@@ -231,13 +234,13 @@ int32_t prevlineasm1(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5,
 
 	    return i1;
     } else {
-	    return vlineasm1(i1,i2,i3,i4,i5,i6);
+	    return vlineasm1(i1,i2,i3,i4,source,dest);
     }
 }
 
 
 //FCS: This is used to draw wall border vertical lines
-int32_t vlineasm1(int32_t vince, int32_t palookupoffse, int32_t numPixels, int32_t vplce, int32_t bufplce, int32_t frameBufferDestination)
+int32_t vlineasm1(int32_t vince, int32_t palookupoffse, int32_t numPixels, int32_t vplce, uint8_t* texture, uint8_t  * frameBufferDestination)
 {
     uint32_t temp;
     uint8_t  *dest = (uint8_t  *)frameBufferDestination;
@@ -253,7 +256,7 @@ int32_t vlineasm1(int32_t vince, int32_t palookupoffse, int32_t numPixels, int32
 
 	    temp = ((uint32_t)vplce) >> mach3_al;
         
-	    temp = ((uint8_t  *)bufplce)[temp];
+	    temp = texture[temp];
       
 		if (pixelsAllowed-- > 0)
 			*dest = ((uint8_t *)palookupoffse)[temp];
@@ -720,14 +723,14 @@ void settrans(int32_t type){
 	transrev = type;
 }
 
-static int32_t mmach_eax;
+static uint8_t  * textureData;
 static int32_t mmach_asm3;
 static int32_t mmach_asm1;
 static int32_t mmach_asm2;
 
-void mhline(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, uint8_t* dest)
+void mhline(uint8_t  * texture, int32_t i2, int32_t i3, int32_t i4, int32_t i5, uint8_t* dest)
 {
-    mmach_eax = i1;
+    textureData = texture;
     mmach_asm3 = asm3;
     mmach_asm1 = asm1;
     mmach_asm2 = asm2;
@@ -746,7 +749,7 @@ void mhlineskipmodify( uint32_t i2, int32_t pixels, int32_t i4, int32_t i5, uint
     {
 	    ebx = i2 >> mshift_al;
 	    ebx = shld (ebx, (uint32_t)i5, mshift_bl);
-	    colorIndex = ((uint8_t  *)mmach_eax)[ebx];
+	    colorIndex = textureData[ebx];
 
         //Skip transparent color.
 		if ((colorIndex&0xff) != 0xff){

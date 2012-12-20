@@ -55,8 +55,6 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 
 #include "global.h"
 
-#include "cache.h"
-#include "filesystem.h"
 
 #define MINITEXT_BLUE	0
 #define MINITEXT_RED	2

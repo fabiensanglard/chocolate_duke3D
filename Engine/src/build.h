@@ -41,12 +41,7 @@
 	#define EXTERN extern
 #endif
 
-
-#ifdef PLATFORM_DOS
-#pragma pack(push,1);
-#else
 #pragma pack(1)
-#endif
 
 /*
  * ceilingstat/floorstat:
@@ -139,11 +134,7 @@ typedef struct
 	short lotag, hitag, extra;
 } spritetype;
 
-#ifdef PLATFORM_DOS
-#pragma pack(pop);
-#else
 #pragma pack()
-#endif
 
 EXTERN sectortype sector[MAXSECTORS];
 EXTERN walltype wall[MAXWALLS];
@@ -187,7 +178,8 @@ EXTERN short prevspritesect[MAXSPRITES], prevspritestat[MAXSPRITES];
 EXTERN short nextspritesect[MAXSPRITES], nextspritestat[MAXSPRITES];
 
 EXTERN short tilesizx[MAXTILES], tilesizy[MAXTILES];
-// An array of locks for each pic
+
+// An array of locks for each pic: Used to check if a texture is in RAM or in the GRP.
 EXTERN uint8_t  walock[MAXTILES];
 EXTERN int32_t numtiles, picanm[MAXTILES], waloff[MAXTILES];
 

@@ -197,7 +197,7 @@ static void setupWindowMenu(void)
 }
 
 /* Replacement for NSApplicationMain */
-static void CustomApplicationMain (int argc, uint8_t  **argv)
+static void CustomApplicationMain (int argc, char  **argv)
 {
     NSAutoreleasePool	*pool = [[NSAutoreleasePool alloc] init];
     SDLMain				*sdlMain;
@@ -254,7 +254,7 @@ static void CustomApplicationMain (int argc, uint8_t  **argv)
 {
     const char  *temparg;
     size_t arglen;
-    uint8_t  *arg;
+    char  *arg;
     char  **newargv;
     
     if (!gFinderLaunch)  /* MacOS is passing command line args. */
@@ -265,11 +265,11 @@ static void CustomApplicationMain (int argc, uint8_t  **argv)
     
     temparg = [filename UTF8String];
     arglen = SDL_strlen(temparg) + 1;
-    arg = (uint8_t  *) SDL_malloc(arglen);
+    arg = (char  *) SDL_malloc(arglen);
     if (arg == NULL)
         return FALSE;
     
-    newargv = (uint8_t  **) realloc(gArgv, sizeof (uint8_t  *) * (gArgc + 2));
+    newargv = (char  **) realloc(gArgv, sizeof (uint8_t  *) * (gArgc + 2));
     if (newargv == NULL)
     {
         SDL_free(arg);

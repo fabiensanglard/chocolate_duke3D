@@ -36,8 +36,8 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 #include <time.h>
 #include "duke3d.h"
 #include "scriplib.h"
-#include "cache.h"
-#include "filesystem.h"
+#include "build.h"
+
 
 // we load this in to get default button and key assignments
 // as well as setting up function mappings
@@ -292,15 +292,15 @@ void CONFIG_ReadKeys( void )
 	// FIX_00011: duke3d.cfg not needed anymore to start the game. Will create a default one
 	//            if not found and use default keys.
 
-	for(i=0; i<NUMKEYENTRIES; i++)
-	{
-	function = CONFIG_FunctionNameToNum(keydefaults[i].entryKey);
-	key1 = (byte) KB_StringToScanCode( keydefaults[i].keyname1 );
-	key2 = (byte) KB_StringToScanCode( keydefaults[i].keyname2 );
-	CONTROL_MapKey( function, key1, key2 );
+	for(i=0; i<NUMKEYENTRIES; i++){
+        function = CONFIG_FunctionNameToNum(keydefaults[i].entryKey);
+        key1 = (byte) KB_StringToScanCode( keydefaults[i].keyname1 );
+        key2 = (byte) KB_StringToScanCode( keydefaults[i].keyname2 );
+        CONTROL_MapKey( function, key1, key2 );
 	}
 
-   numkeyentries = SCRIPT_NumberEntries( scripthandle, "KeyDefinitions" );
+   
+       numkeyentries = SCRIPT_NumberEntries( scripthandle, "KeyDefinitions" );
 
    for (i=0;i<numkeyentries;i++)  // i = number in which the functions appear in duke3d.cfg
       {
