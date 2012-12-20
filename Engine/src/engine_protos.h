@@ -159,7 +159,7 @@ extern void getzrange(int32_t x, int32_t y, int32_t z, short sectnum, int32_t *c
 extern void setview(int32_t x1, int32_t y1, int32_t x2, int32_t y2);
 extern void setaspect(int32_t daxrange, int32_t daaspect);
 extern void flushperms(void);
-extern void rotatesprite(int32_t sx, int32_t sy, int32_t z, short a, short picnum, int8_t dashade, uint8_t  dapalnum, uint8_t  dastat, int32_t cx1, int32_t cy1, int32_t cx2, int32_t cy2);
+extern void rotatesprite(int32_t sx, int32_t sy, int32_t z, int16_t a, int16_t picnum, int8_t dashade, uint8_t  dapalnum, uint8_t  dastat, int32_t cx1, int32_t cy1, int32_t cx2, int32_t cy2);
 extern void makepalookup(int32_t palnum, uint8_t  *remapbuf, int8_t r, int8_t g, int8_t b, uint8_t  dastat);
 extern void setbrightness(uint8_t  dabrightness, uint8_t  *dapal);
 extern void drawmapview(int32_t dax, int32_t day, int32_t zoome, short ang);

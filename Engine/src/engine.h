@@ -37,112 +37,100 @@ void faketimerhandler(void);
  */
 int initmouse(void);
 int setgamemode(uint8_t  davidoption, int32_t daxdim, int32_t daydim);
-int getceilzofslope(short sectnum, int32_t dax, int32_t day);
-int getflorzofslope(short sectnum, int32_t dax, int32_t day);
-void getzsofslope(short sectnum, int32_t dax, int32_t day, int32_t *ceilz, int32_t *florz);
+int getceilzofslope(int16_t sectnum, int32_t dax, int32_t day);
+int getflorzofslope(int16_t sectnum, int32_t dax, int32_t day);
+void getzsofslope(int16_t sectnum, int32_t dax, int32_t day, int32_t *ceilz, int32_t *florz);
 void setaspect(int32_t daxrange, int32_t daaspect);
-int insertsprite(short sectnum, short statnum);
-void updatesector(int32_t x, int32_t y, short *sectnum);
-int lastwall(short point);
+int insertsprite(int16_t sectnum, int16_t statnum);
+void updatesector(int32_t x, int32_t y, int16_t *sectnum);
+int lastwall(int16_t point);
 void initspritelists(void);
-int deletesprite(short spritenum);
-int insertspritesect(short sectnum);
-int deletespritesect(short deleteme);
-int deletespritestat (short deleteme);
-int insertspritestat(short statnum);
-int changespritesect(short spritenum, short newsectnum);
-int changespritestat(short spritenum, short newstatnum);
-void loadtile(short tilenume);
+int deletesprite(int16_t spritenum);
+int insertspritesect(int16_t sectnum);
+int deletespritesect(int16_t deleteme);
+int deletespritestat (int16_t deleteme);
+int insertspritestat(int16_t statnum);
+int changespritesect(int16_t spritenum, int16_t newsectnum);
+int changespritestat(int16_t spritenum, int16_t newstatnum);
+void loadtile(int16_t tilenume);
 
 
 void nextpage(void);
-void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,
-               short daang, int32_t dahoriz, short dacursectnum);
-int loadboard(char  *filename, int32_t *daposx, int32_t *daposy,
-			  int32_t *daposz, short *daang, short *dacursectnum);
+void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,int16_t daang, int32_t dahoriz, int16_t dacursectnum);
+int loadboard(char  *filename, int32_t *daposx, int32_t *daposy,int32_t *daposz, int16_t *daang, int16_t *dacursectnum);
 void drawmasks(void);
-void printext256(int32_t xpos, int32_t ypos, short col, short backcol,char  name[82], uint8_t  fontsize);
-void printext256_noupdate(int32_t xpos, int32_t ypos, short col, short backcol,char  name[82], uint8_t  fontsize);
+void printext256(int32_t xpos, int32_t ypos, int16_t col, int16_t backcol,char  name[82], uint8_t  fontsize);
+void printext256_noupdate(int32_t xpos, int32_t ypos, int16_t col, int16_t backcol,char*  name, uint8_t  fontsize);
 void initengine(void);
 void uninitengine(void);
 
 int loadpics(char  *filename, char * gamedir);
-int saveboard(char  *filename, int32_t *daposx, int32_t *daposy, int32_t *daposz,
-                         short *daang, short *dacursectnum);
+int saveboard(char  *filename, int32_t *daposx, int32_t *daposy, int32_t *daposz,int16_t *daang, int16_t *dacursectnum);
 void plotpixel(int32_t x, int32_t y, uint8_t  col);
 uint8_t  getpixel(int32_t x, int32_t y);
 void setbrightness(uint8_t  dabrightness, uint8_t  *dapal);
 int screencapture(char  *filename, uint8_t  inverseit);
-void getmousevalues(short *mousx, short *mousy, short *bstatus);
-int clipmove (int32_t *x, int32_t *y, int32_t *z, short *sectnum, int32_t xvect,
-			int32_t yvect, int32_t walldist, int32_t ceildist,
-			int32_t flordist, uint32_t  cliptype);
-void getzrange(int32_t x, int32_t y, int32_t z, short sectnum,
-			int32_t *ceilz, int32_t *ceilhit, int32_t *florz, int32_t *florhit,
-			int32_t walldist, uint32_t  cliptype);
+void getmousevalues(int16_t *mousx, int16_t *mousy, int16_t *bstatus);
+int clipmove (int32_t *x, int32_t *y, int32_t *z, int16_t *sectnum, int32_t xvect,int32_t yvect, int32_t walldist, int32_t ceildist,int32_t flordist, uint32_t  cliptype);
+void getzrange(int32_t x, int32_t y, int32_t z, int16_t sectnum,int32_t *ceilz, int32_t *ceilhit, int32_t *florz, int32_t *florhit,int32_t walldist, uint32_t  cliptype);
 int getangle(int32_t xvect, int32_t yvect);
-void alignceilslope(short dasect, int32_t x, int32_t y, int32_t z);
-void alignflorslope(short dasect, int32_t x, int32_t y, int32_t z);
-int hitscan(int32_t xs, int32_t ys, int32_t zs, short sectnum,
+void alignceilslope(int16_t dasect, int32_t x, int32_t y, int32_t z);
+void alignflorslope(int16_t dasect, int32_t x, int32_t y, int32_t z);
+int hitscan(int32_t xs, int32_t ys, int32_t zs, int16_t sectnum,
             int32_t vx, int32_t vy, int32_t vz,
-	        short *hitsect, short *hitwall, short *hitsprite,
+	        int16_t *hitsect, int16_t *hitwall, int16_t *hitsprite,
 	        int32_t *hitx, int32_t *hity, int32_t *hitz, uint32_t  cliptype);
-int inside (int32_t x, int32_t y, short sectnum);
-void setfirstwall(short sectnum, short newfirstwall);
-void rotatepoint(int32_t xpivot, int32_t ypivot, int32_t x, int32_t y, short daang,
+int inside (int32_t x, int32_t y, int16_t sectnum);
+void setfirstwall(int16_t sectnum, int16_t newfirstwall);
+void rotatepoint(int32_t xpivot, int32_t ypivot, int32_t x, int32_t y, int16_t daang,
 			int32_t *x2, int32_t *y2);
 int drawtilescreen(int32_t pictopleft, int32_t picbox);
 void clearview(int32_t dacol);
 void clearallviews(int32_t dacol);
-void draw2dgrid(int32_t posxe, int32_t posye, short ange, int32_t zoome,
-			short gride);
-void draw2dscreen(int32_t posxe, int32_t posye, short ange, int32_t zoome,
-			short gride);
-int sectorofwall(short theline);
-int setsprite(short spritenum, int32_t newx, int32_t newy, int32_t newz);
-void dragpoint(short pointhighlight, int32_t dax, int32_t day);
+void draw2dgrid(int32_t posxe, int32_t posye, int16_t ange, int32_t zoome,int16_t gride);
+void draw2dscreen(int32_t posxe, int32_t posye, int16_t ange, int32_t zoome,int16_t gride);
+int sectorofwall(int16_t theline);
+int setsprite(int16_t spritenum, int32_t newx, int32_t newy, int32_t newz);
+void dragpoint(int16_t pointhighlight, int32_t dax, int32_t day);
 int ksqrt(int32_t num);
-int loopnumofsector(short sectnum, short wallnum);
-int cansee(int32_t x1, int32_t y1, int32_t z1, short sect1,
-            int32_t x2, int32_t y2, int32_t z2, short sect2);
-int lintersect(int32_t x1, int32_t y1, int32_t z1, int32_t x2, int32_t y2, int32_t z2,
-               int32_t x3, int32_t y3, int32_t x4, int32_t y4, int32_t *intx,
-               int32_t *inty, int32_t *intz);
+int loopnumofsector(int16_t sectnum, int16_t wallnum);
+int cansee(int32_t x1, int32_t y1, int32_t z1, int16_t sect1,int32_t x2, int32_t y2, int32_t z2, int16_t sect2);
+int lintersect(int32_t x1, int32_t y1, int32_t z1, int32_t x2, int32_t y2, int32_t z2, int32_t x3, int32_t y3, int32_t x4, int32_t y4, int32_t *intx,int32_t *inty, int32_t *intz);
 int rintersect(int32_t x1, int32_t y1, int32_t z1, int32_t vx, int32_t vy, int32_t vz,
                int32_t x3, int32_t y3, int32_t x4, int32_t y4, int32_t *intx,
                int32_t *inty, int32_t *intz);
-int allocatepermanenttile(short tilenume, int32_t xsiz, int32_t ysiz);
+int allocatepermanenttile(int16_t tilenume, int32_t xsiz, int32_t ysiz);
 void drawline256 (int32_t x1, int32_t y1, int32_t x2, int32_t y2, uint8_t  col);
 void copytilepiece(int32_t tilenume1, int32_t sx1, int32_t sy1, int32_t xsiz, int32_t ysiz,
                    int32_t tilenume2, int32_t sx2, int32_t sy2);
-int nextsectorneighborz(short sectnum, int32_t thez,
-                        short topbottom, short direction);
-int neartag(int32_t xs, int32_t ys, int32_t zs, short sectnum, short ange,
-            short *neartagsector, short *neartagwall, short *neartagsprite,
+int nextsectorneighborz(int16_t sectnum, int32_t thez,
+                        int16_t topbottom, int16_t direction);
+int neartag(int32_t xs, int32_t ys, int32_t zs, int16_t sectnum, int16_t ange,
+            int16_t *neartagsector, int16_t *neartagwall, int16_t *neartagsprite,
             int32_t *neartaghitdist, int32_t neartagrange, uint8_t  tagsearch);
-int pushmove(int32_t *x, int32_t *y, int32_t *z, short *sectnum,
+int pushmove(int32_t *x, int32_t *y, int32_t *z, int16_t *sectnum,
              int32_t walldist, int32_t ceildist, int32_t flordist,
              uint32_t  cliptype);
 
 int krand(void);
 
 void flushperms(void);
-void rotatesprite(int32_t sx, int32_t sy, int32_t z, short a, short picnum,
+void rotatesprite(int32_t sx, int32_t sy, int32_t z, int16_t a, int16_t picnum,
                   int8_t dashade, uint8_t  dapalnum, uint8_t  dastat,
                   int32_t cx1, int32_t cy1, int32_t cx2, int32_t cy2);
 void makepalookup(int32_t palnum, uint8_t  *remapbuf, int8_t r,
                   int8_t g, int8_t b, uint8_t  dastat);
-void drawmapview(int32_t dax, int32_t day, int32_t zoome, short ang);
+void drawmapview(int32_t dax, int32_t day, int32_t zoome, int16_t ang);
 void setview(int32_t x1, int32_t y1, int32_t x2, int32_t y2);
-void setviewtotile(short tilenume, int32_t xsiz, int32_t ysiz);
+void setviewtotile(int16_t tilenume, int32_t xsiz, int32_t ysiz);
 void setviewback(void);
-void squarerotatetile(short tilenume);
+void squarerotatetile(int16_t tilenume);
 void preparemirror(int32_t dax, int32_t day, int32_t daz,
-                   short daang, int32_t dahoriz, short dawall,
-                   short dasector, int32_t *tposx, int32_t *tposy,
+                   int16_t daang, int32_t dahoriz, int16_t dawall,
+                   int16_t dasector, int32_t *tposx, int32_t *tposy,
                    short *tang);
 void completemirror(void);
-int clipinsidebox(int32_t x, int32_t y, short wallnum, int32_t walldist);
+int clipinsidebox(int32_t x, int32_t y, int16_t wallnum, int32_t walldist);
 
 #ifdef SUPERBUILD
 void qloadkvx(int32_t voxindex, uint8_t  *filename);
@@ -152,9 +140,4 @@ void qloadkvx(int32_t voxindex, uint8_t  *filename);
 }
 #endif
 
-#endif /* !defined _INCLUDE_ENGINE_H_ */
-
-/* end of engine.h ... */
-
-
-
+#endif
