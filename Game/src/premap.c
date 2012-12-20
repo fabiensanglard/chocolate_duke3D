@@ -1481,7 +1481,7 @@ if (!VOLUMEONE)
 {
     if( boardfilename[0] != 0 && ud.m_level_number == 7 && ud.m_volume_number == 0 )
     {
-		sprintf(fulllevelfilename, "%s\\%s",  game_dir, boardfilename);
+		sprintf(fulllevelfilename, "%s\\%s",  getGameDir(), boardfilename);
 		if(!SafeFileExists(fulllevelfilename))
 		{
 			sprintf(fulllevelfilename, "%s", boardfilename);
@@ -1495,7 +1495,7 @@ if (!VOLUMEONE)
     }
     else
     {
-		sprintf(fulllevelfilename, "%s\\%s",  game_dir, level_file_names[ (ud.volume_number*11)+ud.level_number]);
+		sprintf(fulllevelfilename, "%s\\%s",  getGameDir(), level_file_names[ (ud.volume_number*11)+ud.level_number]);
 		if(!SafeFileExists(fulllevelfilename))
 		{
 			sprintf(fulllevelfilename, "%s", level_file_names[ (ud.volume_number*11)+ud.level_number]);

@@ -7147,7 +7147,7 @@ void checkcommandline(int argc,char  **argv)
 				// Get the file name
 				i++;
 				c = argv[i];
-				strncpy(game_dir, c, 512);
+				setGameDir(c);
 			
 				// skip over the file name now that we have it.
 				i++;
@@ -7210,8 +7210,8 @@ void checkcommandline(int argc,char  **argv)
                         c++;
                         if(*c)
                         {
-							if(game_dir[0] != '\0'){
-								sprintf(confilename, "%s\\%s", game_dir, c);
+							if(getGameDir()[0] != '\0'){
+								sprintf(confilename, "%s\\%s", getGameDir(), c);
 							}
 							else{
 								strcpy(confilename,c);
@@ -7234,8 +7234,8 @@ void checkcommandline(int argc,char  **argv)
 								strcat(c,".grp"); // crap!
 							}
 
-							if(game_dir[0] != '\0'){
-								sprintf(fullpathgrpfile, "%s\\%s", game_dir, c);
+							if(getGameDir()[0] != '\0'){
+								sprintf(fullpathgrpfile, "%s\\%s", getGameDir(), c);
 							}
 							else{
 								strcpy(fullpathgrpfile, c);
@@ -7732,14 +7732,8 @@ void Startup(void)
 
    puts("Loading art header.");
 
-   if(game_dir[0] != '\0')
-   {
-		loadpics("tiles000.art", game_dir);
-   }
-   else
-   {
-	   loadpics("tiles000.art", "\0");
-   }
+  loadpics("tiles000.art", "\0");
+   
 
    readsavenames();
 
@@ -8036,9 +8030,9 @@ void findGRPToUse(char * groupfilefullpath){
     
     directoryToScan[0] = '\0';
     
-    if (game_dir[0] != '\0')
+    if (getGameDir()[0] != '\0')
     {
-        strcat(directoryToScan,game_dir);
+        strcat(directoryToScan,getGameDir());
         if (directoryToScan[strlen(directoryToScan)-1] != '/')
             strcat(directoryToScan,"/");
     }
@@ -8690,9 +8684,9 @@ void opendemowrite(void)
     ver = BYTEVERSION;
 
 	// Are we loading a TC?
-	if(game_dir[0] != '\0'){
+	if(getGameDir()[0] != '\0'){
 		// Yes
-		sprintf(fullpathdemofilename, "%s\\%s", game_dir, d);
+		sprintf(fullpathdemofilename, "%s\\%s", getGameDir(), d);
 	}
 	else{
 		// No 
@@ -10608,11 +10602,11 @@ void takescreenshot(void)
 
 
 	// If this is a TC save it to the TC's directory
-	if(game_dir[0] != '\0')
+	if(getGameDir()[0] != '\0')
 	{
-		sprintf(szFilename, "%s\\%s", game_dir, SCREENSHOTPATH);
+		sprintf(szFilename, "%s\\%s", getGameDir(), SCREENSHOTPATH);
 		mkdir(szFilename);
-		sprintf(szFilename, "%s\\%s\\%s", game_dir, SCREENSHOTPATH, tempbuf);
+		sprintf(szFilename, "%s\\%s\\%s", getGameDir(), SCREENSHOTPATH, tempbuf);
 	}
 	// otherwise let's save it to the root.
 	else

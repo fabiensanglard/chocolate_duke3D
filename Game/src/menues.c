@@ -582,10 +582,10 @@ int saveplayer(int8_t spot)
 
 
 	// Are we loading a TC?
-	if(game_dir[0] != '\0')
+	if(getGameDir()[0] != '\0')
 	{
 		// Yes
-		sprintf(fullpathsavefilename, "%s\\%s", game_dir, fnptr);
+		sprintf(fullpathsavefilename, "%s\\%s", getGameDir(), fnptr);
 	}
 	else
 	{

@@ -92,7 +92,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 
 extern uint8_t  conVersion;
 extern uint8_t  grpVersion;
-extern int32_t* groupefil_crc32;
+extern int32_t groupefil_crc32[4];
 
 #define RANCID_ID 1
 #define	XDUKE_ID  2
@@ -418,7 +418,7 @@ struct user_defs
 	// FIX_00015: Backward compliance with older demos (down to demos v27, 28, 116 and 117 only)
 	uint8_t  playing_demo_rev;
 
-	uint32_t* groupefil_crc32[MAXPLAYERS];
+	uint32_t groupefil_crc32[MAXPLAYERS][4];
 	uint16_t conSize[MAXPLAYERS];
 
 #ifdef CHECK_XDUKE_REV

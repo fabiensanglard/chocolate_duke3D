@@ -101,11 +101,11 @@ void CONFIG_GetSetupFilename( void )
    setupfilename[0] = '\0';
 
    // Are we trying to load a mod?
-   if(game_dir[0] != '\0'){
+   if(getGameDir()[0] != '\0'){
 		FILE *fp = NULL;
 
 	   //Yes
-		sprintf(setupfilename, "%s\\%s", game_dir, SETUPFILENAME);
+		sprintf(setupfilename, "%s\\%s", getGameDir(), SETUPFILENAME);
 		
 		// let's make sure it's actually there
 		fp = fopen(setupfilename, "r");
@@ -553,10 +553,10 @@ void readsavenames(void)
         fn[4] = i+'0';
 
 		// Are we loading a TC?
-		if(game_dir[0] != '\0')
+		if(getGameDir()[0] != '\0')
 		{
 			// Yes
-			sprintf(fullpathsavefilename, "%s\\%s", game_dir, fn);
+			sprintf(fullpathsavefilename, "%s\\%s", getGameDir(), fn);
 		}
 		else
 		{

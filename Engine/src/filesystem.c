@@ -13,6 +13,8 @@
 #include "pragmas.h"
 #include "global.h"
 
+char game_dir[512];
+
 uint8_t  toupperlookup[256] =
 {
 	0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0a,0x0b,0x0c,0x0d,0x0e,0x0f,
@@ -643,3 +645,17 @@ int32_t TCkopen4load(const char  *filename, int readfromGRP)
     
 	return result;
 }
+
+
+void   setGameDir(char* gameDir){
+    if (gameDir == NULL)
+        return;
+    
+    stpncpy(game_dir,gameDir,sizeof(game_dir));
+}
+
+char*  getGameDir(void){
+    return game_dir;
+}
+
+
