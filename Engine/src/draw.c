@@ -428,7 +428,7 @@ void vlineasm4(int32_t columnIndex, int32_t framebuffer)
         uint8_t  *dest= (uint8_t *)(-ylookup[columnIndex]);
         //uint8_t  *dest= (uint8_t *)framebuffer;
         
-        uint32_t index = 0;
+        //uint32_t index = 0;
         do {
             for (i = 0; i < 4; i++)
             {
