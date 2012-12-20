@@ -1303,7 +1303,7 @@ static void wallscan(int32_t x1, int32_t x2,
     while ((umost[x] > dmost[x]) && (x <= x2))
         x++;
 
-    for(; (x<=x2)&&((x+frameoffset)&3); x++)
+    for(; (x<=x2)&&((x+frameoffset-(uint8_t*)NULL)&3); x++)
     {
         y1ve[0] = max(uwal[x],umost[x]);
         y2ve[0] = min(dwal[x],dmost[x]);

@@ -587,7 +587,7 @@ extern short screenpeek;
 
 extern int current_menu;
 extern int32_t tempwallptr,animatecnt;
-extern int32_t lockclock,frameplace;
+extern int32_t lockclock;
 extern uint8_t  display_mirror,rtsplaying;
 
 extern int32_t movefifoend[MAXPLAYERS];
@@ -605,7 +605,7 @@ extern short mirrorwall[64], mirrorsector[64], mirrorcnt;
 
 #define NUMKEYS 19
 
-extern int32_t frameplace, chainplace, chainnumpages;
+extern int32_t chainplace, chainnumpages;
 extern volatile int32_t checksume;
 
 #include "funct.h"

@@ -386,15 +386,14 @@ void tvlineasm2(uint32_t i1, uint32_t i2, uint32_t i3, uint32_t i4, uint32_t i5,
 
 
 static uint8_t  machmv;
-int32_t mvlineasm1(int32_t vince, int32_t palookupoffse, int32_t i3, int32_t vplce, int32_t bufplce, int32_t i6)
+int32_t mvlineasm1(int32_t vince, int32_t palookupoffse, int32_t i3, int32_t vplce, uint8_t* texture, uint8_t  *dest)
 {
     uint32_t temp;
-    uint8_t  *dest = (uint8_t  *)i6;
 
     for(;i3>=0;i3--)
     {
 		temp = ((uint32_t)vplce) >> machmv;
-	    temp = ((uint8_t  *)bufplce)[temp];
+	    temp = texture[temp];
 
 	    if (temp != 255) 
 		{
@@ -427,7 +426,9 @@ void vlineasm4(int32_t columnIndex, int32_t framebuffer)
         
         uint32_t index = (framebuffer + ylookup[columnIndex]);
         uint8_t  *dest= (uint8_t *)(-ylookup[columnIndex]);
+        //uint8_t  *dest= (uint8_t *)framebuffer;
         
+        uint32_t index = 0;
         do {
             for (i = 0; i < 4; i++)
             {

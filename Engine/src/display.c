@@ -312,7 +312,11 @@ int _argc = 0;
 char  **_argv = NULL;
 
     /* !!! move these elsewhere? */
-int32_t xres, yres, bytesperline, frameplace, frameoffset, imageSize, maxpages;
+int32_t xres, yres, bytesperline, imageSize, maxpages;
+uint8_t* frameplace;
+
+//The frambuffer address
+uint8_t* frameoffset;
 uint8_t  *screen, vesachecked;
 int32_t buffermode, origbuffermode, linearmode;
 uint8_t  permanentupdate = 0, vgacompatible;
@@ -511,7 +515,7 @@ static void init_new_res_vars(int32_t davidoption)
 		// FIX_00083: Sporadic crash on fullscreen/window mode toggle
 		// frameoffset wasn't always updated fast enought. Build were using the old 
 		// pointer of frameoffset.  
-        frameoffset = frameplace = (int32_t) ( ((Uint8 *) surface->pixels) );
+        frameoffset = frameplace = (uint8_t*)surface->pixels;
 
   	if (screen != NULL)
    	{
