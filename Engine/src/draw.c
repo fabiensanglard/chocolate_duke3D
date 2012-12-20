@@ -212,7 +212,7 @@ void fixtransluscence(uint8_t* transLuscentPalette)
 static uint8_t  mach3_al;
 
 //FCS:  RENDER TOP AND BOTTOM COLUMN
-int32_t prevlineasm1(int32_t i1, int32_t i2, int32_t i3, int32_t i4, uint8_t  *source, uint8_t  *dest)
+int32_t prevlineasm1(int32_t i1, uint8_t* palette, int32_t i3, int32_t i4, uint8_t  *source, uint8_t  *dest)
 {
 
 
@@ -228,19 +228,19 @@ int32_t prevlineasm1(int32_t i1, int32_t i2, int32_t i3, int32_t i4, uint8_t  *s
 	    i4 = (i4&0xffffff00) | (source[i4]&0xff);
 
 		if (pixelsAllowed-- > 0)
-			*dest = ((uint8_t *)i2)[i4];
+			*dest = palette[i4];
 
 		
 
 	    return i1;
     } else {
-	    return vlineasm1(i1,i2,i3,i4,source,dest);
+	    return vlineasm1(i1,palette,i3,i4,source,dest);
     }
 }
 
 
 //FCS: This is used to draw wall border vertical lines
-int32_t vlineasm1(int32_t vince, int32_t palookupoffse, int32_t numPixels, int32_t vplce, uint8_t* texture, uint8_t  * frameBufferDestination)
+int32_t vlineasm1(int32_t vince, uint8_t* palookupoffse, int32_t numPixels, int32_t vplce, uint8_t* texture, uint8_t  * frameBufferDestination)
 {
     uint32_t temp;
     uint8_t  *dest = (uint8_t  *)frameBufferDestination;
@@ -259,7 +259,7 @@ int32_t vlineasm1(int32_t vince, int32_t palookupoffse, int32_t numPixels, int32
 	    temp = texture[temp];
       
 		if (pixelsAllowed-- > 0)
-			*dest = ((uint8_t *)palookupoffse)[temp];
+			*dest = palookupoffse[temp];
 	    
 		vplce += vince;
 	    dest += bytesperline;
@@ -386,7 +386,7 @@ void tvlineasm2(uint32_t i1, uint32_t i2, uint32_t i3, uint32_t i4, uint32_t i5,
 
 
 static uint8_t  machmv;
-int32_t mvlineasm1(int32_t vince, int32_t palookupoffse, int32_t i3, int32_t vplce, uint8_t* texture, uint8_t  *dest)
+int32_t mvlineasm1(int32_t vince, uint8_t* palookupoffse, int32_t i3, int32_t vplce, uint8_t* texture, uint8_t  *dest)
 {
     uint32_t temp;
 
@@ -398,7 +398,7 @@ int32_t mvlineasm1(int32_t vince, int32_t palookupoffse, int32_t i3, int32_t vpl
 	    if (temp != 255) 
 		{
 			if (pixelsAllowed-- > 0)
-			*dest = ((uint8_t *)palookupoffse)[temp];
+			*dest = palookupoffse[temp];
 		}
 
 	    vplce += vince;
@@ -437,7 +437,7 @@ void vlineasm4(int32_t columnIndex, int32_t framebuffer)
         	    temp = (((uint8_t *)(bufplce[i]))[temp]);
                 
 				if (pixelsAllowed-- > 0)
-        			dest[index+i] = ((uint8_t *)(palookupoffse[i]))[temp];
+        			dest[index+i] = palookupoffse [i] [temp];
                 
 	            vplce[i] += vince[i];
             }
@@ -474,7 +474,7 @@ void mvlineasm4(int32_t column, int32_t framebufferOffset)
 	      if (temp != 255)
 		  {
 			  if (pixelsAllowed-- > 0)
-				dest[index+i] = ((uint8_t *)(palookupoffse[i]))[temp];
+				dest[index+i] = palookupoffse[i][temp];
 		  }
 	      vplce[i] += vince[i];
         }

@@ -26,8 +26,9 @@
         
 extern uint8_t  *globalpalwritten;
 extern int16_t  globalshiftval;
-extern int32_t vplce[4], vince[4], palookupoffse[4], bufplce[4];
-    
+extern int32_t vplce[4], vince[4], bufplce[4];
+extern uint8_t* palookupoffse[4];
+        
 void sethlinesizes(int32_t,int32_t,uint8_t *);
 
 
@@ -40,13 +41,13 @@ void rmhlineasm4(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
 
 void setBytesPerLine(int32_t);
 void fixtransluscence(uint8_t*);
-int32_t prevlineasm1(int32_t,int32_t,int32_t,int32_t,uint8_t  *,uint8_t  *);
-int32_t vlineasm1(int32_t,int32_t,int32_t,int32_t,uint8_t  *,uint8_t*);
+int32_t prevlineasm1(int32_t,uint8_t* palette ,int32_t,int32_t,uint8_t  *,uint8_t  *);
+int32_t vlineasm1(int32_t,uint8_t*,int32_t,int32_t,uint8_t  *,uint8_t*);
 
 int32_t tvlineasm1(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
 void setuptvlineasm2(int32_t,int32_t,int32_t);
 void tvlineasm2(uint32_t,uint32_t,uint32_t,uint32_t,uint32_t,uint32_t);
-int32_t mvlineasm1(int32_t,int32_t,int32_t,int32_t,uint8_t* texture,uint8_t* dest);
+int32_t mvlineasm1(int32_t,uint8_t*,int32_t,int32_t,uint8_t* texture,uint8_t* dest);
 void setupvlineasm(int32_t);
 void vlineasm4(int32_t,int32_t);
 void setupmvlineasm(int32_t);

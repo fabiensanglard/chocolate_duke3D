@@ -205,7 +205,10 @@ uint8_t  globparaceilclip, globparaflorclip;
 int32_t xyaspect, viewingrangerecip;
 
 int32_t asm1, asm2, asm3, asm4;
-int32_t vplce[4], vince[4], palookupoffse[4], bufplce[4];
+int32_t vplce[4], vince[4], bufplce[4];
+
+uint8_t*  palookupoffse[4];
+
 uint8_t  globalxshift, globalyshift;
 int32_t globalxpanning, globalypanning, globalshade;
 int16_t globalpicnum, globalshiftval;
