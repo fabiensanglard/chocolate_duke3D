@@ -113,14 +113,14 @@ uint8_t  textfont[1024], smalltextfont[1024];
 enum vector_index_e {VEC_X=0,VECY=1};
 enum screenSpaceCoo_index_e {VEC_COL_X=0,VEC_DIST=1};
 typedef int32_t vector_t[2];
-
+typedef int32_t coo2D_t[2];
 // This is the structure emitted for each wall that is potentially visible.
 // A stack of those is populated when the sectors are scanned.
 typedef struct pvWall_s{
     vector_t cameraSpaceCoo[2]; //Camera space coordinates of the wall endpoints. Access with vector_index_e.
     int16_t sectorId;        //The index of the sector this wall belongs to in the map database.
     int16_t worldWallId;     //The index of the wall in the map database.
-    vector_t screenSpaceCoo[2]; //Screen space coordinate of the wall endpoints. Access with screenSpaceCoo_index_e.
+    coo2D_t screenSpaceCoo[2]; //Screen space coordinate of the wall endpoints. Access with screenSpaceCoo_index_e.
 } pvWall_t;
 
 // Potentially Visible walls are stored in this stack.
