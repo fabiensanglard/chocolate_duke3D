@@ -12,9 +12,28 @@
 
 uint32_t pixelsAllowed = 10000000000;
 
+
+static int transrev = 0;
+
+
 #define shrd(a,b,c) (((b)<<(32-(c))) | ((a)>>(c)))
 #define shld(a,b,c) (((b)>>(32-(c))) | ((a)<<(c)))
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ---------------  WALLS RENDERING METHOD (USED TO BE HIGHLY OPTIMIZED ASSEMBLY) ----------------------------*/
 extern int32_t asm1;
 extern int32_t asm2;
 extern int32_t asm3;
@@ -29,6 +48,7 @@ void sethlinesizes(int32_t i1, int32_t i2, int32_t i3)
     machxbits_bl = i2;
     machxbits_ecx = i3;
 } 
+
 
 
 //FCS:   Draw ceiling/floors
@@ -245,7 +265,7 @@ int32_t vlineasm1(int32_t vince, int32_t palookupoffse, int32_t numPixels, int32
     return vplce;
 } 
 
-static int transrev = 0;
+
 int32_t tvlineasm1(int32_t i1, int32_t i2, int32_t numPixels, int32_t i4, int32_t i5, int32_t _dest)
 {
 	uint8_t  *source = (uint8_t  *)i5;
@@ -333,8 +353,8 @@ void tvlineasm2(uint32_t i1, uint32_t i2, uint32_t i3, uint32_t i4, uint32_t i5,
 			val = ((uint8_t  *)tran2pal_ebx)[i3];
 			val |= (((uint8_t  *)i6)[tran2edi]<<8);
 
-			if (transrev) val = 
-				((val>>8)|(val<<8));
+			if (transrev) 
+                val = ((val>>8)|(val<<8));
 
 			if (pixelsAllowed-- > 0)
 				((uint8_t  *)i6)[tran2edi] = transPalette[val];
@@ -368,7 +388,6 @@ int32_t mvlineasm1(int32_t vince, int32_t palookupoffse, int32_t i3, int32_t vpl
     uint32_t temp;
     uint8_t  *dest = (uint8_t  *)i6;
 
-	// FIX_00087: 1024x768 mode being slow. Undone FIX_00070 and fixed font issue again
     for(;i3>=0;i3--)
     {
 		temp = ((uint32_t)vplce) >> machmv;
@@ -384,7 +403,7 @@ int32_t mvlineasm1(int32_t vince, int32_t palookupoffse, int32_t i3, int32_t vpl
 	    dest += bytesperline;
     }
     return vplce;
-} /* mvlineasm1 */
+}
 
 
 void setupvlineasm(int32_t i1)
@@ -392,12 +411,8 @@ void setupvlineasm(int32_t i1)
     mach3_al = (i1&0x1f);
 }
 
-extern int32_t vplce[4], vince[4], palookupoffse[4], bufplce[4];
-
-
-
-//FCS This is used to fill the inside of a wall
-void vlineasm4(int32_t i1, int32_t i2)
+//FCS This is used to fill the inside of a wall (so it draws VERTICAL column, always).
+void vlineasm4(int32_t columnIndex, int32_t framebuffer)
 {
 
 	if (!RENDER_DRAW_WALL_INSIDE)
@@ -406,16 +421,20 @@ void vlineasm4(int32_t i1, int32_t i2)
     {
         int i;
         uint32_t temp;
-        uint32_t index = (i2 + ylookup[i1]);
-        uint8_t  *dest = (uint8_t *)(-ylookup[i1]);
+        
+        uint32_t index = (framebuffer + ylookup[columnIndex]);
+        uint8_t  *dest= (uint8_t *)(-ylookup[columnIndex]);
+        
         do {
             for (i = 0; i < 4; i++)
             {
 				
         	    temp = ((uint32_t)vplce[i]) >> mach3_al;
         	    temp = (((uint8_t *)(bufplce[i]))[temp]);
+                
 				if (pixelsAllowed-- > 0)
         			dest[index+i] = ((uint8_t *)(palookupoffse[i]))[temp];
+                
 	            vplce[i] += vince[i];
             }
             dest += bytesperline;
@@ -426,6 +445,7 @@ void vlineasm4(int32_t i1, int32_t i2)
 
 void setupmvlineasm(int32_t i1)
 {
+    //Only keep 5 first bits
     machmv = (i1&0x1f);
 } 
 
@@ -457,9 +477,38 @@ void mvlineasm4(int32_t column, int32_t framebufferOffset)
         dest += bytesperline;
 
     } while (((uint32_t)dest - bytesperline) < ((uint32_t)dest));
-} /* mvlineasm4 */
+} 
+/* END ---------------  WALLS RENDERING METHOD (USED TO BE HIGHLY OPTIMIZED ASSEMBLY) ----------------------------*/
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ---------------  SPRITE RENDERING METHOD (USED TO BE HIGHLY OPTIMIZED ASSEMBLY) ----------------------------*/
 static int32_t spal_eax;
 static int32_t smach_eax;
 static int32_t smach2_eax;
@@ -475,10 +524,9 @@ void setupspritevline(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5
 } 
 
 
-void spritevline(int32_t i1, uint32_t i2, int32_t i3, uint32_t i4, int32_t i5, int32_t i6)
+void spritevline(int32_t i1, uint32_t i2, int32_t i3, uint32_t i4, uint8_t* source, uint8_t* dest)
 {
-    uint8_t  *source = (uint8_t  *)i5;
-    uint8_t  *dest = (uint8_t  *)i6;
+    
 
 setup:
 
@@ -489,35 +537,33 @@ setup:
     else 
 		source += smach2_eax;
 
-draw:
-    i1 = (i1&0xffffff00) | (((uint8_t  *)spal_eax)[i1]&0xff);
+    while(1) {
+        
+        i1 = (i1&0xffffff00) | (((uint8_t  *)spal_eax)[i1]&0xff);
+        
+        if (pixelsAllowed-- > 0)
+            *dest = i1;
+        
+        dest += bytesperline;
 
-	if (pixelsAllowed-- > 0)
-		*dest = i1;
-
-	
-
-    dest += bytesperline;
-
-    i4 += smach_ecx;
-    i4--;
-
-    if (!((i4 - smach_ecx) > i4) && i4 != 0)
-	    goto setup;
-
-    if (i4 == 0) 
-		return;
-
-    i2 += smach_eax;
-    i1 = (i1&0xffffff00) | (*source&0xff);
-
-    if ((i2 - smach_eax) > i2) 
-		source += smach5_eax + 1;
-    else 
-		source += smach5_eax;
-
-    goto draw;
-} /* spritevline */
+        i4 += smach_ecx;
+        i4--;
+        if (!((i4 - smach_ecx) > i4) && i4 != 0)
+            goto setup;
+        
+        if (i4 == 0) 
+            return;
+        
+        i2 += smach_eax;
+        
+        i1 = (i1&0xffffff00) | (*source&0xff);
+        
+        if ((i2 - smach_eax) > i2) 
+            source += smach5_eax + 1;
+        else 
+            source += smach5_eax;
+    }
+}
 
 
 static int32_t mspal_eax;
@@ -535,38 +581,49 @@ void msetupspritevline(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i
 } 
 
 
-void mspritevline(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6)
+void mspritevline(int32_t colorIndex, int32_t i2, int32_t i3, int32_t i4, uint8_t  * source, uint8_t  * dest)
 {
-    uint8_t  *source = (uint8_t  *)i5;
-    uint8_t  *dest = (uint8_t  *)i6;
-
+ 
 setup:
     i2 += smach_eax;
-    i1 = (i1&0xffffff00) | (*source&0xff);
-    if ((i2 - smach_eax) > i2) source += smach2_eax + 1;
-    else source += smach2_eax;
+    
+    colorIndex = (colorIndex&0xffffff00) | (*source&0xff);
+    
+    if ((i2 - smach_eax) > i2) 
+        source += smach2_eax + 1;
+    else 
+        source += smach2_eax;
 
-	draw:
-    if ((i1&0xff) != 255)
-    {
-	    i1 = (i1&0xffffff00) | (((uint8_t  *)spal_eax)[i1]&0xff);
-		if (pixelsAllowed-- > 0)
-		  *dest = i1;
-
-	
+	while(1){
+    
+        //Skip transparent pixels (index=255)
+        if ((colorIndex&0xff) != 255)
+        {
+            colorIndex = (colorIndex&0xffffff00) | (((uint8_t  *)spal_eax)[colorIndex]&0xff);
+            
+            if (pixelsAllowed-- > 0)
+                *dest = colorIndex;
+        }
+   
+        dest += bytesperline;
+        i4 += smach_ecx;
+        i4--;
+    
+        if (!((i4 - smach_ecx) > i4) && i4 != 0)
+            goto setup;
+   
+        if (i4 == 0) 
+            return;
+    
+        i2 += smach_eax;
+    
+        colorIndex = (colorIndex&0xffffff00) | (*source&0xff);
+    
+        if ((i2 - smach_eax) > i2) 
+            source += smach5_eax + 1;
+        else 
+            source += smach5_eax;
     }
-    dest += bytesperline;
-
-    i4 += smach_ecx;
-    i4--;
-    if (!((i4 - smach_ecx) > i4) && i4 != 0)
-	    goto setup;
-    if (i4 == 0) return;
-    i2 += smach_eax;
-    i1 = (i1&0xffffff00) | (*source&0xff);
-    if ((i2 - smach_eax) > i2) source += smach5_eax + 1;
-    else source += smach5_eax;
-    goto draw;
 }
 
 
@@ -575,7 +632,7 @@ uint32_t tsmach_eax1;
 uint32_t tsmach_eax2;
 uint32_t tsmach_eax3;
 uint32_t tsmach_ecx;
-void tsetupspritevline(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6)
+void tsetupspritevline(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5)
 {
 	tspal = i1;
 	tsmach_eax1 = i5 << 16;
@@ -585,26 +642,36 @@ void tsetupspritevline(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i
 } 
 
 
-void tspritevline(int32_t i1, int32_t i2, int32_t numPixels, uint32_t i4, int32_t i5, int32_t dest)
+/*
+ FCS: Draw a sprite vertical line of pixels.
+ */
+void DrawSpriteVerticalLine(int32_t i1, int32_t i2, int32_t numPixels, uint32_t i4, int32_t i5, uint8_t  * dest)
 {
 	while (numPixels)
 	{
 		numPixels--;
+        
 		if (numPixels != 0)
 		{
 			uint32_t adder = tsmach_eax2;
 			i4 += tsmach_ecx;
-			if (i4 < (i4 - tsmach_ecx)) adder = tsmach_eax3;
+            
+			if (i4 < (i4 - tsmach_ecx)) 
+                adder = tsmach_eax3;
+            
 			i1 = *((uint8_t  *)i5);
 			i2 += tsmach_eax1;
-			if (i2 < (i2 - tsmach_eax1)) i5++;
+			if (i2 < (i2 - tsmach_eax1)) 
+                i5++;
+            
 			i5 += adder;
-			// tstartsvline
-			if (i1 != 0xff)
+			
+            //255 is the index of the transparent color: Do not draw it.
+			if (i1 != 255)
 			{
 				uint16_t val;
 				val = ((uint8_t *)tspal)[i1];
-				val |= ((*((uint8_t  *)dest))<<8);
+				val |= (*dest)<<8;
 
 				if (transrev) 
 					val = ((val>>8)|(val<<8));
@@ -612,51 +679,84 @@ void tspritevline(int32_t i1, int32_t i2, int32_t numPixels, uint32_t i4, int32_
 				i1 = transPalette[val];
 
 				if (pixelsAllowed-- > 0)
-					*((uint8_t  *)dest) = (i1&0xff);
+					*dest = (i1&0xff);
 			}
+            
+            //Move down one pixel on the framebuffer
 			dest += bytesperline;
 		}
 
 		
 	}
 } 
+/* END---------------  SPRITE RENDERING METHOD (USED TO BE HIGHLY OPTIMIZED ASSEMBLY) ----------------------------*/
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ---------------  FLOOR/CEILING RENDERING METHOD (USED TO BE HIGHLY OPTIMIZED ASSEMBLY) ----------------------------*/
+
+void settrans(int32_t type){
+	transrev = type;
+}
 
 static int32_t mmach_eax;
 static int32_t mmach_asm3;
 static int32_t mmach_asm1;
 static int32_t mmach_asm2;
 
-void mhline(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6)
+void mhline(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, uint8_t* dest)
 {
     mmach_eax = i1;
     mmach_asm3 = asm3;
     mmach_asm1 = asm1;
     mmach_asm2 = asm2;
-    mhlineskipmodify(asm2,i2,i3,i4,i5,i6);
+    mhlineskipmodify(i2,i3>>16,i4,i5,dest);
 }
 
 
 static uint8_t  mshift_al = 26;
 static uint8_t  mshift_bl = 6;
-void mhlineskipmodify(int32_t i1, uint32_t i2, uint32_t i3, int32_t i4, int32_t i5, int32_t i6)
+void mhlineskipmodify( uint32_t i2, int32_t pixels, int32_t i4, int32_t i5, uint8_t* dest)
 {
     uint32_t ebx;
-    int counter = (i3>>16);
-    while (counter >= 0)
+    int32_t colorIndex;
+    
+    while (pixels >= 0)
     {
 	    ebx = i2 >> mshift_al;
 	    ebx = shld (ebx, (uint32_t)i5, mshift_bl);
-	    i1 = ((uint8_t  *)mmach_eax)[ebx];
+	    colorIndex = ((uint8_t  *)mmach_eax)[ebx];
 
-		if (pixelsAllowed-- > 0)
-			if ((i1&0xff) != 0xff)
-				*((uint8_t  *)i6) = (((uint8_t *)mmach_asm3)[i1]);
-
+        //Skip transparent color.
+		if ((colorIndex&0xff) != 0xff){
+            if (pixelsAllowed-- > 0)
+				*dest = (((uint8_t *)mmach_asm3)[colorIndex]);
+        }
 	    i2 += mmach_asm1;
 	    i5 += mmach_asm2;
-	    i6++;
-	    counter--;
+	    dest++;
+	    pixels--;
 
 		
     }
@@ -826,7 +926,4 @@ void slopevlin(int32_t i1, uint32_t i2, int32_t i3, int32_t i4, int32_t i5, int3
 }
 
 
-
-void settrans(int32_t type){
-	transrev = type;
-}
+/* END ---------------  FLOOR/CEILING RENDERING METHOD (USED TO BE HIGHLY OPTIMIZED ASSEMBLY) ----------------------------*/
