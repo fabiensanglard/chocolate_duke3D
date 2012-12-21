@@ -11,7 +11,7 @@
 #include "platform.h"
 #include "cache.h"
 #include "pragmas.h"
-#include "global.h"
+#include "../../Game/src/global.h"
 
 char game_dir[512];
 
@@ -651,7 +651,7 @@ void   setGameDir(char* gameDir){
     if (gameDir == NULL)
         return;
     
-    stpncpy(game_dir,gameDir,sizeof(game_dir));
+    strncpy(game_dir,gameDir,sizeof(game_dir));
 }
 
 char*  getGameDir(void){

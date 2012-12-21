@@ -308,9 +308,6 @@ static sdl_renderer_type renderer = RENDERER_SOFTWARE;
 #define UNLOCK_SURFACE_AND_RETURN  if (SDL_MUSTLOCK(surface)) SDL_UnlockSurface(surface); return;
 
 
-int _argc = 0;
-char  **_argv = NULL;
-
     /* !!! move these elsewhere? */
 int32_t xres, yres, bytesperline, imageSize, maxpages;
 uint8_t* frameplace;
@@ -1075,9 +1072,6 @@ void _platform_init(int argc, char  **argv, const char  *title, const char  *ico
     int i;
 	int64_t timeElapsed;
 	char  dummyString[4096];
-
-    _argc = argc;
-    _argv = argv;
 
 	// FIX_00061: "ERROR: Two players have the same random ID" too frequent cuz of internet windows times
     TIMER_GetPlatformTicks(&timeElapsed);

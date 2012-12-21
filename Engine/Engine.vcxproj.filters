@@ -14,12 +14,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\a.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\cache1d.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Engine.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -30,9 +24,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\pragmas.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sdl_driver.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\enet\host.c">
@@ -59,24 +50,27 @@
     <ClCompile Include="src\enet\win32.c">
       <Filter>enet</Filter>
     </ClCompile>
+    <ClCompile Include="src\cache.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\display.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\draw.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\filesystem.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\a.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\build.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\cache1d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\display.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Engine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\engine_protos.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\icon.h">
@@ -89,6 +83,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\win32_compat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cache.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\draw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\filesystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

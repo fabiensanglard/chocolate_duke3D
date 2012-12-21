@@ -95,13 +95,14 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\a.c" />
-    <ClCompile Include="src\cache1d.c" />
+    <ClCompile Include="src\cache.c" />
+    <ClCompile Include="src\display.c" />
+    <ClCompile Include="src\draw.c" />
     <ClCompile Include="src\Engine.c" />
+    <ClCompile Include="src\filesystem.c" />
     <ClCompile Include="src\mmulti.c" />
     <ClCompile Include="src\mmulti_stable.cpp" />
     <ClCompile Include="src\pragmas.c" />
-    <ClCompile Include="src\sdl_driver.c" />
     <ClCompile Include="src\enet\host.c" />
     <ClCompile Include="src\enet\list.c" />
     <ClCompile Include="src\enet\memory.c" />
@@ -112,12 +113,12 @@
     <ClCompile Include="src\enet\win32.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\a.h" />
     <ClInclude Include="src\build.h" />
-    <ClInclude Include="src\cache1d.h" />
+    <ClInclude Include="src\cache.h" />
     <ClInclude Include="src\display.h" />
+    <ClInclude Include="src\draw.h" />
     <ClInclude Include="src\Engine.h" />
-    <ClInclude Include="src\engine_protos.h" />
+    <ClInclude Include="src\filesystem.h" />
     <ClInclude Include="src\icon.h" />
     <ClInclude Include="src\platform.h" />
     <ClInclude Include="src\pragmas.h" />

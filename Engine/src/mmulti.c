@@ -636,7 +636,7 @@ void deinit_network_transport(gcomtype *gcom)
 #define SOCKET_SHUTDOWN_BOTH 2
 
 #include <signal.h>
-#include "cache1d.h"  /* kopen4load for cfg file. */
+#include "filesystem.h"  /* kopen4load for cfg file. */
 #include "display.h"  /* getticks */
 
 #define IPSEG1(ip) ((((unsigned int) ip) & 0xFF000000) >> 24)

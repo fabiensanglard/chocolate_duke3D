@@ -29,7 +29,10 @@
 #include <stdio.h>
 
 #if (!defined _MSC_VER)
-#include <unistd.h>
+	#include <unistd.h>
+#else
+	#include <fcntl.h>
+    #include <SYS\STAT.H>
 #endif
 
 #include <stdlib.h>
@@ -38,6 +41,7 @@
 #include <conio.h>
 #include <dos.h>
 #include <assert.h>
+#include <string.h>
 
 #define kmalloc(x) malloc(x)
 #define kkmalloc(x) malloc(x)
