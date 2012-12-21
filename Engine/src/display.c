@@ -65,10 +65,6 @@ void TIMER_GetPlatformTicks(int64_t* t);
 
 
 // NETWORK STUFF
-#ifdef __APPLE__
-  #define USER_DUMMY_NETWORK 1
-#endif 
-
 void Setup_UnstableNetworking();
 void Setup_StableNetworking();
 
