@@ -3654,17 +3654,9 @@ int setgamemode(uint8_t  davidoption, int32_t daxdim, int32_t daydim)
 }
 
 
-
-static int initengine_called = 0;
-
-
 void initengine(void)
 {
     int32_t i;
-
-
-
-    initengine_called = 1;
 
     loadtables();
 
@@ -3683,9 +3675,10 @@ void initengine(void)
     searchit = 0;
     searchstat = -1;
 
-    for(i=0; i<MAXPALOOKUPS; i++) palookup[i] = NULL;
+    for(i=0; i<MAXPALOOKUPS; i++)
+        palookup[i] = NULL;
 
-    clearbuf(&waloff[0],(int32_t)MAXTILES,0L);
+    clearbuf(&waloff[0],MAXTILES,0L);
 
     clearbuf(&show2dsector[0],(int32_t)((MAXSECTORS+3)>>5),0L);
     clearbuf(&show2dsprite[0],(int32_t)((MAXSPRITES+3)>>5),0L);
@@ -8324,7 +8317,8 @@ void makepalookup(int32_t palnum, uint8_t  *remapbuf, int8_t r,
     int32_t i, j, dist, palscale;
     uint8_t  *ptr, *ptr2;
 
-    if (paletteloaded == 0) return;
+    if (paletteloaded == 0)
+        return;
 
     if (palookup[palnum] == NULL)
     {

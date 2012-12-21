@@ -301,7 +301,7 @@ int32_t buffermode, origbuffermode, linearmode;
 uint8_t  permanentupdate = 0, vgacompatible;
 
 SDL_Surface *surface = NULL; /* This isn't static so that we can use it elsewhere AH */
-static int debug_hall_of_mirrors = 0;
+
 static uint32_t sdl_flags = SDL_HWPALETTE;
 static int32_t mouse_relative_x = 0;
 static int32_t mouse_relative_y = 0;
@@ -322,30 +322,7 @@ static char *titleNameShort = NULL;
 void restore256_palette (void);
 void set16color_palette (void);
 
-static FILE *_sdl_debug_file = NULL;
 
-
-static __inline void __out_sdldebug(const char  *subsystem,
-                                  const char  *fmt, va_list ap)
-{
-    fprintf(_sdl_debug_file, "%s: ", subsystem);
-    vfprintf(_sdl_debug_file, fmt, ap);
-    fprintf(_sdl_debug_file, "\n");
-    fflush(_sdl_debug_file);
-} /* __out_sdldebug */
-
-
-static void sdldebug(const char  *fmt, ...)
-{
-    va_list ap;
-
-    if (_sdl_debug_file)
-    {
-        va_start(ap, fmt);
-        __out_sdldebug("BUILDSDL", fmt, ap);
-        va_end(ap);
-    } /* if */
-} /* sdldebug */
 
 static void __append_sdl_surface_flag(SDL_Surface *_surface, char  *str,
                                       size_t strsize, Uint32 flag,
@@ -358,29 +335,26 @@ static void __append_sdl_surface_flag(SDL_Surface *_surface, char  *str,
         else
             strcat(str, flagstr);
     } /* if */
-} /* append_sdl_surface_flag */
+}
 
 
 #define append_sdl_surface_flag(a, b, c, fl) __append_sdl_surface_flag(a, b, c, fl, " " #fl)
-#define print_tf_state(str, val) sdldebug("%s: {%s}", str, (val) ? "true" : "false" )
+#define print_tf_state(str, val) printf("%s: {%s}", str, (val) ? "true" : "false" )
 
 static void output_surface_info(SDL_Surface *_surface)
 {
     const SDL_VideoInfo *info;
     char  f[256];
 
-    if (!_sdl_debug_file)
-        return;
 
     if (_surface == NULL)
     {
-        sdldebug("-WARNING- You've got a NULL screen surface!");
+        printf("-WARNING- You've got a NULL screen surface!");
     }
     else
     {
         f[0] = '\0';
-        sdldebug("screen surface is (%dx%dx%dbpp).",
-                _surface->w, _surface->h, _surface->format->BitsPerPixel);
+        printf("screen surface is (%dx%dx%dbpp).",_surface->w, _surface->h, _surface->format->BitsPerPixel);
 
         append_sdl_surface_flag(_surface, f, sizeof (f), SDL_SWSURFACE);
         append_sdl_surface_flag(_surface, f, sizeof (f), SDL_HWSURFACE);
@@ -403,7 +377,7 @@ static void output_surface_info(SDL_Surface *_surface)
         if (f[0] == '\0')
             strcpy(f, " (none)");
 
-        sdldebug("New vidmode flags:%s", f);
+        printf("New vidmode flags:%s", f);
 
         info = SDL_GetVideoInfo();
         assert(info != NULL);
@@ -418,7 +392,7 @@ static void output_surface_info(SDL_Surface *_surface)
         print_tf_state("accelerated software->hardware alpha blits", info->blit_sw_A);
         print_tf_state("accelerated color fills", info->blit_fill);
 
-        sdldebug("video memory: (%d)", info->video_mem);
+        printf("video memory: (%d)", info->video_mem);
     } /* else */
 } /* output_surface_info */
 
@@ -427,16 +401,12 @@ static void output_driver_info(void)
 {
     char  buffer[256];
 
-    if (!_sdl_debug_file)
-        return;
-
-    if (SDL_VideoDriverName(buffer, sizeof (buffer)) == NULL)
-    {
-        sdldebug("-WARNING- SDL_VideoDriverName() returned NULL!");
+    if (SDL_VideoDriverName(buffer, sizeof (buffer)) == NULL){
+        printf("-WARNING- SDL_VideoDriverName() returned NULL!");
     } /* if */
     else
     {
-        sdldebug("Using SDL video driver \"%s\".", buffer);
+        printf("Using SDL video driver \"%s\".", buffer);
     } /* else */
 } /* output_driver_info */
 
@@ -815,28 +785,28 @@ void _joystick_init(void)
 
     if (joystick != NULL)
     {
-        sdldebug("Joystick appears to be already initialized.");
-        sdldebug("...deinitializing for stick redetection...");
+        printf("Joystick appears to be already initialized.");
+        printf("...deinitializing for stick redetection...");
         _joystick_deinit();
     } /* if */
 
     if ((envr != NULL) && (strcmp(envr, "none") == 0))
     {
-        sdldebug("Skipping joystick detection/initialization at user request");
+        printf("Skipping joystick detection/initialization at user request");
         return;
     } /* if */
 
-    sdldebug("Initializing SDL joystick subsystem...");
-    sdldebug(" (export environment variable BUILD_SDLJOYSTICK=none to skip)");
+    printf("Initializing SDL joystick subsystem...");
+    printf(" (export environment variable BUILD_SDLJOYSTICK=none to skip)");
 
     if (SDL_Init(SDL_INIT_JOYSTICK|SDL_INIT_NOPARACHUTE) != 0)
     {
-        sdldebug("SDL_Init(SDL_INIT_JOYSTICK) failed: [%s].", SDL_GetError());
+        printf("SDL_Init(SDL_INIT_JOYSTICK) failed: [%s].", SDL_GetError());
         return;
     } /* if */
 
     numsticks = SDL_NumJoysticks();
-    sdldebug("SDL sees %d joystick%s.", numsticks, numsticks == 1 ? "" : "s");
+    printf("SDL sees %d joystick%s.", numsticks, numsticks == 1 ? "" : "s");
     if (numsticks == 0)
         return;
 
@@ -846,21 +816,21 @@ void _joystick_init(void)
         if ((envr != NULL) && (strcmp(envr, stickname) == 0))
             favored = i;
 
-        sdldebug("Stick #%d: [%s]", i, stickname);
+        printf("Stick #%d: [%s]", i, stickname);
     } /* for */
 
-    sdldebug("Using Stick #%d.", favored);
+    printf("Using Stick #%d.", favored);
     if ((envr == NULL) && (numsticks > 1))
-        sdldebug("Set BUILD_SDLJOYSTICK to one of the above names to change.");
+        printf("Set BUILD_SDLJOYSTICK to one of the above names to change.");
 
     joystick = SDL_JoystickOpen(favored);
     if (joystick == NULL)
     {
-        sdldebug("Joystick #%d failed to init: %s", favored, SDL_GetError());
+        printf("Joystick #%d failed to init: %s", favored, SDL_GetError());
         return;
     } /* if */
 
-    sdldebug("Joystick initialized. %d axes, %d buttons, %d hats, %d balls.",
+    printf("Joystick initialized. %d axes, %d buttons, %d hats, %d balls.",
               SDL_JoystickNumAxes(joystick), SDL_JoystickNumButtons(joystick),
               SDL_JoystickNumHats(joystick), SDL_JoystickNumBalls(joystick));
 
@@ -872,11 +842,11 @@ void _joystick_deinit(void)
 {
     if (joystick != NULL)
     {
-        sdldebug("Closing joystick device...");
+        printf("Closing joystick device...");
         SDL_JoystickClose(joystick);
-        sdldebug("Joystick device closed. Deinitializing SDL subsystem...");
+        printf("Joystick device closed. Deinitializing SDL subsystem...");
         SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
-        sdldebug("SDL joystick subsystem deinitialized.");
+        printf("SDL joystick subsystem deinitialized.");
         joystick = NULL;
     } /* if */
 } /* _joystick_deinit */
@@ -927,32 +897,6 @@ uint8_t  _readlastkeyhit(void)
 } /* _readlastkeyhit */
 
 
-static __inline void init_debugging(void)
-{
-    const char  *envr = getenv(BUILD_SDLDEBUG);
-
-    debug_hall_of_mirrors = (getenv(BUILD_HALLOFMIRRORS) != NULL);
-
-    if (_sdl_debug_file != NULL)
-    {
-        fclose(_sdl_debug_file);
-        _sdl_debug_file = NULL;
-    } /* if */
-
-    if (envr != NULL)
-    {
-        if (strcmp(envr, "-") == 0)
-	    _sdl_debug_file = stdout;
-        else
-            _sdl_debug_file = fopen(envr, "w");
-
-        if (_sdl_debug_file == NULL)
-            printf("BUILDSDL: -WARNING- Could not open debug file!\n");
-        else
-            setbuf(_sdl_debug_file, NULL);
-    } /* if */
-} /* init_debugging */
-
 
 #if (!defined __DATE__)
 #define __DATE__ "a long, int32_t time ago"
@@ -965,11 +909,11 @@ static __inline void output_sdl_versions(void)
 
     SDL_VERSION(&compiled_ver);
 
-    sdldebug("SDL display driver for the BUILD engine initializing.");
-    sdldebug("  sdl_driver.c by Ryan C. Gordon (icculus@clutteredmind.org).");
-    sdldebug("Compiled %s against SDL version %d.%d.%d ...", __DATE__,
+    printf("SDL display driver for the BUILD engine initializing.");
+    printf("  sdl_driver.c by Ryan C. Gordon (icculus@clutteredmind.org).");
+    printf("Compiled %s against SDL version %d.%d.%d ...", __DATE__,
                 compiled_ver.major, compiled_ver.minor, compiled_ver.patch);
-    sdldebug("Linked SDL version is %d.%d.%d ...",
+    printf("Linked SDL version is %d.%d.%d ...",
                 linked_ver->major, linked_ver->minor, linked_ver->patch);
 } /* output_sdl_versions */
 
@@ -1049,10 +993,6 @@ void _platform_init(int argc, char  **argv, const char  *title, const char  *ico
 
 	putenv("SDL_VIDEO_CENTERED=1");
 
-    
-
-    init_debugging();
-
     if (title == NULL)
         title = "BUILD";
 
@@ -1065,17 +1005,7 @@ void _platform_init(int argc, char  **argv, const char  *title, const char  *ico
     sdl_flags = BFullScreen ? SDL_FULLSCREEN : 0;
 
     sdl_flags |= SDL_HWPALETTE;
-   
-//	// These flags cause duke to exit on fullscreen
-//	/*
-	if(!BFullScreen)
-	{
-	//	sdl_flags |= SDL_HWSURFACE;   //!!!
-	//	sdl_flags |= SDL_DOUBLEBUF; //
-	}
-//	*/
-	
-	
+
 
     memset(scancodes, '\0', sizeof (scancodes));
     scancodes[SDLK_ESCAPE]          = 0x01;
@@ -1188,17 +1118,9 @@ void _platform_init(int argc, char  **argv, const char  *title, const char  *ico
     output_driver_info();
     
 
-	printf("Video Driver [directx or windib]? -> %s \n", SDL_VideoDriverName(dummyString, 20));
+	printf("Video Driver: '%s'.\n", SDL_VideoDriverName(dummyString, 20));
 
-} /* _platform_init */
-
-
-int setvesa(int32_t x, int32_t y)
-{
-	Error(EXIT_FAILURE, "setvesa() called in SDL driver\n");
-    return(0);
-} /* setvesa */
-
+}
 
 // Capture BMP of the current frame
 int screencapture(char  *filename, uint8_t  inverseit)
@@ -1313,7 +1235,7 @@ static __inline void get_max_screen_res(int32_t *max_w, int32_t *max_h)
     {
         if (!get_dimensions_from_str(envr, &w, &h))
         {
-            sdldebug("User's resolution ceiling [%s] is bogus!", envr);
+            printf("User's resolution ceiling [%s] is bogus!", envr);
             w = DEFAULT_MAXRESWIDTH;
             h = DEFAULT_MAXRESHEIGHT;
         } /* if */
@@ -1329,7 +1251,7 @@ static __inline void get_max_screen_res(int32_t *max_w, int32_t *max_h)
 
 static void add_vesa_mode(const char  *typestr, int w, int h)
 {
-    sdldebug("Adding %s resolution (%dx%d).", typestr, w, h);
+    printf("Adding %s resolution (%dx%d).", typestr, w, h);
     validmode[validmodecnt] = validmodecnt;
     validmodexdim[validmodecnt] = w;
     validmodeydim[validmodecnt] = h;
@@ -1350,7 +1272,7 @@ static __inline void add_user_defined_resolution(void)
     if (get_dimensions_from_str(envr, &w, &h))
         add_vesa_mode("user defined", w, h);
     else
-        sdldebug("User defined resolution [%s] is bogus!", envr);
+        printf("User defined resolution [%s] is bogus!", envr);
 } /* add_user_defined_resolution */
 
 
@@ -1367,10 +1289,10 @@ static __inline SDL_Rect **get_physical_resolutions(void)
     } /* if */
 
     if (modes == (SDL_Rect **) -1)
-        sdldebug("Couldn't get any physical resolutions.");
+        printf("Couldn't get any physical resolutions.");
     else
     {
-        sdldebug("Highest physical resolution is (%dx%d).",
+        printf("Highest physical resolution is (%dx%d).",
                   modes[0]->w, modes[0]->h);
     } /* else */
 
@@ -1383,7 +1305,7 @@ static void remove_vesa_mode(int index, const char  *reason)
     int i;
 
     assert(index < validmodecnt);
-    sdldebug("Removing resolution #%d, %dx%d [%s].",
+    printf("Removing resolution #%d, %dx%d [%s].",
               index, validmodexdim[index], validmodeydim[index], reason);
 
     for (i = index; i < validmodecnt - 1; i++)
@@ -1404,7 +1326,7 @@ static __inline void cull_large_vesa_modes(void)
     int i;
 
     get_max_screen_res(&max_w, &max_h);
-    sdldebug("Setting resolution ceiling to (%ldx%ld).", max_w, max_h);
+    printf("Setting resolution ceiling to (%ldx%ld).", max_w, max_h);
 
     for (i = 0; i < validmodecnt; i++)
     {
@@ -1474,9 +1396,6 @@ static __inline void output_vesa_modelist(void)
     char  numbuf[20];
     int i;
 
-    if (!_sdl_debug_file)
-        return;
-
     buffer[0] = '\0';
 
     for (i = 0; i < validmodecnt; i++)
@@ -1489,7 +1408,7 @@ static __inline void output_vesa_modelist(void)
             strcat(buffer, numbuf);
     } /* for */
 
-    sdldebug("Final sorted modelist:%s", buffer);
+    printf("Final sorted modelist:%s", buffer);
 } 
 
 
@@ -1642,12 +1561,10 @@ void readmousebstatus(short *bstatus)
 } /* readmousebstatus */
 
 
-static uint8_t  mirrorcolor = 0;
-
 void _updateScreenRect(int32_t x, int32_t y, int32_t w, int32_t h)
 {
     SDL_UpdateRect(surface, x, y, w, h);
-} /* _updatescreenrect */
+}
 
 
 void _nextpage(void)
@@ -1658,22 +1575,14 @@ void _nextpage(void)
 
     
     SDL_UpdateRect(surface, 0, 0, 0, 0);
-    
-
-
-    if ((debug_hall_of_mirrors) && (qsetmode == 200) && (frameplace)){
-        memset((void *) frameplace, mirrorcolor, surface->w * surface->h);
-        mirrorcolor++;
-    }
 
     ticks = getticks();
     total_render_time = (ticks - last_render_ticks);
-    if (total_render_time > 1000)
-    {
+    if (total_render_time > 1000){
         total_rendered_frames = 0;
         total_render_time = 1;
         last_render_ticks = ticks;
-    } /* if */
+    } 
     total_rendered_frames++;
 } 
 

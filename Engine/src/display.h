@@ -65,7 +65,7 @@ int _joystick_button(int button);
 void getvalidvesamodes(void);
 int VBE_getPalette(int32_t start, int32_t num, uint8_t  *dapal);
 int VBE_setPalette(uint8_t  *palettebuffer);
-int setvesa(int32_t x, int32_t y);
+
 
 void setvmode(int mode);
 uint8_t  readpixel(uint8_t  * location);
