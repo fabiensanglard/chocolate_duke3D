@@ -2834,7 +2834,7 @@ void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,short daang, int32
 
 	//pixelsAllowed = pixelRenderable;
 	pixelsAllowed = 100000000;
-	printf("%d\n",pixelsAllowed);
+	//printf("%d\n",pixelsAllowed);
 
     beforedrawrooms = 0;
 

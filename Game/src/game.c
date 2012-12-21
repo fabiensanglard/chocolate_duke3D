@@ -7961,9 +7961,9 @@ void findGRPToUse(uint8_t * groupfilefullpath)
 	char  groupfile[9][512];
 	int grpID ;
 
-	if(game_dir[0] != '\0')
+	if(getGameDir()[0] != '\0')
 	{
-		sprintf(groupfilefullpath, "%s\\%s", game_dir, baseDir);
+		sprintf(groupfilefullpath, "%s\\%s", getGameDir(), baseDir);
 		hFind = FindFirstFile(groupfilefullpath, &FindFileData);
 		if (hFind == INVALID_HANDLE_VALUE)
 		{
@@ -8002,10 +8002,10 @@ void findGRPToUse(uint8_t * groupfilefullpath)
 	}
 	
 	FindClose(hFind);
-	if (strlen(game_dir) == 0)
+	if (strlen(getGameDir()) == 0)
 		 sprintf(groupfilefullpath, "./%s", groupfile[grpID]);
 	else
-	   sprintf(groupfilefullpath, "%s//%s", game_dir, groupfile[grpID]);
+	   sprintf(groupfilefullpath, "%s//%s", getGameDir(), groupfile[grpID]);
 }
 
 #else

@@ -304,9 +304,6 @@ static sdl_renderer_type renderer = RENDERER_SOFTWARE;
 #define UNLOCK_SURFACE_AND_RETURN  if (SDL_MUSTLOCK(surface)) SDL_UnlockSurface(surface); return;
 
 
-int _argc = 0;
-char  **_argv = NULL;
-
     /* !!! move these elsewhere? */
 int32_t xres, yres, bytesperline, imageSize, maxpages;
 uint8_t* frameplace;
@@ -1072,9 +1069,6 @@ void _platform_init(int argc, char  **argv, const char  *title, const char  *ico
 	int64_t timeElapsed;
 	char  dummyString[4096];
 
-    _argc = argc;
-    _argv = argv;
-
 	// FIX_00061: "ERROR: Two players have the same random ID" too frequent cuz of internet windows times
     TIMER_GetPlatformTicks(&timeElapsed);
 	srand(timeElapsed&0xFFFFFFFF);
@@ -1776,8 +1770,8 @@ void drawpixels(int32_t offset, uint16_t pixels)
     if (SDL_MUSTLOCK(surface))
         SDL_LockSurface(surface);
 
-    surface_end = surface->pixels + (surface->w * surface->h) - 2;
-    pos = surface->pixels + offset;
+    surface_end = (uint8_t*)surface->pixels + (surface->w * surface->h) - 2;
+    pos = (uint8_t*)surface->pixels + offset;
     if ((pos >= (uint16_t*) surface->pixels) && (pos < surface_end))
         *pos = pixels;
 
@@ -1814,7 +1808,7 @@ void setcolor16(uint8_t col)
 
 void drawpixel16(int32_t offset)
 {
-    drawpixel(surface->pixels + offset, drawpixel_color);
+    drawpixel((uint8_t*)surface->pixels + offset, drawpixel_color);
 } /* drawpixel16 */
 
 

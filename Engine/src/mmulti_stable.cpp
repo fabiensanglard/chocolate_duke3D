@@ -19,6 +19,7 @@ extern "C"
 #include "pragmas.h"
 #include "signal.h"
 #include "mmulti_stable.h"
+#include "filesystem.h"
 
 #define MAXPLAYERS 16
 #define BAKSIZ 16384
@@ -974,7 +975,7 @@ int CreateServer(char* ip, int nPort, int nMaxPlayers)
 //* Network Config File Functions
 //**************************************************************
 
-#include "cache1d.h"  /* kopen4load for cfg file. */
+#include "filesystem.h"  /* kopen4load for cfg file. */
 #include "display.h"  /* getticks */
 
 #define IPSEG1(ip) ((((unsigned int) ip) & 0xFF000000) >> 24)

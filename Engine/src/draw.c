@@ -56,7 +56,6 @@ void sethlinesizes(int32_t i1, int32_t _bits, uint8_t * textureAddress)
 //Draw a line from destination in the framebuffer to framebuffer-numPixels
 void hlineasm4(int32_t numPixels, int32_t shade, uint32_t i4, uint32_t i5, uint8_t *dest){
 
-    
     int32_t shifter = ((256-machxbits_al) & 0x1f);
     uint32_t source;
     
