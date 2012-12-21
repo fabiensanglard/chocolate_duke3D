@@ -12,6 +12,7 @@
 
 uint32_t pixelsAllowed = 10000000000;
 
+uint8_t  *transluc = NULL;
 
 static int transrev = 0;
 
@@ -203,11 +204,6 @@ void setBytesPerLine(int32_t _bytesperline)
 } 
 
 
-static uint8_t* transPalette;
-void fixtransluscence(uint8_t* transLuscentPalette)
-{
-    transPalette = transLuscentPalette;
-} 
 
 static uint8_t  mach3_al;
 
@@ -222,10 +218,8 @@ int32_t prevlineasm1(int32_t i1, uint8_t* palette, int32_t i3, int32_t i4, uint8
             return 0;
 
 	    i1 += i4;
-        //FCS
-        //((uint32_t)i4) >>= mach3_al;
         i4 = ((uint32_t)i4) >> mach3_al;
-	    i4 = (i4&0xffffff00) | (source[i4]&0xff);
+	    i4 = (i4&0xffffff00) | source[i4];
 
 		if (pixelsAllowed-- > 0)
 			*dest = palette[i4];
@@ -240,10 +234,9 @@ int32_t prevlineasm1(int32_t i1, uint8_t* palette, int32_t i3, int32_t i4, uint8
 
 
 //FCS: This is used to draw wall border vertical lines
-int32_t vlineasm1(int32_t vince, uint8_t* palookupoffse, int32_t numPixels, int32_t vplce, uint8_t* texture, uint8_t  * frameBufferDestination)
+int32_t vlineasm1(int32_t vince, uint8_t* palookupoffse, int32_t numPixels, int32_t vplce, uint8_t* texture, uint8_t* dest)
 {
     uint32_t temp;
-    uint8_t  *dest = (uint8_t  *)frameBufferDestination;
 
     if (!RENDER_DRAW_WALL_BORDERS)
 		return vplce;
@@ -251,9 +244,6 @@ int32_t vlineasm1(int32_t vince, uint8_t* palookupoffse, int32_t numPixels, int3
     numPixels++;
     while (numPixels)
     {
-		
-
-
 	    temp = ((uint32_t)vplce) >> mach3_al;
         
 	    temp = texture[temp];
@@ -269,11 +259,8 @@ int32_t vlineasm1(int32_t vince, uint8_t* palookupoffse, int32_t numPixels, int3
 } 
 
 
-int32_t tvlineasm1(int32_t i1, int32_t i2, int32_t numPixels, int32_t i4, int32_t i5, int32_t _dest)
+int32_t tvlineasm1(int32_t i1, uint8_t  * texture, int32_t numPixels, int32_t i4, uint8_t  *source, uint8_t  *dest)
 {
-	uint8_t  *source = (uint8_t  *)i5;
-	uint8_t  *dest = (uint8_t  *)_dest;
-
     uint8_t shiftValue = (globalshiftval & 0x1f);
     
 	numPixels++;
@@ -288,14 +275,14 @@ int32_t tvlineasm1(int32_t i1, int32_t i2, int32_t numPixels, int32_t i4, int32_
 		{
 			uint16_t colorIndex;
             
-			colorIndex = ((uint8_t  *)i2)[temp];
+			colorIndex = texture[temp];
 			colorIndex |= ((*dest)<<8);
             
 			if (transrev) 
 				colorIndex = ((colorIndex>>8)|(colorIndex<<8));
             
 			if (pixelsAllowed-- > 0)
-				*dest = transPalette[colorIndex];
+				*dest = transluc[colorIndex];
 		}
         
 		i4 += i1;
@@ -349,7 +336,7 @@ void tvlineasm2(uint32_t i1, uint32_t i2, uint32_t i3, uint32_t i4, uint32_t i5,
 					val = ((val>>8)|(val<<8));
 
 				if (pixelsAllowed-- > 0)
-					((uint8_t  *)i6)[tran2edi1] = transPalette[val];
+					((uint8_t  *)i6)[tran2edi1] = transluc[val];
 			}
 		} else if (i4 == 255) { // skipdraw2
 			uint16_t val;
@@ -360,7 +347,7 @@ void tvlineasm2(uint32_t i1, uint32_t i2, uint32_t i3, uint32_t i4, uint32_t i5,
                 val = ((val>>8)|(val<<8));
 
 			if (pixelsAllowed-- > 0)
-				((uint8_t  *)i6)[tran2edi] = transPalette[val];
+				((uint8_t  *)i6)[tran2edi] = transluc[val];
 		} else {
 			uint16_t l = ((uint8_t  *)i6)[tran2edi]<<8;
 			uint16_t r = ((uint8_t  *)i6)[tran2edi1]<<8;
@@ -372,8 +359,8 @@ void tvlineasm2(uint32_t i1, uint32_t i2, uint32_t i3, uint32_t i4, uint32_t i5,
 			}
 			if (pixelsAllowed-- > 0)
 			{
-				((uint8_t  *)i6)[tran2edi] = transPalette[l];
-				((uint8_t  *)i6)[tran2edi1] =transPalette[r];
+				((uint8_t  *)i6)[tran2edi] = transluc[l];
+				((uint8_t  *)i6)[tran2edi1] =transluc[r];
 				pixelsAllowed--;
 			}
 		}
@@ -683,7 +670,7 @@ void DrawSpriteVerticalLine(int32_t i2, int32_t numPixels, uint32_t i4, uint8_t 
 				if (transrev) 
 					val = ((val>>8)|(val<<8));
 
-				colorIndex = transPalette[val];
+				colorIndex = transluc[val];
 
 				if (pixelsAllowed-- > 0)
 					*dest = colorIndex;
@@ -812,7 +799,7 @@ void thlineskipmodify(int32_t i1, uint32_t i2, uint32_t i3, int32_t i4, int32_t 
 				val = ((val>>8)|(val<<8));
 
 			if (pixelsAllowed-- > 0)
-			 *((uint8_t  *)i6) = transPalette[val];
+			 *((uint8_t  *)i6) = transluc[val];
 	    }
 
 	    i2 += tmach_asm1;

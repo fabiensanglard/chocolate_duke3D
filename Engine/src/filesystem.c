@@ -412,18 +412,18 @@ void kdfread(void *buffer, size_t dasizeof, size_t count, int32_t fil)
 	uint8_t  *ptr;
     
 	lzwbuflock[0] = lzwbuflock[1] = lzwbuflock[2] = lzwbuflock[3] = lzwbuflock[4] = 200;
-	if (lzwbuf1 == NULL) allocache((int32_t *)&lzwbuf1,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[0]);
-	if (lzwbuf2 == NULL) allocache((int32_t *)&lzwbuf2,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[1]);
-	if (lzwbuf3 == NULL) allocache((int32_t *)&lzwbuf3,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[2]);
-	if (lzwbuf4 == NULL) allocache((int32_t *)&lzwbuf4,LZWSIZE,&lzwbuflock[3]);
-	if (lzwbuf5 == NULL) allocache((int32_t *)&lzwbuf5,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[4]);
+	if (lzwbuf1 == NULL) allocache(&lzwbuf1,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[0]);
+	if (lzwbuf2 == NULL) allocache(&lzwbuf2,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[1]);
+	if (lzwbuf3 == NULL) allocache(&lzwbuf3,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[2]);
+	if (lzwbuf4 == NULL) allocache(&lzwbuf4,LZWSIZE,&lzwbuflock[3]);
+	if (lzwbuf5 == NULL) allocache(&lzwbuf5,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[4]);
     
 	if (dasizeof > LZWSIZE) { count *= dasizeof; dasizeof = 1; }
 	ptr = (uint8_t  *)buffer;
     
 	kread(fil,&leng,2); kread(fil,lzwbuf5,(int32_t )leng);
 	k = 0;
-	kgoal = uncompress(lzwbuf5,(int32_t )leng,lzwbuf4);
+	kgoal = uncompress(lzwbuf5,leng,lzwbuf4);
     
 	copybufbyte(lzwbuf4,ptr,(int32_t )dasizeof);
 	k += (int32_t )dasizeof;
@@ -493,11 +493,11 @@ void dfwrite(void *buffer, size_t dasizeof, size_t count, FILE *fil)
 	uint8_t  *ptr;
     
 	lzwbuflock[0] = lzwbuflock[1] = lzwbuflock[2] = lzwbuflock[3] = lzwbuflock[4] = 200;
-	if (lzwbuf1 == NULL) allocache((int32_t *)&lzwbuf1,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[0]);
-	if (lzwbuf2 == NULL) allocache((int32_t *)&lzwbuf2,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[1]);
-	if (lzwbuf3 == NULL) allocache((int32_t *)&lzwbuf3,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[2]);
-	if (lzwbuf4 == NULL) allocache((int32_t *)&lzwbuf4,LZWSIZE,&lzwbuflock[3]);
-	if (lzwbuf5 == NULL) allocache((int32_t *)&lzwbuf5,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[4]);
+	if (lzwbuf1 == NULL) allocache(&lzwbuf1,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[0]);
+	if (lzwbuf2 == NULL) allocache(&lzwbuf2,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[1]);
+	if (lzwbuf3 == NULL) allocache(&lzwbuf3,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[2]);
+	if (lzwbuf4 == NULL) allocache(&lzwbuf4,LZWSIZE,&lzwbuflock[3]);
+	if (lzwbuf5 == NULL) allocache(&lzwbuf5,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[4]);
     
 	if (dasizeof > LZWSIZE) { count *= dasizeof; dasizeof = 1; }
 	ptr = (uint8_t  *)buffer;

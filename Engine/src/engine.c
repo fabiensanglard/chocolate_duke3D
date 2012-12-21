@@ -233,7 +233,7 @@ int32_t startposx, startposy, startposz;
 int16_t startang, startsectnum;
 int16_t pointhighlight, linehighlight, highlightcnt;
 static int32_t lastx[MAXYDIM];
-uint8_t  *transluc = NULL, paletteloaded = 0;
+uint8_t  paletteloaded = 0;
 
 #define FASTPALGRIDSIZ 8
 static int32_t rdist[129], gdist[129], bdist[129];
@@ -714,8 +714,7 @@ static void slowhline (int32_t xr, int32_t yp)
                globalx2*r+globalypanning-asm2*(xr-xl),ylookup[yp]+xl+frameoffset);
         return;
     }
-    thline(globalbufplc,globaly1*r+globalxpanning-asm1*(xr-xl),(xr-xl)<<16,0L,
-           globalx2*r+globalypanning-asm2*(xr-xl),ylookup[yp]+xl+frameoffset);
+    thline(globalbufplc,globaly1*r+globalxpanning-asm1*(xr-xl),(xr-xl)<<16,0L,globalx2*r+globalypanning-asm2*(xr-xl),ylookup[yp]+xl+frameoffset);
     transarea += (xr-xl);
 }
 
@@ -1364,8 +1363,10 @@ static void wallscan(int32_t x1, int32_t x2,
                 if (xnice == 0) i %= tileWidth;
                 else i &= tileWidth;
             }
-            if (ynice == 0) i *= tsizy;
-            else i <<= tsizy;
+            if (ynice == 0)
+                i *= tsizy;
+            else
+                i <<= tsizy;
             bufplce[z] = waloff[globalpicnum]+i;
 
             vince[z] = swal[x+z]*globalyscale;
@@ -1394,25 +1395,38 @@ static void wallscan(int32_t x1, int32_t x2,
 
         if ((bad != 0) || (u4 >= d4))
         {
-            if (!(bad&1)) prevlineasm1(vince[0],palookupoffse[0],y2ve[0]-y1ve[0],vplce[0],bufplce[0],ylookup[y1ve[0]]+x+frameoffset+0);
-            if (!(bad&2)) prevlineasm1(vince[1],palookupoffse[1],y2ve[1]-y1ve[1],vplce[1],bufplce[1],ylookup[y1ve[1]]+x+frameoffset+1);
-            if (!(bad&4)) prevlineasm1(vince[2],palookupoffse[2],y2ve[2]-y1ve[2],vplce[2],bufplce[2],ylookup[y1ve[2]]+x+frameoffset+2);
-            if (!(bad&8)) prevlineasm1(vince[3],palookupoffse[3],y2ve[3]-y1ve[3],vplce[3],bufplce[3],ylookup[y1ve[3]]+x+frameoffset+3);
+            if (!(bad&1))
+                prevlineasm1(vince[0],palookupoffse[0],y2ve[0]-y1ve[0],vplce[0],bufplce[0],ylookup[y1ve[0]]+x+frameoffset+0);
+            if (!(bad&2))
+                prevlineasm1(vince[1],palookupoffse[1],y2ve[1]-y1ve[1],vplce[1],bufplce[1],ylookup[y1ve[1]]+x+frameoffset+1);
+            if (!(bad&4))
+                prevlineasm1(vince[2],palookupoffse[2],y2ve[2]-y1ve[2],vplce[2],bufplce[2],ylookup[y1ve[2]]+x+frameoffset+2);
+            if (!(bad&8))
+                prevlineasm1(vince[3],palookupoffse[3],y2ve[3]-y1ve[3],vplce[3],bufplce[3],ylookup[y1ve[3]]+x+frameoffset+3);
             continue;
         }
 
-        if (u4 > y1ve[0]) vplce[0] = prevlineasm1(vince[0],palookupoffse[0],u4-y1ve[0]-1,vplce[0],bufplce[0],ylookup[y1ve[0]]+x+frameoffset+0);
-        if (u4 > y1ve[1]) vplce[1] = prevlineasm1(vince[1],palookupoffse[1],u4-y1ve[1]-1,vplce[1],bufplce[1],ylookup[y1ve[1]]+x+frameoffset+1);
-        if (u4 > y1ve[2]) vplce[2] = prevlineasm1(vince[2],palookupoffse[2],u4-y1ve[2]-1,vplce[2],bufplce[2],ylookup[y1ve[2]]+x+frameoffset+2);
-        if (u4 > y1ve[3]) vplce[3] = prevlineasm1(vince[3],palookupoffse[3],u4-y1ve[3]-1,vplce[3],bufplce[3],ylookup[y1ve[3]]+x+frameoffset+3);
+        if (u4 > y1ve[0])
+            vplce[0] =prevlineasm1(vince[0],palookupoffse[0],u4-y1ve[0]-1,vplce[0],bufplce[0],ylookup[y1ve[0]]+x+frameoffset+0);
+        if (u4 > y1ve[1])
+            vplce[1] = prevlineasm1(vince[1],palookupoffse[1],u4-y1ve[1]-1,vplce[1],bufplce[1],ylookup[y1ve[1]]+x+frameoffset+1);
+        if (u4 > y1ve[2])
+            vplce[2] = prevlineasm1(vince[2],palookupoffse[2],u4-y1ve[2]-1,vplce[2],bufplce[2],ylookup[y1ve[2]]+x+frameoffset+2);
+        if (u4 > y1ve[3])
+            vplce[3] = prevlineasm1(vince[3],palookupoffse[3],u4-y1ve[3]-1,vplce[3],bufplce[3],ylookup[y1ve[3]]+x+frameoffset+3);
 
         if (d4 >= u4) vlineasm4(d4-u4+1,ylookup[u4]+x+frameoffset);
 
         i = x+frameoffset+ylookup[d4+1];
-        if (y2ve[0] > d4) prevlineasm1(vince[0],palookupoffse[0],y2ve[0]-d4-1,vplce[0],bufplce[0],i+0);
-        if (y2ve[1] > d4) prevlineasm1(vince[1],palookupoffse[1],y2ve[1]-d4-1,vplce[1],bufplce[1],i+1);
-        if (y2ve[2] > d4) prevlineasm1(vince[2],palookupoffse[2],y2ve[2]-d4-1,vplce[2],bufplce[2],i+2);
-        if (y2ve[3] > d4) prevlineasm1(vince[3],palookupoffse[3],y2ve[3]-d4-1,vplce[3],bufplce[3],i+3);
+        
+        if (y2ve[0] > d4)
+            prevlineasm1(vince[0],palookupoffse[0],y2ve[0]-d4-1,vplce[0],bufplce[0],i+0);
+        if (y2ve[1] > d4)
+            prevlineasm1(vince[1],palookupoffse[1],y2ve[1]-d4-1,vplce[1],bufplce[1],i+1);
+        if (y2ve[2] > d4)
+            prevlineasm1(vince[2],palookupoffse[2],y2ve[2]-d4-1,vplce[2],bufplce[2],i+2);
+        if (y2ve[3] > d4)
+            prevlineasm1(vince[3],palookupoffse[3],y2ve[3]-d4-1,vplce[3],bufplce[3],i+3);
     }
     for(; x<=x2; x++)
     {
@@ -3579,17 +3593,17 @@ static void loadpalette(void)
 
     
     if ((palookup[0] = (uint8_t  *)kkmalloc(numpalookups<<8)) == NULL)
-        allocache((int32_t *)&palookup[0],numpalookups<<8,&permanentlock);
+        allocache(&palookup[0],numpalookups<<8,&permanentlock);
     
     //Transluctent pallete is 65KB.
-    if ((transluc = (uint8_t  *)kkmalloc(65536L)) == NULL)
-        allocache((int32_t *)&transluc,65536,&permanentlock);
+    if ((transluc = (uint8_t  *)kkmalloc(65536)) == NULL)
+        allocache(&transluc,65536,&permanentlock);
 
     globalpalwritten = palookup[0];
     globalpal = 0;
     
 
-    fixtransluscence(transluc);
+   
 
     kread(fil,palookup[globalpal],numpalookups<<8);
 
@@ -4276,9 +4290,7 @@ void nextpage(void)
         {
             per = &permfifo[i];
             if ((per->pagesleft > 0) && (per->pagesleft <= numpages))
-                dorotatesprite(per->sx,per->sy,per->z,per->a,per->picnum,
-                               per->dashade,per->dapalnum,per->dastat,
-                               per->cx1,per->cy1,per->cx2,per->cy2);
+                dorotatesprite(per->sx,per->sy,per->z,per->a,per->picnum,per->dashade,per->dapalnum,per->dastat,per->cx1,per->cy1,per->cx2,per->cy2);
         }
     } /* if */
 
@@ -4350,7 +4362,7 @@ void loadtile(short tilenume)
         klseek(artfil,tilefileoffs[tilenume]-artfilplc,SEEK_CUR);
         faketimerhandler();
     }
-    ptr = (uint8_t  *)waloff[tilenume];
+    ptr = waloff[tilenume];
     kread(artfil,ptr,tileFilesize);
     faketimerhandler();
     artfilplc = tilefileoffs[tilenume]+tileFilesize;
@@ -4362,7 +4374,7 @@ uint8_t* allocatepermanenttile(short tilenume, int32_t width, int32_t height)
     int32_t j;
     uint32_t tileDataSize;
 
-    //Check data are correct.
+    //Check dimensions are correct.
     if ((width <= 0) || (height <= 0) || ((uint32_t)tilenume >= (uint32_t)MAXTILES))
         return(0);
 
@@ -4383,7 +4395,6 @@ uint8_t* allocatepermanenttile(short tilenume, int32_t width, int32_t height)
     j = 15;
     while ((j > 1) && (pow2long[j] > height))
         j--;
-    
     picsiz[tilenume] += ((uint8_t )(j<<4));
 
     return(waloff[tilenume]);
@@ -4559,8 +4570,8 @@ static int clipinsideboxline(int32_t x, int32_t y, int32_t x1, int32_t y1, int32
 
 void drawline256 (int32_t x1, int32_t y1, int32_t x2, int32_t y2, uint8_t  col)
 {
-    int32_t dx, dy, i, j, p, inc, plc, daend;
-
+    int32_t dx, dy, i, j, inc, plc, daend;
+    uint8_t* p;
     col = palookup[0][col];
 
     dx = x2-x1;
@@ -4709,13 +4720,19 @@ int inside(int32_t x, int32_t y, short sectnum)
 
 int getangle(int32_t xvect, int32_t yvect)
 {
-    if ((xvect|yvect) == 0) return(0);
-    if (xvect == 0) return(512+((yvect<0)<<10));
-    if (yvect == 0) return(((xvect<0)<<10));
-    if (xvect == yvect) return(256+((xvect<0)<<10));
-    if (xvect == -yvect) return(768+((xvect>0)<<10));
+    if ((xvect|yvect) == 0)
+        return(0);
+    if (xvect == 0)
+        return(512+((yvect<0)<<10));
+    if (yvect == 0)
+        return(((xvect<0)<<10));
+    if (xvect == yvect)
+        return(256+((xvect<0)<<10));
+    if (xvect == -yvect)
+        return(768+((xvect>0)<<10));
     if (klabs(xvect) > klabs(yvect))
         return(((radarang[640+scale(160,yvect,xvect)]>>6)+((xvect<0)<<10))&2047);
+    
     return(((radarang[640-scale(160,xvect,yvect)]>>6)+512+((yvect<0)<<10))&2047);
 }
 
@@ -5988,9 +6005,10 @@ void initspritelists(void)
 
     for (i=0; i<MAXSECTORS; i++)   /* Init doubly-linked sprite sector lists */
         headspritesect[i] = -1;
+    
     headspritesect[MAXSECTORS] = 0;
-    for(i=0; i<MAXSPRITES; i++)
-    {
+    
+    for(i=0; i<MAXSPRITES; i++){
         prevspritesect[i] = i-1;
         nextspritesect[i] = i+1;
         sprite[i].sectnum = MAXSECTORS;
@@ -6216,7 +6234,8 @@ int cansee(int32_t x1, int32_t y1, int32_t z1, short sect1,
     int32_t i, cnt, nexts, x, y, z, cz, fz, dasectnum, dacnt, danum;
     int32_t x21, y21, z21, x31, y31, x34, y34, bot, t;
 
-    if ((x1 == x2) && (y1 == y2)) return(sect1 == sect2);
+    if ((x1 == x2) && (y1 == y2))
+        return(sect1 == sect2);
 
     x21 = x2-x1;
     y21 = y2-y1;
@@ -6237,11 +6256,15 @@ int cansee(int32_t x1, int32_t y1, int32_t z1, short sect1,
             y34 = wal->y-wal2->y;
 
             bot = y21*x34-x21*y34;
-            if (bot <= 0) continue;
+            if (bot <= 0)
+                continue;
+            
             t = y21*x31-x21*y31;
-            if ((uint32_t)t >= (uint32_t)bot) continue;
+            if ((uint32_t)t >= (uint32_t)bot)
+                continue;
             t = y31*x34-x31*y34;
-            if ((uint32_t)t >= (uint32_t)bot) continue;
+            if ((uint32_t)t >= (uint32_t)bot)
+                continue;
 
             nexts = wal->nextsector;
             if ((nexts < 0) || (wal->cstat&32)) return(0);
@@ -6252,15 +6275,22 @@ int cansee(int32_t x1, int32_t y1, int32_t z1, short sect1,
             z = z1 + mulscale24(z21,t);
 
             getzsofslope((short)dasectnum,x,y,&cz,&fz);
-            if ((z <= cz) || (z >= fz)) return(0);
+            if ((z <= cz) || (z >= fz))
+                return(0);
             getzsofslope((short)nexts,x,y,&cz,&fz);
-            if ((z <= cz) || (z >= fz)) return(0);
+            if ((z <= cz) || (z >= fz))
+                return(0);
 
-            for(i=danum-1; i>=0; i--) if (clipsectorlist[i] == nexts) break;
-            if (i < 0) clipsectorlist[danum++] = nexts;
+            for(i=danum-1; i>=0; i--)
+                if (clipsectorlist[i] == nexts)
+                    break;
+            if (i < 0)
+                clipsectorlist[danum++] = nexts;
         }
     }
-    for(i=danum-1; i>=0; i--) if (clipsectorlist[i] == sect2) return(1);
+    for(i=danum-1; i>=0;i--)
+        if (clipsectorlist[i] == sect2)
+            return(1);
     return(0);
 }
 

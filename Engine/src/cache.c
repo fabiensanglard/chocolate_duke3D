@@ -133,7 +133,8 @@ void allocache (uint8_t** newhandle, int32_t newbytes, uint8_t  *newlockptr)
 		/* Remove all blocks except 1 */
 	suckz -= (bestz+1); cacnum -= suckz;
 	copybufbyte(&cac[bestz+suckz],&cac[bestz],(cacnum-bestz)*sizeof(cactype));
-	cac[bestz].hand = newhandle; *newhandle = cachestart+besto;
+	cac[bestz].hand = newhandle;
+    *newhandle = cachestart+besto;
 	cac[bestz].leng = newbytes;
 	cac[bestz].lock = newlockptr;
 	cachecount++;
