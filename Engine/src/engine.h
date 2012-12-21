@@ -60,7 +60,7 @@ void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,int16_t daang, int
 int loadboard(char  *filename, int32_t *daposx, int32_t *daposy,int32_t *daposz, int16_t *daang, int16_t *dacursectnum);
 void drawmasks(void);
 void printext256(int32_t xpos, int32_t ypos, int16_t col, int16_t backcol,char  name[82], uint8_t  fontsize);
-void printext256_noupdate(int32_t xpos, int32_t ypos, int16_t col, int16_t backcol,char*  name, uint8_t  fontsize);
+
 void initengine(void);
 void uninitengine(void);
 
@@ -99,7 +99,7 @@ int lintersect(int32_t x1, int32_t y1, int32_t z1, int32_t x2, int32_t y2, int32
 int rintersect(int32_t x1, int32_t y1, int32_t z1, int32_t vx, int32_t vy, int32_t vz,
                int32_t x3, int32_t y3, int32_t x4, int32_t y4, int32_t *intx,
                int32_t *inty, int32_t *intz);
-int allocatepermanenttile(int16_t tilenume, int32_t xsiz, int32_t ysiz);
+uint8_t* allocatepermanenttile(int16_t tilenume, int32_t xsiz, int32_t ysiz);
 void drawline256 (int32_t x1, int32_t y1, int32_t x2, int32_t y2, uint8_t  col);
 void copytilepiece(int32_t tilenume1, int32_t sx1, int32_t sy1, int32_t xsiz, int32_t ysiz,
                    int32_t tilenume2, int32_t sx2, int32_t sy2);

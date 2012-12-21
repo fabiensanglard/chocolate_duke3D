@@ -40,28 +40,28 @@ extern int32_t asm3;
 extern int32_t asm4;
 
 static uint8_t machxbits_al;
-static uint8_t machxbits_bl;
-static uint8_t * machxbits_ecx;
-void sethlinesizes(int32_t i1, int32_t i2, uint8_t * textureAddress)
+static uint8_t bitsSetup;
+static uint8_t * textureSetup;
+void sethlinesizes(int32_t i1, int32_t _bits, uint8_t * textureAddress)
 {
     machxbits_al = i1;
-    machxbits_bl = i2;
-    machxbits_ecx = textureAddress;
+    bitsSetup = _bits;
+    textureSetup = textureAddress;
 } 
 
 
 
 //FCS:   Draw ceiling/floors
 //Draw a line from destination in the framebuffer to framebuffer-numPixels
-void hlineasm4(int32_t numPixels, int32_t shade, uint32_t i4, uint32_t i5, int32_t destination){
+void hlineasm4(int32_t numPixels, int32_t shade, uint32_t i4, uint32_t i5, uint8_t *dest){
 
-    uint8_t *dest = (uint8_t *) destination;
+    
     int32_t shifter = ((256-machxbits_al) & 0x1f);
     uint32_t source;
-    uint8_t  bits = machxbits_bl;
-    uint8_t  *lookup = (uint8_t *) machxbits_ecx;
     
-
+    uint8_t * texture = textureSetup;
+    uint8_t bits = bitsSetup;
+    
     shade = shade & 0xffffff00;
     numPixels++;
     
@@ -72,7 +72,7 @@ void hlineasm4(int32_t numPixels, int32_t shade, uint32_t i4, uint32_t i5, int32
 
 	    source = i5 >> shifter;
 	    source = shld(source,i4,bits);
-	    source = lookup[source];
+	    source = texture[source];
         
 		if (pixelsAllowed-- > 0)
 			*dest = globalpalwritten[shade|source];
@@ -140,14 +140,14 @@ static int32_t rmmach_eax;
 static int32_t rmmach_ebx;
 static int32_t rmmach_ecx;
 static int32_t rmmach_edx;
-static int32_t rmmach_esi;
-void setuprmhlineasm4(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6)
+static int32_t setupTileHeight;
+void setuprmhlineasm4(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t tileHeight, int32_t i6)
 {
     rmmach_eax = i1;
     rmmach_ebx = i2;
     rmmach_ecx = i3;
     rmmach_edx = i4;
-    rmmach_esi = i5;
+    setupTileHeight = tileHeight;
 } 
 
 
@@ -176,7 +176,7 @@ void rmhlineasm4(int32_t i1, int32_t shade, int32_t colorIndex, int32_t i4, int3
 	    else
             shade -= rmmach_ecx;
         
-	    ebp &= rmmach_esi;
+	    ebp &= setupTileHeight;
         
         //Check if this colorIndex is the transparent color (255).
 	    if ((colorIndex&0xff) != 255) {
@@ -631,17 +631,17 @@ setup:
 }
 
 
-uint32_t tspal;
+uint8_t * tspal;
 uint32_t tsmach_eax1;
-uint32_t tsmach_eax2;
+uint32_t adder;
 uint32_t tsmach_eax3;
 uint32_t tsmach_ecx;
-void tsetupspritevline(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5)
+void tsetupspritevline(uint8_t * palette, int32_t i2, int32_t i3, int32_t i4, int32_t i5)
 {
-	tspal = i1;
+	tspal = palette;
 	tsmach_eax1 = i5 << 16;
-	tsmach_eax2 = (i5 >> 16) + i2;
-	tsmach_eax3 = tsmach_eax2 + i4;
+	adder = (i5 >> 16) + i2;
+	tsmach_eax3 = adder + i4;
 	tsmach_ecx = i3;
 } 
 
@@ -649,41 +649,44 @@ void tsetupspritevline(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i
 /*
  FCS: Draw a sprite vertical line of pixels.
  */
-void DrawSpriteVerticalLine(int32_t i1, int32_t i2, int32_t numPixels, uint32_t i4, int32_t i5, uint8_t  * dest)
+void DrawSpriteVerticalLine(int32_t i2, int32_t numPixels, uint32_t i4, uint8_t  * texture, uint8_t  * dest)
 {
+    uint8_t colorIndex;
+    
 	while (numPixels)
 	{
 		numPixels--;
         
 		if (numPixels != 0)
 		{
-			uint32_t adder = tsmach_eax2;
+			
 			i4 += tsmach_ecx;
             
 			if (i4 < (i4 - tsmach_ecx)) 
                 adder = tsmach_eax3;
             
-			i1 = *((uint8_t  *)i5);
+			colorIndex = *texture;
+            
 			i2 += tsmach_eax1;
 			if (i2 < (i2 - tsmach_eax1)) 
-                i5++;
+                texture++;
             
-			i5 += adder;
+			texture += adder;
 			
             //255 is the index of the transparent color: Do not draw it.
-			if (i1 != 255)
+			if (colorIndex != 255)
 			{
 				uint16_t val;
-				val = ((uint8_t *)tspal)[i1];
+				val = tspal[colorIndex];
 				val |= (*dest)<<8;
 
 				if (transrev) 
 					val = ((val>>8)|(val<<8));
 
-				i1 = transPalette[val];
+				colorIndex = transPalette[val];
 
 				if (pixelsAllowed-- > 0)
-					*dest = (i1&0xff);
+					*dest = colorIndex;
 			}
             
             //Move down one pixel on the framebuffer
@@ -729,24 +732,24 @@ static int32_t mmach_asm3;
 static int32_t mmach_asm1;
 static int32_t mmach_asm2;
 
-void mhline(uint8_t  * texture, int32_t i2, int32_t i3, int32_t i4, int32_t i5, uint8_t* dest)
+void mhline(uint8_t  * texture, int32_t i2, int32_t numPixels, int32_t i4, int32_t i5, uint8_t* dest)
 {
     textureData = texture;
     mmach_asm3 = asm3;
     mmach_asm1 = asm1;
     mmach_asm2 = asm2;
-    mhlineskipmodify(i2,i3>>16,i4,i5,dest);
+    mhlineskipmodify(i2,numPixels>>16,i5,dest);
 }
 
 
 static uint8_t  mshift_al = 26;
 static uint8_t  mshift_bl = 6;
-void mhlineskipmodify( uint32_t i2, int32_t pixels, int32_t i4, int32_t i5, uint8_t* dest)
+void mhlineskipmodify( uint32_t i2, int32_t numPixels, int32_t i5, uint8_t* dest)
 {
     uint32_t ebx;
     int32_t colorIndex;
     
-    while (pixels >= 0)
+    while (numPixels >= 0)
     {
 	    ebx = i2 >> mshift_al;
 	    ebx = shld (ebx, (uint32_t)i5, mshift_bl);
@@ -760,7 +763,7 @@ void mhlineskipmodify( uint32_t i2, int32_t pixels, int32_t i4, int32_t i5, uint
 	    i2 += mmach_asm1;
 	    i5 += mmach_asm2;
 	    dest++;
-	    pixels--;
+	    numPixels--;
 
 		
     }

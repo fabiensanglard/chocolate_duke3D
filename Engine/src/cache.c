@@ -81,7 +81,7 @@ void initcache(int32_t dacachestart, int32_t dacachesize)
 	cacnum = 1;
 }
 
-void allocache (int32_t *newhandle, int32_t newbytes, uint8_t  *newlockptr)
+void allocache (uint8_t** newhandle, int32_t newbytes, uint8_t  *newlockptr)
 {
 	int32_t i, z, zz, bestz=0, daval, bestval, besto=0, o1, o2, sucklen, suckz;
 

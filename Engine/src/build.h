@@ -177,11 +177,21 @@ EXTERN short headspritesect[MAXSECTORS+1], headspritestat[MAXSTATUS+1];
 EXTERN short prevspritesect[MAXSPRITES], prevspritestat[MAXSPRITES];
 EXTERN short nextspritesect[MAXSPRITES], nextspritestat[MAXSPRITES];
 
-EXTERN short tilesizx[MAXTILES], tilesizy[MAXTILES];
+// The dimension of the tile in texels unit. The sizes can be obtained for
+// any tile by doing a tilesizx * tilesizy
+//EXTERN short tilesizx[MAXTILES], tilesizy[MAXTILES];
+typedef struct dimensions_s{
+    short width;
+    short height;
+} dimensions_t;
+dimensions_t tilesDimension[MAXTILES];
 
 // An array of locks for each pic: Used to check if a texture is in RAM or in the GRP.
 EXTERN uint8_t  walock[MAXTILES];
-EXTERN int32_t numtiles, picanm[MAXTILES], waloff[MAXTILES];
+EXTERN int32_t numtiles, picanm[MAXTILES];
+
+//The wall texture data.
+EXTERN uint8_t* waloff[MAXTILES];
 
     /*
 	 * These variables are for auto-mapping with the draw2dscreen function.

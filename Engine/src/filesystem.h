@@ -15,6 +15,8 @@
 #define MAXGROUPFILES 4     /* Warning: Fix groupfil if this is changed */
 #define MAXOPENFILES 64     /* Warning: Fix filehan if this is changed  */
 
+extern int32_t groupefil_crc32[4];
+
 int32_t  initgroupfile(const char  *filename);
 void     uninitgroupfile(void);
 uint16_t crc16(uint8_t  *data_p, uint16_t length);
@@ -30,8 +32,7 @@ void     kclose(int32_t handle);
 void     kdfread(void *buffer, size_t dasizeof, size_t count, int32_t fil);
 void     dfread(void *buffer, size_t dasizeof, size_t count, FILE *fil);
 void     dfwrite(void *buffer, size_t dasizeof, size_t count, FILE *fil);
-int32_t  compress(uint8_t  *lzwinbuf, int32_t uncompleng, uint8_t  *lzwoutbuf);
-int32_t  uncompress(uint8_t  *lzwinbuf, int32_t compleng, uint8_t  *lzwoutbuf);
+
 
 char*    getGameDir(void);
 void     setGameDir(char* gameDir);

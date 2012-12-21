@@ -339,7 +339,7 @@ void shoot(short i,short atwith)
         sa = s->ang;
         sx = s->x;
         sy = s->y;
-        sz = s->z-((s->yrepeat*tilesizy[s->picnum])<<1)+(4<<8);
+        sz = s->z-((s->yrepeat*tilesDimension[s->picnum].height)<<1)+(4<<8);
         if(s->picnum != ROTATEGUN)
         {
             sz -= (7<<8);
@@ -497,7 +497,7 @@ void shoot(short i,short atwith)
 				j = aim( s, AUTO_AIM_ANGLE, ps[p].auto_aim!= 0 );
                 if(j >= 0)
                 {
-                    dal = ((sprite[j].xrepeat*tilesizy[sprite[j].picnum])<<1)+(5<<8);
+                    dal = ((sprite[j].xrepeat*tilesDimension[sprite[j].picnum].height)<<1)+(5<<8);
                     switch(sprite[j].picnum)
                     {
                         case GREENSLIME:
@@ -726,7 +726,7 @@ void shoot(short i,short atwith)
 				j = aim( s, AUTO_AIM_ANGLE, ps[p].auto_aim==2 );
                 if(j >= 0)
                 {
-                    dal = ((sprite[j].xrepeat*tilesizy[sprite[j].picnum])<<1)-(12<<8);
+                    dal = ((sprite[j].xrepeat*tilesDimension[sprite[j].picnum].height)<<1)-(12<<8);
                     zvel = ((sprite[j].z-sz-dal)*vel ) / ldist(&sprite[ps[p].i], &sprite[j]) ;
                     sa = getangle(sprite[j].x-sx,sprite[j].y-sy);
                 }
@@ -814,7 +814,7 @@ void shoot(short i,short atwith)
                 j = aim( s, 48, ps[p].auto_aim==2);
                 if(j >= 0)
                 {
-                    dal = ((sprite[j].xrepeat*tilesizy[sprite[j].picnum])<<1)+(8<<8);
+                    dal = ((sprite[j].xrepeat*tilesDimension[sprite[j].picnum].height)<<1)+(8<<8);
                     zvel = ( (sprite[j].z-sz-dal)*vel ) / ldist(&sprite[ps[p].i], &sprite[j]);
                     if( sprite[j].picnum != RECON )
                         sa = getangle(sprite[j].x-sx,sprite[j].y-sy);
@@ -995,7 +995,7 @@ void shoot(short i,short atwith)
                 j = aim( s, AUTO_AIM_ANGLE, ps[p].auto_aim==2);
                 if(j >= 0)
                 {
-                    dal = ((sprite[j].xrepeat*tilesizy[sprite[j].picnum])<<1)+(5<<8);
+                    dal = ((sprite[j].xrepeat*tilesDimension[sprite[j].picnum].height)<<1)+(5<<8);
                     switch(sprite[j].picnum)
                     {
                         case GREENSLIME:
@@ -1086,7 +1086,7 @@ void shoot(short i,short atwith)
                 j = aim( s, AUTO_AIM_ANGLE, ps[p].auto_aim==2);
                 if(j >= 0)
                 {
-                    dal = ((sprite[j].xrepeat*tilesizy[sprite[j].picnum])<<1);
+                    dal = ((sprite[j].xrepeat*tilesDimension[sprite[j].picnum].height)<<1);
                     zvel = ( (sprite[j].z-sz-dal-(4<<8))*768) / (ldist( &sprite[ps[p].i], &sprite[j]));
                     sa = getangle(sprite[j].x-sx,sprite[j].y-sy);
                 }
@@ -1227,13 +1227,13 @@ void displaymasks(short snum)
 	 {
         if(ud.screen_size > 4)
         {
-            rotatesprite(43<<16,(200-8-(tilesizy[SCUBAMASK])<<16),65536,0,SCUBAMASK,0,p,2+16,windowx1,windowy1,windowx2,windowy2);
-            rotatesprite((320-43)<<16,(200-8-(tilesizy[SCUBAMASK])<<16),65536,1024,SCUBAMASK,0,p,2+4+16,windowx1,windowy1,windowx2,windowy2);
+            rotatesprite(43<<16,(200-8-(tilesDimension[SCUBAMASK].height)<<16),65536,0,SCUBAMASK,0,p,2+16,windowx1,windowy1,windowx2,windowy2);
+            rotatesprite((320-43)<<16,(200-8-(tilesDimension[SCUBAMASK].height)<<16),65536,1024,SCUBAMASK,0,p,2+4+16,windowx1,windowy1,windowx2,windowy2);
         }
         else
         {
-            rotatesprite(43<<16,(200-(tilesizy[SCUBAMASK])<<16),65536,0,SCUBAMASK,0,p,2+16,windowx1,windowy1,windowx2,windowy2);
-            rotatesprite((320-43)<<16,(200-(tilesizy[SCUBAMASK])<<16),65536,1024,SCUBAMASK,0,p,2+4+16,windowx1,windowy1,windowx2,windowy2);
+            rotatesprite(43<<16,(200-(tilesDimension[SCUBAMASK].height)<<16),65536,0,SCUBAMASK,0,p,2+16,windowx1,windowy1,windowx2,windowy2);
+            rotatesprite((320-43)<<16,(200-(tilesDimension[SCUBAMASK].height)<<16),65536,1024,SCUBAMASK,0,p,2+4+16,windowx1,windowy1,windowx2,windowy2);
         }
 	 }
 }

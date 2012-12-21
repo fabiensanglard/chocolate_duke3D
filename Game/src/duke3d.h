@@ -92,7 +92,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 
 extern uint8_t  conVersion;
 extern uint8_t  grpVersion;
-extern int32_t groupefil_crc32[4];
+
 
 #define RANCID_ID 1
 #define	XDUKE_ID  2
