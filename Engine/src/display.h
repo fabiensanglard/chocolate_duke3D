@@ -68,10 +68,10 @@ int VBE_setPalette(uint8_t  *palettebuffer);
 int setvesa(int32_t x, int32_t y);
 
 void setvmode(int mode);
-uint8_t  readpixel(int32_t offset);
+uint8_t  readpixel(uint8_t  * location);
 void drawpixel(uint8_t  * location, uint8_t pixel);
-void drawpixels(int32_t offset, uint16_t pixels);
-void drawpixelses(int32_t offset, uint32_t pixelses);
+
+
 void drawpixel16(int32_t offset);
 void fillscreen16 (int32_t input1, int32_t input2, int32_t input3);
 

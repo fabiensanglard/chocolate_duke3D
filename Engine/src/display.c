@@ -1661,11 +1661,10 @@ void _nextpage(void)
     
 
 
-    if ((debug_hall_of_mirrors) && (qsetmode == 200) && (frameplace))
-    {
+    if ((debug_hall_of_mirrors) && (qsetmode == 200) && (frameplace)){
         memset((void *) frameplace, mirrorcolor, surface->w * surface->h);
         mirrorcolor++;
-    } /* if */
+    }
 
     ticks = getticks();
     total_render_time = (ticks - last_render_ticks);
@@ -1679,57 +1678,15 @@ void _nextpage(void)
 } 
 
 
-uint8_t  readpixel(int32_t offset)
+uint8_t  readpixel(uint8_t  * offset)
 {
-    return( *((uint8_t  *) offset) );
-} /* readpixel */
+    return *offset;
+} 
 
 void drawpixel(uint8_t  * location, uint8_t  pixel)
 {
     *location = pixel;
 }
-
-
-/* !!! These are incorrect. */
-void drawpixels(int32_t offset, uint16_t pixels)
-{
-    uint16_t*  surface_end;
-    uint16_t  * pos;
-
-    Error(EXIT_FAILURE, "Blargh!\n");
-
-    if (SDL_MUSTLOCK(surface))
-        SDL_LockSurface(surface);
-
-    surface_end = (uint8_t*)surface->pixels + (surface->w * surface->h) - 2;
-    pos = (uint8_t*)surface->pixels + offset;
-    if ((pos >= (uint16_t*) surface->pixels) && (pos < surface_end))
-        *pos = pixels;
-
-    if (SDL_MUSTLOCK(surface))
-        SDL_UnlockSurface(surface);
-} /* drawpixels */
-
-
-void drawpixelses(int32_t offset, unsigned int pixelses)
-{
-    Uint8 *surface_end;
-    Uint32 *pos;
-
-                Error(EXIT_FAILURE, "Blargh!\n");
-
-    if (SDL_MUSTLOCK(surface))
-        SDL_LockSurface(surface);
-
-    surface_end = (((Uint8 *)surface->pixels) + (surface->w * surface->h)) - 2;
-    pos = (Uint32 *) (((Uint8 *) surface->pixels) + offset);
-    if ((pos >= (Uint32 *) surface->pixels) && (pos < (Uint32 *) surface_end))
-        *pos = pixelses;
-
-    if (SDL_MUSTLOCK(surface))
-        SDL_UnlockSurface(surface);
-} /* drawpixelses */
-
 
 /* Fix this up The Right Way (TM) - DDOI */
 void setcolor16(uint8_t col)
