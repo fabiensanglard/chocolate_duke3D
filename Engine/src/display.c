@@ -273,20 +273,6 @@ void genericmultifunction(int32_t other, char  *bufptr, int32_t messleng, int32_
 #include <windows.h>
 #endif
 
-typedef enum
-{
-    RENDERER_SOFTWARE,
-    RENDERER_OPENGL3D,
-    RENDERER_TOTAL
-} sdl_renderer_type;
-
-const char  *renderer_name[RENDERER_TOTAL];
-
-#define ENVRSTR_RENDERER_SOFTWARE  "software"
-#define ENVRSTR_RENDERER_OPENGL3D  "opengl3d"
-
-static sdl_renderer_type renderer = RENDERER_SOFTWARE;
-
 #include "draw.h"
 #include "cache.h"
 
@@ -338,7 +324,6 @@ void set16color_palette (void);
 
 static FILE *_sdl_debug_file = NULL;
 
-void set_sdl_renderer(void);
 
 static __inline void __out_sdldebug(const char  *subsystem,
                                   const char  *fmt, va_list ap)
@@ -445,8 +430,6 @@ static void output_driver_info(void)
     if (!_sdl_debug_file)
         return;
 
-    sdldebug("Using BUILD renderer \"%s\".", renderer_name[renderer]);
-
     if (SDL_VideoDriverName(buffer, sizeof (buffer)) == NULL)
     {
         sdldebug("-WARNING- SDL_VideoDriverName() returned NULL!");
@@ -458,17 +441,9 @@ static void output_driver_info(void)
 } /* output_driver_info */
 
 
-Uint8 *get_framebuffer(void)
-{
-    assert(renderer != RENDERER_OPENGL3D);
-
-    if (renderer == RENDERER_SOFTWARE)
-        return((Uint8 *) surface->pixels);
-    else if (renderer == RENDERER_OPENGL3D)
-        return((Uint8 *) frameplace);
-
-    return(NULL);
-} /* get_framebuffer */
+void* get_framebuffer(void){
+    return((Uint8 *) surface->pixels);
+}
 
 
 
@@ -502,13 +477,8 @@ static void init_new_res_vars(int32_t davidoption)
 	qsetmode = surface->h;
 	activepage = visualpage = 0;
 
-    if (renderer == RENDERER_OPENGL3D)
-        frameplace = (int32_t) NULL;
-    else
-		// FIX_00083: Sporadic crash on fullscreen/window mode toggle
-		// frameoffset wasn't always updated fast enought. Build were using the old 
-		// pointer of frameoffset.  
-        frameoffset = frameplace = (uint8_t*)surface->pixels;
+     
+    frameoffset = frameplace = (uint8_t*)surface->pixels;
 
   	if (screen != NULL)
    	{
@@ -1014,41 +984,6 @@ static char  *string_dupe(const char  *str)
 } /* string_dupe */
 
 
-void set_sdl_renderer(void)
-{
-    const char  *envr = getenv(BUILD_RENDERER);
-
-
-    if ((envr == NULL) || (strcmp(envr, ENVRSTR_RENDERER_SOFTWARE) == 0))
-        renderer = RENDERER_SOFTWARE;
-    else
-    {
-        fprintf(stderr,
-                "BUILDSDL: \"%s\" in the %s environment var is not available.\n",
-                envr, BUILD_RENDERER);
-        _exit(1);
-    } /* else */
-
-#ifdef __APPLE__
-    SDL_putenv("SDL_VIDEODRIVER=Quartz");
-#endif
-    
-    if (SDL_Init(SDL_INIT_VIDEO) == -1)
-    {
-		Error(EXIT_FAILURE, "BUILDSDL: SDL_Init() failed!\n"
-							"BUILDSDL: SDL_GetError() says \"%s\".\n", SDL_GetError());
-    } /* if */
-
-} /* set_sdl_renderer */
-
-
-static void init_renderer_names(void)
-{
-    memset((void *) renderer_name, '\0', sizeof (renderer_name));
-    renderer_name[RENDERER_SOFTWARE] = "RENDERER_SOFTWARE";
-    renderer_name[RENDERER_OPENGL3D] = "RENDERER_OPENGL3D";
-} /* init_renderer_names */
-
 
 
 //#include "mmulti_stable.h"
@@ -1114,7 +1049,7 @@ void _platform_init(int argc, char  **argv, const char  *title, const char  *ico
 
 	putenv("SDL_VIDEO_CENTERED=1");
 
-    init_renderer_names();
+    
 
     init_debugging();
 
@@ -1247,7 +1182,7 @@ void _platform_init(int argc, char  **argv, const char  *title, const char  *ico
     scancodes[SDLK_INSERT]          = 0xE052;
     scancodes[SDLK_DELETE]          = 0xE053;
     
-    set_sdl_renderer();
+    
 
     output_sdl_versions();
     output_driver_info();
@@ -1711,8 +1646,7 @@ static uint8_t  mirrorcolor = 0;
 
 void _updateScreenRect(int32_t x, int32_t y, int32_t w, int32_t h)
 {
-    if (renderer == RENDERER_SOFTWARE)
-        SDL_UpdateRect(surface, x, y, w, h);
+    SDL_UpdateRect(surface, x, y, w, h);
 } /* _updatescreenrect */
 
 
@@ -1722,12 +1656,9 @@ void _nextpage(void)
 
     _handle_events();
 
-    if (renderer == RENDERER_SOFTWARE)
-    {
-		// FIX_00085: Optimized Video driver. FPS increases by +20%.
-        // SDL_Flip(surface);
-		SDL_UpdateRect(surface, 0, 0, 0, 0);
-    }
+    
+    SDL_UpdateRect(surface, 0, 0, 0, 0);
+    
 
 
     if ((debug_hall_of_mirrors) && (qsetmode == 200) && (frameplace))

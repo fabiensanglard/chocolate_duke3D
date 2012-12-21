@@ -3585,8 +3585,11 @@ static void loadpalette(void)
     int32_t i, j, k, dist, fil;
     uint8_t  *ptr;
 
-    if (paletteloaded != 0) return;
-    if ((fil = TCkopen4load("palette.dat",0)) == -1) return;
+    if (paletteloaded != 0)
+        return;
+    
+    if ((fil = TCkopen4load("palette.dat",0)) == -1)
+        return;
 
     kread(fil,palette,768);
     kread16(fil,&numpalookups);
@@ -3624,8 +3627,10 @@ static void loadpalette(void)
             if (palookup[k] != NULL)
                 for(i=0; i<256; i++)
                 {
-                    dist = palette[i*3]*3+palette[i*3+1]*5+palette[i*3+2]*2;
-                    ptr = (uint8_t  *)(FP_OFF(palookup[k])+i);
+                    dist = palette[i*3]   * 3+
+                           palette[i*3+1] * 5+
+                           palette[i*3+2] * 2;
+                    ptr = palookup[k]+i;
                     for(j=0; j<32; j++)
                         ptr[j<<8] = (uint8_t )min(max(mulscale10(dist,32-j),0),15);
                 }
