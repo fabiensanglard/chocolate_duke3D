@@ -170,7 +170,7 @@ int gametext(int x,int y,char  *t,uint8_t  s,short dabits)
 
             if(*t >= '0' && *t <= '9')
                 newx += 8;
-            else newx += tilesizx[ac];
+            else newx += tilesDimension[ac].width;
             t++;
         }
 
@@ -190,7 +190,7 @@ int gametext(int x,int y,char  *t,uint8_t  s,short dabits)
 
         if(*t >= '0' && *t <= '9')
             x += 8;
-        else x += tilesizx[ac];
+        else x += tilesDimension[ac].width;
 
         t++;
     }
@@ -219,7 +219,7 @@ int gametextpal(int x,int y,char  *t,uint8_t  s,uint8_t  p)
 
             if(*t >= '0' && *t <= '9')
                 newx += 8;
-            else newx += tilesizx[ac];
+            else newx += tilesDimension[ac].width;
             t++;
         }
 
@@ -238,7 +238,7 @@ int gametextpal(int x,int y,char  *t,uint8_t  s,uint8_t  p)
         rotatesprite(x<<16,y<<16,65536L,0,ac,s,p,2+8+16,0,0,xdim-1,ydim-1);
         if(*t >= '0' && *t <= '9')
             x += 8;
-        else x += tilesizx[ac];
+        else x += tilesDimension[ac].width;
 
         t++;
     }
@@ -268,7 +268,7 @@ int gametextpart(int x,int y,char  *t,uint8_t  s,short p)
 
             if( ac < STARTALPHANUM || ac > ENDALPHANUM ) break;
 
-            newx += tilesizx[ac];
+            newx += tilesDimension[ac].width;
             t++;
             cnt++;
 
@@ -294,7 +294,7 @@ int gametextpart(int x,int y,char  *t,uint8_t  s,short p)
         else
             rotatesprite(x<<16,y<<16,65536L,0,ac,s,0,2+8+16,0,0,xdim-1,ydim-1);
 
-        x += tilesizx[ac];
+        x += tilesDimension[ac].width;
 
         t++;
         cnt++;
@@ -1674,7 +1674,7 @@ void digitalnumber(int32_t x,int32_t y,int32_t n,uint8_t  s,uint8_t  cs)
     for(k=0;k<i;k++)
     {
         p = DIGITALNUM+*(b+k)-'0';
-        j += tilesizx[p]+1;
+        j += tilesDimension[p].width+1;
     }
     c = x-(j>>1);
 
@@ -1683,7 +1683,7 @@ void digitalnumber(int32_t x,int32_t y,int32_t n,uint8_t  s,uint8_t  cs)
     {
         p = DIGITALNUM+*(b+k)-'0';
         rotatesprite((c+j)<<16,y<<16,65536L,0,p,s,0,cs,0,0,xdim-1,ydim-1);
-        j += tilesizx[p]+1;
+        j += tilesDimension[p].width+1;
     }
 }
 
@@ -5934,7 +5934,8 @@ void animatesprites(int32_t x,int32_t y,short a,int32_t smoothratio)
 
                 t->picnum += k + ( *(int32_t *)t4 ) + l * t3;
 
-                if(l > 0) while(tilesizx[t->picnum] == 0 && t->picnum > 0 )
+                if(l > 0)
+                    while(tilesDimension[t->picnum].width == 0 && t->picnum > 0 )
                     t->picnum -= l;       //Hack, for actors
 
                 if( hittype[i].dispicnum >= 0)
@@ -7735,7 +7736,7 @@ void Startup(void)
 
    readsavenames();
 
-   tilesizx[MIRROR] = tilesizy[MIRROR] = 0;
+   tilesDimension[MIRROR].width = tilesDimension[MIRROR].height = 0;
 
    for(i=0;i<MAXPLAYERS;i++) playerreadyflag[i] = 0;
    initmultiplayers(0,0,0);

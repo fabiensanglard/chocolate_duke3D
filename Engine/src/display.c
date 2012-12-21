@@ -65,10 +65,6 @@ void TIMER_GetPlatformTicks(int64_t* t);
 
 
 // NETWORK STUFF
-#ifdef __APPLE__
-  #define USER_DUMMY_NETWORK 1
-#endif 
-
 void Setup_UnstableNetworking();
 void Setup_StableNetworking();
 
@@ -1301,15 +1297,14 @@ int _setgamemode(uint8_t  davidoption, int32_t daxdim, int32_t daydim)
 
 	// Install icon
 	image = SDL_LoadBMP_RW(SDL_RWFromMem(iconBMP, sizeof(iconBMP)), 1);
-	// image = SDL_LoadBMP("nuclear2.bmp");
-	// colorkey = SDL_MapRGB(image->format, 252, 254, 252); // to lookup idx in true color img
 	colorkey = 0; // index in this image to be transparent
-	SDL_SetColorKey(image, SDL_SRCCOLORKEY, colorkey);
+    SDL_SetColorKey(image, SDL_SRCCOLORKEY, colorkey);
 	SDL_WM_SetIcon(image,NULL);
 
+    
     if (daxdim > MAXXDIM || daydim > MAXYDIM)
     {
-		printf("%d x %d is too big. Changed to %d x %d\n", daxdim, daydim, MAXXDIM,MAXYDIM);
+		printf("Resolution %dx%d is too high. Changed to %dx%d\n", daxdim, daydim, MAXXDIM,MAXYDIM);
 	    daxdim = MAXXDIM;
 	    daydim = MAXYDIM;
     } 
@@ -1317,15 +1312,13 @@ int _setgamemode(uint8_t  davidoption, int32_t daxdim, int32_t daydim)
 	getvalidvesamodes();
 
 	validated = 0;
-	for(i=0; i<validmodecnt; i++)
-	{
+	for(i=0; i<validmodecnt; i++){
 		if(validmodexdim[i] == daxdim && validmodeydim[i] == daydim)
 			validated = 1;
 	}
 
-	if(!validated)
-    {
-		printf("%d x %d unsupported. Changed to 640 x 480\n", daxdim, daydim);
+	if(!validated){
+		printf("Resolution %dx%d unsupported. Changed to 640x480\n", daxdim, daydim);
 	    daxdim = 640;
 	    daydim = 480;
     }
@@ -1396,7 +1389,7 @@ static __inline void get_max_screen_res(int32_t *max_w, int32_t *max_h)
 
     if (max_h != NULL)
         *max_h = h;
-} /* get_max_screen_res */
+}
 
 
 static void add_vesa_mode(const char  *typestr, int w, int h)
@@ -1494,19 +1487,15 @@ static __inline void cull_duplicate_vesa_modes(void)
     int i;
     int j;
 
-    for (i = 0; i < validmodecnt; i++)
-    {
-        for (j = i + 1; j < validmodecnt; j++)
-        {
-            if ( (validmodexdim[i] == validmodexdim[j]) &&
-                 (validmodeydim[i] == validmodeydim[j]) )
-            {
+    for (i = 0; i < validmodecnt; i++){
+        for (j = i + 1; j < validmodecnt; j++){
+            if ( (validmodexdim[i] == validmodexdim[j]) &&(validmodeydim[i] == validmodeydim[j]) ){
                 remove_vesa_mode(j, "duplicate");
                 j--;  /* list shrinks. */
-            } /* if */
-        } /* for */
-    } /* for */
-} /* cull_duplicate_vesa_modes */
+            }
+        }
+    }
+} 
 
 
 #define swap_macro(tmp, x, y) { tmp = x; x = y; y = tmp; }
@@ -1566,7 +1555,7 @@ static __inline void output_vesa_modelist(void)
     } /* for */
 
     sdldebug("Final sorted modelist:%s", buffer);
-} /* output_vesa_modelist */
+} 
 
 
 void getvalidvesamodes(void)
@@ -1603,10 +1592,10 @@ void getvalidvesamodes(void)
 
         /* print it out for debugging purposes... */
     output_vesa_modelist();
-} /* getvalidvesamodes */
+} 
 
 
-int VBE_setPalette(int32_t start, int32_t num, uint8_t  *palettebuffer)
+int VBE_setPalette(uint8_t  *palettebuffer)
 /*
  * (From Ken's docs:)
  *   Set (num) palette palette entries starting at (start)
@@ -1622,22 +1611,20 @@ int VBE_setPalette(int32_t start, int32_t num, uint8_t  *palettebuffer)
  */
 {
     SDL_Color fmt_swap[256];
-    SDL_Color *sdlp = &fmt_swap[start];
+    SDL_Color *sdlp = fmt_swap;
     uint8_t  *p = palettebuffer;
     int i;
-    assert( (start + num) <= (sizeof (fmt_swap) / sizeof (SDL_Color)) );
-
-    for (i = 0; i < num; i++)
-    {
+   
+    for (i = 0; i < 256; i++){
         sdlp->b = (Uint8) ((((float) *p++) / 63.0) * 255.0);
         sdlp->g = (Uint8) ((((float) *p++) / 63.0) * 255.0);
         sdlp->r = (Uint8) ((((float) *p++) / 63.0) * 255.0);
         sdlp->unused = *p++;   /* This byte is unused in BUILD, too. */
         sdlp++;
-    } /* for */
+    }
 
-    return(SDL_SetColors(surface, fmt_swap, start, num));
-} /* VBE_setPalette */
+    return(SDL_SetColors(surface, fmt_swap, 0, 256));
+}
 
 
 int VBE_getPalette(int32_t start, int32_t num, uint8_t  *palettebuffer)
@@ -1653,10 +1640,10 @@ int VBE_getPalette(int32_t start, int32_t num, uint8_t  *palettebuffer)
         *p++ = (Uint8) ((((float) sdlp->r) / 255.0) * 63.0);
         *p++ = sdlp->unused;   /* This byte is unused in both SDL and BUILD. */
         sdlp++;
-    } /* for */
+    } 
 
     return(1);
-} /* VBE_getPalette */
+} 
 
 
 void _uninitengine(void)
@@ -1697,8 +1684,10 @@ int setupmouse(void)
 
 void readmousexy(short *x, short *y)
 {
-    if (x) *x = mouse_relative_x << 2;
-    if (y) *y = mouse_relative_y << 2;
+    if (x)
+        *x = mouse_relative_x << 2;
+    if (y)
+        *y = mouse_relative_y << 2;
 
     mouse_relative_x = mouse_relative_y = 0;
 } /* readmousexy */
@@ -1710,8 +1699,10 @@ void readmousebstatus(short *bstatus)
         *bstatus = mouse_buttons;
 
     // special wheel treatment: make it like a button click
-    if(mouse_buttons&8) mouse_buttons ^= 8;
-    if(mouse_buttons&16) mouse_buttons ^= 16;
+    if(mouse_buttons&8)
+        mouse_buttons ^= 8;
+    if(mouse_buttons&16)
+        mouse_buttons ^= 16;
 
 } /* readmousebstatus */
 
@@ -1754,7 +1745,7 @@ void _nextpage(void)
         last_render_ticks = ticks;
     } /* if */
     total_rendered_frames++;
-} /* _nextpage */
+} 
 
 
 uint8_t  readpixel(int32_t offset)
@@ -1762,26 +1753,26 @@ uint8_t  readpixel(int32_t offset)
     return( *((uint8_t  *) offset) );
 } /* readpixel */
 
-void drawpixel(int32_t offset, uint8_t  pixel)
+void drawpixel(uint8_t  * location, uint8_t  pixel)
 {
-    *((uint8_t  *) offset) = pixel;
-} /* drawpixel */
+    *location = pixel;
+}
 
 
 /* !!! These are incorrect. */
 void drawpixels(int32_t offset, uint16_t pixels)
 {
-    Uint8 *surface_end;
-    Uint16 *pos;
+    uint16_t*  surface_end;
+    uint16_t  * pos;
 
-                Error(EXIT_FAILURE, "Blargh!\n");
+    Error(EXIT_FAILURE, "Blargh!\n");
 
     if (SDL_MUSTLOCK(surface))
         SDL_LockSurface(surface);
 
-    surface_end = (((Uint8 *) surface->pixels) + (surface->w * surface->h)) - 2;
-    pos = (Uint16 *) (((Uint8 *) surface->pixels) + offset);
-    if ((pos >= (Uint16 *) surface->pixels) && (pos < (Uint16 *) surface_end))
+    surface_end = (uint8_t*)surface->pixels + (surface->w * surface->h) - 2;
+    pos = (uint8_t*)surface->pixels + offset;
+    if ((pos >= (uint16_t*) surface->pixels) && (pos < surface_end))
         *pos = pixels;
 
     if (SDL_MUSTLOCK(surface))
@@ -1810,14 +1801,14 @@ void drawpixelses(int32_t offset, unsigned int pixelses)
 
 
 /* Fix this up The Right Way (TM) - DDOI */
-void setcolor16(int col)
+void setcolor16(uint8_t col)
 {
 	drawpixel_color = col;
 }
 
 void drawpixel16(int32_t offset)
 {
-    drawpixel(((int32_t) surface->pixels + offset), drawpixel_color);
+    drawpixel((uint8_t*)surface->pixels + offset, drawpixel_color);
 } /* drawpixel16 */
 
 
@@ -1896,7 +1887,10 @@ void drawline16(int32_t XStart, int32_t YStart, int32_t XEnd, int32_t YEnd, uint
     if (SDL_MUSTLOCK(surface))
         SDL_LockSurface(surface);
 
-	dx = XEnd-XStart; dy = YEnd-YStart;
+	dx = XEnd-XStart;
+    dy = YEnd-YStart;
+    
+    //Analyse the slope
 	if (dx >= 0)
 	{
 		if ((XStart > 639) || (XEnd < 0)) return;

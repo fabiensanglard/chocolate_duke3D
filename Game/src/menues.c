@@ -207,13 +207,13 @@ int loadpheader(uint8_t  spot,int32 *vn,int32 *ln,int32 *psk,int32 *nump)
          kdfread(ln,sizeof(int32),1,fil);
      kdfread(psk,sizeof(int32),1,fil);
 
-     if (waloff[MAXTILES-3] == 0) allocache(&waloff[MAXTILES-3],160*100,&walock[MAXTILES-3]);
-     tilesizx[MAXTILES-3] = 100; tilesizy[MAXTILES-3] = 160;
-     kdfread((uint8_t  *)waloff[MAXTILES-3],160,100,fil);
-
-         kclose(fil);
-
-         return(0);
+     if (waloff[MAXTILES-3] == 0)
+         allocache(&waloff[MAXTILES-3],160*100,&walock[MAXTILES-3]);
+    tilesDimension[MAXTILES-3].width = 100;
+    tilesDimension[MAXTILES-3].height = 160;
+    kdfread((uint8_t  *)waloff[MAXTILES-3],160,100,fil);
+    kclose(fil);
+    return(0);
 }
 
 
@@ -318,8 +318,12 @@ int loadplayer(int8_t spot)
 
                  //Fake read because lseek won't work with compression
      walock[MAXTILES-3] = 1;
-     if (waloff[MAXTILES-3] == 0) allocache(&waloff[MAXTILES-3],160*100,&walock[MAXTILES-3]);
-     tilesizx[MAXTILES-3] = 100; tilesizy[MAXTILES-3] = 160;
+     if (waloff[MAXTILES-3] == 0)
+         allocache(&waloff[MAXTILES-3],160*100,&walock[MAXTILES-3]);
+    
+     tilesDimension[MAXTILES-3].width = 100;
+    tilesDimension[MAXTILES-3].height = 160;
+    
      kdfread((uint8_t  *)waloff[MAXTILES-3],160,100,fil);
 
          kdfread(&numwalls,2,1,fil);
@@ -878,7 +882,7 @@ int probeXduke(int x,int y,int i,int n, int32_t spriteSize)
         rotatesprite(((320>>1)-(centre>>1)-70)<<16,(y+(probey*i)-4)<<16,spriteSize,0,SPINNINGNUKEICON+((totalclock>>3)%7),sh,0,10,0,0,xdim-1,ydim-1);
     }
     else
-        rotatesprite((x-tilesizx[BIGFNTCURSOR]-4)<<16,(y+(probey*i)-4)<<16,spriteSize,0,SPINNINGNUKEICON+(((totalclock>>3))%7),sh,0,10,0,0,xdim-1,ydim-1);
+        rotatesprite((x-tilesDimension[BIGFNTCURSOR].width-4)<<16,(y+(probey*i)-4)<<16,spriteSize,0,SPINNINGNUKEICON+(((totalclock>>3))%7),sh,0,10,0,0,xdim-1,ydim-1);
 
     if( KB_KeyPressed(sc_Space) || KB_KeyPressed( sc_kpad_Enter ) || KB_KeyPressed( sc_Enter ) || (LMB))// && !onbar) )
     {
@@ -964,7 +968,7 @@ int menutext(int x,int y,short s,short p,char  *t)
                     continue;
             }
 
-            centre += tilesizx[ac]-1;
+            centre += tilesDimension[ac].width-1;
             i++;
         }
     }
@@ -1016,7 +1020,7 @@ int menutext(int x,int y,short s,short p,char  *t)
 
         rotatesprite(x<<16,y<<16,65536L,0,ac,s,p,10+16,0,0,xdim-1,ydim-1);
 
-        x += tilesizx[ac];
+        x += tilesDimension[ac].width;
         t++;
     }
     return (x);
@@ -1074,7 +1078,7 @@ int menutextc(int x,int y,short s,short p,char  *t)
                     break;
             }
 
-            centre += tilesizx[ac]-1;
+            centre += tilesDimension[ac].width-1;
             i++;
         }
     }
@@ -1118,7 +1122,7 @@ int menutextc(int x,int y,short s,short p,char  *t)
 
         rotatesprite(x<<16,y<<16,65536L,0,ac,s,p,10+16,0,0,xdim-1,ydim-1);
 
-        x += tilesizx[ac];
+        x += tilesDimension[ac].width;
         t++;
     }
     return (x);
@@ -4295,12 +4299,16 @@ void drawoverheadmap(int32_t cposx, int32_t cposy, int32_t czoom, short cang)
                             x1 = sprx; y1 = spry;
                             tilenum = spr->picnum;
                             xoff = (int32_t)((int8_t  )((picanm[tilenum]>>8)&255))+((int32_t)spr->xoffset);
-                            if ((spr->cstat&4) > 0) xoff = -xoff;
+                            if ((spr->cstat&4) > 0)
+                                xoff = -xoff;
                             k = spr->ang; l = spr->xrepeat;
                             dax = sintable[k&2047]*l; day = sintable[(k+1536)&2047]*l;
-                            l = tilesizx[tilenum]; k = (l>>1)+xoff;
-                            x1 -= mulscale16(dax,k); x2 = x1+mulscale16(dax,l);
-                            y1 -= mulscale16(day,k); y2 = y1+mulscale16(day,l);
+                            l = tilesDimension[tilenum].width;
+                            k = (l>>1)+xoff;
+                            x1 -= mulscale16(dax,k);
+                            x2 = x1+mulscale16(dax,l);
+                            y1 -= mulscale16(day,k);
+                            y2 = y1+mulscale16(day,l);
 
                             ox = x1-cposx; oy = y1-cposy;
                             x1 = dmulscale16(ox,xvect,-oy,yvect);
@@ -4325,9 +4333,12 @@ void drawoverheadmap(int32_t cposx, int32_t cposy, int32_t czoom, short cang)
                                                 if ((spr->cstat&8) > 0) yoff = -yoff;
 
                                                 k = spr->ang;
-                                                cosang = sintable[(k+512)&2047]; sinang = sintable[k];
-                                                xspan = tilesizx[tilenum]; xrepeat = spr->xrepeat;
-                                                yspan = tilesizy[tilenum]; yrepeat = spr->yrepeat;
+                                                cosang = sintable[(k+512)&2047];
+                                        sinang = sintable[k];
+                                                xspan = tilesDimension[tilenum].width;
+                                        xrepeat = spr->xrepeat;
+                                                yspan = tilesDimension[tilenum].height;
+                                        yrepeat = spr->yrepeat;
 
                                                 dax = ((xspan>>1)+xoff)*xrepeat; day = ((yspan>>1)+yoff)*yrepeat;
                                                 x1 = sprx + dmulscale16(sinang,dax,cosang,day);
@@ -4387,8 +4398,10 @@ void drawoverheadmap(int32_t cposx, int32_t cposy, int32_t czoom, short cang)
 
                         //if ((show2dwall[j>>3]&(1<<(j&7))) == 0) continue;
 
-                        if (tilesizx[wal->picnum] == 0) continue;
-                        if (tilesizy[wal->picnum] == 0) continue;
+                        if (tilesDimension[wal->picnum].width == 0)
+                            continue;
+                        if (tilesDimension[wal->picnum].height== 0)
+                            continue;
 
                         if (j == k)
                                 { x1 = x2; y1 = y2; }
@@ -4648,8 +4661,8 @@ void playanm(char  *fn,uint8_t  t)
 
     lastanimhack = (MAXTILES-3-t);
 
-    tilesizx[MAXTILES-3-t] = 200;
-    tilesizy[MAXTILES-3-t] = 320;
+    tilesDimension[MAXTILES-3-t].width = 200;
+    tilesDimension[MAXTILES-3-t].height = 320;
 
     kread(handle,animbuf,length);
     kclose(handle);
@@ -4667,7 +4680,7 @@ void playanm(char  *fn,uint8_t  t)
             tempbuf[j+3] = 0;
     }
 
-    VBE_setPalette(0L,256L,(uint8_t*)tempbuf);
+    VBE_setPalette((uint8_t*)tempbuf);
 
     ototalclock = totalclock + 10;
 

@@ -18,7 +18,7 @@
 #define _INCLUDE_CACHE1D_H_
 
 void initcache(int32_t dacachestart, int32_t dacachesize);
-void allocache (int32_t *newhandle, int32_t newbytes, uint8_t  *newlockptr);
+void allocache (uint8_t* *newhandle, int32_t newbytes, uint8_t  *newlockptr);
 void suckcache (int32_t *suckptr);
 void agecache(void);
 

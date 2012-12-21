@@ -456,11 +456,18 @@ void dfread(void *buffer, size_t dasizeof, size_t count, FILE *fil)
 	if (lzwbuf4 == NULL) allocache((int32_t *)&lzwbuf4,LZWSIZE,&lzwbuflock[3]);
 	if (lzwbuf5 == NULL) allocache((int32_t *)&lzwbuf5,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[4]);
     
-	if (dasizeof > LZWSIZE) { count *= dasizeof; dasizeof = 1; }
+	if (dasizeof > LZWSIZE) {
+        count *= dasizeof;
+        dasizeof = 1;
+    }
+    
 	ptr = (uint8_t  *)buffer;
     
-	fread(&leng,2,1,fil); fread(lzwbuf5,(int32_t )leng,1,fil);
-	k = 0; kgoal = uncompress(lzwbuf5,(int32_t )leng,lzwbuf4);
+	fread(&leng,2,1,fil);
+    fread(lzwbuf5,(int32_t )leng,1,fil);
+    
+	k = 0;
+    kgoal = uncompress(lzwbuf5,(int32_t )leng,lzwbuf4);
     
 	copybufbyte(lzwbuf4,ptr,(int32_t )dasizeof);
 	k += (int32_t )dasizeof;

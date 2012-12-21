@@ -338,17 +338,19 @@ void docacheit(void)
 
 
 
-void xyzmirror(short i,short wn)
+void xyzmirror(short i,short tileId)
 {
-    if (waloff[wn] == 0) loadtile(wn);
-	setviewtotile(wn,tilesizy[wn],tilesizx[wn]);
+    if (waloff[tileId] == 0)
+        loadtile(tileId);
+    
+	setviewtotile(tileId,tilesDimension[tileId].height,tilesDimension[tileId].width);
 
 	drawrooms(SX,SY,SZ,SA,100+sprite[i].shade,SECT);
 	display_mirror = 1; animatesprites(SX,SY,SA,65536L); display_mirror = 0;
 	drawmasks();
 
 	setviewback();
-	squarerotatetile(wn);
+	squarerotatetile(tileId);
 }
 
 void vscrn(void)

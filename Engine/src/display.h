@@ -64,12 +64,12 @@ int _joystick_button(int button);
 
 void getvalidvesamodes(void);
 int VBE_getPalette(int32_t start, int32_t num, uint8_t  *dapal);
-int VBE_setPalette(int32_t start, int32_t num, uint8_t  *palettebuffer);
+int VBE_setPalette(uint8_t  *palettebuffer);
 int setvesa(int32_t x, int32_t y);
 
 void setvmode(int mode);
 uint8_t  readpixel(int32_t offset);
-void drawpixel(int32_t offset, uint8_t pixel);
+void drawpixel(uint8_t  * location, uint8_t pixel);
 void drawpixels(int32_t offset, uint16_t pixels);
 void drawpixelses(int32_t offset, uint32_t pixelses);
 void drawpixel16(int32_t offset);
@@ -99,8 +99,11 @@ int32_t _setgamemode(uint8_t  davidoption, int32_t daxdim, int32_t daydim);
 uint32_t getticks();
 
 void drawline16(int32_t XStart, int32_t YStart, int32_t XEnd, int32_t YEnd, uint8_t  Color);
-void setcolor16(int i1);
+void setcolor16(uint8_t color);
 
+
+
+void initmultiplayers(uint8_t  damultioption, uint8_t  dacomrateoption, uint8_t  dapriority);
 
 #endif
 
