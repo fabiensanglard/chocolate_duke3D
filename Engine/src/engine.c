@@ -8150,7 +8150,7 @@ void makepalookup(int32_t palnum, uint8_t  *remapbuf, int8_t r,
 void setbrightness(uint8_t  dabrightness, uint8_t  *dapal)
 {
     int32_t i, k;
-    uint8_t newPalette[256*3];
+    uint8_t newPalette[256*4];
     
     //Clamp bightness to [0-15]
     curbrightness = min(max(dabrightness,0),15);

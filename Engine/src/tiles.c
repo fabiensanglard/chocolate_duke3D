@@ -11,6 +11,7 @@
 #include "draw.h"
 #include "filesystem.h"
 
+char  artfilename[20];
 
 tile_t tiles[MAXTILES];
 
@@ -108,7 +109,7 @@ void loadtile(short tilenume)
 {
     uint8_t  *ptr;
     int32_t i, tileFilesize;
-    char  artfilename[20];
+    
     
     
     
@@ -131,6 +132,13 @@ void loadtile(short tilenume)
         artfilename[6] = ((i/10)%10)+48;
         artfilename[5] = ((i/100)%10)+48;
         artfil = TCkopen4load(artfilename,0);
+        
+        if (artfil == -1){
+            printf("Error, unable to load artfile:'%s'.\n",artfilename);
+            getchar();
+            exit(0);
+        }
+        
         faketimerhandler();
     }
     
@@ -191,7 +199,7 @@ int loadpics(char  *filename, char * gamedir)
 {
     int32_t offscount, localtilestart, localtileend, dasiz;
     short fil, i, j, k;
-    char  artfilename[512];
+    
     
     strcpy(artfilename,filename);
     
