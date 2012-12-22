@@ -462,7 +462,7 @@ static void init_new_res_vars(int32_t davidoption)
     	{
     		case 1:i = xdim*ydim; break;
     		case 2: xdim = 320; ydim = 200; i = xdim*ydim; break;
-    		case 6: xdim = 320; ydim = 200; i = 131072; break;
+    		
     		default: assert(0);
     	}
     	j = ydim*4*sizeof(int32_t);  /* Leave room for horizlookup&horizlookup2 */
@@ -1565,13 +1565,13 @@ int VBE_setPalette(uint8_t  *palettebuffer)
     SDL_Color *sdlp = fmt_swap;
     uint8_t  *p = palettebuffer;
     int i;
-    static updated=0;
+    //static updated=0;
     
-    if (updated >=1 )
-        return ;
+    //if (updated >=1 )
+    //    return ;
     
-    WritePaletteToFile(palettebuffer,"lastPalette.tga",16,16);
-    updated++;
+    //WritePaletteToFile(palettebuffer,"lastPalette.tga",16,16);
+    //updated++;
     
    
     //CODE EXPLORATION

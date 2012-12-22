@@ -2811,9 +2811,9 @@ static int bunchfront(int32_t firstBunchID, int32_t secondBunchID)
 }
 
 int pixelRenderable = 100000000;
-#include "keyboard.h"
-void WriteLastPaletteToFile(void);
-void WriteTranslucToFile(void);
+//#include "keyboard.h"
+//void WriteLastPaletteToFile(void);
+//void WriteTranslucToFile(void);
 /*  
       FCS: Draw every walls in Front to Back Order.
 */
@@ -2832,12 +2832,13 @@ void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,short daang, int32
     
     
     //CODE EXPLORATION
+    /*
     if( KB_KeyDown[0x39]){ // 0x39 = SPACE
         //CODE EXPLORATION
         WriteLastPaletteToFile();
         WriteTranslucToFile();
     }        
-    
+    */
 
 	pixelRenderable+=10;
 	if (pixelRenderable >= MAX_PIXEL_RENDERERED)
@@ -2874,7 +2875,7 @@ void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,short daang, int32
     cosviewingrangeglobalang = mulscale16(cosglobalang,viewingrange);
     sinviewingrangeglobalang = mulscale16(singlobalang,viewingrange);
 
-    if ((stereomode != 0) || (vidoption == 6))
+    if (stereomode != 0)
     {
         if (stereopixelwidth != ostereopixelwidth)
         {
@@ -2909,7 +2910,7 @@ void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,short daang, int32
         }
         globalposx += mulscale24(singlobalang,i);
         globalposy -= mulscale24(cosglobalang,i);
-        if (vidoption == 6) frameplace = (int32_t)FP_OFF(screen)+(activepage&1)*65536;
+       
     }
 
     if ((xyaspect != oxyaspect) || (xdimen != oxdimen) || (viewingrange != oviewingrange))
@@ -3642,28 +3643,6 @@ static void loadpalette(void)
 
     paletteloaded = 1;
 
-    if (vidoption == 6)
-    {
-        for(k=0; k<MAXPALOOKUPS; k++)
-            if (palookup[k] != NULL)
-                for(i=0; i<256; i++)
-                {
-                    dist = palette[i*3]   * 3+
-                           palette[i*3+1] * 5+
-                           palette[i*3+2] * 2;
-                    ptr = palookup[k]+i;
-                    
-                    for(j=0; j<32; j++)
-                        ptr[j<<8] = (uint8_t )min(max(mulscale10(dist,32-j),0),15);
-                }
-
-        if (transluc != NULL)
-        {
-            for(i=0; i<16; i++)
-                for(j=0; j<16; j++)
-                    transluc[(i<<8)+j] = ((i+j+1)>>1);
-        }
-    }
 }
 
 
@@ -8151,7 +8130,7 @@ void setview(int32_t x1, int32_t y1, int32_t x2, int32_t y2)
 
     viewoffset = windowy1*bytesperline + windowx1;
 
-    if ((stereomode) || (vidoption == 6))
+    if (stereomode)
     {
         ostereopixelwidth = stereopixelwidth;
         xdimen = (windowx2-windowx1+1)+(stereopixelwidth<<1);
@@ -8381,17 +8360,6 @@ void makepalookup(int32_t palnum, uint8_t  *remapbuf, int8_t r,
             }
         }
     }
-
-    if ((vidoption == 6) && (qsetmode == 200))
-    {
-        for(i=0; i<256; i++)
-        {
-            dist = palette[i*3]*3+palette[i*3+1]*5+palette[i*3+2]*2;
-            ptr = (uint8_t  *)(FP_OFF(palookup[palnum])+i);
-            for(j=0; j<32; j++)
-                ptr[j<<8] = (uint8_t )min(max(mulscale10(dist,32-j),0),15);
-        }
-    }
 }
 
 
@@ -8403,27 +8371,14 @@ void setbrightness(uint8_t  dabrightness, uint8_t  *dapal)
     curbrightness = min(max(dabrightness,0),15);
 
     k = 0;
-    if (vidoption == 6)
-    {
-        for(j=0; j<16; j++)
-            for(i=0; i<16; i++)
-            {
-                tempbuf[k++] = britable[curbrightness][j<<2];
-                tempbuf[k++] = 0;
-                tempbuf[k++] = britable[curbrightness][i<<2];
-                tempbuf[k++] = 0;
-            }
+   
+    for(i=0; i<256; i++){
+        tempbuf[k++] = britable[curbrightness][dapal[i*3+2]];
+        tempbuf[k++] = britable[curbrightness][dapal[i*3+1]];
+        tempbuf[k++] = britable[curbrightness][dapal[i*3+0]];
+        tempbuf[k++] = 0;
     }
-    else
-    {
-        for(i=0; i<256; i++)
-        {
-            tempbuf[k++] = britable[curbrightness][dapal[i*3+2]];
-            tempbuf[k++] = britable[curbrightness][dapal[i*3+1]];
-            tempbuf[k++] = britable[curbrightness][dapal[i*3+0]];
-            tempbuf[k++] = 0;
-        }
-    }
+    
 
     VBE_setPalette(tempbuf);
 }
@@ -9149,18 +9104,7 @@ void clearview(int32_t dacol)
     dx = windowx2-windowx1+1;
     dacol += (dacol<<8);
     dacol += (dacol<<16);
-    if (vidoption == 6)
-    {
-        p = (int32_t) FP_OFF(screen)+ylookup[windowy1]+windowx1;
-        for(y=windowy1; y<=windowy2; y++)
-        {
-            clearbufbyte((void *)p,dx,dacol);
-            clearbufbyte((void *)(p+65536),dx,dacol);
-            p += ylookup[1];
-        }
-        faketimerhandler();
-        return;
-    }
+    
     p = frameplace+ylookup[windowy1]+windowx1;
     for(y=windowy1; y<=windowy2; y++)
     {
@@ -9190,9 +9134,6 @@ void clearallviews(int32_t dacol)
 
     case 2:
         clearbuf((void *)frameplace,(xdim*ydim)>>2,0L);
-        break;
-    case 6:
-        clearbuf(screen,128000L>>2,dacol);
         break;
     }
     faketimerhandler();
