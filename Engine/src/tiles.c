@@ -72,7 +72,7 @@ void squarerotatetile(short tilenume)
         k = (tileDim.width<<1);
         for(i=tileDim.width-1; i>=0; i--)
         {
-            ptr1 = (uint8_t  *) (tiles[tilenume].data+i*(tileDim.width+1));
+            ptr1 = tiles[tilenume].data+i*(tileDim.width+1);
             ptr2 = ptr1;
             if ((i&1) != 0) {
                 ptr1--;
@@ -260,9 +260,10 @@ int loadpics(char  *filename, char * gamedir)
         }
     }
     while (k != numtilefiles);
+    
     printf("Art files loaded\n");
     
-    clearbuf(&gotpic[0],(int32_t)((MAXTILES+31)>>5),0L);
+    clearbuf(gotpic,(MAXTILES+31)>>5,0L);
     
     /* try dpmi_DETERMINEMAXREALALLOC! */
     
@@ -277,10 +278,15 @@ int loadpics(char  *filename, char * gamedir)
     for(i=0; i<MAXTILES; i++)
     {
         j = 15;
-        while ((j > 1) && (pow2long[j] > tiles[i].dim.width)) j--;
+        while ((j > 1) && (pow2long[j] > tiles[i].dim.width)) 
+            j--;
+        
         picsiz[i] = ((uint8_t )j);
         j = 15;
-        while ((j > 1) && (pow2long[j] > tiles[i].dim.height)) j--;
+        
+        while ((j > 1) && (pow2long[j] > tiles[i].dim.height)) 
+            j--;
+        
         picsiz[i] += ((uint8_t )(j<<4));
     }
     
@@ -292,7 +298,11 @@ int loadpics(char  *filename, char * gamedir)
 }
 
 
+void TILE_MakeAvailable(short picID){
+    if (tiles[picID].data == NULL) 
+        loadtile(picID);
 
+}
 
 void copytilepiece(int32_t tilenume1, int32_t sx1, int32_t sy1, int32_t xsiz, int32_t ysiz,
                    int32_t tilenume2, int32_t sx2, int32_t sy2)
@@ -302,16 +312,15 @@ void copytilepiece(int32_t tilenume1, int32_t sx1, int32_t sy1, int32_t xsiz, in
     
     xsiz1 = tiles[tilenume1].dim.width;
     ysiz1 = tiles[tilenume1].dim.height;
+    
     xsiz2 = tiles[tilenume2].dim.width;
     ysiz2 = tiles[tilenume2].dim.height;
     
+    
     if ((xsiz1 > 0) && (ysiz1 > 0) && (xsiz2 > 0) && (ysiz2 > 0))
     {
-        if (tiles[tilenume1].data == NULL) 
-            loadtile((short) tilenume1);
-        
-        if (tiles[tilenume2].data == NULL) 
-            loadtile((short) tilenume2);
+        TILE_MakeAvailable(tilenume1);
+        TILE_MakeAvailable(tilenume2);
         
         x1 = sx1;
         for(i=0; i<xsiz; i++)
@@ -323,9 +332,11 @@ void copytilepiece(int32_t tilenume1, int32_t sx1, int32_t sy1, int32_t xsiz, in
                 y2 = sy2+j;
                 if ((x2 >= 0) && (y2 >= 0) && (x2 < xsiz2) && (y2 < ysiz2))
                 {
-                    ptr1 = (uint8_t  *) (tiles[tilenume1].data + x1*ysiz1 + y1);
-                    ptr2 = (uint8_t  *) (tiles[tilenume2].data + x2*ysiz2 + y2);
+                    ptr1 = tiles[tilenume1].data + x1*ysiz1 + y1;
+                    ptr2 = tiles[tilenume2].data + x2*ysiz2 + y2;
                     dat = *ptr1;
+                    
+                    
                     if (dat != 255)
                         *ptr2 = *ptr1;
                 }

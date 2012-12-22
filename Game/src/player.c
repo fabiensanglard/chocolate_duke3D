@@ -2342,6 +2342,7 @@ void processinput(short snum)
     short psect, psectlotag,*kb, tempsect, pi;
     struct player_struct *p;
     spritetype *s;
+    char text[512];
 
     p = &ps[snum];
     pi = p->i;
@@ -2609,8 +2610,8 @@ void processinput(short snum)
 
                 if(myconnectindex == connecthead)
                 {
-                    sprintf(tempbuf,"frag %d killed %d\n",p->frag_ps+1,snum+1);
-                    sendscore(tempbuf);
+                    sprintf(text,"frag %d killed %d\n",p->frag_ps+1,snum+1);
+                    sendscore(text);
 //                    printf(tempbuf);
                 }
 

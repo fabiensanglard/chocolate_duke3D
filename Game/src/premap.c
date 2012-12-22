@@ -133,7 +133,7 @@ void cachespritenum(short i)
             {
                 maxc = 5;
                 for(j = 1420;j < 1420+106; j++)
-                    if(tiles[j].data == -1)
+                    if(tiles[j].data == NULL)
                         tloadtile(j);
             }
             break;

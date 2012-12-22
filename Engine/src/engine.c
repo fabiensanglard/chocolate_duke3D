@@ -744,8 +744,7 @@ static void ceilscan (int32_t x1, int32_t x2, int32_t sectnum)
     if (tiles[globalpicnum].animFlags&192)
         globalpicnum += animateoffs(globalpicnum);
 
-    if (tiles[globalpicnum].data == NULL)
-        loadtile(globalpicnum);
+    TILE_MakeAvailable(globalpicnum);
     
     globalbufplc = tiles[globalpicnum].data;
 
@@ -983,8 +982,7 @@ static void florscan (int32_t x1, int32_t x2, int32_t sectnum)
         globalpicnum += animateoffs(globalpicnum);
 
     //If the texture is not in RAM: Load it !!
-    if (tiles[globalpicnum].data == NULL)
-        loadtile(globalpicnum);
+    TILE_MakeAvailable(globalpicnum);
     
     //Check where is the texture in RAM
     globalbufplc = tiles[globalpicnum].data;
@@ -1251,8 +1249,7 @@ static void wallscan(int32_t x1, int32_t x2,
     if ((dwal[x1] < 0) && (dwal[x2] < 0))
         return;
 
-    if (tiles[globalpicnum].data == NULL)
-        loadtile(globalpicnum);
+    TILE_MakeAvailable(globalpicnum);
 
     xnice = (pow2long[picsiz[globalpicnum]&15] == tileWidth);
     if (xnice)
@@ -1438,8 +1435,7 @@ static void maskwallscan(int32_t x1, int32_t x2,
     if ((dwal[x1] < 0) && (dwal[x2] < 0))
         return;
 
-    if (tiles[globalpicnum].data == NULL)
-        loadtile(globalpicnum);
+    TILE_MakeAvailable(globalpicnum);
 
     startx = x1;
 
@@ -1770,8 +1766,7 @@ static void grouscan (int32_t dax1, int32_t dax2, int32_t sectnum, uint8_t  dast
         (tiles[globalpicnum].dim.height <= 0))
         return;
     
-    if (tiles[globalpicnum].data == NULL)
-        loadtile(globalpicnum);
+    TILE_MakeAvailable(globalpicnum);
 
     wal = &wall[sec->wallptr];
     wx = wall[wal->point2].x - wal->x;
@@ -3174,7 +3169,7 @@ static void transmaskwallscan(int32_t x1, int32_t x2)
         (tiles[globalpicnum].dim.height <= 0))
         return;
 
-    if (tiles[globalpicnum].data == NULL) loadtile(globalpicnum);
+    TILE_MakeAvailable(globalpicnum);
 
     x = x1;
     while ((startumost[x+windowx1] > startdmost[x+windowx1]) && (x <= x2)) x++;
@@ -3872,8 +3867,7 @@ static void dorotatesprite (int32_t sx, int32_t sy, int32_t z, short a, short pi
         nextv = v;
     }
 
-    if (tiles[picnum].data == NULL) 
-        loadtile(picnum);
+    TILE_MakeAvailable(globalpicnum);
     
     setgotpic(picnum);
     bufplc = tiles[picnum].data;
@@ -5555,8 +5549,7 @@ static void drawsprite (int32_t snum)
         if ((uint32_t)globalpicnum >= (uint32_t)MAXTILES)
             globalpicnum = 0;
 
-        if (tiles[globalpicnum].data == NULL) 
-            loadtile(globalpicnum);
+        TILE_MakeAvailable(globalpicnum);
         
         setgotpic(globalpicnum);
         globalbufplc = tiles[globalpicnum].data;
@@ -8643,8 +8636,7 @@ void drawmapview(int32_t dax, int32_t day, int32_t zoome, short ang)
             if ((tiles[globalpicnum].animFlags&192) != 0) 
                 globalpicnum += animateoffs(globalpicnum);
             
-            if (tiles[globalpicnum].data == NULL) 
-                loadtile(globalpicnum);
+            TILE_MakeAvailable(globalpicnum);
             
             globalbufplc = tiles[globalpicnum].data;
             
@@ -8828,8 +8820,7 @@ void drawmapview(int32_t dax, int32_t day, int32_t zoome, short ang)
             if ((tiles[globalpicnum].animFlags&192) != 0) 
                 globalpicnum += animateoffs(globalpicnum);
             
-            if (tiles[globalpicnum].data == NULL) 
-                loadtile(globalpicnum);
+            TILE_MakeAvailable(globalpicnum);
             
             globalbufplc = tiles[globalpicnum].data;
             if ((sector[spr->sectnum].ceilingstat&1) > 0)
