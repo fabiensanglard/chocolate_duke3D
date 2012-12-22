@@ -339,7 +339,7 @@ static void __append_sdl_surface_flag(SDL_Surface *_surface, char  *str,
 
 
 #define append_sdl_surface_flag(a, b, c, fl) __append_sdl_surface_flag(a, b, c, fl, " " #fl)
-#define print_tf_state(str, val) printf("%s: {%s}", str, (val) ? "true" : "false" )
+#define print_tf_state(str, val) printf("%s: {%s}\n", str, (val) ? "true" : "false" )
 
 static void output_surface_info(SDL_Surface *_surface)
 {
@@ -354,7 +354,7 @@ static void output_surface_info(SDL_Surface *_surface)
     else
     {
         f[0] = '\0';
-        printf("screen surface is (%dx%dx%dbpp).",_surface->w, _surface->h, _surface->format->BitsPerPixel);
+        printf("screen surface is (%dx%dx%dbpp).\n",_surface->w, _surface->h, _surface->format->BitsPerPixel);
 
         append_sdl_surface_flag(_surface, f, sizeof (f), SDL_SWSURFACE);
         append_sdl_surface_flag(_surface, f, sizeof (f), SDL_HWSURFACE);
@@ -377,11 +377,11 @@ static void output_surface_info(SDL_Surface *_surface)
         if (f[0] == '\0')
             strcpy(f, " (none)");
 
-        printf("New vidmode flags:%s", f);
+        printf("New vidmode flags:%s.\n", f);
 
         info = SDL_GetVideoInfo();
         assert(info != NULL);
-
+/*
         print_tf_state("hardware surface available", info->hw_available);
         print_tf_state("window manager available", info->wm_available);
         print_tf_state("accelerated hardware->hardware blits", info->blit_hw);
@@ -392,9 +392,10 @@ static void output_surface_info(SDL_Surface *_surface)
         print_tf_state("accelerated software->hardware alpha blits", info->blit_sw_A);
         print_tf_state("accelerated color fills", info->blit_fill);
 
-        printf("video memory: (%d)", info->video_mem);
-    } /* else */
-} /* output_surface_info */
+        printf("video memory: (%d),\n", info->video_mem);
+ */
+    }
+}
 
 
 static void output_driver_info(void)
@@ -785,28 +786,28 @@ void _joystick_init(void)
 
     if (joystick != NULL)
     {
-        printf("Joystick appears to be already initialized.");
-        printf("...deinitializing for stick redetection...");
+        printf("Joystick appears to be already initialized.\n");
+        printf("...deinitializing for stick redetection...\n");
         _joystick_deinit();
     } /* if */
 
     if ((envr != NULL) && (strcmp(envr, "none") == 0))
     {
-        printf("Skipping joystick detection/initialization at user request");
+        printf("Skipping joystick detection/initialization at user request\n");
         return;
     } /* if */
 
     printf("Initializing SDL joystick subsystem...");
-    printf(" (export environment variable BUILD_SDLJOYSTICK=none to skip)");
+    printf(" (export environment variable BUILD_SDLJOYSTICK=none to skip)\n");
 
     if (SDL_Init(SDL_INIT_JOYSTICK|SDL_INIT_NOPARACHUTE) != 0)
     {
-        printf("SDL_Init(SDL_INIT_JOYSTICK) failed: [%s].", SDL_GetError());
+        printf("SDL_Init(SDL_INIT_JOYSTICK) failed: [%s].\n", SDL_GetError());
         return;
     } /* if */
 
     numsticks = SDL_NumJoysticks();
-    printf("SDL sees %d joystick%s.", numsticks, numsticks == 1 ? "" : "s");
+    printf("SDL sees %d joystick%s.\n", numsticks, numsticks == 1 ? "" : "s");
     if (numsticks == 0)
         return;
 
@@ -816,21 +817,21 @@ void _joystick_init(void)
         if ((envr != NULL) && (strcmp(envr, stickname) == 0))
             favored = i;
 
-        printf("Stick #%d: [%s]", i, stickname);
+        printf("Stick #%d: [%s]\n", i, stickname);
     } /* for */
 
     printf("Using Stick #%d.", favored);
     if ((envr == NULL) && (numsticks > 1))
-        printf("Set BUILD_SDLJOYSTICK to one of the above names to change.");
+        printf("Set BUILD_SDLJOYSTICK to one of the above names to change.\n");
 
     joystick = SDL_JoystickOpen(favored);
     if (joystick == NULL)
     {
-        printf("Joystick #%d failed to init: %s", favored, SDL_GetError());
+        printf("Joystick #%d failed to init: %s\n", favored, SDL_GetError());
         return;
     } /* if */
 
-    printf("Joystick initialized. %d axes, %d buttons, %d hats, %d balls.",
+    printf("Joystick initialized. %d axes, %d buttons, %d hats, %d balls.\n",
               SDL_JoystickNumAxes(joystick), SDL_JoystickNumButtons(joystick),
               SDL_JoystickNumHats(joystick), SDL_JoystickNumBalls(joystick));
 
@@ -842,11 +843,11 @@ void _joystick_deinit(void)
 {
     if (joystick != NULL)
     {
-        printf("Closing joystick device...");
+        printf("Closing joystick device...\n");
         SDL_JoystickClose(joystick);
-        printf("Joystick device closed. Deinitializing SDL subsystem...");
+        printf("Joystick device closed. Deinitializing SDL subsystem...\n");
         SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
-        printf("SDL joystick subsystem deinitialized.");
+        printf("SDL joystick subsystem deinitialized.\n");
         joystick = NULL;
     } /* if */
 } /* _joystick_deinit */
@@ -909,11 +910,11 @@ static __inline void output_sdl_versions(void)
 
     SDL_VERSION(&compiled_ver);
 
-    printf("SDL display driver for the BUILD engine initializing.");
-    printf("  sdl_driver.c by Ryan C. Gordon (icculus@clutteredmind.org).");
-    printf("Compiled %s against SDL version %d.%d.%d ...", __DATE__,
+    printf("SDL display driver for the BUILD engine initializing.\n");
+    printf("  sdl_driver.c by Ryan C. Gordon (icculus@clutteredmind.org).\n");
+    printf("Compiled %s against SDL version %d.%d.%d ...\n", __DATE__,
                 compiled_ver.major, compiled_ver.minor, compiled_ver.patch);
-    printf("Linked SDL version is %d.%d.%d ...",
+    printf("Linked SDL version is %d.%d.%d ...\n",
                 linked_ver->major, linked_ver->minor, linked_ver->patch);
 } /* output_sdl_versions */
 
@@ -992,17 +993,7 @@ void _platform_init(int argc, char  **argv, const char  *title, const char  *ico
 
     // This requires to recompile the whole sdl and sdl mixer with the lib
     // switch instead of the default dll switch.
-	if( BFullScreen )
-	{
-		putenv("SDL_VIDEODRIVER=directx");
-		printf("FullScreen Mode, trying directx\n");
-	}
-	else
-	{
-		putenv("SDL_VIDEODRIVER=windib");
-		printf("Window Mode, trying windib\n");
-	}
-
+	
 	putenv("SDL_VIDEO_CENTERED=1");
 
     if (title == NULL)
@@ -1247,7 +1238,7 @@ static __inline void get_max_screen_res(int32_t *max_w, int32_t *max_h)
     {
         if (!get_dimensions_from_str(envr, &w, &h))
         {
-            printf("User's resolution ceiling [%s] is bogus!", envr);
+            printf("User's resolution ceiling [%s] is bogus!\n", envr);
             w = DEFAULT_MAXRESWIDTH;
             h = DEFAULT_MAXRESHEIGHT;
         } /* if */
@@ -1263,7 +1254,7 @@ static __inline void get_max_screen_res(int32_t *max_w, int32_t *max_h)
 
 static void add_vesa_mode(const char  *typestr, int w, int h)
 {
-    printf("Adding %s resolution (%dx%d).", typestr, w, h);
+    //printf("Adding %s resolution (%dx%d).\n", typestr, w, h);
     validmode[validmodecnt] = validmodecnt;
     validmodexdim[validmodecnt] = w;
     validmodeydim[validmodecnt] = h;
@@ -1284,7 +1275,7 @@ static __inline void add_user_defined_resolution(void)
     if (get_dimensions_from_str(envr, &w, &h))
         add_vesa_mode("user defined", w, h);
     else
-        printf("User defined resolution [%s] is bogus!", envr);
+        printf("User defined resolution [%s] is bogus!\n", envr);
 } /* add_user_defined_resolution */
 
 
@@ -1301,10 +1292,10 @@ static __inline SDL_Rect **get_physical_resolutions(void)
     } /* if */
 
     if (modes == (SDL_Rect **) -1)
-        printf("Couldn't get any physical resolutions.");
+        printf("Couldn't get any physical resolutions.\n");
     else
     {
-        printf("Highest physical resolution is (%dx%d).",
+        printf("Highest physical resolution is (%dx%d).\n",
                   modes[0]->w, modes[0]->h);
     } /* else */
 
@@ -1317,7 +1308,7 @@ static void remove_vesa_mode(int index, const char  *reason)
     int i;
 
     assert(index < validmodecnt);
-    printf("Removing resolution #%d, %dx%d [%s].",index, validmodexdim[index], validmodeydim[index], reason);
+    //printf("Removing resolution #%d, %dx%d [%s].\n",index, validmodexdim[index], validmodeydim[index], reason);
 
     for (i = index; i < validmodecnt - 1; i++)
     {
@@ -1337,7 +1328,7 @@ static __inline void cull_large_vesa_modes(void)
     int i;
 
     get_max_screen_res(&max_w, &max_h);
-    printf("Setting resolution ceiling to (%ldx%ld).", max_w, max_h);
+    printf("Setting resolution ceiling to (%ldx%ld).\n", max_w, max_h);
 
     for (i = 0; i < validmodecnt; i++)
     {
@@ -2027,7 +2018,7 @@ int inittimer(int tickspersecond)
     
 	if (timerfreq) return 0;	// already installed
 
-	printf("Initialising timer, with tickPerSecond=%d\n",tickspersecond);
+	//printf("Initialising timer, with tickPerSecond=%d\n",tickspersecond);
 
 	// OpenWatcom seems to want us to query the value into a local variable
 	// instead of the global 'timerfreq' or else it gets pissed with an
@@ -2100,36 +2091,7 @@ int gettimerfreq(void)
 	return timerticspersec;
 }
 
-// ****************************************************************************
 
-//static Uint32 _timer_catcher(Uint32 interval, void *bleh)
-//{
-//    timerhandler();
-//    return(1);
-//} /* _timer_catcher */
-//
-//
-//void inittimer(void)
-//{
-//    SDL_ClearError();
-//    primary_timer = SDL_AddTimer(1000 / PLATFORM_TIMER_HZ, _timer_catcher, NULL);
-//    if (primary_timer == NULL)
-//    {
-//        fprintf(stderr, "BUILDSDL: -ERROR- Problem initializing primary timer!\n");
-//        fprintf(stderr, "BUILDSDL:  Reason: [%s]\n", SDL_GetError());
-//        Error(EXIT_FAILURE, "");
-//    } /* if */
-//}
-//
-//
-//void uninittimer(void)
-//{
-//    if (primary_timer != NULL)
-//    {
-//        SDL_RemoveTimer(primary_timer);
-//        primary_timer = NULL;
-//    } /* if */
-//}
 
 void initkeys(void)
 {
