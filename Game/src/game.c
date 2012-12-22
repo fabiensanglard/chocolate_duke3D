@@ -170,7 +170,7 @@ int gametext(int x,int y,char  *t,uint8_t  s,short dabits)
 
             if(*t >= '0' && *t <= '9')
                 newx += 8;
-            else newx += tilesDimension[ac].width;
+            else newx += tiles[ac].dim.width;
             t++;
         }
 
@@ -190,7 +190,7 @@ int gametext(int x,int y,char  *t,uint8_t  s,short dabits)
 
         if(*t >= '0' && *t <= '9')
             x += 8;
-        else x += tilesDimension[ac].width;
+        else x += tiles[ac].dim.width;
 
         t++;
     }
@@ -219,7 +219,7 @@ int gametextpal(int x,int y,char  *t,uint8_t  s,uint8_t  p)
 
             if(*t >= '0' && *t <= '9')
                 newx += 8;
-            else newx += tilesDimension[ac].width;
+            else newx += tiles[ac].dim.width;
             t++;
         }
 
@@ -238,7 +238,7 @@ int gametextpal(int x,int y,char  *t,uint8_t  s,uint8_t  p)
         rotatesprite(x<<16,y<<16,65536L,0,ac,s,p,2+8+16,0,0,xdim-1,ydim-1);
         if(*t >= '0' && *t <= '9')
             x += 8;
-        else x += tilesDimension[ac].width;
+        else x += tiles[ac].dim.width;
 
         t++;
     }
@@ -268,7 +268,7 @@ int gametextpart(int x,int y,char  *t,uint8_t  s,short p)
 
             if( ac < STARTALPHANUM || ac > ENDALPHANUM ) break;
 
-            newx += tilesDimension[ac].width;
+            newx += tiles[ac].dim.width;
             t++;
             cnt++;
 
@@ -294,7 +294,7 @@ int gametextpart(int x,int y,char  *t,uint8_t  s,short p)
         else
             rotatesprite(x<<16,y<<16,65536L,0,ac,s,0,2+8+16,0,0,xdim-1,ydim-1);
 
-        x += tilesDimension[ac].width;
+        x += tiles[ac].dim.width;
 
         t++;
         cnt++;
@@ -1674,7 +1674,7 @@ void digitalnumber(int32_t x,int32_t y,int32_t n,uint8_t  s,uint8_t  cs)
     for(k=0;k<i;k++)
     {
         p = DIGITALNUM+*(b+k)-'0';
-        j += tilesDimension[p].width+1;
+        j += tiles[p].dim.width+1;
     }
     c = x-(j>>1);
 
@@ -1683,7 +1683,7 @@ void digitalnumber(int32_t x,int32_t y,int32_t n,uint8_t  s,uint8_t  cs)
     {
         p = DIGITALNUM+*(b+k)-'0';
         rotatesprite((c+j)<<16,y<<16,65536L,0,p,s,0,cs,0,0,xdim-1,ydim-1);
-        j += tilesDimension[p].width+1;
+        j += tiles[p].dim.width+1;
     }
 }
 
@@ -3276,18 +3276,19 @@ void displayrooms(short snum,int32_t smoothratio)
 
         if(screencapt)
         {
-            walock[MAXTILES-1] = 254;
-            if (waloff[MAXTILES-1] == 0)
-                allocache((int32_t *)&waloff[MAXTILES-1],100*160,&walock[MAXTILES-1]);
+            tiles[MAXTILES-1].lock = 254;
+            if (tiles[MAXTILES-1].data == NULL)
+                allocache(&tiles[MAXTILES-1].data,100*160,&tiles[MAXTILES-1].lock);
+            
             setviewtotile(MAXTILES-1,100L,160L);
         }
         else if( ( ud.screen_tilting && p->rotscrnang ) || ud.detail==0 )
         {
                 if (ud.screen_tilting) tang = p->rotscrnang; else tang = 0;
 
-                walock[MAXTILES-2] = 255;
-                if (waloff[MAXTILES-2] == 0)
-                    allocache(&waloff[MAXTILES-2],320L*320L,&walock[MAXTILES-2]);
+                tiles[MAXTILES-2].lock = 255;
+                if (tiles[MAXTILES-2].data == NULL)
+                    allocache(&tiles[MAXTILES-2].data,320L*320L,&tiles[MAXTILES-2].lock);
                 if ((tang&1023) == 0)
                     setviewtotile(MAXTILES-2,200L>>(1-ud.detail),320L>>(1-ud.detail));
                 else
@@ -3409,19 +3410,19 @@ void displayrooms(short snum,int32_t smoothratio)
         if(screencapt == 1)
         {
             setviewback();
-            walock[MAXTILES-1] = 1;
+            tiles[MAXTILES-1].lock = 1;
             screencapt = 0;
         }
         else if( ( ud.screen_tilting && p->rotscrnang) || ud.detail==0 )
         {
             if (ud.screen_tilting) tang = p->rotscrnang; else tang = 0;
             setviewback();
-            picanm[MAXTILES-2] &= 0xff0000ff;
+            tiles[MAXTILES-2].animFlags &= 0xff0000ff;
             i = (tang&511); if (i > 256) i = 512-i;
             i = sintable[i+512]*8 + sintable[i]*5L;
             if ((1-ud.detail) == 0) i >>= 1;
             rotatesprite(160<<16,100<<16,i,tang+512,MAXTILES-2,0,0,4+2+64,windowx1,windowy1,windowx2,windowy2);
-            walock[MAXTILES-2] = 199;
+            tiles[MAXTILES-2].lock = 199;
         }
     }
 
@@ -5935,7 +5936,7 @@ void animatesprites(int32_t x,int32_t y,short a,int32_t smoothratio)
                 t->picnum += k + ( *(int32_t *)t4 ) + l * t3;
 
                 if(l > 0)
-                    while(tilesDimension[t->picnum].width == 0 && t->picnum > 0 )
+                    while(tiles[t->picnum].dim.width == 0 && t->picnum > 0 )
                     t->picnum -= l;       //Hack, for actors
 
                 if( hittype[i].dispicnum >= 0)
@@ -6839,7 +6840,7 @@ void nonsharedkeys(void)
                 cmenu(350);
                 screencapt = 1;
                 displayrooms(myconnectindex,65536);
-                savetemp("duke3d.tmp",waloff[MAXTILES-1],160*100);
+                savetemp("duke3d.tmp",tiles[MAXTILES-1].data,160*100);
                 screencapt = 0;
                 FX_StopAllSounds();
                 clearsoundlocks();
@@ -6911,7 +6912,7 @@ void nonsharedkeys(void)
             }
             screencapt = 1;
             displayrooms(myconnectindex,65536);
-            savetemp("duke3d.tmp",waloff[MAXTILES-1],160*100);
+            savetemp("duke3d.tmp",tiles[MAXTILES-1].data,160*100);
             screencapt = 0;
             if( lastsavedpos >= 0 )
             {
@@ -7736,7 +7737,7 @@ void Startup(void)
 
    readsavenames();
 
-   tilesDimension[MIRROR].width = tilesDimension[MIRROR].height = 0;
+   tiles[MIRROR].dim.width = tiles[MIRROR].dim.height = 0;
 
    for(i=0;i<MAXPLAYERS;i++) playerreadyflag[i] = 0;
    initmultiplayers(0,0,0);
@@ -9479,7 +9480,7 @@ uint8_t  domovethings(void)
 			// FIX_00058: Save/load game crash in both single and multiplayer
             screencapt = 1;
             displayrooms(myconnectindex,65536);
-            savetemp("duke3d.tmp",waloff[MAXTILES-1],160*100);
+            savetemp("duke3d.tmp",tiles[MAXTILES-1].data,160*100);
             screencapt = 0;
 
             saveplayer( multipos );

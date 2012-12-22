@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2D058BD01686520B00E283DC /* tiles.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D058BCF1686520B00E283DC /* tiles.c */; };
 		2D2A07CA168286D500064107 /* filesystem.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A07C9168286D400064107 /* filesystem.c */; };
 		2D4FB6FF167D430F00915887 /* sdl_midi.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D4FB6FE167D430F00915887 /* sdl_midi.c */; };
 		2D7B621D1678885A00E35E54 /* draw.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B61F11678885A00E35E54 /* draw.c */; };
@@ -20,7 +21,7 @@
 		2D7B62251678885A00E35E54 /* unix.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B620D1678885A00E35E54 /* unix.c */; };
 		2D7B62261678885A00E35E54 /* win32.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B620E1678885A00E35E54 /* win32.c */; };
 		2D7B62271678885A00E35E54 /* engine.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62101678885A00E35E54 /* engine.c */; };
-		2D7B622C1678885A00E35E54 /* pragmas.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B621A1678885A00E35E54 /* pragmas.c */; };
+		2D7B622C1678885A00E35E54 /* fixedPoint_math.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B621A1678885A00E35E54 /* fixedPoint_math.c */; };
 		2D7B622D1678885A00E35E54 /* display.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B621C1678885A00E35E54 /* display.c */; };
 		2D7B623616788ACE00E35E54 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D7B623416788AB200E35E54 /* Cocoa.framework */; };
 		2D7B623716788AE200E35E54 /* SDL_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D7B623216788AAB00E35E54 /* SDL_mixer.framework */; };
@@ -71,6 +72,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2D058BCD168651F700E283DC /* tiles.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = tiles.h; path = ../../Engine/src/tiles.h; sourceTree = "<group>"; };
+		2D058BCF1686520B00E283DC /* tiles.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tiles.c; path = ../../Engine/src/tiles.c; sourceTree = "<group>"; };
 		2D2A07B8167EFA4900064107 /* music.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = music.h; path = ../../Game/src/audiolib/music.h; sourceTree = "<group>"; };
 		2D2A07BA167EFB5500064107 /* premap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = premap.h; path = ../../Game/src/premap.h; sourceTree = "<group>"; };
 		2D2A07BB167F1ABA00064107 /* global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = global.h; path = ../../Game/src/global.h; sourceTree = "<group>"; };
@@ -105,8 +108,8 @@
 		2D7B62111678885A00E35E54 /* engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = engine.h; path = ../../Engine/src/engine.h; sourceTree = "<group>"; };
 		2D7B62121678885A00E35E54 /* icon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = icon.h; path = ../../Engine/src/icon.h; sourceTree = "<group>"; };
 		2D7B62191678885A00E35E54 /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = platform.h; path = ../../Engine/src/platform.h; sourceTree = "<group>"; };
-		2D7B621A1678885A00E35E54 /* pragmas.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pragmas.c; path = ../../Engine/src/pragmas.c; sourceTree = "<group>"; };
-		2D7B621B1678885A00E35E54 /* pragmas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pragmas.h; path = ../../Engine/src/pragmas.h; sourceTree = "<group>"; };
+		2D7B621A1678885A00E35E54 /* fixedPoint_math.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = fixedPoint_math.c; path = ../../Engine/src/fixedPoint_math.c; sourceTree = "<group>"; };
+		2D7B621B1678885A00E35E54 /* fixedPoint_math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fixedPoint_math.h; path = ../../Engine/src/fixedPoint_math.h; sourceTree = "<group>"; };
 		2D7B621C1678885A00E35E54 /* display.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = display.c; path = ../../Engine/src/display.c; sourceTree = "<group>"; };
 		2D7B622F1678895A00E35E54 /* macos_compat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = macos_compat.h; path = ../../Engine/src/macos_compat.h; sourceTree = "<group>"; };
 		2D7B623016788A9B00E35E54 /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = /Library/Frameworks/SDL.framework; sourceTree = "<absolute>"; };
@@ -205,7 +208,8 @@
 				2D7B62121678885A00E35E54 /* icon.h */,
 				2D7B622F1678895A00E35E54 /* macos_compat.h */,
 				2D7B62191678885A00E35E54 /* platform.h */,
-				2D7B621B1678885A00E35E54 /* pragmas.h */,
+				2D7B621B1678885A00E35E54 /* fixedPoint_math.h */,
+				2D058BCD168651F700E283DC /* tiles.h */,
 			);
 			name = headers;
 			sourceTree = "<group>";
@@ -220,7 +224,8 @@
 				2D7B61F71678885A00E35E54 /* enet */,
 				2D7B62101678885A00E35E54 /* engine.c */,
 				2D2A07C9168286D400064107 /* filesystem.c */,
-				2D7B621A1678885A00E35E54 /* pragmas.c */,
+				2D7B621A1678885A00E35E54 /* fixedPoint_math.c */,
+				2D058BCF1686520B00E283DC /* tiles.c */,
 			);
 			name = implementations;
 			sourceTree = "<group>";
@@ -471,7 +476,7 @@
 				2D7B62251678885A00E35E54 /* unix.c in Sources */,
 				2D7B62261678885A00E35E54 /* win32.c in Sources */,
 				2D7B62271678885A00E35E54 /* engine.c in Sources */,
-				2D7B622C1678885A00E35E54 /* pragmas.c in Sources */,
+				2D7B622C1678885A00E35E54 /* fixedPoint_math.c in Sources */,
 				2D7B622D1678885A00E35E54 /* display.c in Sources */,
 				2D7B626E16788F9B00E35E54 /* actors.c in Sources */,
 				2D7B626F16788F9B00E35E54 /* animlib.c in Sources */,
@@ -505,6 +510,7 @@
 				2D7C17E0167ADE2000E1BBA1 /* pitch.c in Sources */,
 				2D4FB6FF167D430F00915887 /* sdl_midi.c in Sources */,
 				2D2A07CA168286D500064107 /* filesystem.c in Sources */,
+				2D058BD01686520B00E283DC /* tiles.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

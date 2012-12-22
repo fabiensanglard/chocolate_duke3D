@@ -16,8 +16,8 @@
 #define MAXSECTORS 1024
 #define MAXWALLS 8192
 #define MAXSPRITES 4096
-
 #define MAXTILES 9216
+
 #define MAXSTATUS 1024
 #define MAXPLAYERS 16
 #define MAXXDIM 1600
@@ -177,21 +177,7 @@ EXTERN short headspritesect[MAXSECTORS+1], headspritestat[MAXSTATUS+1];
 EXTERN short prevspritesect[MAXSPRITES], prevspritestat[MAXSPRITES];
 EXTERN short nextspritesect[MAXSPRITES], nextspritestat[MAXSPRITES];
 
-// The dimension of the tile in texels unit. The sizes can be obtained for
-// any tile by doing a tilesizx * tilesizy
-//EXTERN short tilesizx[MAXTILES], tilesizy[MAXTILES];
-typedef struct dimensions_s{
-    short width;
-    short height;
-} dimensions_t;
-dimensions_t tilesDimension[MAXTILES];
 
-// An array of locks for each pic: Used to check if a texture is in RAM or in the GRP.
-EXTERN uint8_t  walock[MAXTILES];
-EXTERN int32_t numtiles, picanm[MAXTILES];
-
-//The wall texture data.
-EXTERN uint8_t* waloff[MAXTILES];
 
     /*
 	 * These variables are for auto-mapping with the draw2dscreen function.
@@ -213,8 +199,7 @@ EXTERN uint8_t  show2dwall[(MAXWALLS+7)>>3];
 EXTERN uint8_t  show2dsprite[(MAXSPRITES+7)>>3];
 EXTERN uint8_t  automapping;
 
-//Bitvector marking picture used for rendition.
-EXTERN uint8_t  gotpic[(MAXTILES+7)>>3];
+
 
 //This is the bit vector that marks visited sector during portal flooding. Size is hence (MAXSECTORS / 8)
 EXTERN uint8_t  visitedSectors[(MAXSECTORS+7)>>3];

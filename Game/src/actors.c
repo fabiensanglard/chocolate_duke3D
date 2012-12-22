@@ -644,7 +644,7 @@ int movesprite(short spritenum, int32_t xchange, int32_t ychange, int32_t zchang
     dasectnum = sprite[spritenum].sectnum;
 
 	daz = sprite[spritenum].z;
-    h = ((tilesDimension[sprite[spritenum].picnum].height * sprite[spritenum].yrepeat)<<1);
+    h = ((tiles[sprite[spritenum].picnum].dim.height * sprite[spritenum].yrepeat)<<1);
     daz -= h;
 
     if( bg )

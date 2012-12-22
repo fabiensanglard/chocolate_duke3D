@@ -190,7 +190,7 @@ int loadpheader(uint8_t  spot,int32 *vn,int32 *ln,int32 *psk,int32 *nump)
 
      if ((fil = TCkopen4load(fn,0)) == -1) return(-1);
 
-     walock[MAXTILES-3] = 255;
+     tiles[MAXTILES-3].lock = 255;
 
      kdfread(&bv,4,1,fil);
      if(bv != BYTEVERSION)
@@ -207,11 +207,11 @@ int loadpheader(uint8_t  spot,int32 *vn,int32 *ln,int32 *psk,int32 *nump)
          kdfread(ln,sizeof(int32),1,fil);
      kdfread(psk,sizeof(int32),1,fil);
 
-     if (waloff[MAXTILES-3] == 0)
-         allocache(&waloff[MAXTILES-3],160*100,&walock[MAXTILES-3]);
-    tilesDimension[MAXTILES-3].width = 100;
-    tilesDimension[MAXTILES-3].height = 160;
-    kdfread((uint8_t  *)waloff[MAXTILES-3],160,100,fil);
+     if (tiles[MAXTILES-3].data == NULL)
+         allocache(&tiles[MAXTILES-3].data,160*100,&tiles[MAXTILES-3].lock);
+    tiles[MAXTILES-3].dim.width = 100;
+    tiles[MAXTILES-3].dim.height = 160;
+    kdfread(tiles[MAXTILES-3].data,160,100,fil);
     kclose(fil);
     return(0);
 }
@@ -317,14 +317,15 @@ int loadplayer(int8_t spot)
          ud.m_player_skill = ud.player_skill;
 
                  //Fake read because lseek won't work with compression
-     walock[MAXTILES-3] = 1;
-     if (waloff[MAXTILES-3] == 0)
-         allocache(&waloff[MAXTILES-3],160*100,&walock[MAXTILES-3]);
+     tiles[MAXTILES-3].lock = 1;
     
-     tilesDimension[MAXTILES-3].width = 100;
-    tilesDimension[MAXTILES-3].height = 160;
+     if (tiles[MAXTILES-3].data == NULL)
+         allocache(&tiles[MAXTILES-3].data,160*100,&tiles[MAXTILES-3].lock);
     
-     kdfread((uint8_t  *)waloff[MAXTILES-3],160,100,fil);
+     tiles[MAXTILES-3].dim.width = 100;
+    tiles[MAXTILES-3].dim.height = 160;
+    
+     kdfread((uint8_t  *)tiles[MAXTILES-3].data,160,100,fil);
 
          kdfread(&numwalls,2,1,fil);
      kdfread(&wall[0],sizeof(walltype),MAXWALLS,fil);
@@ -609,7 +610,7 @@ int saveplayer(int8_t spot)
          dfwrite(&ud.volume_number,sizeof(ud.volume_number),1,fil);
      dfwrite(&ud.level_number,sizeof(ud.level_number),1,fil);
          dfwrite(&ud.player_skill,sizeof(ud.player_skill),1,fil);
-     dfwrite((uint8_t  *)waloff[MAXTILES-1],160,100,fil);
+     dfwrite(tiles[MAXTILES-1].data,160,100,fil);
 
          dfwrite(&numwalls,2,1,fil);
      dfwrite(&wall[0],sizeof(walltype),MAXWALLS,fil);
@@ -882,7 +883,7 @@ int probeXduke(int x,int y,int i,int n, int32_t spriteSize)
         rotatesprite(((320>>1)-(centre>>1)-70)<<16,(y+(probey*i)-4)<<16,spriteSize,0,SPINNINGNUKEICON+((totalclock>>3)%7),sh,0,10,0,0,xdim-1,ydim-1);
     }
     else
-        rotatesprite((x-tilesDimension[BIGFNTCURSOR].width-4)<<16,(y+(probey*i)-4)<<16,spriteSize,0,SPINNINGNUKEICON+(((totalclock>>3))%7),sh,0,10,0,0,xdim-1,ydim-1);
+        rotatesprite((x-tiles[BIGFNTCURSOR].dim.width-4)<<16,(y+(probey*i)-4)<<16,spriteSize,0,SPINNINGNUKEICON+(((totalclock>>3))%7),sh,0,10,0,0,xdim-1,ydim-1);
 
     if( KB_KeyPressed(sc_Space) || KB_KeyPressed( sc_kpad_Enter ) || KB_KeyPressed( sc_Enter ) || (LMB))// && !onbar) )
     {
@@ -968,7 +969,7 @@ int menutext(int x,int y,short s,short p,char  *t)
                     continue;
             }
 
-            centre += tilesDimension[ac].width-1;
+            centre += tiles[ac].dim.width-1;
             i++;
         }
     }
@@ -1020,7 +1021,7 @@ int menutext(int x,int y,short s,short p,char  *t)
 
         rotatesprite(x<<16,y<<16,65536L,0,ac,s,p,10+16,0,0,xdim-1,ydim-1);
 
-        x += tilesDimension[ac].width;
+        x += tiles[ac].dim.width;
         t++;
     }
     return (x);
@@ -1078,7 +1079,7 @@ int menutextc(int x,int y,short s,short p,char  *t)
                     break;
             }
 
-            centre += tilesDimension[ac].width-1;
+            centre += tiles[ac].dim.width-1;
             i++;
         }
     }
@@ -1122,7 +1123,7 @@ int menutextc(int x,int y,short s,short p,char  *t)
 
         rotatesprite(x<<16,y<<16,65536L,0,ac,s,p,10+16,0,0,xdim-1,ydim-1);
 
-        x += tilesDimension[ac].width;
+        x += tiles[ac].dim.width;
         t++;
     }
     return (x);
@@ -1458,7 +1459,7 @@ void menus(void)
 
     if( (ps[myconnectindex].gm&MODE_MENU) == 0 )
     {
-        walock[MAXTILES-3] = 1;
+        tiles[MAXTILES-3].lock = 1;
         return;
     }
 
@@ -3287,7 +3288,7 @@ else
             cmenu(351);
             screencapt = 1;
             displayrooms(myconnectindex,65536);
-            savetemp("duke3d.tmp",waloff[MAXTILES-1],160*100);
+            savetemp("duke3d.tmp",tiles[MAXTILES-1].data,160*100);
             screencapt = 0;
             break;
 
@@ -4298,12 +4299,12 @@ void drawoverheadmap(int32_t cposx, int32_t cposy, int32_t czoom, short cang)
                         {
                             x1 = sprx; y1 = spry;
                             tilenum = spr->picnum;
-                            xoff = (int32_t)((int8_t  )((picanm[tilenum]>>8)&255))+((int32_t)spr->xoffset);
+                            xoff = (int32_t)((int8_t  )((tiles[tilenum].animFlags>>8)&255))+((int32_t)spr->xoffset);
                             if ((spr->cstat&4) > 0)
                                 xoff = -xoff;
                             k = spr->ang; l = spr->xrepeat;
                             dax = sintable[k&2047]*l; day = sintable[(k+1536)&2047]*l;
-                            l = tilesDimension[tilenum].width;
+                            l = tiles[tilenum].dim.width;
                             k = (l>>1)+xoff;
                             x1 -= mulscale16(dax,k);
                             x2 = x1+mulscale16(dax,l);
@@ -4327,17 +4328,17 @@ void drawoverheadmap(int32_t cposx, int32_t cposy, int32_t czoom, short cang)
                     case 32:
 
                                                 tilenum = spr->picnum;
-                                                xoff = (int32_t)((int8_t  )((picanm[tilenum]>>8)&255))+((int32_t)spr->xoffset);
-                                                yoff = (int32_t)((int8_t  )((picanm[tilenum]>>16)&255))+((int32_t)spr->yoffset);
+                                                xoff = (int32_t)((int8_t  )((tiles[tilenum].animFlags>>8)&255))+((int32_t)spr->xoffset);
+                                                yoff = (int32_t)((int8_t  )((tiles[tilenum].animFlags>>16)&255))+((int32_t)spr->yoffset);
                                                 if ((spr->cstat&4) > 0) xoff = -xoff;
                                                 if ((spr->cstat&8) > 0) yoff = -yoff;
 
                                                 k = spr->ang;
                                                 cosang = sintable[(k+512)&2047];
                                         sinang = sintable[k];
-                                                xspan = tilesDimension[tilenum].width;
+                                                xspan = tiles[tilenum].dim.width;
                                         xrepeat = spr->xrepeat;
-                                                yspan = tilesDimension[tilenum].height;
+                                                yspan = tiles[tilenum].dim.height;
                                         yrepeat = spr->yrepeat;
 
                                                 dax = ((xspan>>1)+xoff)*xrepeat; day = ((yspan>>1)+yoff)*yrepeat;
@@ -4398,9 +4399,9 @@ void drawoverheadmap(int32_t cposx, int32_t cposy, int32_t czoom, short cang)
 
                         //if ((show2dwall[j>>3]&(1<<(j&7))) == 0) continue;
 
-                        if (tilesDimension[wal->picnum].width == 0)
+                        if (tiles[wal->picnum].dim.width == 0)
                             continue;
-                        if (tilesDimension[wal->picnum].height== 0)
+                        if (tiles[wal->picnum].dim.height== 0)
                             continue;
 
                         if (j == k)
@@ -4652,17 +4653,17 @@ void playanm(char  *fn,uint8_t  t)
 
     length = kfilelength(handle);
 
-    walock[MAXTILES-3-t] = 219+t;
+    tiles[MAXTILES-3-t].lock = 219+t;
 
     if(anim == 0 || lastanimhack != (MAXTILES-3-t))
-        allocache((int32_t *)&anim,length+sizeof(anim_t),&walock[MAXTILES-3-t]);
+        allocache((int32_t *)&anim,length+sizeof(anim_t),&tiles[MAXTILES-3-t].lock);
 
     animbuf = (uint8_t  *)(FP_OFF(anim)+sizeof(anim_t));
 
     lastanimhack = (MAXTILES-3-t);
 
-    tilesDimension[MAXTILES-3-t].width = 200;
-    tilesDimension[MAXTILES-3-t].height = 320;
+    tiles[MAXTILES-3-t].dim.width = 200;
+    tiles[MAXTILES-3-t].dim.height = 320;
 
     kread(handle,animbuf,length);
     kclose(handle);
@@ -4703,7 +4704,7 @@ void playanm(char  *fn,uint8_t  t)
        else if(ud.volume_number == 1) ototalclock += 18;
        else                           ototalclock += 10;
 
-       waloff[MAXTILES-3-t] = FP_OFF(ANIM_DrawFrame(i));
+       tiles[MAXTILES-3-t].data = FP_OFF(ANIM_DrawFrame(i));
        rotatesprite(0<<16,0<<16,65536L,512,MAXTILES-3-t,0,0,2+4+8+16+64, 0,0,xdim-1,ydim-1);
        nextpage();
 
@@ -4720,6 +4721,6 @@ void playanm(char  *fn,uint8_t  t)
     ENDOFANIMLOOP:
 
     ANIM_FreeAnim ();
-    walock[MAXTILES-3-t] = 1;
+    tiles[MAXTILES-3-t].lock = 1;
 }
 

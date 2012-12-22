@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 #include "platform.h"
-#include "pragmas.h"
+#include "fixedPoint_math.h"
 
 void clearbuf(void *d, int32_t c, int32_t a)
 {

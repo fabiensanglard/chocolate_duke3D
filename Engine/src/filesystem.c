@@ -10,7 +10,7 @@
 
 #include "platform.h"
 #include "cache.h"
-#include "pragmas.h"
+#include "fixedPoint_math.h"
 #include "../../Game/src/global.h"
 
 char game_dir[512];

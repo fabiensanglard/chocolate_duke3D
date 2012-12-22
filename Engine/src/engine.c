@@ -19,9 +19,6 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-
-#include "pragmas.h"
-
 #include "platform.h"
 
 #if !PLATFORM_MACOSX
@@ -31,6 +28,7 @@
 #include "build.h"
 
 #include "engine.h"
+#include "tiles.h"
 
 int32_t stereowidth = 23040, stereopixelwidth = 28, ostereopixelwidth = -1;
 int32_t stereomode = 0, visualpage, activepage, whiteband, blackband;
@@ -71,8 +69,8 @@ int32_t slopalookup[16384];
  * !!! can be made static again.  --ryan.
  */
 uint8_t  permanentlock = 255;
-int32_t artversion, mapversion;
-uint8_t  *pic = NULL;
+int32_t  mapversion;
+
 uint8_t  picsiz[MAXTILES], tilefilenum[MAXTILES];
 int32_t lastageclock;
 int32_t tilefileoffs[MAXTILES];
@@ -178,7 +176,7 @@ short umost[MAXXDIM+1];
 //FCS: (down-most pixel +1 on column x that can still be drawn to)
 short dmost[MAXXDIM+1];
 
-static int16_t bakumost[MAXXDIM+1], bakdmost[MAXXDIM+1];
+int16_t bakumost[MAXXDIM+1], bakdmost[MAXXDIM+1];
 short uplc[MAXXDIM+1], dplc[MAXXDIM+1];
 static int16_t uwall[MAXXDIM+1], dwall[MAXXDIM+1];
 static int32_t swplc[MAXXDIM+1], lplc[MAXXDIM+1];
@@ -277,8 +275,7 @@ short searchit;
 int32_t searchx = -1, searchy;                     /* search input  */
 short searchsector, searchwall, searchstat;     /* search output */
 
-static char  artfilename[20];
-static int32_t numtilefiles, artfil = -1, artfilnum, artfilplc;
+int32_t numtilefiles, artfil = -1, artfilnum, artfilplc;
 
 static uint8_t  inpreparemirror = 0;
 static int32_t mirrorsx1, mirrorsy1, mirrorsx2, mirrorsy2;
@@ -314,15 +311,6 @@ static __inline int32_t krecipasm(int32_t i)
     return((reciptable[(i>>12)&2047]>>(((i-0x3f800000)>>23)&31))^(i>>31));
 }
 
-//1. Lock a picture in the cache system.
-//2. Mark it as used in the bitvector tracker.
-static __inline void setgotpic(int32_t tilenume)
-{
-    if (walock[tilenume] < 200)
-        walock[tilenume] = 199;
-    
-    gotpic[tilenume>>3] |= pow2char[tilenume&7];
-}
 
 
 static __inline int32_t getclipmask(int32_t a, int32_t b, int32_t c, int32_t d)
@@ -719,38 +707,7 @@ static void slowhline (int32_t xr, int32_t yp)
 }
 
 
-/*
-  FCS:   If a texture is animated, this will return the offset to add to tilenum
-         in order to retrieve the texture to display.
-*/
-static int animateoffs(int16_t tilenum)
-{
-    int32_t i, k, offs;
 
-    offs = 0;
-    
-    i = (totalclocklock>>((picanm[tilenum]>>24)&15));
-    
-    if ((picanm[tilenum]&63) > 0){
-        switch(picanm[tilenum]&192)
-        {
-        case 64:
-            k = (i%((picanm[tilenum]&63)<<1));
-            if (k < (picanm[tilenum]&63))
-                offs = k;
-            else
-                offs = (((picanm[tilenum]&63)<<1)-k);
-            break;
-        case 128:
-            offs = (i%((picanm[tilenum]&63)+1));
-            break;
-        case 192:
-            offs = -(i%((picanm[tilenum]&63)+1));
-        }
-    }
-    
-    return(offs);
-}
 
 
 /* renders non-parallaxed ceilings. --ryan. */
@@ -780,17 +737,17 @@ static void ceilscan (int32_t x1, int32_t x2, int32_t sectnum)
     setgotpic(globalpicnum);
     
     //Check the tile dimension are valid.
-    if ((tilesDimension[globalpicnum].width <= 0) ||
-        (tilesDimension[globalpicnum].height <= 0))
+    if ((tiles[globalpicnum].dim.width <= 0) ||
+        (tiles[globalpicnum].dim.height <= 0))
         return;
     
-    if (picanm[globalpicnum]&192)
+    if (tiles[globalpicnum].animFlags&192)
         globalpicnum += animateoffs(globalpicnum);
 
-    if (waloff[globalpicnum] == 0)
+    if (tiles[globalpicnum].data == NULL)
         loadtile(globalpicnum);
     
-    globalbufplc = waloff[globalpicnum];
+    globalbufplc = tiles[globalpicnum].data;
 
     globalshade = (int32_t)sec->ceilingshade;
     globvis = globalcisibility;
@@ -1017,20 +974,20 @@ static void florscan (int32_t x1, int32_t x2, int32_t sectnum)
     
     
     //This tile has unvalid dimensions ( negative)
-    if ((tilesDimension[globalpicnum].width <= 0) ||
-        (tilesDimension[globalpicnum].height <= 0))
+    if ((tiles[globalpicnum].dim.width <= 0) ||
+        (tiles[globalpicnum].dim.height <= 0))
         return;
     
     //If this is an animated texture: Animate it.
-    if (picanm[globalpicnum]&192)
+    if (tiles[globalpicnum].animFlags&192)
         globalpicnum += animateoffs(globalpicnum);
 
     //If the texture is not in RAM: Load it !!
-    if (waloff[globalpicnum] == 0)
+    if (tiles[globalpicnum].data == NULL)
         loadtile(globalpicnum);
     
     //Check where is the texture in RAM
-    globalbufplc = waloff[globalpicnum];
+    globalbufplc = tiles[globalpicnum].data;
 
     //Retrieve the shade of the sector (illumination level).
     globalshade = (int32_t)sec->floorshade;
@@ -1280,8 +1237,8 @@ static void wallscan(int32_t x1, int32_t x2,
     int32_t y1ve[4], y2ve[4], u4, d4, z, tileWidth, tsizy;
     uint8_t  bad;
 
-    tileWidth = tilesDimension[globalpicnum].width;
-    tsizy = tilesDimension[globalpicnum].height;
+    tileWidth = tiles[globalpicnum].dim.width;
+    tsizy = tiles[globalpicnum].dim.height;
     
     setgotpic(globalpicnum);
     
@@ -1294,7 +1251,7 @@ static void wallscan(int32_t x1, int32_t x2,
     if ((dwal[x1] < 0) && (dwal[x2] < 0))
         return;
 
-    if (waloff[globalpicnum] == 0)
+    if (tiles[globalpicnum].data == NULL)
         loadtile(globalpicnum);
 
     xnice = (pow2long[picsiz[globalpicnum]&15] == tileWidth);
@@ -1341,7 +1298,7 @@ static void wallscan(int32_t x1, int32_t x2,
         vince[0] = swal[x]*globalyscale;
         vplce[0] = globalzd + vince[0]*(y1ve[0]-globalhoriz+1);
 
-        vlineasm1(vince[0],palookupoffse[0],y2ve[0]-y1ve[0]-1,vplce[0],bufplce[0]+waloff[globalpicnum],x+frameoffset+ylookup[y1ve[0]]);
+        vlineasm1(vince[0],palookupoffse[0],y2ve[0]-y1ve[0]-1,vplce[0],bufplce[0]+tiles[globalpicnum].data,x+frameoffset+ylookup[y1ve[0]]);
     }
     
     for(; x<=x2-3; x+=4)
@@ -1367,7 +1324,7 @@ static void wallscan(int32_t x1, int32_t x2,
                 i *= tsizy;
             else
                 i <<= tsizy;
-            bufplce[z] = waloff[globalpicnum]+i;
+            bufplce[z] = tiles[globalpicnum].data+i;
 
             vince[z] = swal[x+z]*globalyscale;
             vplce[z] = globalzd + vince[z]*(y1ve[z]-globalhoriz+1);
@@ -1453,7 +1410,7 @@ static void wallscan(int32_t x1, int32_t x2,
         vince[0] = swal[x]*globalyscale;
         vplce[0] = globalzd + vince[0]*(y1ve[0]-globalhoriz+1);
 
-        vlineasm1(vince[0],palookupoffse[0],y2ve[0]-y1ve[0]-1,vplce[0],bufplce[0]+waloff[globalpicnum],x+frameoffset+ylookup[y1ve[0]]);
+        vlineasm1(vince[0],palookupoffse[0],y2ve[0]-y1ve[0]-1,vplce[0],bufplce[0]+tiles[globalpicnum].data,x+frameoffset+ylookup[y1ve[0]]);
     }
     faketimerhandler();
 }
@@ -1470,8 +1427,8 @@ static void maskwallscan(int32_t x1, int32_t x2,
     uint8_t*  p;
     uint8_t  bad;
 
-    tileWidth = tilesDimension[globalpicnum].width;
-    tileHeight = tilesDimension[globalpicnum].height;
+    tileWidth = tiles[globalpicnum].dim.width;
+    tileHeight = tiles[globalpicnum].dim.height;
     setgotpic(globalpicnum);
     
     if ((tileWidth <= 0) || (tileHeight <= 0))
@@ -1481,7 +1438,7 @@ static void maskwallscan(int32_t x1, int32_t x2,
     if ((dwal[x1] < 0) && (dwal[x2] < 0))
         return;
 
-    if (waloff[globalpicnum] == 0)
+    if (tiles[globalpicnum].data == NULL)
         loadtile(globalpicnum);
 
     startx = x1;
@@ -1524,7 +1481,7 @@ static void maskwallscan(int32_t x1, int32_t x2,
         vince[0] = swal[x]*globalyscale;
         vplce[0] = globalzd + vince[0]*(y1ve[0]-globalhoriz+1);
 
-        mvlineasm1(vince[0],palookupoffse[0],y2ve[0]-y1ve[0]-1,vplce[0],bufplce[0]+waloff[globalpicnum],p+ylookup[y1ve[0]]);
+        mvlineasm1(vince[0],palookupoffse[0],y2ve[0]-y1ve[0]-1,vplce[0],bufplce[0]+tiles[globalpicnum].data,p+ylookup[y1ve[0]]);
     }
     for(; x<=x2-3; x+=4,p+=4)
     {
@@ -1549,7 +1506,7 @@ static void maskwallscan(int32_t x1, int32_t x2,
             else
                 i <<= tileHeight;
             
-            bufplce[z] = waloff[globalpicnum]+i;
+            bufplce[z] = tiles[globalpicnum].data+i;
 
             vince[z] = swal[dax]*globalyscale;
             vplce[z] = globalzd + vince[z]*(y1ve[z]-globalhoriz+1);
@@ -1616,7 +1573,7 @@ static void maskwallscan(int32_t x1, int32_t x2,
         vince[0] = swal[x]*globalyscale;
         vplce[0] = globalzd + vince[0]*(y1ve[0]-globalhoriz+1);
 
-        mvlineasm1(vince[0],palookupoffse[0],y2ve[0]-y1ve[0]-1,vplce[0],bufplce[0]+waloff[globalpicnum],p+ylookup[y1ve[0]]);
+        mvlineasm1(vince[0],palookupoffse[0],y2ve[0]-y1ve[0]-1,vplce[0],bufplce[0]+tiles[globalpicnum].data,p+ylookup[y1ve[0]]);
     }
     faketimerhandler();
 }
@@ -1660,12 +1617,16 @@ static void parascan(int32_t dax1, int32_t dax2, int32_t sectnum,uint8_t  dastat
     }
 
     if ((uint32_t)globalpicnum >= (uint32_t)MAXTILES) globalpicnum = 0;
-    if (picanm[globalpicnum]&192) globalpicnum += animateoffs(globalpicnum);
+    
+    if (tiles[globalpicnum].animFlags&192) 
+        globalpicnum += animateoffs(globalpicnum);
+    
     globalshiftval = (picsiz[globalpicnum]>>4);
-    if (pow2long[globalshiftval] != tilesDimension[globalpicnum].height)
+    
+    if (pow2long[globalshiftval] != tiles[globalpicnum].dim.height)
         globalshiftval++;
     globalshiftval = 32-globalshiftval;
-    globalzd = (((tilesDimension[globalpicnum].height>>1)+parallaxyoffs)<<globalshiftval)+(globalypanning<<24);
+    globalzd = (((tiles[globalpicnum].dim.height>>1)+parallaxyoffs)<<globalshiftval)+(globalypanning<<24);
     globalyscale = (8<<(globalshiftval-19));
     /*if (globalorientation&256) globalyscale = -globalyscale, globalzd = -globalzd;*/
 
@@ -1800,15 +1761,16 @@ static void grouscan (int32_t dax1, int32_t dax2, int32_t sectnum, uint8_t  dast
         daz = sec->floorz;
     }
 
-    if ((picanm[globalpicnum]&192) != 0)
+    if ((tiles[globalpicnum].animFlags&192) != 0)
         globalpicnum += animateoffs(globalpicnum);
+    
     setgotpic(globalpicnum);
     
-    if ((tilesDimension[globalpicnum].width <= 0) ||
-        (tilesDimension[globalpicnum].height <= 0))
+    if ((tiles[globalpicnum].dim.width <= 0) ||
+        (tiles[globalpicnum].dim.height <= 0))
         return;
     
-    if (waloff[globalpicnum] == 0)
+    if (tiles[globalpicnum].data == NULL)
         loadtile(globalpicnum);
 
     wal = &wall[sec->wallptr];
@@ -1909,7 +1871,7 @@ static void grouscan (int32_t dax1, int32_t dax2, int32_t sectnum, uint8_t  dast
     globvis = mulscale16(globvis,xdimscale);
     j =(int32_t) FP_OFF(palookup[globalpal]);
 
-    setupslopevlin(((int32_t)(picsiz[globalpicnum]&15))+(((int32_t)(picsiz[globalpicnum]>>4))<<8),waloff[globalpicnum],-ylookup[1]);
+    setupslopevlin(((int32_t)(picsiz[globalpicnum]&15))+(((int32_t)(picsiz[globalpicnum]>>4))<<8),tiles[globalpicnum].data,-ylookup[1]);
 
     l = (globalzd>>16);
 
@@ -2360,11 +2322,11 @@ static void drawalls(int32_t bunch)
                     globalxpanning = (int32_t)wal->xpanning;
                     globalypanning = (int32_t)wal->ypanning;
                     globalshiftval = (picsiz[globalpicnum]>>4);
-                    if (pow2long[globalshiftval] != tilesDimension[globalpicnum].height) globalshiftval++;
+                    if (pow2long[globalshiftval] != tiles[globalpicnum].dim.height) globalshiftval++;
                     globalshiftval = 32-globalshiftval;
                     
                     //Animated
-                    if (picanm[globalpicnum]&192)
+                    if (tiles[globalpicnum].animFlags&192)
                         globalpicnum += animateoffs(globalpicnum);
                     
                     globalshade = (int32_t)wal->shade;
@@ -2449,7 +2411,10 @@ static void drawalls(int32_t bunch)
                         if ((uint32_t)globalpicnum >= (uint32_t)MAXTILES) globalpicnum = 0;
                         globalxpanning = (int32_t)wal->xpanning;
                         globalypanning = (int32_t)wal->ypanning;
-                        if (picanm[globalpicnum]&192) globalpicnum += animateoffs(globalpicnum);
+                        
+                        if (tiles[globalpicnum].animFlags&192) 
+                            globalpicnum += animateoffs(globalpicnum);
+                        
                         globalshade = (int32_t)wal->shade;
                         globalpal = (int32_t)wal->pal;
                         wallnum = thewall[z];
@@ -2458,10 +2423,15 @@ static void drawalls(int32_t bunch)
                     else{
                         globalorientation = (int32_t)wal->cstat;
                         globalpicnum = wal->picnum;
-                        if ((uint32_t)globalpicnum >= (uint32_t)MAXTILES) globalpicnum = 0;
+                        
+                        if ((uint32_t)globalpicnum >= (uint32_t)MAXTILES) 
+                            globalpicnum = 0;
+                        
                         globalxpanning = (int32_t)wal->xpanning;
                         globalypanning = (int32_t)wal->ypanning;
-                        if (picanm[globalpicnum]&192) globalpicnum += animateoffs(globalpicnum);
+                        
+                        if (tiles[globalpicnum].animFlags&192) 
+                            globalpicnum += animateoffs(globalpicnum);
                         globalshade = (int32_t)wal->shade;
                         globalpal = (int32_t)wal->pal;
                     }
@@ -2470,7 +2440,7 @@ static void drawalls(int32_t bunch)
                         globvis = mulscale4(globvis,(int32_t)((uint8_t )(sec->visibility+16)));
                     globalshiftval = (picsiz[globalpicnum]>>4);
                     
-                    if (pow2long[globalshiftval] != tilesDimension[globalpicnum].height)
+                    if (pow2long[globalshiftval] != tiles[globalpicnum].dim.height)
                         globalshiftval++;
                     
                     globalshiftval = 32-globalshiftval;
@@ -2564,7 +2534,7 @@ static void drawalls(int32_t bunch)
             globalxpanning = (int32_t)wal->xpanning;
             globalypanning = (int32_t)wal->ypanning;
             
-            if (picanm[globalpicnum]&192)
+            if (tiles[globalpicnum].animFlags&192)
                 globalpicnum += animateoffs(globalpicnum);
             
             globalshade = (int32_t)wal->shade;
@@ -2574,7 +2544,7 @@ static void drawalls(int32_t bunch)
             
             globalpal = (int32_t)wal->pal;
             globalshiftval = (picsiz[globalpicnum]>>4);
-            if (pow2long[globalshiftval] != tilesDimension[globalpicnum].height)
+            if (pow2long[globalshiftval] != tiles[globalpicnum].dim.height)
                 globalshiftval++;
             
             globalshiftval = 32-globalshiftval;
@@ -3100,10 +3070,10 @@ static void transmaskvline(int32_t x)
 
     i = lwall[x]+globalxpanning;
     
-    if (i >= tilesDimension[globalpicnum].width)
-        i %= tilesDimension[globalpicnum].width;
+    if (i >= tiles[globalpicnum].dim.width)
+        i %= tiles[globalpicnum].dim.width;
     
-    bufplc = waloff[globalpicnum]+i*tilesDimension[globalpicnum].height;
+    bufplc = tiles[globalpicnum].data+i*tiles[globalpicnum].dim.height;
 
     p = ylookup[y1v]+x+frameoffset;
 
@@ -3149,14 +3119,14 @@ static void transmaskvline2 (int32_t x)
     vplce[1] = globalzd + vince[1]*(y1ve[1]-globalhoriz+1);
 
     i = lwall[x] + globalxpanning;
-    if (i >= tilesDimension[globalpicnum].width)
-        i %= tilesDimension[globalpicnum].width;
-    bufplce[0] = waloff[globalpicnum]+i*tilesDimension[globalpicnum].height;
+    if (i >= tiles[globalpicnum].dim.width)
+        i %= tiles[globalpicnum].dim.width;
+    bufplce[0] = tiles[globalpicnum].data+i*tiles[globalpicnum].dim.height;
 
     i = lwall[x2] + globalxpanning;
-    if (i >= tilesDimension[globalpicnum].width)
-        i %= tilesDimension[globalpicnum].width;
-    bufplce[1] = waloff[globalpicnum]+i*tilesDimension[globalpicnum].height;
+    if (i >= tiles[globalpicnum].dim.width)
+        i %= tiles[globalpicnum].dim.width;
+    bufplce[1] = tiles[globalpicnum].data+i*tiles[globalpicnum].dim.height;
 
     
     y1 = max(y1ve[0],y1ve[1]);
@@ -3200,11 +3170,11 @@ static void transmaskwallscan(int32_t x1, int32_t x2)
     setgotpic(globalpicnum);
     
     //Tile dimensions are invalid
-    if ((tilesDimension[globalpicnum].width <= 0) ||
-        (tilesDimension[globalpicnum].height <= 0))
+    if ((tiles[globalpicnum].dim.width <= 0) ||
+        (tiles[globalpicnum].dim.height <= 0))
         return;
 
-    if (waloff[globalpicnum] == 0) loadtile(globalpicnum);
+    if (tiles[globalpicnum].data == NULL) loadtile(globalpicnum);
 
     x = x1;
     while ((startumost[x+windowx1] > startdmost[x+windowx1]) && (x <= x2)) x++;
@@ -3679,7 +3649,8 @@ void initengine(void)
     for(i=0; i<MAXPALOOKUPS; i++)
         palookup[i] = NULL;
 
-    clearbuf(&waloff[0],MAXTILES,0L);
+    for(i=0 ; i < MAXTILES ; i++)
+        tiles[i].data = NULL;
 
     clearbuf(&show2dsector[0],(int32_t)((MAXSECTORS+3)>>5),0L);
     clearbuf(&show2dsprite[0],(int32_t)((MAXSPRITES+3)>>5),0L);
@@ -3792,16 +3763,16 @@ static void dorotatesprite (int32_t sx, int32_t sy, int32_t z, short a, short pi
 
     short tileWidht, tileHeight;
     
-    tileWidht = tilesDimension[picnum].width;
-    tileHeight = tilesDimension[picnum].height;
+    tileWidht = tiles[picnum].dim.width;
+    tileHeight = tiles[picnum].dim.height;
     
     if (dastat&16) {
         xoff = 0;
         yoff = 0;
     }
     else{
-        xoff = (int32_t)((int8_t )((picanm[picnum]>>8)&255))+(tileWidht>>1);
-        yoff = (int32_t)((int8_t )((picanm[picnum]>>16)&255))+(tileHeight>>1);
+        xoff = (int32_t)((int8_t )((tiles[picnum].animFlags>>8)&255))+(tileWidht>>1);
+        yoff = (int32_t)((int8_t )((tiles[picnum].animFlags>>16)&255))+(tileHeight>>1);
     }
 
     if (dastat&4)
@@ -3901,9 +3872,11 @@ static void dorotatesprite (int32_t sx, int32_t sy, int32_t z, short a, short pi
         nextv = v;
     }
 
-    if (waloff[picnum] == 0) loadtile(picnum);
+    if (tiles[picnum].data == NULL) 
+        loadtile(picnum);
+    
     setgotpic(picnum);
-    bufplc = waloff[picnum];
+    bufplc = tiles[picnum].data;
 
     palookupoffs = palookup[dapalnum] + (getpalookup(0L,(int32_t)dashade)<<8);
 
@@ -4324,179 +4297,6 @@ void nextpage(void)
 }
 
 
-void loadtile(short tilenume)
-{
-    uint8_t  *ptr;
-    int32_t i, tileFilesize;
-
-    if ((uint32_t)tilenume >= (uint32_t)MAXTILES)
-        return;
-    
-    tileFilesize = tilesDimension[tilenume].width * tilesDimension[tilenume].height;
-    
-    if (tileFilesize <= 0)
-        return;
-
-    i = tilefilenum[tilenume];
-    if (i != artfilnum){
-        if (artfil != -1)
-            kclose(artfil);
-        artfilnum = i;
-        artfilplc = 0L;
-
-        artfilename[7] = (i%10)+48;
-        artfilename[6] = ((i/10)%10)+48;
-        artfilename[5] = ((i/100)%10)+48;
-        artfil = TCkopen4load(artfilename,0);
-        faketimerhandler();
-    }
-
-    if (waloff[tilenume] == 0){
-        walock[tilenume] = 199;
-        allocache(&waloff[tilenume],tileFilesize,(uint8_t  *) &walock[tilenume]);
-    }
-
-    if (artfilplc != tilefileoffs[tilenume])
-    {
-        klseek(artfil,tilefileoffs[tilenume]-artfilplc,SEEK_CUR);
-        faketimerhandler();
-    }
-    ptr = waloff[tilenume];
-    kread(artfil,ptr,tileFilesize);
-    faketimerhandler();
-    artfilplc = tilefileoffs[tilenume]+tileFilesize;
-}
-
-
-uint8_t* allocatepermanenttile(short tilenume, int32_t width, int32_t height)
-{
-    int32_t j;
-    uint32_t tileDataSize;
-
-    //Check dimensions are correct.
-    if ((width <= 0) || (height <= 0) || ((uint32_t)tilenume >= (uint32_t)MAXTILES))
-        return(0);
-
-    tileDataSize = width * height;
-
-    walock[tilenume] = 255;
-    allocache(&waloff[tilenume],tileDataSize,(uint8_t  *) &walock[tilenume]);
-
-    tilesDimension[tilenume].width = width;
-    tilesDimension[tilenume].height = height;
-    picanm[tilenume] = 0;
-
-    j = 15;
-    while ((j > 1) && (pow2long[j] > width))
-        j--;
-    picsiz[tilenume] = ((uint8_t )j);
-    
-    j = 15;
-    while ((j > 1) && (pow2long[j] > height))
-        j--;
-    picsiz[tilenume] += ((uint8_t )(j<<4));
-
-    return(waloff[tilenume]);
-}
-
-
-int loadpics(char  *filename, char * gamedir)
-
-{
-    int32_t offscount, localtilestart, localtileend, dasiz;
-    short fil, i, j, k;
-    //uint8_t  fullpathartfilename[512];
-
-    strcpy(artfilename,filename);
-
-    for(i=0; i<MAXTILES; i++)
-    {
-        tilesDimension[i].width = 0;
-        tilesDimension[i].height = 0;
-        picanm[i] = 0L;
-    }
-
-    artsize = 0L;
-
-    numtilefiles = 0;
-    do
-    {
-        k = numtilefiles;
-
-        artfilename[7] = (k%10)+48;
-        artfilename[6] = ((k/10)%10)+48;
-        artfilename[5] = ((k/100)%10)+48;
-
-
-
-        if ((fil = TCkopen4load(artfilename,0)) != -1)
-        {
-            kread32(fil,&artversion);
-            if (artversion != 1) return(-1);
-
-            kread32(fil,&numtiles);
-            kread32(fil,&localtilestart);
-            kread32(fil,&localtileend);
-
-            /*kread(fil,&tilesizx[localtilestart],(localtileend-localtilestart+1)<<1);*/
-            for (i = localtilestart; i <= localtileend; i++)
-                kread16(fil,&tilesDimension[i].width);
-
-            /*kread(fil,&tilesizy[localtilestart],(localtileend-localtilestart+1)<<1);*/
-            for (i = localtilestart; i <= localtileend; i++)
-                kread16(fil,&tilesDimension[i].height);
-
-            /*kread(fil,&picanm[localtilestart],(localtileend-localtilestart+1)<<2);*/
-            for (i = localtilestart; i <= localtileend; i++)
-                kread32(fil,&picanm[i]);
-
-            offscount = 4+4+4+4+((localtileend-localtilestart+1)<<3);
-            for(i=localtilestart; i<=localtileend; i++)
-            {
-                tilefilenum[i] = k;
-                tilefileoffs[i] = offscount;
-                dasiz = tilesDimension[i].width*tilesDimension[i].height;
-                offscount += dasiz;
-                artsize += ((dasiz+15)&0xfffffff0);
-            }
-            kclose(fil);
-
-            numtilefiles++;
-
-        }
-    }
-    while (k != numtilefiles);
-    printf("Art files loaded\n");
-    clearbuf(&gotpic[0],(int32_t)((MAXTILES+31)>>5),0L);
-
-    /* try dpmi_DETERMINEMAXREALALLOC! */
-
-    cachesize = max(artsize,1048576);
-    while ((pic = (uint8_t  *)kkmalloc(cachesize)) == NULL)
-    {
-        cachesize -= 65536L;
-        if (cachesize < 65536) return(-1);
-    }
-    initcache(((int32_t)FP_OFF(pic)+15)&0xfffffff0,(cachesize-((-(int32_t)FP_OFF(pic))&15))&0xfffffff0);
-
-    for(i=0; i<MAXTILES; i++)
-    {
-        j = 15;
-        while ((j > 1) && (pow2long[j] > tilesDimension[i].width)) j--;
-        picsiz[i] = ((uint8_t )j);
-        j = 15;
-        while ((j > 1) && (pow2long[j] > tilesDimension[i].height)) j--;
-        picsiz[i] += ((uint8_t )(j<<4));
-    }
-
-    artfil = -1;
-    artfilnum = -1;
-    artfilplc = 0L;
-
-    return(0);
-}
-
-
 
 int clipinsidebox(int32_t x, int32_t y, short wallnum, int32_t walldist)
 {
@@ -4742,47 +4542,7 @@ int ksqrt(int32_t num)
 }
 
 
-void copytilepiece(int32_t tilenume1, int32_t sx1, int32_t sy1, int32_t xsiz, int32_t ysiz,
-                   int32_t tilenume2, int32_t sx2, int32_t sy2)
-{
-    uint8_t  *ptr1, *ptr2, dat;
-    int32_t xsiz1, ysiz1, xsiz2, ysiz2, i, j, x1, y1, x2, y2;
 
-    xsiz1 = tilesDimension[tilenume1].width;
-    ysiz1 = tilesDimension[tilenume1].height;
-    xsiz2 = tilesDimension[tilenume2].width;
-    ysiz2 = tilesDimension[tilenume2].height;
-    
-    if ((xsiz1 > 0) && (ysiz1 > 0) && (xsiz2 > 0) && (ysiz2 > 0))
-    {
-        if (waloff[tilenume1] == 0) loadtile((short) tilenume1);
-        if (waloff[tilenume2] == 0) loadtile((short) tilenume2);
-
-        x1 = sx1;
-        for(i=0; i<xsiz; i++)
-        {
-            y1 = sy1;
-            for(j=0; j<ysiz; j++)
-            {
-                x2 = sx2+i;
-                y2 = sy2+j;
-                if ((x2 >= 0) && (y2 >= 0) && (x2 < xsiz2) && (y2 < ysiz2))
-                {
-                    ptr1 = (uint8_t  *) (waloff[tilenume1] + x1*ysiz1 + y1);
-                    ptr2 = (uint8_t  *) (waloff[tilenume2] + x2*ysiz2 + y2);
-                    dat = *ptr1;
-                    if (dat != 255)
-                        *ptr2 = *ptr1;
-                }
-
-                y1++;
-                if (y1 >= ysiz1) y1 = 0;
-            }
-            x1++;
-            if (x1 >= xsiz1) x1 = 0;
-        }
-    }
-}
 
 
 static void drawmaskwall(short damaskwallcnt)
@@ -4817,15 +4577,17 @@ static void drawmaskwall(short damaskwallcnt)
         globalpicnum = 0;
     globalxpanning = (int32_t)wal->xpanning;
     globalypanning = (int32_t)wal->ypanning;
-    if (picanm[globalpicnum]&192)
+    
+    if (tiles[globalpicnum].animFlags&192)
         globalpicnum += animateoffs(globalpicnum);
+    
     globalshade = (int32_t)wal->shade;
     globvis = globalvisibility;
     if (sec->visibility != 0)
         globvis = mulscale4(globvis,(int32_t)((uint8_t )(sec->visibility+16)));
     globalpal = (int32_t)wal->pal;
     globalshiftval = (picsiz[globalpicnum]>>4);
-    if (pow2long[globalshiftval] != tilesDimension[globalpicnum].height)
+    if (pow2long[globalshiftval] != tiles[globalpicnum].dim.height)
         globalshiftval++;
     
     globalshiftval = 32-globalshiftval;
@@ -4892,6 +4654,9 @@ static void drawmaskwall(short damaskwallcnt)
         transmaskwallscan(xb1[z],xb2[z]);
     }
 }
+
+
+
 
 
 static void ceilspritehline (int32_t x2, int32_t y)
@@ -4987,10 +4752,10 @@ static void drawsprite (int32_t snum)
 
     if ((cstat&48) != 48)
     {
-        if (picanm[tilenum]&192)
+        if (tiles[tilenum].animFlags&192)
             tilenum += animateoffs(tilenum);
         
-        if ((tilesDimension[tilenum].width <= 0) || (tilesDimension[tilenum].height <= 0) || (spritenum < 0))
+        if ((tiles[tilenum].dim.width <= 0) || (tiles[tilenum].dim.height <= 0) || (spritenum < 0))
             return;
     }
     if ((tspr->xrepeat <= 0) || (tspr->yrepeat <= 0)) return;
@@ -5011,8 +4776,8 @@ static void drawsprite (int32_t snum)
 			settrans(TRANS_NORMAL);
     }
 
-    xoff = (int32_t)((int8_t )((picanm[tilenum]>>8)&255))+((int32_t)tspr->xoffset);
-    yoff = (int32_t)((int8_t )((picanm[tilenum]>>16)&255))+((int32_t)tspr->yoffset);
+    xoff = (int32_t)((int8_t )((tiles[tilenum].animFlags>>8)&255))+((int32_t)tspr->xoffset);
+    yoff = (int32_t)((int8_t )((tiles[tilenum].animFlags>>16)&255))+((int32_t)tspr->yoffset);
 
     if ((cstat&48) == 0)
     {
@@ -5023,13 +4788,13 @@ static void drawsprite (int32_t snum)
 
         xv = mulscale16(((int32_t)tspr->xrepeat)<<16,xyaspect);
 
-        spriteDim.width = tilesDimension[tilenum].width;
-        spriteDim.height = tilesDimension[tilenum].height;
+        spriteDim.width = tiles[tilenum].dim.width;
+        spriteDim.height = tiles[tilenum].dim.height;
         
         xsiz = mulscale30(siz,xv * spriteDim.width);
         ysiz = mulscale14(siz,tspr->yrepeat * spriteDim.height);
 
-        if (((tilesDimension[tilenum].width>>11) >= xsiz) || (spriteDim.height >= (ysiz>>1)))
+        if (((tiles[tilenum].dim.width>>11) >= xsiz) || (spriteDim.height >= (ysiz>>1)))
             return;  /* Watch out for divscale overflow */
 
         x1 = xb-(xsiz>>1);
@@ -5179,7 +4944,7 @@ static void drawsprite (int32_t snum)
         globvis = globalvisibility;
         if (sec->visibility != 0) globvis = mulscale4(globvis,(int32_t)((uint8_t )(sec->visibility+16)));
         globalshiftval = (picsiz[globalpicnum]>>4);
-        if (pow2long[globalshiftval] != tilesDimension[globalpicnum].height)
+        if (pow2long[globalshiftval] != tiles[globalpicnum].dim.height)
             globalshiftval++;
         
         globalshiftval = 32-globalshiftval;
@@ -5204,8 +4969,8 @@ static void drawsprite (int32_t snum)
         if ((cstat&4) > 0) xoff = -xoff;
         if ((cstat&8) > 0) yoff = -yoff;
 
-        spriteDim.width = tilesDimension[tilenum].width;
-        spriteDim.height = tilesDimension[tilenum].height;
+        spriteDim.width = tiles[tilenum].dim.width;
+        spriteDim.height = tiles[tilenum].dim.height;
         
         xv = tspr->xrepeat*sintable[(tspr->ang+2560+1536)&2047];
         yv = tspr->xrepeat*sintable[(tspr->ang+2048+1536)&2047];
@@ -5334,7 +5099,7 @@ static void drawsprite (int32_t snum)
         globvis = globalvisibility;
         if (sec->visibility != 0) globvis = mulscale4(globvis,(int32_t)((uint8_t )(sec->visibility+16)));
         globalshiftval = (picsiz[globalpicnum]>>4);
-        if (pow2long[globalshiftval] != tilesDimension[globalpicnum].height) globalshiftval++;
+        if (pow2long[globalshiftval] != tiles[globalpicnum].dim.height) globalshiftval++;
         globalshiftval = 32-globalshiftval;
         globalyscale = divscale(512,tspr->yrepeat,globalshiftval-19);
         globalzd = (((globalposz-z1)*globalyscale)<<8);
@@ -5480,8 +5245,8 @@ static void drawsprite (int32_t snum)
 
         if ((cstat&4) > 0) xoff = -xoff;
         if ((cstat&8) > 0) yoff = -yoff;
-        spriteDim.width = tilesDimension[tilenum].width;
-        spriteDim.height = tilesDimension[tilenum].height;
+        spriteDim.width = tiles[tilenum].dim.width;
+        spriteDim.height = tiles[tilenum].dim.height;
 
         /* Rotate center point */
         dax = tspr->x-globalposx;
@@ -5790,9 +5555,11 @@ static void drawsprite (int32_t snum)
         if ((uint32_t)globalpicnum >= (uint32_t)MAXTILES)
             globalpicnum = 0;
 
-        if (waloff[globalpicnum] == 0) loadtile(globalpicnum);
+        if (tiles[globalpicnum].data == NULL) 
+            loadtile(globalpicnum);
+        
         setgotpic(globalpicnum);
-        globalbufplc = waloff[globalpicnum];
+        globalbufplc = tiles[globalpicnum].data;
 
         globvis = mulscale16(globalhisibility,viewingrange);
         if (sec->visibility != 0) globvis = mulscale4(globvis,(int32_t)((uint8_t )(sec->visibility+16)));
@@ -5905,9 +5672,9 @@ void drawmasks(void)
                 spritesz[k] = tspriteptr[k]->z;
                 if ((tspriteptr[k]->cstat&48) != 32)
                 {
-                    yoff = (int32_t)((int8_t )((picanm[tspriteptr[k]->picnum]>>16)&255))+((int32_t)tspriteptr[k]->yoffset);
+                    yoff = (int32_t)((int8_t )((tiles[tspriteptr[k]->picnum].animFlags>>16)&255))+((int32_t)tspriteptr[k]->yoffset);
                     spritesz[k] -= ((yoff*tspriteptr[k]->yrepeat)<<2);
-                    yspan = (tilesDimension[tspriteptr[k]->picnum].height*tspriteptr[k]->yrepeat<<2);
+                    yspan = (tiles[tspriteptr[k]->picnum].dim.height*tspriteptr[k]->yrepeat<<2);
                     if (!(tspriteptr[k]->cstat&128))
                         spritesz[k] -= (yspan>>1);
                     if (klabs(spritesz[k]-globalposz) < (yspan>>1))
@@ -6562,16 +6329,21 @@ int hitscan(int32_t xs, int32_t ys, int32_t zs, short sectnum,
 
                 intz = zs+scale(vz,topt,bot);
 
-                i = (tilesDimension[spr->picnum].height*spr->yrepeat<<2);
-                if (cstat&128) z1 += (i>>1);
-                if (picanm[spr->picnum]&0x00ff0000) z1 -= ((int32_t)((int8_t )((picanm[spr->picnum]>>16)&255))*spr->yrepeat<<2);
+                i = (tiles[spr->picnum].dim.height*spr->yrepeat<<2);
+                    
+                if (cstat&128) 
+                    z1 += (i>>1);
+                    
+                if (tiles[spr->picnum].animFlags&0x00ff0000) 
+                    z1 -= ((int32_t)((int8_t )((tiles[spr->picnum].animFlags>>16)&255))*spr->yrepeat<<2);
+                    
                 if ((intz > z1) || (intz < z1-i)) continue;
                 topu = vx*(y1-ys) - vy*(x1-xs);
 
                 offx = scale(vx,topu,bot);
                 offy = scale(vy,topu,bot);
                 dist = offx*offx + offy*offy;
-                i = tilesDimension[spr->picnum].width*spr->xrepeat;
+                i = tiles[spr->picnum].dim.width*spr->xrepeat;
                 i *= i;
                 if (dist > (i>>7)) continue;
                 intx = xs + scale(vx,topt,bot);
@@ -6592,13 +6364,13 @@ int hitscan(int32_t xs, int32_t ys, int32_t zs, short sectnum,
                  * Given: (x1, y1) starts out as the center point
                  */
                 tilenum = spr->picnum;
-                xoff = (int32_t)((int8_t )((picanm[tilenum]>>8)&255))+((int32_t)spr->xoffset);
+                xoff = (int32_t)((int8_t )((tiles[tilenum].animFlags>>8)&255))+((int32_t)spr->xoffset);
                 if ((cstat&4) > 0) xoff = -xoff;
                 k = spr->ang;
                 l = spr->xrepeat;
                 dax = sintable[k&2047]*l;
                 day = sintable[(k+1536)&2047]*l;
-                l = tilesDimension[tilenum].width;
+                l = tiles[tilenum].dim.width;
                 k = (l>>1)+xoff;
                 x1 -= mulscale16(dax,k);
                 x2 = x1+mulscale16(dax,l);
@@ -6612,14 +6384,14 @@ int hitscan(int32_t xs, int32_t ys, int32_t zs, short sectnum,
 
                 if (klabs(intx-xs)+klabs(inty-ys) > klabs((*hitx)-xs)+klabs((*hity)-ys)) continue;
 
-                k = ((tilesDimension[spr->picnum].height*spr->yrepeat)<<2);
+                k = ((tiles[spr->picnum].dim.height*spr->yrepeat)<<2);
                 if (cstat&128)
                     daz = spr->z+(k>>1);
                 else
                     daz = spr->z;
                     
-                if (picanm[spr->picnum]&0x00ff0000)
-                    daz -= ((int32_t)((int8_t  )((picanm[spr->picnum]>>16)&255))*spr->yrepeat<<2);
+                if (tiles[spr->picnum].animFlags&0x00ff0000)
+                    daz -= ((int32_t)((int8_t  )((tiles[spr->picnum].animFlags>>16)&255))*spr->yrepeat<<2);
                     
                 if ((intz < daz) && (intz > daz-k))
                 {
@@ -6644,17 +6416,17 @@ int hitscan(int32_t xs, int32_t ys, int32_t zs, short sectnum,
                 if (klabs(intx-xs)+klabs(inty-ys) > klabs((*hitx)-xs)+klabs((*hity)-ys)) continue;
 
                 tilenum = spr->picnum;
-                xoff = (int32_t)((int8_t )((picanm[tilenum]>>8)&255))+((int32_t)spr->xoffset);
-                yoff = (int32_t)((int8_t )((picanm[tilenum]>>16)&255))+((int32_t)spr->yoffset);
+                xoff = (int32_t)((int8_t )((tiles[tilenum].animFlags>>8)&255))+((int32_t)spr->xoffset);
+                yoff = (int32_t)((int8_t )((tiles[tilenum].animFlags>>16)&255))+((int32_t)spr->yoffset);
                 if ((cstat&4) > 0) xoff = -xoff;
                 if ((cstat&8) > 0) yoff = -yoff;
 
                 ang = spr->ang;
                 cosang = sintable[(ang+512)&2047];
                 sinang = sintable[ang];
-                xspan = tilesDimension[tilenum].width;
+                xspan = tiles[tilenum].dim.width;
                 xrepeat = spr->xrepeat;
-                yspan = tilesDimension[tilenum].height;
+                yspan = tiles[tilenum].dim.height;
                 yrepeat = spr->yrepeat;
 
                 dax = ((xspan>>1)+xoff)*xrepeat;
@@ -6810,9 +6582,11 @@ int neartag(int32_t xs, int32_t ys, int32_t zs, short sectnum, short ange,
                     if (bot != 0)
                     {
                         intz = zs+scale(vz,topt,bot);
-                        i = tilesDimension[spr->picnum].height*spr->yrepeat;
-                        if (spr->cstat&128) z1 += (i<<1);
-                        if (picanm[spr->picnum]&0x00ff0000) z1 -= ((int32_t)((int8_t  )((picanm[spr->picnum]>>16)&255))*spr->yrepeat<<2);
+                        i = tiles[spr->picnum].dim.height*spr->yrepeat;
+                        if (spr->cstat&128) 
+                            z1 += (i<<1);
+                        if (tiles[spr->picnum].animFlags&0x00ff0000) 
+                            z1 -= ((int32_t)((int8_t  )((tiles[spr->picnum].animFlags>>16)&255))*spr->yrepeat<<2);
                         if ((intz <= z1) && (intz >= z1-(i<<2)))
                         {
                             topu = vx*(y1-ys) - vy*(x1-xs);
@@ -6820,7 +6594,7 @@ int neartag(int32_t xs, int32_t ys, int32_t zs, short sectnum, short ange,
                             offx = scale(vx,topu,bot);
                             offy = scale(vy,topu,bot);
                             dist = offx*offx + offy*offy;
-                            i = (tilesDimension[spr->picnum].width*spr->xrepeat);
+                            i = (tiles[spr->picnum].dim.width*spr->xrepeat);
                             i *= i;
                             if (dist <= (i>>7))
                             {
@@ -7124,12 +6898,14 @@ int clipmove (int32_t *x, int32_t *y, int32_t *z, short *sectnum,
             case 0:
                 if ((x1 >= xmin) && (x1 <= xmax) && (y1 >= ymin) && (y1 <= ymax))
                 {
-                    k = ((tilesDimension[spr->picnum].height*spr->yrepeat)<<2);
+                    k = ((tiles[spr->picnum].dim.height*spr->yrepeat)<<2);
                     if (cstat&128) daz = spr->z+(k>>1);
                     else daz = spr->z;
-                    if (picanm[spr->picnum]&0x00ff0000) daz -= ((int32_t)((int8_t )((picanm[spr->picnum]>>16)&255))*spr->yrepeat<<2);
-                    if (((*z) < daz+ceildist) && ((*z) > daz-k-flordist))
-                    {
+                    
+                    if (tiles[spr->picnum].animFlags&0x00ff0000) 
+                        daz -= ((int32_t)((int8_t )((tiles[spr->picnum].animFlags>>16)&255))*spr->yrepeat<<2);
+                    
+                    if (((*z) < daz+ceildist) && ((*z) > daz-k-flordist)){
                         bsz = (spr->clipdist<<2)+walldist;
                         if (gx < 0) bsz = -bsz;
                         addclipline(x1-bsz,y1-bsz,x1-bsz,y1+bsz,(short)j+49152);
@@ -7140,10 +6916,15 @@ int clipmove (int32_t *x, int32_t *y, int32_t *z, short *sectnum,
                 }
                 break;
             case 16:
-                k = ((tilesDimension[spr->picnum].height*spr->yrepeat)<<2);
-                if (cstat&128) daz = spr->z+(k>>1);
-                else daz = spr->z;
-                if (picanm[spr->picnum]&0x00ff0000) daz -= ((int32_t)((int8_t  )((picanm[spr->picnum]>>16)&255))*spr->yrepeat<<2);
+                k = ((tiles[spr->picnum].dim.height*spr->yrepeat)<<2);
+                    
+                if (cstat&128) 
+                    daz = spr->z+(k>>1);
+                else 
+                    daz = spr->z;
+                    
+                if (tiles[spr->picnum].animFlags&0x00ff0000) 
+                    daz -= ((int32_t)((int8_t  )((tiles[spr->picnum].animFlags>>16)&255))*spr->yrepeat<<2);
                 daz2 = daz-k;
                 daz += ceildist;
                 daz2 -= flordist;
@@ -7154,13 +6935,13 @@ int clipmove (int32_t *x, int32_t *y, int32_t *z, short *sectnum,
                      * Given: (x1, y1) starts out as the center point
                      */
                     tilenum = spr->picnum;
-                    xoff = (int32_t)((int8_t  )((picanm[tilenum]>>8)&255))+((int32_t)spr->xoffset);
+                    xoff = (int32_t)((int8_t  )((tiles[tilenum].animFlags>>8)&255))+((int32_t)spr->xoffset);
                     if ((cstat&4) > 0) xoff = -xoff;
                     k = spr->ang;
                     l = spr->xrepeat;
                     dax = sintable[k&2047]*l;
                     day = sintable[(k+1536)&2047]*l;
-                    l = tilesDimension[tilenum].width;
+                    l = tiles[tilenum].dim.width;
                     k = (l>>1)+xoff;
                     x1 -= mulscale16(dax,k);
                     x2 = x1+mulscale16(dax,l);
@@ -7202,17 +6983,17 @@ int clipmove (int32_t *x, int32_t *y, int32_t *z, short *sectnum,
                         if (((*z) > spr->z) == ((cstat&8)==0)) continue;
 
                     tilenum = spr->picnum;
-                    xoff = (int32_t)((int8_t  )((picanm[tilenum]>>8)&255))+((int32_t)spr->xoffset);
-                    yoff = (int32_t)((int8_t  )((picanm[tilenum]>>16)&255))+((int32_t)spr->yoffset);
+                    xoff = (int32_t)((int8_t  )((tiles[tilenum].animFlags>>8)&255))+((int32_t)spr->xoffset);
+                    yoff = (int32_t)((int8_t  )((tiles[tilenum].animFlags>>16)&255))+((int32_t)spr->yoffset);
                     if ((cstat&4) > 0) xoff = -xoff;
                     if ((cstat&8) > 0) yoff = -yoff;
 
                     k = spr->ang;
                     cosang = sintable[(k+512)&2047];
                     sinang = sintable[k];
-                    xspan = tilesDimension[tilenum].width;
+                    xspan = tiles[tilenum].dim.width;
                     xrepeat = spr->xrepeat;
-                    yspan = tilesDimension[tilenum].height;
+                    yspan = tiles[tilenum].dim.height;
                     yrepeat = spr->yrepeat;
 
                     dax = ((xspan>>1)+xoff)*xrepeat;
@@ -7977,23 +7758,23 @@ void getzrange(int32_t x, int32_t y, int32_t z, short sectnum,
                     if ((klabs(x1-x) <= k) && (klabs(y1-y) <= k))
                     {
                         daz = spr->z;
-                        k = ((tilesDimension[spr->picnum].height*spr->yrepeat)<<1);
+                        k = ((tiles[spr->picnum].dim.height*spr->yrepeat)<<1);
                         if (cstat&128)
                             daz += k;
-                        if (picanm[spr->picnum]&0x00ff0000) daz -= ((int32_t)((int8_t  )((picanm[spr->picnum]>>16)&255))*spr->yrepeat<<2);
+                        if (tiles[spr->picnum].animFlags&0x00ff0000) daz -= ((int32_t)((int8_t  )((tiles[spr->picnum].animFlags>>16)&255))*spr->yrepeat<<2);
                         daz2 = daz - (k<<1);
                         clipyou = 1;
                     }
                     break;
                 case 16:
                     tilenum = spr->picnum;
-                    xoff = (int32_t)((int8_t  )((picanm[tilenum]>>8)&255))+((int32_t)spr->xoffset);
+                    xoff = (int32_t)((int8_t  )((tiles[tilenum].animFlags>>8)&255))+((int32_t)spr->xoffset);
                     if ((cstat&4) > 0) xoff = -xoff;
                     k = spr->ang;
                     l = spr->xrepeat;
                     dax = sintable[k&2047]*l;
                     day = sintable[(k+1536)&2047]*l;
-                    l = tilesDimension[tilenum].width;
+                    l = tiles[tilenum].dim.width;
                     k = (l>>1)+xoff;
                     x1 -= mulscale16(dax,k);
                     x2 = x1+mulscale16(dax,l);
@@ -8002,10 +7783,13 @@ void getzrange(int32_t x, int32_t y, int32_t z, short sectnum,
                     if (clipinsideboxline(x,y,x1,y1,x2,y2,walldist+1) != 0)
                     {
                         daz = spr->z;
-                        k = ((tilesDimension[spr->picnum].height*spr->yrepeat)<<1);
+                        k = ((tiles[spr->picnum].dim.height*spr->yrepeat)<<1);
                         if (cstat&128)
                             daz += k;
-                        if (picanm[spr->picnum]&0x00ff0000) daz -= ((int32_t)((int8_t  )((picanm[spr->picnum]>>16)&255))*spr->yrepeat<<2);
+                        
+                        if (tiles[spr->picnum].animFlags&0x00ff0000) 
+                            daz -= ((int32_t)((int8_t  )((tiles[spr->picnum].animFlags>>16)&255))*spr->yrepeat<<2);
+                        
                         daz2 = daz-(k<<1);
                         clipyou = 1;
                     }
@@ -8018,17 +7802,17 @@ void getzrange(int32_t x, int32_t y, int32_t z, short sectnum,
                         if ((z > daz) == ((cstat&8)==0)) continue;
 
                     tilenum = spr->picnum;
-                    xoff = (int32_t)((int8_t  )((picanm[tilenum]>>8)&255))+((int32_t)spr->xoffset);
-                    yoff = (int32_t)((int8_t  )((picanm[tilenum]>>16)&255))+((int32_t)spr->yoffset);
+                    xoff = (int32_t)((int8_t  )((tiles[tilenum].animFlags>>8)&255))+((int32_t)spr->xoffset);
+                    yoff = (int32_t)((int8_t  )((tiles[tilenum].animFlags>>16)&255))+((int32_t)spr->yoffset);
                     if ((cstat&4) > 0) xoff = -xoff;
                     if ((cstat&8) > 0) yoff = -yoff;
 
                     ang = spr->ang;
                     cosang = sintable[(ang+512)&2047];
                     sinang = sintable[ang];
-                    xspan = tilesDimension[tilenum].width;
+                    xspan = tiles[tilenum].dim.width;
                     xrepeat = spr->xrepeat;
-                    yspan = tilesDimension[tilenum].height;
+                    yspan = tiles[tilenum].dim.height;
                     yrepeat = spr->yrepeat;
 
                     dax = ((xspan>>1)+xoff)*xrepeat;
@@ -8174,11 +7958,11 @@ void rotatesprite(int32_t sx, int32_t sy, int32_t z, short a, short picnum,
     if (z <= 16)
         return;
     
-    if (picanm[picnum]&192)
+    if (tiles[picnum].animFlags&192)
         picnum += animateoffs(picnum);
     
     //Does the tile has negative dimensions ?
-    if ((tilesDimension[picnum].width <= 0) || (tilesDimension[picnum].height <= 0))
+    if ((tiles[picnum].dim.width <= 0) || (tiles[picnum].dim.height <= 0))
         return;
 
     if (((dastat&128) == 0) || (numpages < 2) || (beforedrawrooms != 0))
@@ -8217,10 +8001,10 @@ void rotatesprite(int32_t sx, int32_t sy, int32_t z, short a, short picnum,
                 if (per2->sy != per->sy) continue;
                 if (per2->z != per->z) continue;
                 if (per2->a != per->a) continue;
-                if (tilesDimension[per2->picnum].width > tilesDimension[per->picnum].width)
+                if (tiles[per2->picnum].dim.width > tiles[per->picnum].dim.width)
                     continue;
                 
-                if (tilesDimension[per2->picnum].height > tilesDimension[per->picnum].height)
+                if (tiles[per2->picnum].dim.height > tiles[per->picnum].dim.height)
                     continue;
                 if (per2->cx1 < per->cx1) continue;
                 if (per2->cy1 < per->cy1) continue;
@@ -8241,9 +8025,9 @@ void rotatesprite(int32_t sx, int32_t sy, int32_t z, short a, short picnum,
                     if (per2->cy2 > per->cy2) continue;
                     if ((per2->sx>>16) < (per->sx>>16)) continue;
                     if ((per2->sy>>16) < (per->sy>>16)) continue;
-                    if ((per2->sx>>16)+tilesDimension[per2->picnum].width > (per->sx>>16)+tilesDimension[per->picnum].width)
+                    if ((per2->sx>>16)+tiles[per2->picnum].dim.width > (per->sx>>16)+tiles[per->picnum].dim.width)
                         continue;
-                    if ((per2->sy>>16)+tilesDimension[per2->picnum].height > (per->sy>>16)+tilesDimension[per->picnum].height)
+                    if ((per2->sy>>16)+tiles[per2->picnum].dim.height > (per->sy>>16)+tiles[per->picnum].dim.height)
                         continue;
                     per2->pagesleft = 0;
                 }
@@ -8852,12 +8636,17 @@ void drawmapview(int32_t dax, int32_t day, int32_t zoome, short ang)
             if ((uint32_t)globalpicnum >= (uint32_t)MAXTILES) globalpicnum = 0;
             setgotpic(globalpicnum);
             
-            if ((tilesDimension[globalpicnum].width <= 0) ||
-                (tilesDimension[globalpicnum].height <= 0)) continue;
+            if ((tiles[globalpicnum].dim.width <= 0) ||
+                (tiles[globalpicnum].dim.height <= 0)) continue;
             
-            if ((picanm[globalpicnum]&192) != 0) globalpicnum += animateoffs(globalpicnum);
-            if (waloff[globalpicnum] == 0) loadtile(globalpicnum);
-            globalbufplc = waloff[globalpicnum];
+            if ((tiles[globalpicnum].animFlags&192) != 0) 
+                globalpicnum += animateoffs(globalpicnum);
+            
+            if (tiles[globalpicnum].data == NULL) 
+                loadtile(globalpicnum);
+            
+            globalbufplc = tiles[globalpicnum].data;
+            
             globalshade = max(min(sec->floorshade,numpalookups-1),0);
             globvis = globalhisibility;
             if (sec->visibility != 0) globvis = mulscale4(globvis,(int32_t)((uint8_t )(sec->visibility+16)));
@@ -8948,17 +8737,20 @@ void drawmapview(int32_t dax, int32_t day, int32_t zoome, short ang)
             npoints = 0;
 
             tilenum = spr->picnum;
-            xoff = (int32_t)((int8_t  )((picanm[tilenum]>>8)&255))+((int32_t)spr->xoffset);
-            yoff = (int32_t)((int8_t  )((picanm[tilenum]>>16)&255))+((int32_t)spr->yoffset);
-            if ((spr->cstat&4) > 0) xoff = -xoff;
-            if ((spr->cstat&8) > 0) yoff = -yoff;
+            xoff = (int32_t)((int8_t  )((tiles[tilenum].animFlags>>8)&255))+((int32_t)spr->xoffset);
+            yoff = (int32_t)((int8_t  )((tiles[tilenum].animFlags>>16)&255))+((int32_t)spr->yoffset);
+            
+            if ((spr->cstat&4) > 0) 
+                xoff = -xoff;
+            if ((spr->cstat&8) > 0) 
+                yoff = -yoff;
 
             k = spr->ang;
             cosang = sintable[(k+512)&2047];
             sinang = sintable[k];
-            xspan = tilesDimension[tilenum].width;
+            xspan = tiles[tilenum].dim.width;
             xrepeat = spr->xrepeat;
-            yspan = tilesDimension[tilenum].height;
+            yspan = tiles[tilenum].dim.height;
             yrepeat = spr->yrepeat;
 
             ox = ((xspan>>1)+xoff)*xrepeat;
@@ -9028,13 +8820,17 @@ void drawmapview(int32_t dax, int32_t day, int32_t zoome, short ang)
                 globalpicnum = 0;
             setgotpic(globalpicnum);
             
-            if ((tilesDimension[globalpicnum].width <= 0) ||
-                (tilesDimension[globalpicnum].height <= 0))
+            if ((tiles[globalpicnum].dim.width <= 0) ||
+                (tiles[globalpicnum].dim.height <= 0))
                 continue;
             
-            if ((picanm[globalpicnum]&192) != 0) globalpicnum += animateoffs(globalpicnum);
-            if (waloff[globalpicnum] == 0) loadtile(globalpicnum);
-            globalbufplc = waloff[globalpicnum];
+            if ((tiles[globalpicnum].animFlags&192) != 0) 
+                globalpicnum += animateoffs(globalpicnum);
+            
+            if (tiles[globalpicnum].data == NULL) 
+                loadtile(globalpicnum);
+            
+            globalbufplc = tiles[globalpicnum].data;
             if ((sector[spr->sectnum].ceilingstat&1) > 0)
                 globalshade = ((int32_t)sector[spr->sectnum].ceilingshade);
             else
@@ -9152,45 +8948,11 @@ uint8_t  getpixel(int32_t x, int32_t y)
 }
 
 /* MUST USE RESTOREFORDRAWROOMS AFTER DRAWING */
-static int32_t setviewcnt = 0;
-static int32_t bakvidoption[4];
-static int32_t bakframeplace[4], bakxsiz[4], bakysiz[4];
-static int32_t bakwindowx1[4], bakwindowy1[4];
-static int32_t bakwindowx2[4], bakwindowy2[4];
-
-/*
-  
- */
-void setviewtotile(short tilenume, int32_t tileWidth, int32_t tileHeight)
-{
-    int32_t i, j;
-
-    /* DRAWROOMS TO TILE BACKUP&SET CODE */
-    tilesDimension[tilenume].width = tileWidth;
-    tilesDimension[tilenume].height = tileHeight;
-    bakxsiz[setviewcnt] = tileWidth;
-    bakysiz[setviewcnt] = tileHeight;
-    bakvidoption[setviewcnt] = vidoption;
-    vidoption = 2;
-    bakframeplace[setviewcnt] = frameplace;
-    frameplace = waloff[tilenume];
-    bakwindowx1[setviewcnt] = windowx1;
-    bakwindowy1[setviewcnt] = windowy1;
-    bakwindowx2[setviewcnt] = windowx2;
-    bakwindowy2[setviewcnt] = windowy2;
-    copybufbyte(&startumost[windowx1],&bakumost[windowx1],(windowx2-windowx1+1)*sizeof(bakumost[0]));
-    copybufbyte(&startdmost[windowx1],&bakdmost[windowx1],(windowx2-windowx1+1)*sizeof(bakdmost[0]));
-    setview(0,0,tileHeight-1,tileWidth-1);
-    setaspect(65536,65536);
-    j = 0;
-    for(i=0; i<=tileWidth; i++) {
-        ylookup[i] = j;
-        j += tileWidth;
-    }
-    setBytesPerLine(tileHeight);
-    setviewcnt++;
-}
-
+int32_t setviewcnt = 0;
+int32_t bakvidoption[4];
+int32_t bakframeplace[4], bakxsiz[4], bakysiz[4];
+int32_t bakwindowx1[4], bakwindowy1[4];
+int32_t bakwindowx2[4], bakwindowy2[4];
 
 void setviewback(void)
 {
@@ -9215,38 +8977,7 @@ void setviewback(void)
 }
 
 
-void squarerotatetile(short tilenume)
-{
-    int32_t i, j, k;
-    uint8_t  *ptr1, *ptr2;
 
-    dimensions_t tileDim;
-    
-    tileDim.width = tilesDimension[tilenume].width;
-    tileDim.height = tilesDimension[tilenume].height;
-
-    /* supports square tiles only for rotation part */
-    if (tileDim.width == tileDim.height)
-    {
-        k = (tileDim.width<<1);
-        for(i=tileDim.width-1; i>=0; i--)
-        {
-            ptr1 = (uint8_t  *) (waloff[tilenume]+i*(tileDim.width+1));
-            ptr2 = ptr1;
-            if ((i&1) != 0) {
-                ptr1--;
-                ptr2 -= tileDim.width;
-                swapchar(ptr1,ptr2);
-            }
-            for(j=(i>>1)-1; j>=0; j--)
-            {
-                ptr1 -= 2;
-                ptr2 -= k;
-                swapchar2(ptr1,ptr2,tileDim.width);
-            }
-        }
-    }
-}
 
 
 void preparemirror(int32_t dax, int32_t day, int32_t daz,

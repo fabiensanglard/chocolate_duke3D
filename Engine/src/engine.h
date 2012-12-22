@@ -135,6 +135,8 @@ int clipinsidebox(int32_t x, int32_t y, int16_t wallnum, int32_t walldist);
 #include "cache.h"
 #include "filesystem.h"
 #include "display.h"
+#include "fixedPoint_math.h"
+#include "tiles.h"
 
 #ifdef __cplusplus
 }

@@ -178,7 +178,7 @@ struct player_struct;
 #include "names.h"
 
 #include "../../Engine/src/engine.h"
-#include "pragmas.h"
+#include "fixedPoint_math.h"
 
 //#define TICRATE (120)
 //#define TICSPERFRAME (TICRATE/26)

@@ -2297,7 +2297,7 @@ uint8_t  parse(void)
 
             if( ( g_sp->picnum == APLAYER && g_sp->yrepeat < 36 ) ||
                *insptr < g_sp->yrepeat ||
-               ((g_sp->yrepeat*(tilesDimension[g_sp->picnum].height+8))<<2) < (hittype[g_i].floorz - hittype[g_i].ceilingz) )
+               ((g_sp->yrepeat*(tiles[g_sp->picnum].dim.height+8))<<2) < (hittype[g_i].floorz - hittype[g_i].ceilingz) )
             {
                 j = ((*insptr)-g_sp->yrepeat)<<1;
                 if( klabs(j) ) g_sp->yrepeat += ksgn(j);
