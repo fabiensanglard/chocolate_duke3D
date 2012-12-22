@@ -3564,8 +3564,8 @@ static void initfastcolorlookup(int32_t rscale, int32_t gscale, int32_t bscale)
 extern uint8_t lastPalette[768];
 static void loadpalette(void)
 {
-    int32_t i, j, k, dist, fil;
-    uint8_t  *ptr;
+    int32_t k, fil;
+    
 
     if (paletteloaded != 0)
         return;
@@ -8099,7 +8099,7 @@ static int getclosestcol(int32_t r, int32_t g, int32_t b)
 void makepalookup(int32_t palnum, uint8_t  *remapbuf, int8_t r,
                   int8_t g, int8_t b, uint8_t  dastat)
 {
-    int32_t i, j, dist, palscale;
+    int32_t i, j, palscale;
     uint8_t  *ptr, *ptr2;
 
     if (paletteloaded == 0)
@@ -8149,22 +8149,23 @@ void makepalookup(int32_t palnum, uint8_t  *remapbuf, int8_t r,
 
 void setbrightness(uint8_t  dabrightness, uint8_t  *dapal)
 {
-    int32_t i, j, k;
-
+    int32_t i, k;
+    uint8_t newPalette[256*3];
+    
     //Clamp bightness to [0-15]
     curbrightness = min(max(dabrightness,0),15);
 
     k = 0;
    
     for(i=0; i<256; i++){
-        tempbuf[k++] = britable[curbrightness][dapal[i*3+2]];
-        tempbuf[k++] = britable[curbrightness][dapal[i*3+1]];
-        tempbuf[k++] = britable[curbrightness][dapal[i*3+0]];
-        tempbuf[k++] = 0;
+        newPalette[k++] = britable[curbrightness][dapal[i*3+2]];
+        newPalette[k++] = britable[curbrightness][dapal[i*3+1]];
+        newPalette[k++] = britable[curbrightness][dapal[i*3+0]];
+        newPalette[k++] = 0;
     }
     
 
-    VBE_setPalette(tempbuf);
+    VBE_setPalette(newPalette);
 }
 
 //This is only used by drawmapview.

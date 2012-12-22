@@ -1107,13 +1107,14 @@ extern cactype cac[];
 void caches(void)
 {
      short i,k;
-
+    char text[512];
+    
      k = 0;
      for(i=0;i<cacnum;i++)
           if ((*cac[i].lock) >= 200)
           {
-                sprintf(tempbuf,"Locked- %d: Leng:%d, Lock:%d",i,cac[i].leng,*cac[i].lock);
-                printext256(0L,k,31,-1,tempbuf,1); k += 6;
+                sprintf(text,"Locked- %d: Leng:%d, Lock:%d",i,cac[i].leng,*cac[i].lock);
+                printext256(0L,k,31,-1,text,1); k += 6;
           }
 
      k += 6;
@@ -1121,8 +1122,8 @@ void caches(void)
      for(i=1;i<11;i++)
           if (lumplockbyte[i] >= 200)
           {
-                sprintf(tempbuf,"RTS Locked %hd:",i);
-                printext256(0L,k,31,-1,tempbuf,1); k += 6;
+                sprintf(text,"RTS Locked %hd:",i);
+                printext256(0L,k,31,-1,text,1); k += 6;
           }
 
 
@@ -1134,7 +1135,8 @@ void dispVersion(void)
 {	
 	int i;
 	int offx, offy, stepx, stepy;
-
+    char text[512];
+    
 	offx = 21; offy = 30;
 	stepx = 73; stepy = 20;
 
@@ -1147,15 +1149,15 @@ void dispVersion(void)
 	for(i=connecthead;i>=0;i=connectpoint2[i])
 	{	
 		// Disp name
-		sprintf(tempbuf,"%s", ud.user_name[i]);
-		minitext(offx+(stepx*(i&3)),offy+0+((i&4)>>2)*stepy, tempbuf, sprite[ps[i].i].pal, 2+8+16);
+		sprintf(text,"%s", ud.user_name[i]);
+		minitext(offx+(stepx*(i&3)),offy+0+((i&4)>>2)*stepy, text, sprite[ps[i].i].pal, 2+8+16);
 
 		// Disp MAP CRC
 		if(ps[i].fakeplayer)
-			sprintf(tempbuf,"MAP CRC: (bot)");
+			sprintf(text,"MAP CRC: (bot)");
 		else
-			sprintf(tempbuf,"MAP CRC: %X", ud.mapCRC[i]);
-		minitext(offx+(stepx*(i&3)),offy+7+((i&4)>>2)*stepy, tempbuf, COLOR_ON,2+8+16);
+			sprintf(text,"MAP CRC: %X", ud.mapCRC[i]);
+		minitext(offx+(stepx*(i&3)),offy+7+((i&4)>>2)*stepy, text, COLOR_ON,2+8+16);
 
 	}
 }
@@ -1770,7 +1772,8 @@ void displayinventory(struct player_struct *p)
 void displayfragbar(void)
 {
     short i, j;
-
+    char text[512];
+    
     j = 0;
 
     for(i=connecthead;i>=0;i=connectpoint2[i])
@@ -1784,8 +1787,8 @@ void displayfragbar(void)
     for(i=connecthead;i>=0;i=connectpoint2[i])
     {
         minitext(21+(73*(i&3)),2+((i&28)<<1),&ud.user_name[i][0],sprite[ps[i].i].pal,2+8+16+128);
-        sprintf(tempbuf,"%d",ps[i].frag-ps[i].fraggedself);
-        minitext(17+50+(73*(i&3)),2+((i&28)<<1),tempbuf,sprite[ps[i].i].pal,2+8+16+128);
+        sprintf(text,"%d",ps[i].frag-ps[i].fraggedself);
+        minitext(17+50+(73*(i&3)),2+((i&28)<<1),text,sprite[ps[i].i].pal,2+8+16+128);
     }
 }
 
@@ -1822,7 +1825,8 @@ void drawsmallweapon(short weapon, float scale, short x, short y)
 	float t = 60000;
 	int s;
 	float offsetx, offsety;
-
+    
+    
 	switch(weapon)
 	{	
 		case  KNEE_WEAPON			: s=0;					break;
@@ -1892,7 +1896,8 @@ void coolgaugetext(short snum)
     int32_t i, j, o, ss, u;
     uint8_t  permbit;
 	short offx = 3, offy = 3, stepx=60, stepy=6;
-
+    char text[512];
+    
     p = &ps[snum];
 
     if (p->invdisptime > 0) 
@@ -1941,10 +1946,10 @@ void coolgaugetext(short snum)
 		{
 			offx = 5; offy = 160;
 
-			sprintf(tempbuf,"%d", ps[screenpeek].ammo_amount[ps[screenpeek].curr_weapon]);
-			minitext(offx+26,offy+21,tempbuf,COLOR_ON,2+8+16); //minitext: 2 red light, 23 yellow
-			sprintf(tempbuf,"%d", ps[screenpeek].last_extra); 
-			gametext(offx,offy+20,tempbuf,ps[screenpeek].last_extra<=50?15:0,2+8+16); //minitext: 2 red light, 23 yellow
+			sprintf(text,"%d", ps[screenpeek].ammo_amount[ps[screenpeek].curr_weapon]);
+			minitext(offx+26,offy+21,text,COLOR_ON,2+8+16); //minitext: 2 red light, 23 yellow
+			sprintf(text,"%d", ps[screenpeek].last_extra); 
+			gametext(offx,offy+20,text,ps[screenpeek].last_extra<=50?15:0,2+8+16); //minitext: 2 red light, 23 yellow
 			rotatesprite((offx+0*10)<<16,(offy+28)<<16,20000,0,SHIELD,ps[screenpeek].shield_amount?25:100,0,2+8+16,0,0,xdim-1,ydim-1);
 			rotatesprite((offx+0*10)<<16,(offy+28)<<16,ksqrt(ps[screenpeek].shield_amount)*20000/10,0,SHIELD,0,0,2+8+16,0,0,xdim-1,ydim-1);
 			rotatesprite((offx+1*10)<<16,(offy+28)<<16,35000,0,JETPACK_ICON,ps[screenpeek].jetpack_amount?25:100,0,2+8+16,0,0,xdim-1,ydim-1);
@@ -2171,17 +2176,18 @@ void tics(short offx, short offy, short color)
 	int32_t currentFps;
 	static int32_t fpsAvg = 0, savedFps = 0;
 	static boolean toggle = true;
-
+    char text[512];
+    
 	strcpy(mapname,boardfilename);
 	for(i=0;i<512;i++)
 		if(mapname[i]=='.')
 			mapname[i]=0;
 
 	if( mapname[0] != 0 && ud.m_level_number == 7 && ud.m_volume_number == 0 )
-		sprintf(tempbuf, "%s", mapname);
+		sprintf(text, "%s", mapname);
     else
 		//sprintf(tempbuf, "%s", level_names[ud.volume_number*11 + ud.level_number]);
-		sprintf(tempbuf, "e%dl%d", ud.volume_number+1, ud.level_number+1);
+		sprintf(text, "e%dl%d", ud.volume_number+1, ud.level_number+1);
 		
 
     i = totalclock;
@@ -2216,14 +2222,15 @@ void tics(short offx, short offy, short color)
 		savedFps = fpsAvg;
 
 	sprintf(fps," %d", savedFps);
-	strcat(tempbuf, fps);
+	strcat(text, fps);
 
-	minitext(offx,offy,tempbuf,color,2+8+16+128);
+	minitext(offx,offy,text,color,2+8+16+128);
 }
 
 void coords(short snum)
 {
     short x = 200, y = 0;
+    char text[512];
     // x = 250 is too much on the right and
     // will make the text going out of the screen 
     // if screen <= (320x200)
@@ -2238,28 +2245,28 @@ void coords(short snum)
             y = 16;
     }
 
-    sprintf(tempbuf,"X= %d",ps[snum].posx);
-    printext256(x,y,31,-1,tempbuf,1);
-    sprintf(tempbuf,"Y= %d",ps[snum].posy);
-    printext256(x,y+7L,31,-1,tempbuf,1);
-    sprintf(tempbuf,"Z= %d",ps[snum].posz);
-    printext256(x,y+14L,31,-1,tempbuf,1);
-    sprintf(tempbuf,"A= %d",ps[snum].ang);
-    printext256(x,y+21L,31,-1,tempbuf,1);
-    sprintf(tempbuf,"ZV= %d",ps[snum].poszv);
-    printext256(x,y+28L,31,-1,tempbuf,1);
-    sprintf(tempbuf,"OG= %d",ps[snum].on_ground);
-    printext256(x,y+35L,31,-1,tempbuf,1);
-    sprintf(tempbuf,"AM= %d",ps[snum].ammo_amount[GROW_WEAPON]);
-    printext256(x,y+43L,31,-1,tempbuf,1);
-    sprintf(tempbuf,"LFW= %d",ps[snum].last_full_weapon);
-    printext256(x,y+50L,31,-1,tempbuf,1);
-    sprintf(tempbuf,"SECTL= %d",sector[ps[snum].cursectnum].lotag);
-    printext256(x,y+57L,31,-1,tempbuf,1);
-    sprintf(tempbuf,"SEED= %d",randomseed);
-    printext256(x,y+64L,31,-1,tempbuf,1);
-    sprintf(tempbuf,"THOLD= %d",ps[snum].transporter_hold);
-    printext256(x,y+64L+7,31,-1,tempbuf,1);
+    sprintf(text,"X= %d",ps[snum].posx);
+    printext256(x,y,31,-1,text,1);
+    sprintf(text,"Y= %d",ps[snum].posy);
+    printext256(x,y+7L,31,-1,text,1);
+    sprintf(text,"Z= %d",ps[snum].posz);
+    printext256(x,y+14L,31,-1,text,1);
+    sprintf(text,"A= %d",ps[snum].ang);
+    printext256(x,y+21L,31,-1,text,1);
+    sprintf(text,"ZV= %d",ps[snum].poszv);
+    printext256(x,y+28L,31,-1,text,1);
+    sprintf(text,"OG= %d",ps[snum].on_ground);
+    printext256(x,y+35L,31,-1,text,1);
+    sprintf(text,"AM= %d",ps[snum].ammo_amount[GROW_WEAPON]);
+    printext256(x,y+43L,31,-1,text,1);
+    sprintf(text,"LFW= %d",ps[snum].last_full_weapon);
+    printext256(x,y+50L,31,-1,text,1);
+    sprintf(text,"SECTL= %d",sector[ps[snum].cursectnum].lotag);
+    printext256(x,y+57L,31,-1,text,1);
+    sprintf(text,"SEED= %d",randomseed);
+    printext256(x,y+64L,31,-1,text,1);
+    sprintf(text,"THOLD= %d",ps[snum].transporter_hold);
+    printext256(x,y+64L+7,31,-1,text,1);
 }
 
 void operatefta(void)
@@ -3590,6 +3597,7 @@ short spawn( short j, short pn )
     short i, s, startwall, endwall, sect, clostest;
     int32_t x, y, d;
     spritetype *sp;
+    char text[512];
 
     if(j >= 0)
     {
@@ -5167,8 +5175,8 @@ short spawn( short j, short pn )
                             }
                             if(j == MAXSPRITES)
                             {
-                                sprintf(tempbuf,"Found lonely Sector Effector (lotag 0) at (%d,%d)\n",sp->x,sp->y);
-                                gameexit(tempbuf);
+                                sprintf(text,"Found lonely Sector Effector (lotag 0) at (%d,%d)\n",sp->x,sp->y);
+                                gameexit(text);
                             }
                             sp->owner = j;
                         }
@@ -5184,8 +5192,8 @@ short spawn( short j, short pn )
                             tempwallptr++;
                             if(tempwallptr > 2047)
                             {
-                                sprintf(tempbuf,"Too many moving sectors at (%d,%d).\n",wall[s].x,wall[s].y);
-                                gameexit(tempbuf);
+                                sprintf(text,"Too many moving sectors at (%d,%d).\n",wall[s].x,wall[s].y);
+                                gameexit(text);
                             }
                         }
                         if( sp->lotag == 30 || sp->lotag == 6 || sp->lotag == 14 || sp->lotag == 5 )
@@ -5216,8 +5224,8 @@ short spawn( short j, short pn )
 
                             if(j == 0)
                             {
-                                sprintf(tempbuf,"Subway found no zero'd sectors with locators\nat (%d,%d).\n",sp->x,sp->y);
-                                gameexit(tempbuf);
+                                sprintf(text,"Subway found no zero'd sectors with locators\nat (%d,%d).\n",sp->x,sp->y);
+                                gameexit(text);
                             }
 
                             sp->owner = -1;
@@ -7515,6 +7523,9 @@ void Logo(void)
 	    nextpage(); 
 		for(i=63;i>0;i-=7) 
 			palto(0,0,0,i);
+        
+        
+        
 	    totalclock = 0;
 	    while( totalclock < (120*7) && !KB_KeyWaiting() )
 	        getpackets();
@@ -9701,6 +9712,7 @@ void dobonus(uint8_t  bonusonly)
     short t, tinc,gfx_offset;
     int32_t i, y,xfragtotal,yfragtotal;
     short bonuscnt;
+    char text[512];
 
     int32_t breathe[] =
     {
@@ -9970,42 +9982,42 @@ void dobonus(uint8_t  bonusonly)
         minitext(23,80,"   NAME                                           KILLS",8,2+8+16+128);
         for(i=0;i<playerswhenstarted;i++)
         {
-            sprintf(tempbuf,"%-4d",i+1);
-            minitext(92+(i*23),80,tempbuf,3,2+8+16+128);
+            sprintf(text,"%-4d",i+1);
+            minitext(92+(i*23),80,text,3,2+8+16+128);
         }
 
         for(i=0;i<playerswhenstarted;i++)
         {
             xfragtotal = 0;
-            sprintf(tempbuf,"%d",i+1);
+            sprintf(text,"%d",i+1);
 
-            minitext(30,90+t,tempbuf,0,2+8+16+128);
+            minitext(30,90+t,text,0,2+8+16+128);
             minitext(38,90+t,ud.user_name[i],ps[i].palookup,2+8+16+128);
 
             for(y=0;y<playerswhenstarted;y++)
             {
                 if(i == y)
                 {
-                    sprintf(tempbuf,"%-4d",ps[y].fraggedself);
-                    minitext(92+(y*23),90+t,tempbuf,2,2+8+16+128);
+                    sprintf(text,"%-4d",ps[y].fraggedself);
+                    minitext(92+(y*23),90+t,text,2,2+8+16+128);
                     xfragtotal -= ps[y].fraggedself;
                 }
                 else
                 {
-                    sprintf(tempbuf,"%-4d",frags[i][y]);
-                    minitext(92+(y*23),90+t,tempbuf,0,2+8+16+128);
+                    sprintf(text,"%-4d",frags[i][y]);
+                    minitext(92+(y*23),90+t,text,0,2+8+16+128);
                     xfragtotal += frags[i][y];
                 }
 
                 if(myconnectindex == connecthead)
                 {
-                    sprintf(tempbuf,"stats %d killed %d %d\n",i+1,y+1,frags[i][y]);
-                    sendscore(tempbuf);
+                    sprintf(text,"stats %d killed %d %d\n",i+1,y+1,frags[i][y]);
+                    sendscore(text);
                 }
             }
 
-            sprintf(tempbuf,"%-4d",xfragtotal);
-            minitext(101+(8*23),90+t,tempbuf,2,2+8+16+128);
+            sprintf(text,"%-4d",xfragtotal);
+            minitext(101+(8*23),90+t,text,2,2+8+16+128);
 
             t += 7;
         }
@@ -10019,8 +10031,8 @@ void dobonus(uint8_t  bonusonly)
                     yfragtotal += ps[i].fraggedself;
                 yfragtotal += frags[i][y];
             }
-            sprintf(tempbuf,"%-4d",yfragtotal);
-            minitext(92+(y*23),96+(8*7),tempbuf,2,2+8+16+128);
+            sprintf(text,"%-4d",yfragtotal);
+            minitext(92+(y*23),96+(8*7),text,2,2+8+16+128);
         }
 
         minitext(45,96+(8*7),"DEATHS",8,2+8+16+128);
@@ -10149,20 +10161,20 @@ void dobonus(uint8_t  bonusonly)
                         bonuscnt++;
                         sound(PIPEBOMB_EXPLODE);
                     }
-                    sprintf(tempbuf,"%02d:%02d",
+                    sprintf(text,"%02d:%02d",
                         (ps[myconnectindex].player_par/(26*60))%60,
                         (ps[myconnectindex].player_par/26)%60);
-                    gametext((320>>2)+71,60+9,tempbuf,0,2+8+16);
+                    gametext((320>>2)+71,60+9,text,0,2+8+16);
 
-                    sprintf(tempbuf,"%02d:%02d",
+                    sprintf(text,"%02d:%02d",
                         (partime[ud.volume_number*11+ud.last_level-1]/(26*60))%60,
                         (partime[ud.volume_number*11+ud.last_level-1]/26)%60);
-                    gametext((320>>2)+71,69+9,tempbuf,0,2+8+16);
+                    gametext((320>>2)+71,69+9,text,0,2+8+16);
 
-                    sprintf(tempbuf,"%02d:%02d",
+                    sprintf(text,"%02d:%02d",
                         (designertime[ud.volume_number*11+ud.last_level-1]/(26*60))%60,
                         (designertime[ud.volume_number*11+ud.last_level-1]/26)%60);
-                    gametext((320>>2)+71,78+9,tempbuf,0,2+8+16);
+                    gametext((320>>2)+71,78+9,text,0,2+8+16);
 
                 }
             }
@@ -10184,19 +10196,19 @@ void dobonus(uint8_t  bonusonly)
                         bonuscnt++;
                         sound(PIPEBOMB_EXPLODE);
                     }
-                    sprintf(tempbuf,"%-3hhd",ps[myconnectindex].actors_killed);
-                    gametext((320>>2)+70,93+9,tempbuf,0,2+8+16);
+                    sprintf(text,"%-3hhd",ps[myconnectindex].actors_killed);
+                    gametext((320>>2)+70,93+9,text,0,2+8+16);
                     if(ud.player_skill > 3 )
                     {
-                        sprintf(tempbuf,"N/A");
-                        gametext((320>>2)+70,99+4+9,tempbuf,0,2+8+16);
+                        sprintf(text,"N/A");
+                        gametext((320>>2)+70,99+4+9,text,0,2+8+16);
                     }
                     else
                     {
                         if( (ps[myconnectindex].max_actors_killed-ps[myconnectindex].actors_killed) < 0 )
-                            sprintf(tempbuf,"%-3d",0);
-                        else sprintf(tempbuf,"%-3d",ps[myconnectindex].max_actors_killed-ps[myconnectindex].actors_killed);
-                        gametext((320>>2)+70,99+4+9,tempbuf,0,2+8+16);
+                            sprintf(text,"%-3d",0);
+                        else sprintf(text,"%-3d",ps[myconnectindex].max_actors_killed-ps[myconnectindex].actors_killed);
+                        gametext((320>>2)+70,99+4+9,text,0,2+8+16);
                     }
                 }
             }
@@ -10213,12 +10225,12 @@ void dobonus(uint8_t  bonusonly)
                         bonuscnt++;
                         sound(PIPEBOMB_EXPLODE);
                     }
-                    sprintf(tempbuf,"%-3d",ps[myconnectindex].secret_rooms);
-                    gametext((320>>2)+70,120+9,tempbuf,0,2+8+16);
+                    sprintf(text,"%-3d",ps[myconnectindex].secret_rooms);
+                    gametext((320>>2)+70,120+9,text,0,2+8+16);
                     if( ps[myconnectindex].secret_rooms > 0 )
-                        sprintf(tempbuf,"%-3d",(100*ps[myconnectindex].secret_rooms/ps[myconnectindex].max_secret_rooms));
-                    sprintf(tempbuf,"%-3d",ps[myconnectindex].max_secret_rooms-ps[myconnectindex].secret_rooms);
-                    gametext((320>>2)+70,130+9,tempbuf,0,2+8+16);
+                        sprintf(text,"%-3d",(100*ps[myconnectindex].secret_rooms/ps[myconnectindex].max_secret_rooms));
+                    sprintf(text,"%-3d",ps[myconnectindex].max_secret_rooms-ps[myconnectindex].secret_rooms);
+                    gametext((320>>2)+70,130+9,text,0,2+8+16);
                 }
             }
 
@@ -10558,7 +10570,7 @@ void takescreenshot(void)
 	char  score[20];
 	time_t time4file;
 	struct tm *tmHMS;
-    
+    char text[512];
 
 	// xduke: Build a nice name w/ date and players name if in multi mode.
 	time(&time4file);
@@ -10576,29 +10588,29 @@ void takescreenshot(void)
 
 	if(ud.multimode>1) // if more than 1 player, we add name. Then add score if DM
 	{
-        tempbuf[0] = '\0';
-		strcat((char *)tempbuf, " [");
+        text[0] = '\0';
+		strcat((char *)text, " [");
 		for(i=connecthead;i>=0;i=connectpoint2[i])
 		{
 			if(!ud.user_name[i][0])
-				strcat(tempbuf, "NoName");
+				strcat(text, "NoName");
 			else
-				strcat(tempbuf, &ud.user_name[i][0]);
+				strcat(text, &ud.user_name[i][0]);
 
 			if(ud.m_coop==0 || ud.m_coop==2)  // if DM or DM No spawn. Add Score as well
 			{
-				strcat(tempbuf, "(");
+				strcat(text, "(");
                 snprintf(score, sizeof(score), "%d",ps[i].frag-ps[i].fraggedself);
-				strcat(tempbuf, score);
-				strcat(tempbuf, ") vs ");
+				strcat(text, score);
+				strcat(text, ") vs ");
 			}
 			else
-				strcat(tempbuf, " vs ");
+				strcat(text, " vs ");
 		}	
-		tempbuf[strlen(tempbuf)-4]=0; // remove last vs
-		strcat(tempbuf, "]");
+		tempbuf[strlen(text)-4]=0; // remove last vs
+		strcat(text, "]");
 	}
-	strcat(tempbuf, ".bmp");
+	strcat(text, ".bmp");
 
 
 	// If this is a TC save it to the TC's directory

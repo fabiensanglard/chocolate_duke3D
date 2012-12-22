@@ -1326,9 +1326,9 @@ static __inline void cull_large_vesa_modes(void)
     int32_t max_w;
     int32_t max_h;
     int i;
-
+ 
     get_max_screen_res(&max_w, &max_h);
-    printf("Setting resolution ceiling to (%ldx%ld).\n", max_w, max_h);
+    printf("Setting resolution ceiling to (%dx%d).\n", max_w, max_h);
 
     for (i = 0; i < validmodecnt; i++)
     {

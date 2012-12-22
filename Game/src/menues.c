@@ -150,7 +150,7 @@ void cmenu(short cm)
 }
 
 
-void savetemp(char  *fn,int32_t daptr,int32_t dasiz)
+void savetemp(char  *fn,uint8_t* daptr,int32_t dasiz)
 {
     int fp;
 
@@ -325,7 +325,7 @@ int loadplayer(int8_t spot)
      tiles[MAXTILES-3].dim.width = 100;
     tiles[MAXTILES-3].dim.height = 160;
     
-     kdfread((uint8_t  *)tiles[MAXTILES-3].data,160,100,fil);
+     kdfread(tiles[MAXTILES-3].data,160,100,fil);
 
          kdfread(&numwalls,2,1,fil);
      kdfread(&wall[0],sizeof(walltype),MAXWALLS,fil);
@@ -1430,7 +1430,8 @@ void menus(void)
 	static int lastkeysetup = 0;
 	static int waiting4key = false;
 	static int current_resolution = 0;
-
+    char text[512];
+    
     getpackets();
 
     if(((ControllerType == controltype_keyboardandmouse)||
@@ -1512,47 +1513,15 @@ void menus(void)
 
             if( x >= -1 ) cmenu(100);
             break;
-// CTW - REMOVED
-/*      case 20001:
-            x = probe(188,80+32+32,0,0);
-            gametext(160,86-8,"You must be in Windows 95 to",0,2+8+16);
-            gametext(160,86,"play on TEN",0,2+8+16);
-            gametext(160,86+32,"PRESS ANY KEY...",0,2+8+16);
-            if(x >= -1) cmenu(0);
-            break;
 
-        case 20002:
-            x = probe(188,80+32+32+32,0,0);
-            gametext(160,86-8,"MISSING FILE: TENGAME.INI.  PLEASE",0,2+8+16);
-            gametext(160,86,"CONNECT TO TEN BY LAUNCHING THE",0,2+8+16);
-            gametext(160,86+8,"CONNECT TO TEN SHORTCUT OR CONTACT",0,2+8+16);
-            gametext(160,86+8+8,"CUSTOMER SUPPORT AT 1-800-8040-TEN.",0,2+8+16);
-            gametext(160,86+8+8+32,"PRESS ANY KEY...",0,2+8+16);
-            if(x >= -1) cmenu(0);
-            break;
-        case 20003:
-            x = probe(188,80+32+32,0,0);
-            gametext(160,86-8,"BAD TEN INSTALL:  PLEASE RE-INSTALL",0,2+8+16);
-            gametext(160,86,"BAD TEN INSTALL:  PLEASE RE-INSTALL TEN",0,2+8+16);
-            gametext(160,86+32,"PRESS ANY KEY...",0,2+8+16);
-            if(x >= -1) cmenu(0);
-            break;
-        case 20005:
-            x = probe(188,80+32+32,0,0);
-            gametext(160,86-8,"GET THE LATEST TEN SOFTWARE AT",0,2+8+16);
-            gametext(160,86,"HTTP://WWW.TEN.NET",0,2+8+16);
-            gametext(160,86+32,"PRESS ANY KEY...",0,2+8+16);
-            if(x >= -1) cmenu(0);
-            break;*/
-// CTW END - REMOVED
 
         case 15001:
         case 15000:
 
             gametext(160,90,"LOAD last game:",0,2+8+16);
 
-            sprintf(tempbuf,"\"%s\"",ud.savegame[lastsavedpos]);
-            gametext(160,99,tempbuf,0,2+8+16);
+            sprintf(text,"\"%s\"",ud.savegame[lastsavedpos]);
+            gametext(160,99,text,0,2+8+16);
 
             gametext(160,99+9,"(Y/N)",0,2+8+16);
 
@@ -1860,11 +1829,11 @@ void menus(void)
             menutext(160,24,0,0,"SAVE GAME");
 
             rotatesprite(101<<16,97<<16,65536L,512,MAXTILES-3,-32,0,4+10+64,0,0,xdim-1,ydim-1);
-            sprintf(tempbuf,"PLAYERS: %-2d                      ",ud.multimode);
-            gametext(160,158,tempbuf,0,2+8+16);
+            sprintf(text,"PLAYERS: %-2d                      ",ud.multimode);
+            gametext(160,158,text,0,2+8+16);
 
-            sprintf(tempbuf,"EPISODE: %-2d / LEVEL: %-2d / SKILL: %-2d",1+ud.volume_number,1+ud.level_number,ud.player_skill);
-            gametext(160,170,tempbuf,0,2+8+16);
+            sprintf(text,"EPISODE: %-2d / LEVEL: %-2d / SKILL: %-2d",1+ud.volume_number,1+ud.level_number,ud.player_skill);
+            gametext(160,170,text,0,2+8+16);
 
             dispnames();
 
@@ -3031,30 +3000,30 @@ else
 			// display the button list
 			for(i=0; i<MAXMOUSEBUTTONS; i++)
 			{
-				sprintf(tempbuf, "#%d",i);
+				sprintf(text, "#%d",i);
 				switch(i)
 				{
 					case 0:
-						strcat(tempbuf, " Left");
+						strcat(text, " Left");
 						break;
 					case 1:
-						strcat(tempbuf, " Right");
+						strcat(text, " Right");
 						break;
 					case 2:
-						strcat(tempbuf, " Middle");
+						strcat(text, " Middle");
 						break;
 					case 3:
-						strcat(tempbuf, " Wheel up");
+						strcat(text, " Wheel up");
 						break;
 					case 4:
-						strcat(tempbuf, " Wheel down");
+						strcat(text, " Wheel down");
 						break;
 					default:
-						strcat(tempbuf, " (Extra)");
+						strcat(text, " (Extra)");
 						break;
 				}
 				
-				gametext(c,47+i*8,tempbuf,0,2+8+16);
+				gametext(c,47+i*8,text,0,2+8+16);
 				gametext(c+121,47+i*8,(MouseMapping[i]!=-1)?CONFIG_FunctionNumToName(MouseMapping[i]):"...",0,2+8+16);
 			}
 
@@ -3131,22 +3100,22 @@ else
 				switch(i)
 				{
 					case 0:
-						strcat(tempbuf, "X left");
+						strcat(text, "X left");
 						break;
 					case 1:
-						strcat(tempbuf, "X right");
+						strcat(text, "X right");
 						break;
 					case 2:
-						strcat(tempbuf, "Y up");
+						strcat(text, "Y up");
 						break;
 					case 3:
-						strcat(tempbuf, "Y down");
+						strcat(text, "Y down");
 						break;
 					default:
 						break;
 				}
 				
-				gametext(c,47+i*8,tempbuf,0,2+8+16);
+				gametext(c,47+i*8,text,0,2+8+16);
 				gametext(c+121,47+i*8,(MouseDigitalAxeMapping[i>>1][i&1]!=-1)?CONFIG_FunctionNumToName(MouseDigitalAxeMapping[i>>1][i&1]):"...",0,2+8+16);
 			}
 
@@ -3233,11 +3202,11 @@ else
 			}
 				
 			menutext(c,43,0,0,"RESOLUTION");
-			sprintf(tempbuf, "%d x %d", validmodexdim[current_resolution],validmodeydim[current_resolution]);
+			sprintf(text, "%d x %d", validmodexdim[current_resolution],validmodeydim[current_resolution]);
 			if (lastkeysetup == 0 || (totalclock%64 < 32)) // blink color after change
-				menutext(c+150,43,0,0,tempbuf);
+				menutext(c+150,43,0,0,text);
 			else
-				menutext(c+150,43,0,1,tempbuf);
+				menutext(c+150,43,0,1,text);
 
 			menutext(c,43+16*1,SHX(-3),PHX(-3),"FULLSCREEN");
 			menutext(c+160+40,43+16*1,0,0,BFullScreen?"ON":"OFF");
@@ -3314,10 +3283,10 @@ else
 
             if(current_menu >= 360 && current_menu <= 369 )
             {
-                sprintf(tempbuf,"PLAYERS: %-2d                      ",ud.multimode);
-                gametext(160,158,tempbuf,0,2+8+16);
-                sprintf(tempbuf,"EPISODE: %-2d / LEVEL: %-2d / SKILL: %-2d",1+ud.volume_number,1+ud.level_number,ud.player_skill);
-                gametext(160,170,tempbuf,0,2+8+16);
+                sprintf(text,"PLAYERS: %-2d                      ",ud.multimode);
+                gametext(160,158,text,0,2+8+16);
+                sprintf(text,"EPISODE: %-2d / LEVEL: %-2d / SKILL: %-2d",1+ud.volume_number,1+ud.level_number,ud.player_skill);
+                gametext(160,170,text,0,2+8+16);
 
                 x = strget((320>>1),184,&ud.savegame[current_menu-360][0],19, 999 );
 
@@ -3379,10 +3348,10 @@ else
                   }
 
                   rotatesprite(101<<16,97<<16,65536L,512,MAXTILES-3,-32,0,4+10+64,0,0,xdim-1,ydim-1);
-                  sprintf(tempbuf,"PLAYERS: %-2d                      ",numplr);
-                  gametext(160,158,tempbuf,0,2+8+16);
-                  sprintf(tempbuf,"EPISODE: %-2d / LEVEL: %-2d / SKILL: %-2d",1+volnum,1+levnum,plrskl);
-                  gametext(160,170,tempbuf,0,2+8+16);
+                  sprintf(text,"PLAYERS: %-2d                      ",numplr);
+                  gametext(160,158,text,0,2+8+16);
+                  sprintf(text,"EPISODE: %-2d / LEVEL: %-2d / SKILL: %-2d",1+volnum,1+levnum,plrskl);
+                  gametext(160,170,text,0,2+8+16);
               }
               else menutext(69,70,0,0,"EMPTY");
           }
@@ -3396,10 +3365,10 @@ else
                   rotatesprite(101<<16,97<<16,65536L,512,MAXTILES-3,-32,0,4+10+64,0,0,xdim-1,ydim-1);
               }
               else menutext(69,70,0,0,"EMPTY");
-              sprintf(tempbuf,"PLAYERS: %-2d                      ",ud.multimode);
-              gametext(160,158,tempbuf,0,2+8+16);
-              sprintf(tempbuf,"EPISODE: %-2d / LEVEL: %-2d / SKILL: %-2d",1+ud.volume_number,1+ud.level_number,ud.player_skill);
-              gametext(160,170,tempbuf,0,2+8+16);
+              sprintf(text,"PLAYERS: %-2d                      ",ud.multimode);
+              gametext(160,158,text,0,2+8+16);
+              sprintf(text,"EPISODE: %-2d / LEVEL: %-2d / SKILL: %-2d",1+ud.volume_number,1+ud.level_number,ud.player_skill);
+              gametext(160,170,text,0,2+8+16);
           }
 
             switch( x )
@@ -4130,21 +4099,21 @@ if(!VOLUMEONE)
             menutext(c,57-9,SHX(-2),PHX(-2),"GAME TYPE");
 
 if (VOLUMEONE)
-{            sprintf(tempbuf,"EPISODE %d",ud.m_volume_number+1);
-            menutext(c,57+16-9,SHX(-3),1,tempbuf);
+{            sprintf(text,"EPISODE %d",ud.m_volume_number+1);
+            menutext(c,57+16-9,SHX(-3),1,text);
 } 
 else 
 {
-            sprintf(tempbuf,"EPISODE %d",ud.m_volume_number+1);
-            menutext(c,57+16-9,SHX(-3),PHX(-3),tempbuf);
+            sprintf(text,"EPISODE %d",ud.m_volume_number+1);
+            menutext(c,57+16-9,SHX(-3),PHX(-3),text);
 }
 
 #ifndef ONELEVELDEMO
-            sprintf(tempbuf,"LEVEL %d",ud.m_level_number+1);
-            menutext(c,57+16+16-9,SHX(-4),PHX(-4),tempbuf);
+            sprintf(text,"LEVEL %d",ud.m_level_number+1);
+            menutext(c,57+16+16-9,SHX(-4),PHX(-4),text);
 #else
-            sprintf(tempbuf,"LEVEL %d",ud.m_level_number+1);
-            menutext(c,57+16+16-9,SHX(-4),1,tempbuf);
+            sprintf(text,"LEVEL %d",ud.m_level_number+1);
+            menutext(c,57+16+16-9,SHX(-4),1,text);
 #endif
             menutext(c,57+16+16+16-9,SHX(-5),PHX(-5),"MONSTERS");
 
@@ -4656,9 +4625,9 @@ void playanm(char  *fn,uint8_t  t)
     tiles[MAXTILES-3-t].lock = 219+t;
 
     if(anim == 0 || lastanimhack != (MAXTILES-3-t))
-        allocache((int32_t *)&anim,length+sizeof(anim_t),&tiles[MAXTILES-3-t].lock);
+        allocache((uint8_t**)&anim,length+sizeof(anim_t),&tiles[MAXTILES-3-t].lock);
 
-    animbuf = (uint8_t  *)(FP_OFF(anim)+sizeof(anim_t));
+    animbuf = (uint8_t  *)(anim)+sizeof(anim_t);
 
     lastanimhack = (MAXTILES-3-t);
 
@@ -4704,7 +4673,7 @@ void playanm(char  *fn,uint8_t  t)
        else if(ud.volume_number == 1) ototalclock += 18;
        else                           ototalclock += 10;
 
-       tiles[MAXTILES-3-t].data = FP_OFF(ANIM_DrawFrame(i));
+       tiles[MAXTILES-3-t].data = ANIM_DrawFrame(i);
        rotatesprite(0<<16,0<<16,65536L,512,MAXTILES-3-t,0,0,2+4+8+16+64, 0,0,xdim-1,ydim-1);
        nextpage();
 

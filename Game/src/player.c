@@ -2522,27 +2522,7 @@ void processinput(short snum)
             return;
         }
     }
-/*
-    if(p->select_dir)
-    {
-        if(psectlotag != 15 || (sb_snum&(1<<31)) )
-            p->select_dir = 0;
-        else
-        {
-            if(sync[snum].fvel > 127)
-            {
-                p->select_dir = 0;
-                activatewarpelevators(pi,-1);
-            }
-            else if(sync[snum].fvel <= -127)
-            {
-                p->select_dir = 0;
-                activatewarpelevators(pi,1);
-            }
-            return;
-        }
-    }
-  */
+
     if(p->pals_time > 0)
         p->pals_time--;
 

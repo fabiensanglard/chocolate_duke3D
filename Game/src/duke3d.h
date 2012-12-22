@@ -431,7 +431,7 @@ struct player_orig
 
 
 extern uint8_t  numplayersprites;
-extern uint8_t  picsiz[MAXTILES];
+
 
 typedef struct
 {

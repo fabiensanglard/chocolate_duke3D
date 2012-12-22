@@ -28,6 +28,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 #include "filesystem.h"
 #include "game.h"
 
+
 extern uint8_t  everyothertime;
 short which_palookup = 9;
 
@@ -1453,7 +1454,7 @@ void enterlevel(uint8_t  g)
     int32_t l;
     char  levname[256];
 	char  fulllevelfilename[512];
-
+    char text[512];
 
 	KB_ClearKeyDown(sc_Pause); // avoid entering in pause mode.
 	
@@ -1481,6 +1482,7 @@ void enterlevel(uint8_t  g)
 
 if (!VOLUMEONE)
 {
+    
     if( boardfilename[0] != 0 && ud.m_level_number == 7 && ud.m_volume_number == 0 )
     {
 		sprintf(fulllevelfilename, "%s\\%s",  getGameDir(), boardfilename);
@@ -1491,8 +1493,8 @@ if (!VOLUMEONE)
 
         if ( loadboard( fulllevelfilename,&ps[0].posx, &ps[0].posy, &ps[0].posz, &ps[0].ang,&ps[0].cursectnum ) == -1 )
         {
-            sprintf(tempbuf,"User Map %s not found!\n",fulllevelfilename);
-            gameexit(tempbuf);
+            sprintf(text,"User Map %s not found!\n",fulllevelfilename);
+            gameexit(text);
         }
     }
     else
@@ -1505,8 +1507,8 @@ if (!VOLUMEONE)
 		printf("filename=%s\n",fulllevelfilename );
 		if ( loadboard(fulllevelfilename ,&ps[0].posx, &ps[0].posy, &ps[0].posz, &ps[0].ang,&ps[0].cursectnum ) == -1)
         {
-			sprintf(tempbuf,"Internal Map %s not found! Not using the right grp file?\n",level_file_names[(ud.volume_number*11)+ud.level_number]);
-			gameexit(tempbuf);
+			sprintf(text,"Internal Map %s not found! Not using the right grp file?\n",level_file_names[(ud.volume_number*11)+ud.level_number]);
+			gameexit(text);
 		}
     }
 
@@ -1520,8 +1522,8 @@ if (!VOLUMEONE)
 
     if ( (ud.volume_number > 1) || loadboard( levname,&ps[0].posx, &ps[0].posy, &ps[0].posz, &ps[0].ang,&ps[0].cursectnum ) == -1)
     {
-        sprintf(tempbuf,"Internal Map %s not found in Shareware grp pack!\n",level_file_names[(ud.volume_number*11)+ud.level_number]);
-        gameexit(tempbuf);
+        sprintf(text,"Internal Map %s not found in Shareware grp pack!\n",level_file_names[(ud.volume_number*11)+ud.level_number]);
+        gameexit(text);
     }
 }
 

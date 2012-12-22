@@ -47,7 +47,7 @@ typedef struct tile_s{
 } tile_t;
 
 
-EXTERN tile_t tiles[MAXTILES];
+extern tile_t tiles[MAXTILES];
 
 void setviewtotile(short tilenume, int32_t tileWidth, int32_t tileHeight);
 void squarerotatetile(short tilenume);
@@ -59,13 +59,13 @@ void copytilepiece(int32_t tilenume1, int32_t sx1, int32_t sy1, int32_t xsiz, in
 
 
 //Bitvector marking picture used for rendition.
-EXTERN uint8_t  gotpic[(MAXTILES+7)>>3];
+extern uint8_t  gotpic[(MAXTILES+7)>>3];
 void setgotpic(int32_t tilenume);
 
 
 
 int animateoffs(int16_t tilenum);
 
-EXTERN uint8_t  *pic ;
+extern uint8_t  *pic ;
 
 #endif

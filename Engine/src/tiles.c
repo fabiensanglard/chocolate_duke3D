@@ -20,24 +20,7 @@ int32_t artversion;
 
 uint8_t  *pic = NULL;
 
-//Those are from engine.c
-extern int32_t setviewcnt;
-extern int32_t bakvidoption[4];
-extern int32_t bakframeplace[4], bakxsiz[4], bakysiz[4];
-extern int32_t bakwindowx1[4], bakwindowy1[4];
-extern int32_t bakwindowx2[4], bakwindowy2[4];
-extern uint8_t  picsiz[MAXTILES], tilefilenum[MAXTILES];
-extern int16_t bakumost[MAXXDIM+1], bakdmost[MAXXDIM+1];
-extern int32_t numtilefiles, artfil , artfilnum, artfilplc;
-extern int32_t pow2long[32];
-extern int32_t artsize , cachesize ;
-extern int32_t tilefileoffs[MAXTILES];
-extern int32_t totalclocklock;
-
-
-
-
-
+uint8_t  gotpic[(MAXTILES+7)>>3];
 
 void setviewtotile(short tilenume, int32_t tileWidth, int32_t tileHeight)
 {
@@ -270,6 +253,7 @@ int loadpics(char  *filename, char * gamedir)
     }
     while (k != numtilefiles);
     printf("Art files loaded\n");
+    
     clearbuf(&gotpic[0],(int32_t)((MAXTILES+31)>>5),0L);
     
     /* try dpmi_DETERMINEMAXREALALLOC! */
