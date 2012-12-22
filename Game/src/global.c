@@ -91,7 +91,7 @@ short cyclers[MAXCYCLERS][6],numcyclers;
 
 char  fta_quotes[NUMOFFIRSTTIMEACTIVE][64];
 
-char  tempbuf[2048];
+uint8_t  tempbuf[2048];
 uint8_t packbuf[576];
 
 char  buf[80];

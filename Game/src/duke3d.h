@@ -511,7 +511,7 @@ struct player_struct
 	uint8_t  fakeplayer;
 };
 
-extern char  tempbuf[2048];
+extern uint8_t  tempbuf[2048];
 extern uint8_t packbuf[576];
 
 extern int32_t gc,max_player_health,max_armour_amount,max_ammo_amount[MAX_WEAPONS];

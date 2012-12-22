@@ -2811,7 +2811,9 @@ static int bunchfront(int32_t firstBunchID, int32_t secondBunchID)
 }
 
 int pixelRenderable = 100000000;
-
+#include "keyboard.h"
+void WriteLastPaletteToFile(void);
+void WriteTranslucToFile(void);
 /*  
       FCS: Draw every walls in Front to Back Order.
 */
@@ -2827,6 +2829,15 @@ void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,short daang, int32
 	// clear the framebuffer to black.
 	if (CLEAR_FRAMEBUFFER)
 		clear2dscreen();
+    
+    
+    //CODE EXPLORATION
+    if( KB_KeyDown[0x39]){ // 0x39 = SPACE
+        //CODE EXPLORATION
+        WriteLastPaletteToFile();
+        WriteTranslucToFile();
+    }        
+    
 
 	pixelRenderable+=10;
 	if (pixelRenderable >= MAX_PIXEL_RENDERERED)
@@ -3559,7 +3570,7 @@ static void initfastcolorlookup(int32_t rscale, int32_t gscale, int32_t bscale)
     clearbufbyte((void *)FP_OFF(colhere),sizeof(colhere),0L);
     clearbufbyte((void *)FP_OFF(colhead),sizeof(colhead),0L);
 
-    pal1 = (uint8_t  *)&palette[768-3];
+    pal1 = &palette[768-3];
     for(i=255; i>=0; i--,pal1-=3)
     {
         j = (pal1[0]>>3)*FASTPALGRIDSIZ*FASTPALGRIDSIZ+(pal1[1]>>3)*FASTPALGRIDSIZ+(pal1[2]>>3)+FASTPALGRIDSIZ*FASTPALGRIDSIZ+FASTPALGRIDSIZ+1;
@@ -3579,7 +3590,7 @@ static void initfastcolorlookup(int32_t rscale, int32_t gscale, int32_t bscale)
     colscan[26] = i;
 }
 
-
+extern uint8_t lastPalette[768];
 static void loadpalette(void)
 {
     int32_t i, j, k, dist, fil;
@@ -3592,8 +3603,16 @@ static void loadpalette(void)
         return;
 
     kread(fil,palette,768);
+    
+    //CODE EXPLORATION
+    //WritePaletteToFile(palette,"palette.tga",16, 16);
+    memcpy(lastPalette, palette, 768);
+    
+    
     kread16(fil,&numpalookups);
-
+    
+    //CODE EXPLORATION
+    //printf("Num palettes lookup: %d.\n",numpalookups);
     
     if ((palookup[0] = (uint8_t  *)kkmalloc(numpalookups<<8)) == NULL)
         allocache(&palookup[0],numpalookups<<8,&permanentlock);
@@ -3615,6 +3634,8 @@ static void loadpalette(void)
     for (k = 0; k < (65536 / 4); k++)
         kread32(fil, ((int32_t *) transluc) + k);
 
+
+    
     kclose(fil);
 
     initfastcolorlookup(30L,59L,11L);
@@ -3631,6 +3652,7 @@ static void loadpalette(void)
                            palette[i*3+1] * 5+
                            palette[i*3+2] * 2;
                     ptr = palookup[k]+i;
+                    
                     for(j=0; j<32; j++)
                         ptr[j<<8] = (uint8_t )min(max(mulscale10(dist,32-j),0),15);
                 }
@@ -8377,7 +8399,8 @@ void setbrightness(uint8_t  dabrightness, uint8_t  *dapal)
 {
     int32_t i, j, k;
 
-    curbrightness = min(max((int32_t)dabrightness,0),15);
+    //Clamp bightness to [0-15]
+    curbrightness = min(max(dabrightness,0),15);
 
     k = 0;
     if (vidoption == 6)
@@ -8402,7 +8425,7 @@ void setbrightness(uint8_t  dabrightness, uint8_t  *dapal)
         }
     }
 
-    VBE_setPalette((uint8_t  *) tempbuf);
+    VBE_setPalette(tempbuf);
 }
 
 //This is only used by drawmapview.

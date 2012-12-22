@@ -99,12 +99,12 @@ void keyhandler(void)
     CONTROL_UpdateKeyboardState(lastkey, pressed);
 }
 
-void KB_KeyEvent( int scancode, boolean keypressed )
+void KB_KeyEvent( int scancode, int keypressed )
 {
 	STUBBED("KB_KeyEvent");
 }
 
-boolean KB_KeyWaiting( void )
+int KB_KeyWaiting( void )
 {
     _handle_events();
     return keyIsWaiting;
@@ -288,7 +288,7 @@ void KB_TurnKeypadOff( void )
 	STUBBED("KB_TurnKeypadOff");
 }
 
-boolean KB_KeypadActive( void )
+int KB_KeypadActive( void )
 {
 	STUBBED("KB_KeypadActive");
 	return false;

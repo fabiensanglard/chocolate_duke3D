@@ -496,7 +496,7 @@ static void init_new_res_vars(int32_t davidoption)
     
     setview(0L,0L,xdim-1,ydim-1);
     
-	setbrightness((uint8_t ) curbrightness, (uint8_t  *) &palette[0]);
+	setbrightness(curbrightness, palette);
 
 	if (searchx < 0) {
         searchx = halfxdimen;
@@ -969,6 +969,18 @@ void _platform_init(int argc, char  **argv, const char  *title, const char  *ico
             }
         }
     }
+    
+    
+
+#ifdef __APPLE__
+    SDL_putenv("SDL_VIDEODRIVER=Quartz");
+#endif
+  	
+
+    if (SDL_Init(SDL_INIT_VIDEO) == -1){
+        Error(EXIT_FAILURE, "BUILDSDL: SDL_Init() failed!\nBUILDSDL: SDL_GetError() says \"%s\".\n", SDL_GetError());
+    } 
+    
 
 	// Set up the correct renderer
 	// Becarfull setenv can't reach dll in VC++
@@ -1305,8 +1317,7 @@ static void remove_vesa_mode(int index, const char  *reason)
     int i;
 
     assert(index < validmodecnt);
-    printf("Removing resolution #%d, %dx%d [%s].",
-              index, validmodexdim[index], validmodeydim[index], reason);
+    printf("Removing resolution #%d, %dx%d [%s].",index, validmodexdim[index], validmodeydim[index], reason);
 
     for (i = index; i < validmodecnt - 1; i++)
     {
@@ -1448,6 +1459,92 @@ void getvalidvesamodes(void)
     output_vesa_modelist();
 } 
 
+uint8_t lastPalette[768];
+void WriteTranslucToFile(void){
+    
+    uint8_t buffer[65535*4];
+    uint8_t tga_header[18];
+    uint8_t* transPointer = transluc;
+    uint8_t* bufferPointer = buffer;
+    int i;
+    
+    
+    for (i=0; i < 65535; i++) {
+        
+        bufferPointer[0] = (lastPalette[(*transPointer)*3+0]) / 63.0 * 255;
+        bufferPointer[1] = (lastPalette[(*transPointer)*3+1]) / 63.0 * 255;
+        bufferPointer[2] = (lastPalette[(*transPointer)*3+2]) / 63.0 * 255;
+        bufferPointer[3] = 255;
+        
+        printf("%d,",*transPointer);
+        if (i%255 ==0)
+            printf("\n");
+        
+        transPointer +=1;
+        bufferPointer+=4;
+    }
+    
+    
+    
+    FILE* file = fopen("transluc.tga", "w");
+    
+    memset(tga_header, 0, 18);
+    tga_header[2] = 2;
+    tga_header[12] = (256 & 0x00FF);
+    tga_header[13] = (256  & 0xFF00) / 256;
+    tga_header[14] = (256  & 0x00FF) ;
+    tga_header[15] =(256 & 0xFF00) / 256;
+    tga_header[16] = 32 ;
+    
+    fwrite(&tga_header, 18, sizeof(uint8_t), file);
+    fwrite(buffer, 65535, 4, file);
+    fclose(file);
+}
+
+void WritePaletteToFile(uint8_t* palette,const char* filename,int width, int height){
+    
+    uint8_t tga_header[18];
+    uint8_t* buffer;
+    uint8_t* palettePointer = palette;
+    uint8_t* bufferPointer ;
+    int i;
+    
+    FILE* file = fopen(filename, "w");
+    
+    
+    memset(tga_header, 0, 18);
+    tga_header[2] = 2;
+    tga_header[12] = (width & 0x00FF);
+    tga_header[13] = (width  & 0xFF00) / 256;
+    tga_header[14] = (height  & 0x00FF) ;
+    tga_header[15] =(height & 0xFF00) / 256;
+    tga_header[16] = 32 ;
+    
+    fwrite(&tga_header, 18, sizeof(uint8_t), file);
+    
+    bufferPointer = buffer = malloc(width*height*4);
+    
+    for (i = 0 ; i < width*height ; i++)
+    {
+        bufferPointer[0] = palettePointer[0] / 63.0 * 255;
+        bufferPointer[1] = palettePointer[1] / 63.0 * 255;
+        bufferPointer[2] = palettePointer[2] / 63.0 * 255;
+        bufferPointer[3] = 255;
+        
+        bufferPointer += 4;
+        palettePointer+= 3;
+    }
+    
+    fwrite(buffer, width*height, 4, file);
+    fclose(file);
+    
+    free(buffer);
+}
+
+
+void WriteLastPaletteToFile(){
+    WritePaletteToFile(lastPalette,"lastPalette.tga",16,16);
+}
 
 int VBE_setPalette(uint8_t  *palettebuffer)
 /*
@@ -1468,7 +1565,19 @@ int VBE_setPalette(uint8_t  *palettebuffer)
     SDL_Color *sdlp = fmt_swap;
     uint8_t  *p = palettebuffer;
     int i;
+    static updated=0;
+    
+    if (updated >=1 )
+        return ;
+    
+    WritePaletteToFile(palettebuffer,"lastPalette.tga",16,16);
+    updated++;
+    
    
+    //CODE EXPLORATION
+    //Used only to write the last palette to file.
+    memcpy(lastPalette, palettebuffer, 768);
+    
     for (i = 0; i < 256; i++){
         sdlp->b = (Uint8) ((((float) *p++) / 63.0) * 255.0);
         sdlp->g = (Uint8) ((((float) *p++) / 63.0) * 255.0);

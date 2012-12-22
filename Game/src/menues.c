@@ -4680,7 +4680,7 @@ void playanm(char  *fn,uint8_t  t)
             tempbuf[j+3] = 0;
     }
 
-    VBE_setPalette((uint8_t*)tempbuf);
+    VBE_setPalette(tempbuf);
 
     ototalclock = totalclock + 10;
 
