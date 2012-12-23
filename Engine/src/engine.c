@@ -3870,7 +3870,7 @@ static void dorotatesprite (int32_t sx, int32_t sy, int32_t z, short a, short pi
         nextv = v;
     }
 
-    TILE_MakeAvailable(globalpicnum);
+    TILE_MakeAvailable(picnum);
     
     setgotpic(picnum);
     bufplc = tiles[picnum].data;
