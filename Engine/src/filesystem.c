@@ -404,131 +404,7 @@ static uint8_t  *lzwbuf1, *lzwbuf4, *lzwbuf5;
 static uint8_t  lzwbuflock[5];
 static short *lzwbuf2, *lzwbuf3;
 
-void kdfread(void *buffer, size_t dasizeof, size_t count, int32_t fil)
-{
-	size_t i, j;
-	int32_t k, kgoal;
-	short leng;
-	uint8_t  *ptr;
-    
-	lzwbuflock[0] = lzwbuflock[1] = lzwbuflock[2] = lzwbuflock[3] = lzwbuflock[4] = 200;
-	if (lzwbuf1 == NULL) allocache(&lzwbuf1,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[0]);
-	if (lzwbuf2 == NULL) allocache(&lzwbuf2,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[1]);
-	if (lzwbuf3 == NULL) allocache(&lzwbuf3,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[2]);
-	if (lzwbuf4 == NULL) allocache(&lzwbuf4,LZWSIZE,&lzwbuflock[3]);
-	if (lzwbuf5 == NULL) allocache(&lzwbuf5,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[4]);
-    
-	if (dasizeof > LZWSIZE) { count *= dasizeof; dasizeof = 1; }
-	ptr = (uint8_t  *)buffer;
-    
-	kread(fil,&leng,2); kread(fil,lzwbuf5,(int32_t )leng);
-	k = 0;
-	kgoal = uncompress(lzwbuf5,leng,lzwbuf4);
-    
-	copybufbyte(lzwbuf4,ptr,(int32_t )dasizeof);
-	k += (int32_t )dasizeof;
-    
-	for(i=1;i<count;i++)
-	{
-		if (k >= kgoal)
-		{
-			kread(fil,&leng,2); kread(fil,lzwbuf5,(int32_t )leng);
-			k = 0; kgoal = uncompress(lzwbuf5,(int32_t )leng,lzwbuf4);
-		}
-		for(j=0;j<dasizeof;j++) ptr[j+dasizeof] = (uint8_t ) ((ptr[j]+lzwbuf4[j+k])&255);
-		k += dasizeof;
-		ptr += dasizeof;
-	}
-	lzwbuflock[0] = lzwbuflock[1] = lzwbuflock[2] = lzwbuflock[3] = lzwbuflock[4] = 1;
-}
 
-void dfread(void *buffer, size_t dasizeof, size_t count, FILE *fil)
-{
-	size_t i, j;
-	int32_t k, kgoal;
-	short leng;
-	uint8_t  *ptr;
-    
-	lzwbuflock[0] = lzwbuflock[1] = lzwbuflock[2] = lzwbuflock[3] = lzwbuflock[4] = 200;
-	if (lzwbuf1 == NULL) allocache((int32_t *)&lzwbuf1,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[0]);
-	if (lzwbuf2 == NULL) allocache((int32_t *)&lzwbuf2,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[1]);
-	if (lzwbuf3 == NULL) allocache((int32_t *)&lzwbuf3,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[2]);
-	if (lzwbuf4 == NULL) allocache((int32_t *)&lzwbuf4,LZWSIZE,&lzwbuflock[3]);
-	if (lzwbuf5 == NULL) allocache((int32_t *)&lzwbuf5,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[4]);
-    
-	if (dasizeof > LZWSIZE) {
-        count *= dasizeof;
-        dasizeof = 1;
-    }
-    
-	ptr = (uint8_t  *)buffer;
-    
-	fread(&leng,2,1,fil);
-    fread(lzwbuf5,(int32_t )leng,1,fil);
-    
-	k = 0;
-    kgoal = uncompress(lzwbuf5,(int32_t )leng,lzwbuf4);
-    
-	copybufbyte(lzwbuf4,ptr,(int32_t )dasizeof);
-	k += (int32_t )dasizeof;
-    
-	for(i=1;i<count;i++)
-	{
-		if (k >= kgoal)
-		{
-			fread(&leng,2,1,fil); fread(lzwbuf5,(int32_t )leng,1,fil);
-			k = 0; kgoal = uncompress(lzwbuf5,(int32_t )leng,lzwbuf4);
-		}
-		for(j=0;j<dasizeof;j++) ptr[j+dasizeof] = (uint8_t ) ((ptr[j]+lzwbuf4[j+k])&255);
-		k += dasizeof;
-		ptr += dasizeof;
-	}
-	lzwbuflock[0] = lzwbuflock[1] = lzwbuflock[2] = lzwbuflock[3] = lzwbuflock[4] = 1;
-}
-
-void dfwrite(void *buffer, size_t dasizeof, size_t count, FILE *fil)
-{
-	size_t i, j, k;
-	short leng;
-	uint8_t  *ptr;
-    
-	lzwbuflock[0] = lzwbuflock[1] = lzwbuflock[2] = lzwbuflock[3] = lzwbuflock[4] = 200;
-	if (lzwbuf1 == NULL) allocache(&lzwbuf1,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[0]);
-	if (lzwbuf2 == NULL) allocache(&lzwbuf2,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[1]);
-	if (lzwbuf3 == NULL) allocache(&lzwbuf3,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[2]);
-	if (lzwbuf4 == NULL) allocache(&lzwbuf4,LZWSIZE,&lzwbuflock[3]);
-	if (lzwbuf5 == NULL) allocache(&lzwbuf5,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[4]);
-    
-	if (dasizeof > LZWSIZE) { count *= dasizeof; dasizeof = 1; }
-	ptr = (uint8_t  *)buffer;
-    
-	copybufbyte(ptr,lzwbuf4,(int32_t )dasizeof);
-	k = dasizeof;
-    
-	if (k > LZWSIZE-dasizeof)
-	{
-		leng = (short)compress(lzwbuf4,k,lzwbuf5); k = 0;
-		fwrite(&leng,2,1,fil); fwrite(lzwbuf5,(int32_t )leng,1,fil);
-	}
-    
-	for(i=1;i<count;i++)
-	{
-		for(j=0;j<dasizeof;j++) lzwbuf4[j+k] = (uint8_t ) ((ptr[j+dasizeof]-ptr[j])&255);
-		k += dasizeof;
-		if (k > LZWSIZE-dasizeof)
-		{
-			leng = (short)compress(lzwbuf4,k,lzwbuf5); k = 0;
-			fwrite(&leng,2,1,fil); fwrite(lzwbuf5,(int32_t )leng,1,fil);
-		}
-		ptr += dasizeof;
-	}
-	if (k > 0)
-	{
-		leng = (short)compress(lzwbuf4,k,lzwbuf5);
-		fwrite(&leng,2,1,fil); fwrite(lzwbuf5,(int32_t )leng,1,fil);
-	}
-	lzwbuflock[0] = lzwbuflock[1] = lzwbuflock[2] = lzwbuflock[3] = lzwbuflock[4] = 1;
-}
 
 int32_t compress(uint8_t  *lzwinbuf, int32_t uncompleng, uint8_t  *lzwoutbuf)
 {
@@ -630,6 +506,135 @@ int32_t uncompress(uint8_t  *lzwinbuf, int32_t compleng, uint8_t  *lzwoutbuf)
 	} while (currstr < strtot);
 	return((int32_t )shortptr[0]); /* uncompleng */
 }
+
+
+void kdfread(void *buffer, size_t dasizeof, size_t count, int32_t fil)
+{
+	size_t i, j;
+	int32_t k, kgoal;
+	short leng;
+	uint8_t  *ptr;
+    
+	lzwbuflock[0] = lzwbuflock[1] = lzwbuflock[2] = lzwbuflock[3] = lzwbuflock[4] = 200;
+	if (lzwbuf1 == NULL) allocache(&lzwbuf1,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[0]);
+	if (lzwbuf2 == NULL) allocache((uint8_t**)&lzwbuf2,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[1]);
+	if (lzwbuf3 == NULL) allocache((uint8_t**)&lzwbuf3,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[2]);
+	if (lzwbuf4 == NULL) allocache(&lzwbuf4,LZWSIZE,&lzwbuflock[3]);
+	if (lzwbuf5 == NULL) allocache(&lzwbuf5,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[4]);
+    
+	if (dasizeof > LZWSIZE) { count *= dasizeof; dasizeof = 1; }
+	ptr = (uint8_t  *)buffer;
+    
+	kread(fil,&leng,2); kread(fil,lzwbuf5,(int32_t )leng);
+	k = 0;
+	kgoal = uncompress(lzwbuf5,leng,lzwbuf4);
+    
+	copybufbyte(lzwbuf4,ptr,(int32_t )dasizeof);
+	k += (int32_t )dasizeof;
+    
+	for(i=1;i<count;i++)
+	{
+		if (k >= kgoal)
+		{
+			kread(fil,&leng,2); kread(fil,lzwbuf5,(int32_t )leng);
+			k = 0; kgoal = uncompress(lzwbuf5,(int32_t )leng,lzwbuf4);
+		}
+		for(j=0;j<dasizeof;j++) ptr[j+dasizeof] = (uint8_t ) ((ptr[j]+lzwbuf4[j+k])&255);
+		k += dasizeof;
+		ptr += dasizeof;
+	}
+	lzwbuflock[0] = lzwbuflock[1] = lzwbuflock[2] = lzwbuflock[3] = lzwbuflock[4] = 1;
+}
+
+void dfread(void *buffer, size_t dasizeof, size_t count, FILE *fil)
+{
+	size_t i, j;
+	int32_t k, kgoal;
+	short leng;
+	uint8_t  *ptr;
+    
+	lzwbuflock[0] = lzwbuflock[1] = lzwbuflock[2] = lzwbuflock[3] = lzwbuflock[4] = 200;
+	if (lzwbuf1 == NULL) allocache(&lzwbuf1,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[0]);
+	if (lzwbuf2 == NULL) allocache((uint8_t**)&lzwbuf2,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[1]);
+	if (lzwbuf3 == NULL) allocache((uint8_t**)&lzwbuf3,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[2]);
+	if (lzwbuf4 == NULL) allocache(&lzwbuf4,LZWSIZE,&lzwbuflock[3]);
+	if (lzwbuf5 == NULL) allocache(&lzwbuf5,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[4]);
+    
+	if (dasizeof > LZWSIZE) {
+        count *= dasizeof;
+        dasizeof = 1;
+    }
+    
+	ptr = (uint8_t  *)buffer;
+    
+	fread(&leng,2,1,fil);
+    fread(lzwbuf5,(int32_t )leng,1,fil);
+    
+	k = 0;
+    kgoal = uncompress(lzwbuf5,(int32_t )leng,lzwbuf4);
+    
+	copybufbyte(lzwbuf4,ptr,(int32_t )dasizeof);
+	k += (int32_t )dasizeof;
+    
+	for(i=1;i<count;i++)
+	{
+		if (k >= kgoal)
+		{
+			fread(&leng,2,1,fil); fread(lzwbuf5,(int32_t )leng,1,fil);
+			k = 0; kgoal = uncompress(lzwbuf5,(int32_t )leng,lzwbuf4);
+		}
+		for(j=0;j<dasizeof;j++) ptr[j+dasizeof] = (uint8_t ) ((ptr[j]+lzwbuf4[j+k])&255);
+		k += dasizeof;
+		ptr += dasizeof;
+	}
+	lzwbuflock[0] = lzwbuflock[1] = lzwbuflock[2] = lzwbuflock[3] = lzwbuflock[4] = 1;
+}
+
+void dfwrite(void *buffer, size_t dasizeof, size_t count, FILE *fil)
+{
+	size_t i, j, k;
+	short leng;
+	uint8_t  *ptr;
+    
+	lzwbuflock[0] = lzwbuflock[1] = lzwbuflock[2] = lzwbuflock[3] = lzwbuflock[4] = 200;
+	if (lzwbuf1 == NULL) allocache(&lzwbuf1,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[0]);
+	if (lzwbuf2 == NULL) allocache((uint8_t**)&lzwbuf2,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[1]);
+	if (lzwbuf3 == NULL) allocache((uint8_t**)&lzwbuf3,(LZWSIZE+(LZWSIZE>>4))*2,&lzwbuflock[2]);
+	if (lzwbuf4 == NULL) allocache(&lzwbuf4,LZWSIZE,&lzwbuflock[3]);
+	if (lzwbuf5 == NULL) allocache(&lzwbuf5,LZWSIZE+(LZWSIZE>>4),&lzwbuflock[4]);
+    
+	if (dasizeof > LZWSIZE) { count *= dasizeof; dasizeof = 1; }
+	ptr = (uint8_t  *)buffer;
+    
+	copybufbyte(ptr,lzwbuf4,(int32_t )dasizeof);
+	k = dasizeof;
+    
+	if (k > LZWSIZE-dasizeof)
+	{
+		leng = (short)compress(lzwbuf4,k,lzwbuf5); k = 0;
+		fwrite(&leng,2,1,fil); fwrite(lzwbuf5,(int32_t )leng,1,fil);
+	}
+    
+	for(i=1;i<count;i++)
+	{
+		for(j=0;j<dasizeof;j++) lzwbuf4[j+k] = (uint8_t ) ((ptr[j+dasizeof]-ptr[j])&255);
+		k += dasizeof;
+		if (k > LZWSIZE-dasizeof)
+		{
+			leng = (short)compress(lzwbuf4,k,lzwbuf5); k = 0;
+			fwrite(&leng,2,1,fil); fwrite(lzwbuf5,(int32_t )leng,1,fil);
+		}
+		ptr += dasizeof;
+	}
+	if (k > 0)
+	{
+		leng = (short)compress(lzwbuf4,k,lzwbuf5);
+		fwrite(&leng,2,1,fil); fwrite(lzwbuf5,(int32_t )leng,1,fil);
+	}
+	lzwbuflock[0] = lzwbuflock[1] = lzwbuflock[2] = lzwbuflock[3] = lzwbuflock[4] = 1;
+}
+
+
 
 int SafeFileExists ( const char  * _filename );
 int32_t TCkopen4load(const char  *filename, int readfromGRP)

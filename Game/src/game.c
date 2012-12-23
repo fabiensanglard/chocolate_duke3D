@@ -104,7 +104,7 @@ void newint24( int errval, int ax, int bp, int si );
 
 int recfilep,totalreccnt;
 uint8_t  debug_on = 0,actor_tog = 0,memorycheckoveride=0;
-char *rtsptr;
+uint8_t *rtsptr;
 
 
 extern uint8_t  syncstate;
@@ -657,7 +657,7 @@ void getpackets(void)
 
                 if (SoundToggle == 0 || ud.lockout == 1 || FXDevice == NumSoundCards)
                     break;
-                rtsptr = (char  *)RTS_GetSound(packbuf[1]-1);
+                rtsptr = RTS_GetSound(packbuf[1]-1);
                 if (*rtsptr == 'C')
                     FX_PlayVOC3D(rtsptr,0,0,0,255,-packbuf[1]);
                 else
@@ -781,6 +781,8 @@ void getpackets(void)
     }
 }
 
+//From player.c
+void computergetinput(int32_t snum, input *syn);
 void faketimerhandler()
 {
     int32_t i, j, k;
@@ -1101,7 +1103,12 @@ void faketimerhandler()
 }
 
 extern int32_t cacnum;
-typedef struct { int32_t *hand, leng; uint8_t  *lock; } cactype;
+
+typedef struct { 
+    uint8_t *hand;
+    int32_t leng;
+    uint8_t  *lock; } 
+cactype;
 extern cactype cac[];
 
 void caches(void)
@@ -2553,14 +2560,15 @@ short strget(short x,short y,char  *t,short dalen,short c)
 
 void typemode(void)
 {
-     short ch, hitstate, i, j;
-
+    short ch, hitstate, i, j;
+    char text[512];
+    
      if( ps[myconnectindex].gm&MODE_SENDTOWHOM )
      {
           if(sendmessagecommand != -1 || ud.multimode < 3 || movesperpacket == 4)
           {
-                tempbuf[0] = 4; // message command
-                tempbuf[1] = 0;
+                text[0] = 4; // message command
+                text[1] = 0;
                 recbuf[0]  = 0;
 
                 if(ud.multimode < 3)
@@ -2571,7 +2579,7 @@ void typemode(void)
                 strcat(recbuf,typebuf);
                 j = strlen(recbuf);
                 recbuf[j] = 0;
-                strcat(tempbuf+1,recbuf);
+                strcat(text+1,recbuf);
 
                 if(sendmessagecommand >= ud.multimode || movesperpacket == 4)
                 {
@@ -4412,7 +4420,7 @@ short spawn( short j, short pn )
                 break;
 
             case WATERDRIP:
-                if(j >= 0 && sprite[j].statnum == 10 || sprite[j].statnum == 1)
+                if((j >= 0 && sprite[j].statnum == 10) || sprite[j].statnum == 1)
                 {
                     sp->shade = 32;
                     if(sprite[j].pal != 1)
@@ -6598,6 +6606,7 @@ void nonsharedkeys(void)
 {
     short i,ch;
     int32_t j;
+    char text[512];
         
     if(ud.recstat == 2)
     {
@@ -6734,11 +6743,11 @@ void nonsharedkeys(void)
 						if(music_select == 44) music_select = 0;
 					}
 
-                    strcpy(&tempbuf[0],"PLAYING ");
-                    strcat(&tempbuf[0],&music_fn[0][music_select][0]);
+                    strcpy(text,"PLAYING ");
+                    strcat(text,&music_fn[0][music_select][0]);
 					MUSIC_StopSong(); // FIX_00074: Shift f5 doesn't change hi-res tunes, but only midi tunes.
                     playmusic(&music_fn[0][music_select][0]);
-                    strcpy(&fta_quotes[26][0],&tempbuf[0]);
+                    strcpy(&fta_quotes[26][0],text);
                     FTA(26,&ps[myconnectindex],1);
                     return;
                 }
@@ -6749,14 +6758,14 @@ void nonsharedkeys(void)
 
                 tempbuf[ch] = 4;
                 tempbuf[ch+1] = 0;
-                strcat(tempbuf+1,ud.ridecule[i-1]);
+                strcat((char*)tempbuf+1,ud.ridecule[i-1]);
 
                 i = 1+strlen(ud.ridecule[i-1]);
 
                 if(ud.multimode > 1)
                     for(ch=connecthead;ch>=0;ch=connectpoint2[ch])
                         if (ch != myconnectindex)
-                            sendpacket(ch,(uint8_t*)tempbuf,i);
+                            sendpacket(ch,tempbuf,i);
 
                 pus = NUMPAGES;
                 pub = NUMPAGES;
@@ -6768,7 +6777,7 @@ void nonsharedkeys(void)
             if(ud.lockout == 0)
                 if(SoundToggle && ALT_IS_PRESSED && ( RTS_NumSounds() > 0 ) && rtsplaying == 0 && VoiceToggle )
             {
-                rtsptr = (char  *)RTS_GetSound (i-1);
+                rtsptr = RTS_GetSound (i-1);
                 if(*rtsptr == 'C')
                     FX_PlayVOC3D( rtsptr,0,0,0,255,-i);
                 else FX_PlayWAV3D( rtsptr,0,0,0,255,-i);
@@ -6957,9 +6966,9 @@ void nonsharedkeys(void)
         if( KB_KeyPressed( sc_F5 ) && MusicDevice != NumSoundCards )
         {
             KB_ClearKeyDown( sc_F5 );
-            strcpy(&tempbuf[0],&music_fn[0][music_select][0]);
-            strcat(&tempbuf[0],".  USE SHIFT-F5 TO CHANGE.");
-            strcpy(&fta_quotes[26][0],&tempbuf[0]);
+            strcpy(text,&music_fn[0][music_select][0]);
+            strcat(text,".  USE SHIFT-F5 TO CHANGE.");
+            strcpy(fta_quotes[26],text);
             FTA(26,&ps[myconnectindex],1);
 
         }
@@ -10576,7 +10585,7 @@ void takescreenshot(void)
 	time(&time4file);
 	tmHMS = localtime(&time4file);
 
-	sprintf(tempbuf, "xDuke(v%d.%d) %.4d.%.2d.%.2d %.2dh%.2dm%.2ds", 
+	sprintf(text, "xDuke(v%d.%d) %.4d.%.2d.%.2d %.2dh%.2dm%.2ds", 
 			XDUKE_REV_X,
 			XDUKE_REV_DOT_Y,
 			tmHMS->tm_year+1900,

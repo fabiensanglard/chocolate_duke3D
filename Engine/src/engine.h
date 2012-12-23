@@ -137,12 +137,14 @@ int clipinsidebox(int32_t x, int32_t y, int16_t wallnum, int32_t walldist);
 #include "display.h"
 #include "fixedPoint_math.h"
 #include "tiles.h"
+#include "network.h"
     
     
 //Exported for tile module
     extern int32_t setviewcnt;
     extern int32_t bakvidoption[4];
-    extern int32_t bakframeplace[4], bakxsiz[4], bakysiz[4];
+    extern uint8_t* bakframeplace[4];
+    extern int32_t bakxsiz[4], bakysiz[4];
     extern int32_t bakwindowx1[4], bakwindowy1[4];
     extern int32_t bakwindowx2[4], bakwindowy2[4];
     extern uint8_t  picsiz[MAXTILES], tilefilenum[MAXTILES];

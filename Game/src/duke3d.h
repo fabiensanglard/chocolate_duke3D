@@ -356,7 +356,7 @@ extern int32_t movefifosendplc;
 
 typedef struct
 {
-    char  *ptr;
+    uint8_t  *ptr;
     uint8_t  lock;
     int  length, num;
 } SAMPLE;

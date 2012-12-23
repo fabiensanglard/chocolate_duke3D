@@ -59,15 +59,22 @@
 static int32_t cachesize = 0;
 int32_t cachecount = 0;
 uint8_t  zerochar = 0;
-int32_t cachestart = 0, cacnum = 0, agecount = 0;
-typedef struct { int32_t *hand, leng; uint8_t  *lock; } cactype;
+uint8_t* cachestart = NULL;
+int32_t cacnum = 0, agecount = 0;
+
+typedef struct { 
+    uint8_t** hand;
+    int32_t leng;
+    uint8_t  *lock; } 
+cactype;
+
 cactype cac[MAXCACHEOBJECTS];
 int32_t lockrecip[200];
 
 // TC game directory
 char  game_dir[512] = { '\0' };
 
-void initcache(int32_t dacachestart, int32_t dacachesize)
+void initcache(uint8_t* dacachestart, int32_t dacachesize)
 {
 	int32_t i;
 
@@ -212,7 +219,7 @@ void reportandexit(char  *errormessage)
 	for(i=0;i<cacnum;i++)
 	{
 		printf("%d- ",i);
-		printf("ptr: 0x%x, ",*cac[i].hand);
+		printf("ptr: 0x%x, ",(int8_t)*cac[i].hand);
 		printf("leng: %d, ",cac[i].leng);
 		printf("lock: %d\n",*cac[i].lock);
 		j += cac[i].leng;

@@ -654,7 +654,7 @@ int FX_PlayVOC
 
 int FX_PlayLoopedVOC
    (
-   char *ptr,
+   uint8_t *ptr,
    int32_t loopstart,
    int32_t loopend,
    int32_t pitchoffset,
@@ -720,7 +720,7 @@ int FX_PlayWAV
 
 int FX_PlayLoopedWAV
    (
-   char *ptr,
+   uint8_t *ptr,
    int32_t loopstart,
    int32_t loopend,
    int32_t pitchoffset,
@@ -755,7 +755,7 @@ int FX_PlayLoopedWAV
 
 int FX_PlayVOC3D
    (
-   char *ptr,
+   uint8_t *ptr,
    int32_t pitchoffset,
    int32_t angle,
    int32_t distance,
@@ -787,7 +787,7 @@ int FX_PlayVOC3D
 
 int FX_PlayWAV3D
    (
-   char *ptr,
+   uint8_t *ptr,
    int32_t pitchoffset,
    int32_t angle,
    int32_t distance,
@@ -818,7 +818,7 @@ int FX_PlayWAV3D
 
 int FX_PlayRaw
    (
-   char *ptr,
+   uint8_t *ptr,
    uint32_t length,
    uint32_t rate,
    int32_t pitchoffset,
@@ -852,7 +852,7 @@ int FX_PlayRaw
 
 int FX_PlayLoopedRaw
    (
-   char *ptr,
+   uint8_t *ptr,
    uint32_t length,
    char *loopstart,
    char *loopend,

@@ -108,22 +108,22 @@ int FX_SetFrequency( int handle, int frequency );
 
 int FX_PlayVOC( char *ptr, int pitchoffset, int vol, int left, int right,
        int priority, uint32_t callbackval );
-int FX_PlayLoopedVOC( char *ptr, int32_t loopstart, int32_t loopend,
+int FX_PlayLoopedVOC( uint8_t *ptr, int32_t loopstart, int32_t loopend,
        int32_t pitchoffset, int32_t vol, int32_t left, int32_t right, int32_t priority,
        uint32_t callbackval );
 int FX_PlayWAV( char *ptr, int pitchoffset, int vol, int left, int right,
        int priority, uint32_t callbackval );
-int FX_PlayLoopedWAV( char *ptr, int32_t loopstart, int32_t loopend,
+int FX_PlayLoopedWAV( uint8_t *ptr, int32_t loopstart, int32_t loopend,
        int32_t pitchoffset, int32_t vol, int32_t left, int32_t right, int32_t priority,
        uint32_t callbackval );
-int FX_PlayVOC3D( char *ptr, int32_t pitchoffset, int32_t angle, int32_t distance,
+int FX_PlayVOC3D( uint8_t *ptr, int32_t pitchoffset, int32_t angle, int32_t distance,
        int32_t priority, uint32_t callbackval );
-int FX_PlayWAV3D( char *ptr, int pitchoffset, int angle, int distance,
+int FX_PlayWAV3D( uint8_t *ptr, int pitchoffset, int angle, int distance,
        int priority, uint32_t callbackval );
-int FX_PlayRaw( char *ptr, uint32_t length, uint32_t rate,
+int FX_PlayRaw( uint8_t  *ptr, uint32_t length, uint32_t rate,
        int32_t pitchoffset, int32_t vol, int32_t left, int32_t right, int32_t priority,
        uint32_t callbackval );
-int FX_PlayLoopedRaw( char *ptr, uint32_t length, char *loopstart,
+int FX_PlayLoopedRaw( uint8_t *ptr, uint32_t length, char *loopstart,
        char *loopend, uint32_t rate, int32_t pitchoffset, int32_t vol, int32_t left,
        int32_t right, int32_t priority, uint32_t callbackval );
 int32_t FX_Pan3D( int handle, int angle, int distance );

@@ -26,7 +26,8 @@ extern uint8_t  *transluc;
         
 extern uint8_t  *globalpalwritten;
 extern int16_t  globalshiftval;
-extern int32_t vplce[4], vince[4], bufplce[4];
+extern int32_t vplce[4], vince[4];
+extern int32_t bufplce[4];
 extern uint8_t* palookupoffse[4];
         
 void sethlinesizes(int32_t,int32_t,uint8_t *);
@@ -61,8 +62,8 @@ void DrawSpriteVerticalLine(int32_t,int32_t,uint32_t,uint8_t* ,uint8_t*);
 void mhline(uint8_t  *,int32_t,int32_t,int32_t,int32_t,uint8_t*);
 void mhlineskipmodify(uint32_t,int32_t,int32_t,uint8_t*);
 void msethlineshift(int32_t,int32_t);
-void thline(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
-void thlineskipmodify(int32_t,uint32_t,uint32_t,int32_t,int32_t,int32_t);
+void thline(uint8_t*,int32_t,int32_t,int32_t,int32_t,uint8_t *);
+void thlineskipmodify(int32_t,uint32_t,uint32_t,int32_t,int32_t,uint8_t *);
 void tsethlineshift(int32_t,int32_t);
 void setupslopevlin(int32_t,int32_t,int32_t);
 void slopevlin(int32_t,uint32_t,int32_t,int32_t,int32_t,int32_t);

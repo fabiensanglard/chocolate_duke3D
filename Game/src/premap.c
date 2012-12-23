@@ -250,7 +250,7 @@ uint8_t  getsound(uint16_t num)
         ( l < 12288 ) )
     {
         Sound[num].lock = 2;
-        allocache((int32_t *)&Sound[num].ptr,l,&Sound[num].lock);
+        allocache(&Sound[num].ptr,l,&Sound[num].lock);
         if(Sound[num].ptr != NULL)
             kread( fp, Sound[num].ptr , l);
     }
@@ -300,7 +300,7 @@ void cacheit(void)
         if( tiles[sector[i].ceilingpicnum].data == NULL )
         {
             tloadtile( sector[i].ceilingpicnum );
-            if( tiles[sector[i].ceilingpicnum].data == LA)
+            if( tiles[sector[i].ceilingpicnum].data == (uint8_t*)LA)
             {
                 tloadtile(LA+1);
                 tloadtile(LA+2);

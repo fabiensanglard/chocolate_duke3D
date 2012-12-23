@@ -37,7 +37,7 @@ static int transrev = 0;
 /* ---------------  WALLS RENDERING METHOD (USED TO BE HIGHLY OPTIMIZED ASSEMBLY) ----------------------------*/
 extern int32_t asm1;
 extern int32_t asm2;
-extern int32_t asm3;
+extern uint8_t *asm3;
 extern int32_t asm4;
 
 static uint8_t machxbits_al;
@@ -714,7 +714,7 @@ void settrans(int32_t type){
 }
 
 static uint8_t  * textureData;
-static int32_t mmach_asm3;
+static uint8_t  * mmach_asm3;
 static int32_t mmach_asm1;
 static int32_t mmach_asm2;
 
@@ -744,7 +744,7 @@ void mhlineskipmodify( uint32_t i2, int32_t numPixels, int32_t i5, uint8_t* dest
         //Skip transparent color.
 		if ((colorIndex&0xff) != 0xff){
             if (pixelsAllowed-- > 0)
-				*dest = (((uint8_t *)mmach_asm3)[colorIndex]);
+				*dest = mmach_asm3[colorIndex];
         }
 	    i2 += mmach_asm1;
 	    i5 += mmach_asm2;
@@ -764,12 +764,12 @@ void msethlineshift(int32_t i1, int32_t i2)
 } /* msethlineshift */
 
 
-static int32_t tmach_eax;
-static int32_t tmach_asm3;
+static uint8_t * tmach_eax;
+static uint8_t * tmach_asm3;
 static int32_t tmach_asm1;
 static int32_t tmach_asm2;
 
-void thline(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6)
+void thline(uint8_t  * i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, uint8_t * i6)
 {
     tmach_eax = i1;
     tmach_asm3 = asm3;
@@ -780,7 +780,7 @@ void thline(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t 
 
 static uint8_t  tshift_al = 26;
 static uint8_t  tshift_bl = 6;
-void thlineskipmodify(int32_t i1, uint32_t i2, uint32_t i3, int32_t i4, int32_t i5, int32_t i6)
+void thlineskipmodify(int32_t i1, uint32_t i2, uint32_t i3, int32_t i4, int32_t i5, uint8_t * i6)
 {
     uint32_t ebx;
     int counter = (i3>>16);
@@ -788,17 +788,17 @@ void thlineskipmodify(int32_t i1, uint32_t i2, uint32_t i3, int32_t i4, int32_t 
     {
 	    ebx = i2 >> tshift_al;
 	    ebx = shld (ebx, (uint32_t)i5, tshift_bl);
-	    i1 = ((uint8_t  *)tmach_eax)[ebx];
+	    i1 = tmach_eax[ebx];
 	    if ((i1&0xff) != 0xff)
 	    {
-		    uint16_t val = (((uint8_t *)tmach_asm3)[i1]);
-		    val |= (*((uint8_t  *)i6)<<8);
+		    uint16_t val = tmach_asm3[i1];
+		    val |= (*i6)<<8;
 
 		    if (transrev) 
 				val = ((val>>8)|(val<<8));
 
 			if (pixelsAllowed-- > 0)
-			 *((uint8_t  *)i6) = transluc[val];
+			 *i6 = transluc[val];
 	    }
 
 	    i2 += tmach_asm1;
@@ -852,7 +852,8 @@ void slopevlin(int32_t i1, uint32_t i2, int32_t i3, int32_t i4, int32_t i5, int3
 {
     bitwisef2i c;
     uint32_t ecx,eax,ebx,edx,esi,edi;
-    float a = (float) asm3 + asm2_f;
+#pragma This is so bad to cast asm3 to int then float :( !!!
+    float a = (float)(int32_t) asm3 + asm2_f;
     i1 -= slopemach_ecx;
     esi = i5 + low32((__int64)globalx3 * (__int64)(i2<<3));
     edi = i6 + low32((__int64)globaly3 * (__int64)(i2<<3));

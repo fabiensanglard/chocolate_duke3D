@@ -273,7 +273,7 @@ int loadpics(char  *filename, char * gamedir)
         cachesize -= 65536L;
         if (cachesize < 65536) return(-1);
     }
-    initcache(((int32_t)FP_OFF(pic)+15)&0xfffffff0,(cachesize-((-(int32_t)FP_OFF(pic))&15))&0xfffffff0);
+    initcache(pic,cachesize);
     
     for(i=0; i<MAXTILES; i++)
     {

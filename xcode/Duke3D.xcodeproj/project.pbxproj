@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2D058BD01686520B00E283DC /* tiles.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D058BCF1686520B00E283DC /* tiles.c */; };
+		2D058BE4168689B200E283DC /* network.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D058BE3168689B200E283DC /* network.c */; };
 		2D2A07CA168286D500064107 /* filesystem.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A07C9168286D400064107 /* filesystem.c */; };
 		2D4FB6FF167D430F00915887 /* sdl_midi.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D4FB6FE167D430F00915887 /* sdl_midi.c */; };
 		2D7B621D1678885A00E35E54 /* draw.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B61F11678885A00E35E54 /* draw.c */; };
@@ -74,6 +75,8 @@
 /* Begin PBXFileReference section */
 		2D058BCD168651F700E283DC /* tiles.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = tiles.h; path = ../../Engine/src/tiles.h; sourceTree = "<group>"; };
 		2D058BCF1686520B00E283DC /* tiles.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tiles.c; path = ../../Engine/src/tiles.c; sourceTree = "<group>"; };
+		2D058BE2168689A500E283DC /* network.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = network.h; path = ../../Engine/src/network.h; sourceTree = "<group>"; };
+		2D058BE3168689B200E283DC /* network.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = network.c; path = ../../Engine/src/network.c; sourceTree = "<group>"; };
 		2D2A07B8167EFA4900064107 /* music.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = music.h; path = ../../Game/src/audiolib/music.h; sourceTree = "<group>"; };
 		2D2A07BA167EFB5500064107 /* premap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = premap.h; path = ../../Game/src/premap.h; sourceTree = "<group>"; };
 		2D2A07BB167F1ABA00064107 /* global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = global.h; path = ../../Game/src/global.h; sourceTree = "<group>"; };
@@ -210,6 +213,7 @@
 				2D7B62191678885A00E35E54 /* platform.h */,
 				2D7B621B1678885A00E35E54 /* fixedPoint_math.h */,
 				2D058BCD168651F700E283DC /* tiles.h */,
+				2D058BE2168689A500E283DC /* network.h */,
 			);
 			name = headers;
 			sourceTree = "<group>";
@@ -226,6 +230,7 @@
 				2D2A07C9168286D400064107 /* filesystem.c */,
 				2D7B621A1678885A00E35E54 /* fixedPoint_math.c */,
 				2D058BCF1686520B00E283DC /* tiles.c */,
+				2D058BE3168689B200E283DC /* network.c */,
 			);
 			name = implementations;
 			sourceTree = "<group>";
@@ -511,6 +516,7 @@
 				2D4FB6FF167D430F00915887 /* sdl_midi.c in Sources */,
 				2D2A07CA168286D500064107 /* filesystem.c in Sources */,
 				2D058BD01686520B00E283DC /* tiles.c in Sources */,
+				2D058BE4168689B200E283DC /* network.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -535,6 +541,9 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = NO;
+				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -561,6 +570,9 @@
 				FRAMEWORK_SEARCH_PATHS = "/Library/Frameworks/**";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = NO;
+				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;

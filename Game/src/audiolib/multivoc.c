@@ -2131,7 +2131,7 @@ int MV_StartDemandFeedPlayback
 
 int MV_PlayRaw
    (
-   char *ptr,
+   uint8_t *ptr,
    unsigned long length,
    unsigned rate,
    int   pitchoffset,
@@ -2161,7 +2161,7 @@ int MV_PlayRaw
 
 int MV_PlayLoopedRaw
    (
-   char *ptr,
+   uint8_t *ptr,
    unsigned long length,
    char *loopstart,
    char *loopend,
@@ -2258,7 +2258,7 @@ int MV_PlayWAV
 
 int MV_PlayWAV3D
    (
-   char *ptr,
+   uint8_t *ptr,
    int  pitchoffset,
    int  angle,
    int  distance,
@@ -2310,7 +2310,7 @@ int MV_PlayWAV3D
 
 int MV_PlayLoopedWAV
    (
-   char *ptr,
+   uint8_t *ptr,
    long  loopstart,
    long  loopend,
    int   pitchoffset,
@@ -2447,7 +2447,7 @@ int MV_PlayLoopedWAV
 
 int MV_PlayVOC3D
    (
-   char *ptr,
+   uint8_t *ptr,
    int  pitchoffset,
    int  angle,
    int  distance,
@@ -2527,7 +2527,7 @@ int MV_PlayVOC
 
 int MV_PlayLoopedVOC
    (
-   char *ptr,
+   uint8_t *ptr,
    long  loopstart,
    long  loopend,
    int   pitchoffset,
@@ -2760,7 +2760,7 @@ int MV_GetVolume
 
 void MV_SetCallBack
    (
-   void ( *function )( unsigned long )
+   void ( *function )( int32_t )
    )
 
    {

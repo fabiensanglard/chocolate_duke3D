@@ -284,7 +284,7 @@ uint8_t  loadsound(uint16_t num)
 
     Sound[num].lock = 200;
 
-    allocache((int32_t *)&Sound[num].ptr,l,(uint8_t  *)&Sound[num].lock);
+    allocache(&Sound[num].ptr,l,(uint8_t  *)&Sound[num].lock);
     kread( fp, Sound[num].ptr , l);
     kclose( fp );
     return 1;

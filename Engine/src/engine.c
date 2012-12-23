@@ -205,7 +205,8 @@ int32_t xyaspect, viewingrangerecip;
 int32_t asm1, asm2, asm3, asm4;
 
 
-int32_t vplce[4], vince[4], bufplce[4];
+int32_t vplce[4], vince[4];
+int32_t bufplce[4];
 
 uint8_t*  palookupoffse[4];
 
@@ -1369,7 +1370,8 @@ static void wallscan(int32_t x1, int32_t x2,
         if (u4 > y1ve[3])
             vplce[3] = prevlineasm1(vince[3],palookupoffse[3],u4-y1ve[3]-1,vplce[3],bufplce[3],ylookup[y1ve[3]]+x+frameoffset+3);
 
-        if (d4 >= u4) vlineasm4(d4-u4+1,ylookup[u4]+x+frameoffset);
+        if (d4 >= u4) 
+            vlineasm4(d4-u4+1,ylookup[u4]+x+frameoffset);
 
         i = x+frameoffset+ylookup[d4+1];
         
@@ -3749,7 +3751,8 @@ static void dorotatesprite (int32_t sx, int32_t sy, int32_t z, short a, short pi
                             int32_t cy1, int32_t cx2, int32_t cy2)
 {
     int32_t cosang, sinang, v, nextv, dax1, dax2, oy, bx, by, ny1, ny2;
-    int32_t i, x, y, x1, y1, x2, y2, gx1, gy1, bufplc;
+    int32_t i, x, y, x1, y1, x2, y2, gx1, gy1;
+    uint8_t* bufplc;
     uint8_t* palookupoffs;
     uint8_t* p;
     int32_t xoff, yoff, npoints, yplc, yinc, lx, rx, xx, xend;
@@ -3966,25 +3969,37 @@ static void dorotatesprite (int32_t sx, int32_t sy, int32_t z, short a, short pi
                 {
                     if ((bad != 0) || (u4 >= d4))
                     {
-                        if (!(bad&1)) prevlineasm1(vince[0],palookupoffse[0],y2ve[0]-y1ve[0],vplce[0],bufplce[0],ylookup[y1ve[0]]+p+0);
-                        if (!(bad&2)) prevlineasm1(vince[1],palookupoffse[1],y2ve[1]-y1ve[1],vplce[1],bufplce[1],ylookup[y1ve[1]]+p+1);
-                        if (!(bad&4)) prevlineasm1(vince[2],palookupoffse[2],y2ve[2]-y1ve[2],vplce[2],bufplce[2],ylookup[y1ve[2]]+p+2);
-                        if (!(bad&8)) prevlineasm1(vince[3],palookupoffse[3],y2ve[3]-y1ve[3],vplce[3],bufplce[3],ylookup[y1ve[3]]+p+3);
+                        if (!(bad&1)) 
+                            prevlineasm1(vince[0],palookupoffse[0],y2ve[0]-y1ve[0],vplce[0],bufplce[0],ylookup[y1ve[0]]+p+0);
+                        if (!(bad&2)) 
+                            prevlineasm1(vince[1],palookupoffse[1],y2ve[1]-y1ve[1],vplce[1],bufplce[1],ylookup[y1ve[1]]+p+1);
+                        if (!(bad&4)) 
+                            prevlineasm1(vince[2],palookupoffse[2],y2ve[2]-y1ve[2],vplce[2],bufplce[2],ylookup[y1ve[2]]+p+2);
+                        if (!(bad&8)) 
+                            prevlineasm1(vince[3],palookupoffse[3],y2ve[3]-y1ve[3],vplce[3],bufplce[3],ylookup[y1ve[3]]+p+3);
                         continue;
                     }
 
-                    if (u4 > y1ve[0]) vplce[0] = prevlineasm1(vince[0],palookupoffse[0],u4-y1ve[0]-1,vplce[0],bufplce[0],ylookup[y1ve[0]]+p+0);
-                    if (u4 > y1ve[1]) vplce[1] = prevlineasm1(vince[1],palookupoffse[1],u4-y1ve[1]-1,vplce[1],bufplce[1],ylookup[y1ve[1]]+p+1);
-                    if (u4 > y1ve[2]) vplce[2] = prevlineasm1(vince[2],palookupoffse[2],u4-y1ve[2]-1,vplce[2],bufplce[2],ylookup[y1ve[2]]+p+2);
-                    if (u4 > y1ve[3]) vplce[3] = prevlineasm1(vince[3],palookupoffse[3],u4-y1ve[3]-1,vplce[3],bufplce[3],ylookup[y1ve[3]]+p+3);
+                    if (u4 > y1ve[0]) 
+                        vplce[0] = prevlineasm1(vince[0],palookupoffse[0],u4-y1ve[0]-1,vplce[0],bufplce[0],ylookup[y1ve[0]]+p+0);
+                    if (u4 > y1ve[1]) 
+                        vplce[1] = prevlineasm1(vince[1],palookupoffse[1],u4-y1ve[1]-1,vplce[1],bufplce[1],ylookup[y1ve[1]]+p+1);
+                    if (u4 > y1ve[2]) 
+                        vplce[2] = prevlineasm1(vince[2],palookupoffse[2],u4-y1ve[2]-1,vplce[2],bufplce[2],ylookup[y1ve[2]]+p+2);
+                    if (u4 > y1ve[3]) 
+                        vplce[3] = prevlineasm1(vince[3],palookupoffse[3],u4-y1ve[3]-1,vplce[3],bufplce[3],ylookup[y1ve[3]]+p+3);
 
                     if (d4 >= u4) vlineasm4(d4-u4+1,ylookup[u4]+p);
 
                     i = p+ylookup[d4+1];
-                    if (y2ve[0] > d4) prevlineasm1(vince[0],palookupoffse[0],y2ve[0]-d4-1,vplce[0],bufplce[0],i+0);
-                    if (y2ve[1] > d4) prevlineasm1(vince[1],palookupoffse[1],y2ve[1]-d4-1,vplce[1],bufplce[1],i+1);
-                    if (y2ve[2] > d4) prevlineasm1(vince[2],palookupoffse[2],y2ve[2]-d4-1,vplce[2],bufplce[2],i+2);
-                    if (y2ve[3] > d4) prevlineasm1(vince[3],palookupoffse[3],y2ve[3]-d4-1,vplce[3],bufplce[3],i+3);
+                    if (y2ve[0] > d4) 
+                        prevlineasm1(vince[0],palookupoffse[0],y2ve[0]-d4-1,vplce[0],bufplce[0],i+0);
+                    if (y2ve[1] > d4) 
+                        prevlineasm1(vince[1],palookupoffse[1],y2ve[1]-d4-1,vplce[1],bufplce[1],i+1);
+                    if (y2ve[2] > d4) 
+                        prevlineasm1(vince[2],palookupoffse[2],y2ve[2]-d4-1,vplce[2],bufplce[2],i+2);
+                    if (y2ve[3] > d4) 
+                        prevlineasm1(vince[3],palookupoffse[3],y2ve[3]-d4-1,vplce[3],bufplce[3],i+3);
                 }
                 else
                 {
@@ -8942,7 +8957,8 @@ uint8_t  getpixel(int32_t x, int32_t y)
 /* MUST USE RESTOREFORDRAWROOMS AFTER DRAWING */
 int32_t setviewcnt = 0;
 int32_t bakvidoption[4];
-int32_t bakframeplace[4], bakxsiz[4], bakysiz[4];
+uint8_t* bakframeplace[4];
+int32_t bakxsiz[4], bakysiz[4];
 int32_t bakwindowx1[4], bakwindowy1[4];
 int32_t bakwindowx2[4], bakwindowy2[4];
 

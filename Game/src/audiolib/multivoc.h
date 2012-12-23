@@ -91,31 +91,31 @@ void  MV_StopRecord( void );
 int   MV_StartDemandFeedPlayback( void ( *function )( char **ptr, uint32_t *length ),
          int rate, int pitchoffset, int vol, int left, int right,
          int priority, unsigned long callbackval );
-int   MV_PlayRaw( char *ptr, unsigned long length,
+int   MV_PlayRaw( uint8_t *ptr, unsigned long length,
          unsigned rate, int pitchoffset, int vol, int left,
          int right, int priority, unsigned long callbackval );
-int   MV_PlayLoopedRaw( char *ptr, unsigned long length,
+int   MV_PlayLoopedRaw( uint8_t *ptr, unsigned long length,
          char *loopstart, char *loopend, unsigned rate, int pitchoffset,
          int vol, int left, int right, int priority,
          unsigned long callbackval );
 int   MV_PlayWAV( char *ptr, int pitchoffset, int vol, int left,
          int right, int priority, unsigned long callbackval );
-int   MV_PlayWAV3D( char *ptr, int pitchoffset, int angle, int distance,
+int   MV_PlayWAV3D( uint8_t *ptr, int pitchoffset, int angle, int distance,
          int priority, unsigned long callbackval );
-int   MV_PlayLoopedWAV( char *ptr, long loopstart, long loopend,
+int   MV_PlayLoopedWAV( uint8_t *ptr, long loopstart, long loopend,
          int pitchoffset, int vol, int left, int right, int priority,
          unsigned long callbackval );
-int   MV_PlayVOC3D( char *ptr, int pitchoffset, int angle, int distance,
+int   MV_PlayVOC3D( uint8_t *ptr, int pitchoffset, int angle, int distance,
          int priority, unsigned long callbackval );
 int   MV_PlayVOC( char *ptr, int pitchoffset, int vol, int left, int right,
          int priority, unsigned long callbackval );
-int   MV_PlayLoopedVOC( char *ptr, long loopstart, long loopend,
+int   MV_PlayLoopedVOC( uint8_t *ptr, long loopstart, long loopend,
          int pitchoffset, int vol, int left, int right, int priority,
          uint32_t callbackval );
 void  MV_CreateVolumeTable( int index, int volume, int MaxVolume );
 void  MV_SetVolume( int volume );
 int   MV_GetVolume( void );
-void  MV_SetCallBack( void ( *function )( unsigned long ) );
+void  MV_SetCallBack( void ( *function )( int32_t ) );
 void  MV_SetReverseStereo( int setting );
 int   MV_GetReverseStereo( void );
 int   MV_Init( int soundcard, int MixRate, int Voices, int numchannels,

@@ -2454,8 +2454,8 @@ void cheatkeys(short snum)
 
     if( playing_old_demo && !(sb_snum&((15<<8)|(1<<12)|(1<<15)|(1<<16)|(1<<22)|(1<<19)|(1<<20)|(1<<21)|(1<<24)|(1<<25)|(1<<27)|(1<<28)|(1<<29)|(1<<30)|(1<<31))) )
         p->interface_toggle_flag = 0;
-    else if((p->interface_toggle_flag == 0 && ( sb_snum&(1<<17) ) == 0) && playing_old_demo ||
-		(sb_snum && ( sync[snum].bits&(1<<17) ) == 0) && !playing_old_demo)
+    else if(((p->interface_toggle_flag == 0 && ( sb_snum&(1<<17) ) == 0) && playing_old_demo) ||
+		((sb_snum && ( sync[snum].bits&(1<<17) ) == 0) && !playing_old_demo))
     {
 		if(playing_old_demo)
 			p->interface_toggle_flag = 1;

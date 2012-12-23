@@ -32,7 +32,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 //=============
 
 int32 numlumps;
-static void  **lumpcache;
+static uint8_t  **lumpcache;
 static lumpinfo_t *lumpinfo;              // location of each lump on disk
 static boolean RTS_Started = false;
 
@@ -225,7 +225,7 @@ void *RTS_GetSound (int32 lump)
    if (lumpcache[lump] == NULL)
    {
       lumplockbyte[lump] = 200;
-      allocache((int32_t *)&lumpcache[lump],(int32_t)RTS_SoundLength(lump-1),&lumplockbyte[lump]);
+      allocache(&lumpcache[lump],(int32_t)RTS_SoundLength(lump-1),&lumplockbyte[lump]);
       RTS_ReadLump(lump, lumpcache[lump]);
    }
    else
