@@ -26,7 +26,7 @@
 
 #include "platform.h"
 
-#include "pragmas.h"
+#include "fixedPoint_math.h"
 
 #define MAXPLAYERS 16
 #define BAKSIZ 16384

@@ -100,9 +100,9 @@
     <ClCompile Include="src\draw.c" />
     <ClCompile Include="src\Engine.c" />
     <ClCompile Include="src\filesystem.c" />
+    <ClCompile Include="src\fixedPoint_math.c" />
     <ClCompile Include="src\mmulti.c" />
     <ClCompile Include="src\mmulti_stable.cpp" />
-    <ClCompile Include="src\pragmas.c" />
     <ClCompile Include="src\enet\host.c" />
     <ClCompile Include="src\enet\list.c" />
     <ClCompile Include="src\enet\memory.c" />
@@ -111,6 +111,8 @@
     <ClCompile Include="src\enet\protocol.c" />
     <ClCompile Include="src\enet\unix.c" />
     <ClCompile Include="src\enet\win32.c" />
+    <ClCompile Include="src\network.c" />
+    <ClCompile Include="src\tiles.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\build.h" />
@@ -119,9 +121,11 @@
     <ClInclude Include="src\draw.h" />
     <ClInclude Include="src\Engine.h" />
     <ClInclude Include="src\filesystem.h" />
+    <ClInclude Include="src\fixedPoint_math.h" />
     <ClInclude Include="src\icon.h" />
+    <ClInclude Include="src\network.h" />
     <ClInclude Include="src\platform.h" />
-    <ClInclude Include="src\pragmas.h" />
+    <ClInclude Include="src\tiles.h" />
     <ClInclude Include="src\win32_compat.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
