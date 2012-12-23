@@ -622,7 +622,7 @@ int FX_SetFrequency
 
 int FX_PlayVOC
    (
-   char *ptr,
+   uint8_t *ptr,
    int pitchoffset,
    int vol,
    int left,
@@ -688,7 +688,7 @@ int FX_PlayLoopedVOC
 
 int FX_PlayWAV
    (
-   char *ptr,
+   uint8_t *ptr,
    int32_t pitchoffset,
    int32_t vol,
    int32_t left,
