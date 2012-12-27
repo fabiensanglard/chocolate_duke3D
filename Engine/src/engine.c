@@ -122,34 +122,18 @@ typedef struct pvWall_s{
 // Potentially Visible walls are stored in this stack.
 pvWall_t pvWalls[MAXWALLSB];
 
-/*
-//This is the structure emitted for each bunch detected during scanning.
-typedef struct bunch_s{
-    short firstWallId;
-    short lastWallId;
-} bunch_t;
-
-//Stack containing the bunchs.
-bunch_t bunchList[MAXWALLSB];
-*/
-
-
-
-
-
-
-
-
 
 //xb1 and xb2 seems to be storing the column of the wall endpoint
 //yb1 and yb2 store the Y distance from the camera.
+
 static int32_t xb1[MAXWALLSB], yb1[MAXWALLSB], xb2[MAXWALLSB], yb2[MAXWALLSB];
 
 //rx1,rx2,ry1,ry2 stores the cameraspace wall endpoints coordinates.
 static int32_t rx1[MAXWALLSB], ry1[MAXWALLSB], rx2[MAXWALLSB], ry2[MAXWALLSB];
+static short thesector[MAXWALLSB], thewall[MAXWALLSB];
 
-//
-static short bunchWallsList[MAXWALLSB], thesector[MAXWALLSB], thewall[MAXWALLSB];
+// bunchWallsList contains the list of walls in a bunch.
+static short bunchWallsList[MAXWALLSB];
 
 static short bunchfirst[MAXWALLSB], bunchlast[MAXWALLSB];
 
