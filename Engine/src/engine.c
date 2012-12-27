@@ -149,7 +149,7 @@ static int32_t xb1[MAXWALLSB], yb1[MAXWALLSB], xb2[MAXWALLSB], yb2[MAXWALLSB];
 static int32_t rx1[MAXWALLSB], ry1[MAXWALLSB], rx2[MAXWALLSB], ry2[MAXWALLSB];
 
 //
-static short p2[MAXWALLSB], thesector[MAXWALLSB], thewall[MAXWALLSB];
+static short bunchWallsList[MAXWALLSB], thesector[MAXWALLSB], thewall[MAXWALLSB];
 
 static short bunchfirst[MAXWALLSB], bunchlast[MAXWALLSB];
 
@@ -518,14 +518,14 @@ static void scansector (short sectnum)
             rx2[numscans] = xp2;
             ry2[numscans] = yp2;
 
-            p2[numscans] = numscans+1;
+            bunchWallsList[numscans] = numscans+1;
             numscans++;
             
 skipitaddwall:
 
             if ((wall[z].point2 < z) && (scanfirst < numscans))
             {
-                p2[numscans-1] = scanfirst;
+                bunchWallsList[numscans-1] = scanfirst;
                 scanfirst = numscans;
             }
         }
@@ -536,20 +536,20 @@ skipitaddwall:
         // continuously visible list of wall: A sector can generate many bunches.
         for(z=numscansbefore; z<numscans; z++)
         {
-            if ((wall[thewall[z]].point2 != thewall[p2[z]]) || (xb2[z] >= xb1[p2[z]]))
+            if ((wall[thewall[z]].point2 != thewall[bunchWallsList[z]]) || (xb2[z] >= xb1[bunchWallsList[z]]))
             {
                 // Create an entry in the bunch list
-                bunchfirst[numbunches++] = p2[z];
+                bunchfirst[numbunches++] = bunchWallsList[z];
                 
                 //Mark the end of the bunch wall list.
-                p2[z] = -1;
+                bunchWallsList[z] = -1;
             }
         }
 
         //For each bunch, find the last wall and cache it in bunchlast.
         for(z=bunchfrst; z<numbunches; z++)
         {
-            for(zz=bunchfirst[z]; p2[zz]>=0; zz=p2[zz]);
+            for(zz=bunchfirst[z]; bunchWallsList[zz]>=0; zz=bunchWallsList[zz]);
             bunchlast[z] = zz;
         }
 
@@ -1631,7 +1631,7 @@ static void parascan(int32_t dax1, int32_t dax2, int32_t sectnum,uint8_t  dastat
     k = 11 - (picsiz[globalpicnum]&15) - pskybits;
     x = -1;
 
-    for(z=bunchfirst[bunch]; z>=0; z=p2[z])
+    for(z=bunchfirst[bunch]; z>=0; z=bunchWallsList[z])
     {
         wallnum = thewall[z];
         nextsectnum = wall[wallnum].nextsector;
@@ -2207,7 +2207,7 @@ static void drawalls(int32_t bunch)
 
     andwstat1 = 0xff;
     andwstat2 = 0xff;
-    for(; z>=0; z=p2[z]){ /* uplc/dplc calculation */
+    for(; z>=0; z=bunchWallsList[z]){ /* uplc/dplc calculation */
     
         andwstat1 &= wallmost(uplc,z,sectnum,(uint8_t )0);
         andwstat2 &= wallmost(dplc,z,sectnum,(uint8_t )1);
@@ -2234,7 +2234,7 @@ static void drawalls(int32_t bunch)
     }
 
     /* DRAW WALLS SECTION! */
-    for(z=bunchfirst[bunch]; z>=0; z=p2[z]){
+    for(z=bunchfirst[bunch]; z>=0; z=bunchWallsList[z]){
         
         x1 = xb1[z];
         x2 = xb2[z];
@@ -2761,7 +2761,7 @@ static int bunchfront(int32_t firstBunchID, int32_t secondBunchID)
 		int lastWallID;
         for(lastWallID=bunchfirst[secondBunchID]; 
 			xb2[lastWallID]<x1b1; 
-			lastWallID=p2[lastWallID]);
+			lastWallID=bunchWallsList[lastWallID]);
 
         return(wallfront(bunchfirst[firstBunchID],lastWallID));
     }
@@ -2771,7 +2771,7 @@ static int bunchfront(int32_t firstBunchID, int32_t secondBunchID)
 		int lastWallID;
 		for(lastWallID=bunchfirst[firstBunchID]; 
 			xb2[lastWallID]<x1b2; 
-			lastWallID=p2[lastWallID]);
+			lastWallID=bunchWallsList[lastWallID]);
 
 		return(wallfront(lastWallID,bunchfirst[secondBunchID]));
 	}
@@ -3022,7 +3022,7 @@ void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,short daang, int32
 
         if (automapping)
         {
-            for(z=bunchfirst[closest]; z>=0; z=p2[z])
+            for(z=bunchfirst[closest]; z>=0; z=bunchWallsList[z])
                 show2dwall[thewall[z]>>3] |= pow2char[thewall[z]&7];
         }
 
@@ -8338,7 +8338,7 @@ static int clippoly (int32_t npoints, int32_t clipstat)
                 {
                     rx2[npoints2] = rx1[z]+scale(rx1[zz]-rx1[z],s1,s1-s2);
                     ry2[npoints2] = ry1[z]+scale(ry1[zz]-ry1[z],s1,s1-s2);
-                    if (s1 < 0) p2[splitcnt++] = npoints2;
+                    if (s1 < 0) bunchWallsList[splitcnt++] = npoints2;
                     xb2[npoints2] = npoints2+1;
                     npoints2++;
                 }
@@ -8358,9 +8358,9 @@ static int clippoly (int32_t npoints, int32_t clipstat)
         for(z=1; z<splitcnt; z++)
             for(zz=0; zz<z; zz++)
             {
-                z1 = p2[z];
+                z1 = bunchWallsList[z];
                 z2 = xb2[z1];
-                z3 = p2[zz];
+                z3 = bunchWallsList[zz];
                 z4 = xb2[z3];
                 s1  = klabs(rx2[z1]-rx2[z2])+klabs(ry2[z1]-ry2[z2]);
                 s1 += klabs(rx2[z3]-rx2[z4])+klabs(ry2[z3]-ry2[z4]);
@@ -8368,9 +8368,9 @@ static int clippoly (int32_t npoints, int32_t clipstat)
                 s2 += klabs(rx2[z3]-rx2[z2])+klabs(ry2[z3]-ry2[z2]);
                 if (s2 < s1)
                 {
-                    t = xb2[p2[z]];
-                    xb2[p2[z]] = xb2[p2[zz]];
-                    xb2[p2[zz]] = t;
+                    t = xb2[bunchWallsList[z]];
+                    xb2[bunchWallsList[z]] = xb2[bunchWallsList[zz]];
+                    xb2[bunchWallsList[zz]] = t;
                 }
             }
 
@@ -8399,7 +8399,7 @@ static int clippoly (int32_t npoints, int32_t clipstat)
                 {
                     rx1[npoints] = rx2[z]+scale(rx2[zz]-rx2[z],s1,s1-s2);
                     ry1[npoints] = ry2[z]+scale(ry2[zz]-ry2[z],s1,s1-s2);
-                    if (s1 < 0) p2[splitcnt++] = npoints;
+                    if (s1 < 0) bunchWallsList[splitcnt++] = npoints;
                     xb1[npoints] = npoints+1;
                     npoints++;
                 }
@@ -8419,9 +8419,9 @@ static int clippoly (int32_t npoints, int32_t clipstat)
         for(z=1; z<splitcnt; z++)
             for(zz=0; zz<z; zz++)
             {
-                z1 = p2[z];
+                z1 = bunchWallsList[z];
                 z2 = xb1[z1];
-                z3 = p2[zz];
+                z3 = bunchWallsList[zz];
                 z4 = xb1[z3];
                 s1  = klabs(rx1[z1]-rx1[z2])+klabs(ry1[z1]-ry1[z2]);
                 s1 += klabs(rx1[z3]-rx1[z4])+klabs(ry1[z3]-ry1[z4]);
@@ -8429,9 +8429,9 @@ static int clippoly (int32_t npoints, int32_t clipstat)
                 s2 += klabs(rx1[z3]-rx1[z2])+klabs(ry1[z3]-ry1[z2]);
                 if (s2 < s1)
                 {
-                    t = xb1[p2[z]];
-                    xb1[p2[z]] = xb1[p2[zz]];
-                    xb1[p2[zz]] = t;
+                    t = xb1[bunchWallsList[z]];
+                    xb1[bunchWallsList[z]] = xb1[bunchWallsList[zz]];
+                    xb1[bunchWallsList[zz]] = t;
                 }
             }
     }
@@ -8461,7 +8461,7 @@ static int clippoly (int32_t npoints, int32_t clipstat)
                 {
                     rx2[npoints2] = rx1[z]+scale(rx1[zz]-rx1[z],s1,s1-s2);
                     ry2[npoints2] = ry1[z]+scale(ry1[zz]-ry1[z],s1,s1-s2);
-                    if (s1 < 0) p2[splitcnt++] = npoints2;
+                    if (s1 < 0) bunchWallsList[splitcnt++] = npoints2;
                     xb2[npoints2] = npoints2+1;
                     npoints2++;
                 }
@@ -8481,9 +8481,9 @@ static int clippoly (int32_t npoints, int32_t clipstat)
         for(z=1; z<splitcnt; z++)
             for(zz=0; zz<z; zz++)
             {
-                z1 = p2[z];
+                z1 = bunchWallsList[z];
                 z2 = xb2[z1];
-                z3 = p2[zz];
+                z3 = bunchWallsList[zz];
                 z4 = xb2[z3];
                 s1  = klabs(rx2[z1]-rx2[z2])+klabs(ry2[z1]-ry2[z2]);
                 s1 += klabs(rx2[z3]-rx2[z4])+klabs(ry2[z3]-ry2[z4]);
@@ -8491,9 +8491,9 @@ static int clippoly (int32_t npoints, int32_t clipstat)
                 s2 += klabs(rx2[z3]-rx2[z2])+klabs(ry2[z3]-ry2[z2]);
                 if (s2 < s1)
                 {
-                    t = xb2[p2[z]];
-                    xb2[p2[z]] = xb2[p2[zz]];
-                    xb2[p2[zz]] = t;
+                    t = xb2[bunchWallsList[z]];
+                    xb2[bunchWallsList[z]] = xb2[bunchWallsList[zz]];
+                    xb2[bunchWallsList[zz]] = t;
                 }
             }
 
@@ -8522,7 +8522,7 @@ static int clippoly (int32_t npoints, int32_t clipstat)
                 {
                     rx1[npoints] = rx2[z]+scale(rx2[zz]-rx2[z],s1,s1-s2);
                     ry1[npoints] = ry2[z]+scale(ry2[zz]-ry2[z],s1,s1-s2);
-                    if (s1 < 0) p2[splitcnt++] = npoints;
+                    if (s1 < 0) bunchWallsList[splitcnt++] = npoints;
                     xb1[npoints] = npoints+1;
                     npoints++;
                 }
@@ -8542,9 +8542,9 @@ static int clippoly (int32_t npoints, int32_t clipstat)
         for(z=1; z<splitcnt; z++)
             for(zz=0; zz<z; zz++)
             {
-                z1 = p2[z];
+                z1 = bunchWallsList[z];
                 z2 = xb1[z1];
-                z3 = p2[zz];
+                z3 = bunchWallsList[zz];
                 z4 = xb1[z3];
                 s1  = klabs(rx1[z1]-rx1[z2])+klabs(ry1[z1]-ry1[z2]);
                 s1 += klabs(rx1[z3]-rx1[z4])+klabs(ry1[z3]-ry1[z4]);
@@ -8552,9 +8552,9 @@ static int clippoly (int32_t npoints, int32_t clipstat)
                 s2 += klabs(rx1[z3]-rx1[z2])+klabs(ry1[z3]-ry1[z2]);
                 if (s2 < s1)
                 {
-                    t = xb1[p2[z]];
-                    xb1[p2[z]] = xb1[p2[zz]];
-                    xb1[p2[zz]] = t;
+                    t = xb1[bunchWallsList[z]];
+                    xb1[bunchWallsList[z]] = xb1[bunchWallsList[zz]];
+                    xb1[bunchWallsList[zz]] = t;
                 }
             }
     }
