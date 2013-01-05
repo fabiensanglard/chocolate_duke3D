@@ -3695,7 +3695,7 @@ static int clippoly4(int32_t cx1, int32_t cy1, int32_t cx2, int32_t cy2)
 
         if ((cx1 <= x1) && (x1 <= cx2)){
             pvWalls[nn] .cameraSpaceCoo[1][VEC_X] = x1;
-            pvWalls[nn] .cameraSpaceCoo[1][VEC_Y] = pvWalls[nn] .cameraSpaceCoo[0][VEC_Y];
+            pvWalls[nn] .cameraSpaceCoo[1][VEC_Y] = pvWalls[z] .cameraSpaceCoo[0][VEC_Y];
             nn++;
         }
         
@@ -8700,7 +8700,7 @@ void drawmapview(int32_t dax, int32_t day, int32_t zoome, short ang)
                 continue;
             
             bakx1 = pvWalls[0].cameraSpaceCoo[0][VEC_X];
-            baky1 = mulscale16(pvWalls[3].cameraSpaceCoo[0][VEC_Y]-(ydim<<11),xyaspect)+(ydim<<11);
+            baky1 = mulscale16(pvWalls[0].cameraSpaceCoo[0][VEC_Y]-(ydim<<11),xyaspect)+(ydim<<11);
             if (i&0x0f)
             {
                 npoints = clippoly(npoints,i);
@@ -8875,7 +8875,7 @@ void drawmapview(int32_t dax, int32_t day, int32_t zoome, short ang)
             y = dmulscale16(oy,xvect2,ox,yvect2) + (ydim<<11);
             i |= getclipmask(x-cx1,cx2-x,y-cy1,cy2-y);
             pvWalls[0].cameraSpaceCoo[0][VEC_X] = x;
-            pvWalls[3].cameraSpaceCoo[0][VEC_Y] = y;
+            pvWalls[0].cameraSpaceCoo[0][VEC_Y] = y;
 
             ox = x2 - dax;
             oy = y2 - day;
@@ -8901,7 +8901,7 @@ void drawmapview(int32_t dax, int32_t day, int32_t zoome, short ang)
 
             if ((i&0xf0) != 0xf0) continue;
             bakx1 = pvWalls[0].cameraSpaceCoo[0][VEC_X];
-            baky1 = mulscale16(pvWalls[3].cameraSpaceCoo[0][VEC_Y]-(ydim<<11),xyaspect)+(ydim<<11);
+            baky1 = mulscale16(pvWalls[0].cameraSpaceCoo[0][VEC_Y]-(ydim<<11),xyaspect)+(ydim<<11);
             if (i&0x0f)
             {
                 npoints = clippoly(npoints,i);
