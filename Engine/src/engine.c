@@ -106,7 +106,7 @@ uint8_t  textfont[1024], smalltextfont[1024];
 
 
 
-enum vector_index_e {VEC_X=0,VECY=1};
+enum vector_index_e {VEC_X=0,VEC_Y=1};
 enum screenSpaceCoo_index_e {VEC_COL_X=0,VEC_DIST=1};
 typedef int32_t vector_t[2];
 typedef int32_t coo2D_t[2];
@@ -123,14 +123,18 @@ typedef struct pvWall_s{
 pvWall_t pvWalls[MAXWALLSB];
 
 
+
+
 //xb1 and xb2 seems to be storing the column of the wall endpoint
 //yb1 and yb2 store the Y distance from the camera.
 
 static int32_t xb1[MAXWALLSB], yb1[MAXWALLSB], xb2[MAXWALLSB], yb2[MAXWALLSB];
 
+/*
 //rx1,rx2,ry1,ry2 stores the cameraspace wall endpoints coordinates.
 static int32_t rx1[MAXWALLSB], ry1[MAXWALLSB], rx2[MAXWALLSB], ry2[MAXWALLSB];
 static short thesector[MAXWALLSB], thewall[MAXWALLSB];
+*/
 
 // bunchWallsList contains the list of walls in a bunch.
 static short bunchWallsList[MAXWALLSB];
@@ -493,14 +497,15 @@ static void scansector (short sectnum)
 
             // Made it all the way!
             // Time to add this wall information to the stack of wall potentially visible.
-            thesector[numscans] = sectnum;
-            thewall[numscans] = z;
+            pvWalls[numscans].sectorId = sectnum;
+            pvWalls[numscans].worldWallId = z;
 
             //Save the camera space wall endpoints coordinate (camera origin at player location + rotated according to player orientation).
-            rx1[numscans] = xp1;
-            ry1[numscans] = yp1;
-            rx2[numscans] = xp2;
-            ry2[numscans] = yp2;
+            pvWalls[numscans].cameraSpaceCoo[0][VEC_X] = xp1;
+            pvWalls[numscans].cameraSpaceCoo[0][VEC_Y] = yp1;
+            pvWalls[numscans].cameraSpaceCoo[1][VEC_X] = xp2;
+            pvWalls[numscans].cameraSpaceCoo[1][VEC_Y] = yp2;
+            
 
             bunchWallsList[numscans] = numscans+1;
             numscans++;
@@ -515,12 +520,14 @@ skipitaddwall:
         }
 
         //FCS: TODO rename this p2[] to bunchList[] or something like that. This name is an abomination
+        //     DONE, p2 is now called "bunchWallsList".
         
         //Break down the list of walls for this sector into bunchs. Since a bunch is a
         // continuously visible list of wall: A sector can generate many bunches.
         for(z=numscansbefore; z<numscans; z++)
         {
-            if ((wall[thewall[z]].point2 != thewall[bunchWallsList[z]]) || (xb2[z] >= xb1[bunchWallsList[z]]))
+            if ((wall[pvWalls[z].worldWallId].point2 !=
+                 pvWalls[bunchWallsList[z]].worldWallId) || (xb2[z] >= xb1[bunchWallsList[z]]))
             {
                 // Create an entry in the bunch list
                 bunchfirst[numbunches++] = bunchWallsList[z];
@@ -552,20 +559,22 @@ skipitaddwall:
 static void prepwall(int32_t z, walltype *wal)
 {
     int32_t i, l=0, ol=0, splc, sinc, x, topinc, top, botinc, bot, walxrepeat;
-
+    vector_t* wallCoo = pvWalls[z].cameraSpaceCoo;
+    
     walxrepeat = (wal->xrepeat<<3);
 
     /* lwall calculation */
     i = xb1[z]-halfxdimen;
     
-    topinc = -(ry1[z]>>2);
-    botinc = ((ry2[z]-ry1[z])>>8);
+    //Let's use some of the camera space wall coordinate now.
+    topinc = -(wallCoo[0][VEC_Y]>>2);
+    botinc = ((wallCoo[1][VEC_Y]-wallCoo[0][VEC_Y])>>8);
     
-    top = mulscale5(rx1[z],xdimen)+mulscale2(topinc,i);
-    bot = mulscale11(rx1[z]-rx2[z],xdimen)+mulscale2(botinc,i);
+    top = mulscale5(wallCoo[0][VEC_X],xdimen)+mulscale2(topinc,i);
+    bot = mulscale11(wallCoo[0][VEC_X]-wallCoo[1][VEC_X],xdimen)+mulscale2(botinc,i);
 
-    splc = mulscale19(ry1[z],xdimscale);
-    sinc = mulscale16(ry2[z]-ry1[z],xdimscale);
+    splc = mulscale19(wallCoo[0][VEC_Y],xdimscale);
+    sinc = mulscale16(wallCoo[1][VEC_Y]-wallCoo[0][VEC_Y],xdimscale);
 
     //X screenspce column of point Z.
     x = xb1[z];
@@ -1567,7 +1576,7 @@ static void parascan(int32_t dax1, int32_t dax2, int32_t sectnum,uint8_t  dastat
     int32_t j, k, l, m, n, x, z, wallnum, nextsectnum, globalhorizbak;
     short *topptr, *botptr;
 
-    sectnum = thesector[bunchfirst[bunch]];
+    sectnum = pvWalls[bunchfirst[bunch]].sectorId;
     sec = &sector[sectnum];
 
     globalhorizbak = globalhoriz;
@@ -1617,7 +1626,7 @@ static void parascan(int32_t dax1, int32_t dax2, int32_t sectnum,uint8_t  dastat
 
     for(z=bunchfirst[bunch]; z>=0; z=bunchWallsList[z])
     {
-        wallnum = thewall[z];
+        wallnum = pvWalls[z].worldWallId;
         nextsectnum = wall[wallnum].nextsector;
 
         if (dastat == 0) j = sector[nextsectnum].ceilingstat;
@@ -2018,7 +2027,7 @@ static int wallmost(short *mostbuf, int32_t w, int32_t sectnum, uint8_t  dastat)
             return(owallmost(mostbuf,w,z));
     }
 
-    i = thewall[w];
+    i = pvWalls[w].worldWallId;
     if (i == sector[sectnum].wallptr)
         return(owallmost(mostbuf,w,z));
 
@@ -2186,7 +2195,7 @@ static void drawalls(int32_t bunch)
     uint8_t  andwstat1, andwstat2;
 
     z = bunchfirst[bunch];
-    sectnum = thesector[z];
+    sectnum = pvWalls[z].sectorId;
     sec = &sector[sectnum];
 
     andwstat1 = 0xff;
@@ -2238,7 +2247,7 @@ static void drawalls(int32_t bunch)
             }
         }
 
-        wallnum = thewall[z];
+        wallnum = pvWalls[z].worldWallId;
         wal = &wall[wallnum];
         nextsectnum = wal->nextsector;
         nextsec = &sector[nextsectnum];
@@ -2398,7 +2407,7 @@ static void drawalls(int32_t bunch)
                         
                         globalshade = (int32_t)wal->shade;
                         globalpal = (int32_t)wal->pal;
-                        wallnum = thewall[z];
+                        wallnum = pvWalls[z].worldWallId;
                         wal = &wall[wallnum];
                     }
                     else{
@@ -2633,13 +2642,13 @@ int wallfront(int32_t pvWallID1, int32_t pvWallID2)
     int32_t x11, y11, x21, y21, x12, y12, x22, y22, dx, dy, t1, t2;
 
 	//It seems we are going to work in Worldspace coordinates.
-    wal = &wall[thewall[pvWallID1]];
+    wal = &wall[pvWalls[pvWallID1].worldWallId];
     x11 = wal->x;
     y11 = wal->y;
     wal = &wall[wal->point2];
     x21 = wal->x;
     y21 = wal->y;
-    wal = &wall[thewall[pvWallID2]];
+    wal = &wall[pvWalls[pvWallID2].worldWallId];
     x12 = wal->x;
     y12 = wal->y;
     wal = &wall[wal->point2];
@@ -2928,7 +2937,7 @@ void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,short daang, int32
         mirrorsx2 = 0;
         for(i=numscans-1; i>=0; i--)
         {
-            if (wall[thewall[i]].nextsector < 0) continue;
+            if (wall[pvWalls[i].worldWallId].nextsector < 0) continue;
             if (xb1[i] < mirrorsx1) mirrorsx1 = xb1[i];
             if (xb2[i] > mirrorsx2) mirrorsx2 = xb2[i];
         }
@@ -3007,7 +3016,8 @@ void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,short daang, int32
         if (automapping)
         {
             for(z=bunchfirst[closest]; z>=0; z=bunchWallsList[z])
-                show2dwall[thewall[z]>>3] |= pow2char[thewall[z]&7];
+                show2dwall[pvWalls[z].worldWallId>>3] |=
+                pow2char  [pvWalls[z].worldWallId&7];
         }
 
         //Since we just rendered a bunch, lower the current stack element so we can treat the next item
@@ -3668,33 +3678,54 @@ void uninitengine(void)
 
 
 /* Assume npoints=4 with polygon on &rx1,&ry1 */
+//FCS This is horrible to read: I hate you.
 static int clippoly4(int32_t cx1, int32_t cy1, int32_t cx2, int32_t cy2)
 {
     int32_t n, nn, z, zz, x, x1, x2, y, y1, y2, t;
-
+    
     nn = 0;
     z = 0;
     do
     {
         zz = ((z+1)&3);
-        x1 = rx1[z];
-        x2 = rx1[zz]-x1;
+        
+        
+        x1 = pvWalls[z] .cameraSpaceCoo[0][VEC_X];
+        x2 = pvWalls[zz].cameraSpaceCoo[0][VEC_X]-x1;
 
-        if ((cx1 <= x1) && (x1 <= cx2))
-            rx2[nn] = x1, ry2[nn] = ry1[z], nn++;
-
-        if (x2 <= 0) x = cx2;
-        else x = cx1;
+        if ((cx1 <= x1) && (x1 <= cx2)){
+            pvWalls[nn] .cameraSpaceCoo[1][VEC_X] = x1;
+            pvWalls[nn] .cameraSpaceCoo[1][VEC_Y] = pvWalls[nn] .cameraSpaceCoo[0][VEC_Y];
+            nn++;
+        }
+        
+        if (x2 <= 0)
+            x = cx2;
+        else
+            x = cx1;
+        
         t = x-x1;
-        if (((t-x2)^t) < 0)
-            rx2[nn] = x, ry2[nn] = ry1[z]+scale(t,ry1[zz]-ry1[z],x2), nn++;
-
-        if (x2 <= 0) x = cx1;
-        else x = cx2;
+        
+        if (((t-x2)^t) < 0){
+            pvWalls[nn] .cameraSpaceCoo[1][VEC_X] = x;
+            pvWalls[nn] .cameraSpaceCoo[1][VEC_Y] = pvWalls[z].cameraSpaceCoo[0][VEC_Y] +
+            scale(t,pvWalls[zz].cameraSpaceCoo[0][VEC_Y]-pvWalls[z].cameraSpaceCoo[0][VEC_Y],x2);
+            nn++;
+        }
+        
+        if (x2 <= 0)
+            x = cx1;
+        else
+            x = cx2;
+        
         t = x-x1;
-        if (((t-x2)^t) < 0)
-            rx2[nn] = x, ry2[nn] = ry1[z]+scale(t,ry1[zz]-ry1[z],x2), nn++;
-
+        
+        if (((t-x2)^t) < 0){
+            pvWalls[nn] .cameraSpaceCoo[1][VEC_X] = x;
+            pvWalls[nn] .cameraSpaceCoo[1][VEC_Y] = pvWalls[z] .cameraSpaceCoo[0][VEC_Y]+
+            scale(t,pvWalls[zz].cameraSpaceCoo[0][VEC_Y]-pvWalls[z].cameraSpaceCoo[0][VEC_Y],x2);
+            nn++;
+        }
         z = zz;
     } while (z != 0);
     if (nn < 3) return(0);
@@ -3704,25 +3735,40 @@ static int clippoly4(int32_t cx1, int32_t cy1, int32_t cx2, int32_t cy2)
     do
     {
         zz = z+1;
-        if (zz == nn) zz = 0;
-        y1 = ry2[z];
-        y2 = ry2[zz]-y1;
+        if (zz == nn)
+            zz = 0;
+        
+        y1 = pvWalls[z] .cameraSpaceCoo[1][VEC_Y];
+        y2 = pvWalls[zz].cameraSpaceCoo[1][VEC_Y]-y1;
 
-        if ((cy1 <= y1) && (y1 <= cy2))
-            ry1[n] = y1, rx1[n] = rx2[z], n++;
-
+        if ((cy1 <= y1) && (y1 <= cy2)){
+            pvWalls[n] .cameraSpaceCoo[0][VEC_Y] = y1;
+            pvWalls[n] .cameraSpaceCoo[0][VEC_X] = pvWalls[z] .cameraSpaceCoo[1][VEC_X];
+            n++;
+        }
         if (y2 <= 0) y = cy2;
         else y = cy1;
         t = y-y1;
-        if (((t-y2)^t) < 0)
-            ry1[n] = y, rx1[n] = rx2[z]+scale(t,rx2[zz]-rx2[z],y2), n++;
-
+        if (((t-y2)^t) < 0){
+            pvWalls[n] .cameraSpaceCoo[0][VEC_Y] = y;
+            pvWalls[n] .cameraSpaceCoo[0][VEC_X] =
+            pvWalls[z] .cameraSpaceCoo[1][VEC_X]+scale(t,
+                                                       pvWalls[zz].cameraSpaceCoo[1][VEC_X]-
+                                                       pvWalls[z] .cameraSpaceCoo[1][VEC_X],y2);
+            n++;
+        }
+        
         if (y2 <= 0) y = cy1;
         else y = cy2;
         t = y-y1;
-        if (((t-y2)^t) < 0)
-            ry1[n] = y, rx1[n] = rx2[z]+scale(t,rx2[zz]-rx2[z],y2), n++;
-
+        if (((t-y2)^t) < 0){
+            pvWalls[n] .cameraSpaceCoo[0][VEC_Y] = y;
+            pvWalls[n] .cameraSpaceCoo[0][VEC_X] =
+            pvWalls[z] .cameraSpaceCoo[1][VEC_X]+scale(t,
+                                                       pvWalls[zz].cameraSpaceCoo[1][VEC_X]-
+                                                       pvWalls[z ].cameraSpaceCoo[1][VEC_X],y2);
+            n++;
+        }
         z = zz;
     } while (z != 0);
     return(n);
@@ -3798,47 +3844,84 @@ static void dorotatesprite (int32_t sx, int32_t sy, int32_t z, short a, short pi
         yv2 = yv;
     }
 
-    ry1[0] = sy - (yv*xoff + xv*yoff);
-    ry1[1] = ry1[0] + yv * tileWidht;
-    ry1[3] = ry1[0] + xv * tileHeight;
-    ry1[2] = ry1[1]+ry1[3]-ry1[0];
+    
+    //Taking care of the Y coordinates.
+    pvWalls[0].cameraSpaceCoo[0][VEC_Y] = sy - (yv*xoff + xv*yoff);
+    pvWalls[1].cameraSpaceCoo[0][VEC_Y] = pvWalls[0].cameraSpaceCoo[0][VEC_Y] + yv * tileWidht;
+    pvWalls[3].cameraSpaceCoo[0][VEC_Y] = pvWalls[0].cameraSpaceCoo[0][VEC_Y] + xv * tileHeight;
+    
+    pvWalls[2].cameraSpaceCoo[0][VEC_Y] = pvWalls[1].cameraSpaceCoo[0][VEC_Y] +
+                                          pvWalls[3].cameraSpaceCoo[0][VEC_Y] -
+                                          pvWalls[0].cameraSpaceCoo[0][VEC_Y] ;
+    
     i = (cy1<<16);
-    if ((ry1[0]<i) && (ry1[1]<i) && (ry1[2]<i) && (ry1[3]<i)) return;
+    
+    if ((pvWalls[0].cameraSpaceCoo[0][VEC_Y]<i) &&
+        (pvWalls[1].cameraSpaceCoo[0][VEC_Y]<i) &&
+        (pvWalls[2].cameraSpaceCoo[0][VEC_Y]<i) &&
+        (pvWalls[3].cameraSpaceCoo[0][VEC_Y]<i))
+        return;
+    
     i = (cy2<<16);
-    if ((ry1[0]>i) && (ry1[1]>i) && (ry1[2]>i) && (ry1[3]>i)) return;
+    
+    if ((pvWalls[0].cameraSpaceCoo[0][VEC_Y]>i) &&
+        (pvWalls[1].cameraSpaceCoo[0][VEC_Y]>i) &&
+        (pvWalls[2].cameraSpaceCoo[0][VEC_Y]>i) &&
+        (pvWalls[3].cameraSpaceCoo[0][VEC_Y]>i))
+        return;
 
-    rx1[0] = sx - (xv2*xoff - yv2*yoff);
-    rx1[1] = rx1[0] + xv2 * tileWidht;
-    rx1[3] = rx1[0] - yv2 * tileHeight;
-    rx1[2] = rx1[1]+rx1[3]-rx1[0];
+    
+    
+    //Taking care of the X coordinates.
+    pvWalls[0].cameraSpaceCoo[0][VEC_X] = sx - (xv2*xoff - yv2*yoff);
+    pvWalls[1].cameraSpaceCoo[0][VEC_X] = pvWalls[0].cameraSpaceCoo[0][VEC_X] + xv2 * tileWidht;
+    pvWalls[3].cameraSpaceCoo[0][VEC_X] = pvWalls[0].cameraSpaceCoo[0][VEC_X] - yv2 * tileHeight;
+    pvWalls[2].cameraSpaceCoo[0][VEC_X] = pvWalls[1].cameraSpaceCoo[0][VEC_X] +
+                                          pvWalls[3].cameraSpaceCoo[0][VEC_X] -
+                                          pvWalls[0].cameraSpaceCoo[0][VEC_X] ;
+    
     i = (cx1<<16);
-    if ((rx1[0]<i) && (rx1[1]<i) && (rx1[2]<i) && (rx1[3]<i)) return;
+    if ((pvWalls[0].cameraSpaceCoo[0][VEC_X]<i) &&
+        (pvWalls[1].cameraSpaceCoo[0][VEC_X]<i) &&
+        (pvWalls[2].cameraSpaceCoo[0][VEC_X]<i) &&
+        (pvWalls[3].cameraSpaceCoo[0][VEC_X]<i))
+        return;
+    
     i = (cx2<<16);
-    if ((rx1[0]>i) && (rx1[1]>i) && (rx1[2]>i) && (rx1[3]>i)) return;
+    if ((pvWalls[0].cameraSpaceCoo[0][VEC_X]>i) &&
+        (pvWalls[1].cameraSpaceCoo[0][VEC_X]>i) &&
+        (pvWalls[2].cameraSpaceCoo[0][VEC_X]>i) &&
+        (pvWalls[3].cameraSpaceCoo[0][VEC_X]>i))
+        return;
+    
+    
+    
+    
+    
     
     
 
-    gx1 = rx1[0];
-    gy1 = ry1[0];   /* back up these before clipping */
+    gx1 = pvWalls[0].cameraSpaceCoo[0][VEC_X];
+    gy1 = pvWalls[0].cameraSpaceCoo[0][VEC_Y];   /* back up these before clipping */
 
     if ((npoints = clippoly4(cx1<<16,cy1<<16,(cx2+1)<<16,(cy2+1)<<16)) < 3) return;
 
-    lx = rx1[0];
-    rx = rx1[0];
+    lx = pvWalls[0].cameraSpaceCoo[0][VEC_X];
+    rx = pvWalls[0].cameraSpaceCoo[0][VEC_X];
 
     nextv = 0;
     for(v=npoints-1; v>=0; v--)
     {
-        x1 = rx1[v];
-        x2 = rx1[nextv];
+        x1 = pvWalls[    v].cameraSpaceCoo[0][VEC_X];
+        x2 = pvWalls[nextv].cameraSpaceCoo[0][VEC_X];
         dax1 = (x1>>16);
         if (x1 < lx) lx = x1;
         dax2 = (x2>>16);
         if (x1 > rx) rx = x1;
         if (dax1 != dax2)
         {
-            y1 = ry1[v];
-            y2 = ry1[nextv];
+            y1 = pvWalls[    v].cameraSpaceCoo[0][VEC_Y];
+            y2 = pvWalls[nextv].cameraSpaceCoo[0][VEC_Y];
             yinc = divscale16(y2-y1,x2-x1);
             if (dax2 > dax1)
             {
@@ -4544,11 +4627,21 @@ static void drawmaskwall(short damaskwallcnt)
     sectortype *sec, *nsec;
     walltype *wal;
 
+    //Retrive pvWall ID.
     z = maskwall[damaskwallcnt];
-    wal = &wall[thewall[z]];
-    sectnum = thesector[z];
+    
+    //Retrive world wall ID.
+    wal = &wall[pvWalls[z].worldWallId];
+    
+    //Retrive sector ID
+    sectnum = pvWalls[z].sectorId;
+    
+    //Retrive sector.
     sec = &sector[sectnum];
+    
+    //Retrive next sector.
     nsec = &sector[wal->nextsector];
+    
     z1 = max(nsec->ceilingz,sec->ceilingz);
     z2 = min(nsec->floorz,sec->floorz);
 
@@ -4557,11 +4650,14 @@ static void drawmaskwall(short damaskwallcnt)
     for(x=xb1[z]; x<=xb2[z]; x++)
         if (uplc[x] > uwall[x])
             uwall[x] = uplc[x];
+    
     wallmost(dwall,z,sectnum,(uint8_t )1);
     wallmost(dplc,z,(int32_t)wal->nextsector,(uint8_t )1);
     for(x=xb1[z]; x<=xb2[z]; x++)
         if (dplc[x] < dwall[x])
             dwall[x] = dplc[x];
+    
+    
     prepwall(z,wal);
 
     globalorientation = (int32_t)wal->cstat;
@@ -4628,7 +4724,7 @@ static void drawmaskwall(short damaskwallcnt)
         if ((searchy >= uwall[searchx]) && (searchy <= dwall[searchx]))
         {
             searchsector = sectnum;
-            searchwall = thewall[z];
+            searchwall = pvWalls[z].worldWallId;
             searchstat = 4;
             searchit = 1;
         }
@@ -4873,7 +4969,7 @@ static void drawsprite (int32_t snum)
             if ((yp <= yb1[j]) && (yp <= yb2[j]))
                 continue;
             
-            if (spritewallfront(tspr,(int32_t)thewall[j]) && ((yp <= yb1[j]) || (yp <= yb2[j])))
+            if (spritewallfront(tspr,pvWalls[j].worldWallId) && ((yp <= yb1[j]) || (yp <= yb2[j])))
                 continue;
 
             dalx2 = max(xb1[j],lx);
@@ -5067,11 +5163,12 @@ static void drawsprite (int32_t snum)
                 lwall[x] = j-lwall[x];
         }
 
-        rx1[MAXWALLSB-1] = xp1;
-        ry1[MAXWALLSB-1] = yp1;
-        rx2[MAXWALLSB-1] = xp2;
-        ry2[MAXWALLSB-1] = yp2;
+        pvWalls[MAXWALLSB-1].cameraSpaceCoo[0][VEC_X] = xp1 ;
+        pvWalls[MAXWALLSB-1].cameraSpaceCoo[0][VEC_Y] = yp1 ;
+        pvWalls[MAXWALLSB-1].cameraSpaceCoo[1][VEC_X] = xp2 ;
+        pvWalls[MAXWALLSB-1].cameraSpaceCoo[1][VEC_Y] = yp2 ;
 
+        
         hplc = divscale19(xdimenscale,yb1[MAXWALLSB-1]);
         hinc = divscale19(xdimenscale,yb2[MAXWALLSB-1]);
         hinc = (hinc-hplc)/(xb2[MAXWALLSB-1]-xb1[MAXWALLSB-1]+1);
@@ -5131,7 +5228,7 @@ static void drawsprite (int32_t snum)
                 }
                 else
                 {
-                    x = thewall[j];
+                    x = pvWalls[j].worldWallId;
                     xp1 = wall[x].x;
                     yp1 = wall[x].y;
                     x = wall[x].point2;
@@ -5153,7 +5250,7 @@ static void drawsprite (int32_t snum)
                         {
                             if ((xp2-xp1)*(tspr->y-yp1) == (tspr->x-xp1)*(yp2-yp1))
                             {
-                                if (wall[thewall[j]].nextsector == tspr->sectnum)
+                                if (wall[pvWalls[j].worldWallId].nextsector == tspr->sectnum)
                                     x = 0x80000000;
                                 else
                                     x = 0x7fffffff;
@@ -5498,7 +5595,7 @@ static void drawsprite (int32_t snum)
             if ((yp <= yb1[j]) && (yp <= yb2[j])) continue;
 
             /* if (spritewallfront(tspr,thewall[j]) == 0) */
-            x = thewall[j];
+            x = pvWalls[j].worldWallId;
             xp1 = wall[x].x;
             yp1 = wall[x].y;
             x = wall[x].point2;
@@ -5506,7 +5603,7 @@ static void drawsprite (int32_t snum)
             yp2 = wall[x].y;
             x = (xp2-xp1)*(tspr->y-yp1)-(tspr->x-xp1)*(yp2-yp1);
             if ((yp > yb1[j]) && (yp > yb2[j])) x = -1;
-            if ((x >= 0) && ((x != 0) || (wall[thewall[j]].nextsector != tspr->sectnum))) continue;
+            if ((x >= 0) && ((x != 0) || (wall[pvWalls[j].worldWallId].nextsector != tspr->sectnum))) continue;
 
             dalx2 = max(xb1[j],lx);
             darx2 = min(xb2[j],rx);
@@ -5697,7 +5794,7 @@ void drawmasks(void)
     while ((spritesortcnt > 0) && (maskwallcnt > 0))  /* While BOTH > 0 */
     {
         j = maskwall[maskwallcnt-1];
-        if (spritewallfront(tspriteptr[spritesortcnt-1],(int32_t)thewall[j]) == 0)
+        if (spritewallfront(tspriteptr[spritesortcnt-1],pvWalls[j].worldWallId) == 0)
             drawsprite(--spritesortcnt);
         else
         {
@@ -5706,7 +5803,7 @@ void drawmasks(void)
             gap = 0;
             for(i=spritesortcnt-2; i>=0; i--)
                 if ((xb1[j] <= (spritesx[i]>>8)) && ((spritesx[i]>>8) <= xb2[j]))
-                    if (spritewallfront(tspriteptr[i],(int32_t)thewall[j]) == 0)
+                    if (spritewallfront(tspriteptr[i],pvWalls[j].worldWallId) == 0)
                     {
                         drawsprite(i);
                         tspriteptr[i]->owner = -1;
@@ -8171,7 +8268,7 @@ static void fillpolygon(int32_t npoints)
     maxy = 0x80000000;
     for(z=npoints-1; z>=0; z--)
     {
-        y = ry1[z];
+        y = pvWalls[z].cameraSpaceCoo[0][VEC_Y];
         miny = min(miny,y);
         maxy = max(maxy,y);
     }
@@ -8190,14 +8287,14 @@ static void fillpolygon(int32_t npoints)
     for(z=npoints-1; z>=0; z--)
     {
         zz = xb1[z];
-        y1 = ry1[z];
+        y1 = pvWalls[z] .cameraSpaceCoo[0][VEC_Y];
         day1 = (y1>>12);
-        y2 = ry1[zz];
+        y2 = pvWalls[zz].cameraSpaceCoo[0][VEC_Y];
         day2 = (y2>>12);
         if (day1 != day2)
         {
-            x1 = rx1[z];
-            x2 = rx1[zz];
+            x1 = pvWalls[z ].cameraSpaceCoo[0][VEC_X];
+            x2 = pvWalls[zz].cameraSpaceCoo[0][VEC_X];
             xinc = divscale12(x2-x1,y2-y1);
             if (day2 > day1)
             {
@@ -8304,25 +8401,29 @@ static int clippoly (int32_t npoints, int32_t clipstat)
         splitcnt = 0;
         do
         {
-            s2 = cx1-rx1[z];
+            s2 = cx1-pvWalls[z].cameraSpaceCoo[0][VEC_X];
             do
             {
                 zz = xb1[z];
                 xb1[z] = -1;
                 s1 = s2;
-                s2 = cx1-rx1[zz];
-                if (s1 < 0)
-                {
-                    rx2[npoints2] = rx1[z];
-                    ry2[npoints2] = ry1[z];
+                s2 = cx1-pvWalls[zz].cameraSpaceCoo[0][VEC_X];
+                if (s1 < 0){
+                    pvWalls[npoints2].cameraSpaceCoo[1][VEC_X] = pvWalls[zz].cameraSpaceCoo[0][VEC_X];
+                    pvWalls[npoints2].cameraSpaceCoo[1][VEC_Y] = pvWalls[zz].cameraSpaceCoo[0][VEC_Y];
                     xb2[npoints2] = npoints2+1;
                     npoints2++;
                 }
-                if ((s1^s2) < 0)
-                {
-                    rx2[npoints2] = rx1[z]+scale(rx1[zz]-rx1[z],s1,s1-s2);
-                    ry2[npoints2] = ry1[z]+scale(ry1[zz]-ry1[z],s1,s1-s2);
-                    if (s1 < 0) bunchWallsList[splitcnt++] = npoints2;
+                
+                if ((s1^s2) < 0){
+                    pvWalls[npoints2].cameraSpaceCoo[1][VEC_X] =
+                    pvWalls[z].cameraSpaceCoo[0][VEC_X]+scale(pvWalls[zz].cameraSpaceCoo[0][VEC_X]-pvWalls[z].cameraSpaceCoo[0][VEC_X],s1,s1-s2);
+                    pvWalls[npoints2].cameraSpaceCoo[1][VEC_Y] =
+                    pvWalls[z].cameraSpaceCoo[0][VEC_Y]+scale(pvWalls[zz].cameraSpaceCoo[0][VEC_Y]-pvWalls[z].cameraSpaceCoo[0][VEC_Y],s1,s1-s2);
+                    
+                    if (s1 < 0)
+                        bunchWallsList[splitcnt++] = npoints2;
+                    
                     xb2[npoints2] = npoints2+1;
                     npoints2++;
                 }
@@ -8346,10 +8447,10 @@ static int clippoly (int32_t npoints, int32_t clipstat)
                 z2 = xb2[z1];
                 z3 = bunchWallsList[zz];
                 z4 = xb2[z3];
-                s1  = klabs(rx2[z1]-rx2[z2])+klabs(ry2[z1]-ry2[z2]);
-                s1 += klabs(rx2[z3]-rx2[z4])+klabs(ry2[z3]-ry2[z4]);
-                s2  = klabs(rx2[z1]-rx2[z4])+klabs(ry2[z1]-ry2[z4]);
-                s2 += klabs(rx2[z3]-rx2[z2])+klabs(ry2[z3]-ry2[z2]);
+                s1  = klabs(pvWalls[z1].cameraSpaceCoo[1][VEC_X]-pvWalls[z2].cameraSpaceCoo[1][VEC_X])+klabs(pvWalls[z1].cameraSpaceCoo[1][VEC_Y]-pvWalls[z2].cameraSpaceCoo[1][VEC_Y]);
+                s1 += klabs(pvWalls[z3].cameraSpaceCoo[1][VEC_X]-pvWalls[z4].cameraSpaceCoo[1][VEC_X])+klabs(pvWalls[z3].cameraSpaceCoo[1][VEC_Y]-pvWalls[z4].cameraSpaceCoo[1][VEC_Y]);
+                s2  = klabs(pvWalls[z1].cameraSpaceCoo[1][VEC_X]-pvWalls[z4].cameraSpaceCoo[1][VEC_X])+klabs(pvWalls[z1].cameraSpaceCoo[1][VEC_Y]-pvWalls[z4].cameraSpaceCoo[1][VEC_Y]);
+                s2 += klabs(pvWalls[z3].cameraSpaceCoo[1][VEC_X]-pvWalls[z2].cameraSpaceCoo[1][VEC_X])+klabs(pvWalls[z3].cameraSpaceCoo[1][VEC_Y]-pvWalls[z2].cameraSpaceCoo[1][VEC_Y]);
                 if (s2 < s1)
                 {
                     t = xb2[bunchWallsList[z]];
@@ -8365,24 +8466,24 @@ static int clippoly (int32_t npoints, int32_t clipstat)
         splitcnt = 0;
         do
         {
-            s2 = cy1-ry2[z];
+            s2 = cy1-pvWalls[z].cameraSpaceCoo[1][VEC_Y];
             do
             {
                 zz = xb2[z];
                 xb2[z] = -1;
                 s1 = s2;
-                s2 = cy1-ry2[zz];
+                s2 = cy1-pvWalls[zz].cameraSpaceCoo[1][VEC_Y];
                 if (s1 < 0)
                 {
-                    rx1[npoints] = rx2[z];
-                    ry1[npoints] = ry2[z];
+                    pvWalls[npoints].cameraSpaceCoo[0][VEC_X] = pvWalls[z].cameraSpaceCoo[1][VEC_X];
+                    pvWalls[npoints].cameraSpaceCoo[0][VEC_Y] = pvWalls[z].cameraSpaceCoo[1][VEC_Y];
                     xb1[npoints] = npoints+1;
                     npoints++;
                 }
                 if ((s1^s2) < 0)
                 {
-                    rx1[npoints] = rx2[z]+scale(rx2[zz]-rx2[z],s1,s1-s2);
-                    ry1[npoints] = ry2[z]+scale(ry2[zz]-ry2[z],s1,s1-s2);
+                    pvWalls[npoints].cameraSpaceCoo[0][VEC_X] = pvWalls[z].cameraSpaceCoo[1][VEC_X]+scale(pvWalls[zz].cameraSpaceCoo[1][VEC_X]-pvWalls[z].cameraSpaceCoo[1][VEC_X],s1,s1-s2);
+                    pvWalls[npoints].cameraSpaceCoo[0][VEC_Y] = pvWalls[z].cameraSpaceCoo[1][VEC_Y]+scale(pvWalls[zz].cameraSpaceCoo[1][VEC_Y]-pvWalls[z].cameraSpaceCoo[1][VEC_Y],s1,s1-s2);
                     if (s1 < 0) bunchWallsList[splitcnt++] = npoints;
                     xb1[npoints] = npoints+1;
                     npoints++;
@@ -8407,10 +8508,10 @@ static int clippoly (int32_t npoints, int32_t clipstat)
                 z2 = xb1[z1];
                 z3 = bunchWallsList[zz];
                 z4 = xb1[z3];
-                s1  = klabs(rx1[z1]-rx1[z2])+klabs(ry1[z1]-ry1[z2]);
-                s1 += klabs(rx1[z3]-rx1[z4])+klabs(ry1[z3]-ry1[z4]);
-                s2  = klabs(rx1[z1]-rx1[z4])+klabs(ry1[z1]-ry1[z4]);
-                s2 += klabs(rx1[z3]-rx1[z2])+klabs(ry1[z3]-ry1[z2]);
+                s1  = klabs(pvWalls[z1].cameraSpaceCoo[0][VEC_X]-pvWalls[z2].cameraSpaceCoo[0][VEC_X])+klabs(pvWalls[z1].cameraSpaceCoo[0][VEC_Y]-pvWalls[z2].cameraSpaceCoo[0][VEC_Y]);
+                s1 += klabs(pvWalls[z3].cameraSpaceCoo[0][VEC_X]-pvWalls[z4].cameraSpaceCoo[0][VEC_X])+klabs(pvWalls[z3].cameraSpaceCoo[0][VEC_Y]-pvWalls[z4].cameraSpaceCoo[0][VEC_Y]);
+                s2  = klabs(pvWalls[z1].cameraSpaceCoo[0][VEC_X]-pvWalls[z4].cameraSpaceCoo[0][VEC_X])+klabs(pvWalls[z1].cameraSpaceCoo[0][VEC_Y]-pvWalls[z4].cameraSpaceCoo[0][VEC_Y]);
+                s2 += klabs(pvWalls[z3].cameraSpaceCoo[0][VEC_X]-pvWalls[z2].cameraSpaceCoo[0][VEC_X])+klabs(pvWalls[z3].cameraSpaceCoo[0][VEC_Y]-pvWalls[z2].cameraSpaceCoo[0][VEC_Y]);
                 if (s2 < s1)
                 {
                     t = xb1[bunchWallsList[z]];
@@ -8427,24 +8528,24 @@ static int clippoly (int32_t npoints, int32_t clipstat)
         splitcnt = 0;
         do
         {
-            s2 = rx1[z]-cx2;
+            s2 = pvWalls[z].cameraSpaceCoo[0][VEC_X]-cx2;
             do
             {
                 zz = xb1[z];
                 xb1[z] = -1;
                 s1 = s2;
-                s2 = rx1[zz]-cx2;
+                s2 = pvWalls[zz].cameraSpaceCoo[0][VEC_X]-cx2;
                 if (s1 < 0)
                 {
-                    rx2[npoints2] = rx1[z];
-                    ry2[npoints2] = ry1[z];
+                    pvWalls[npoints2].cameraSpaceCoo[1][VEC_X] = pvWalls[z].cameraSpaceCoo[0][VEC_X];
+                    pvWalls[npoints2].cameraSpaceCoo[1][VEC_Y] = pvWalls[z].cameraSpaceCoo[0][VEC_Y];
                     xb2[npoints2] = npoints2+1;
                     npoints2++;
                 }
                 if ((s1^s2) < 0)
                 {
-                    rx2[npoints2] = rx1[z]+scale(rx1[zz]-rx1[z],s1,s1-s2);
-                    ry2[npoints2] = ry1[z]+scale(ry1[zz]-ry1[z],s1,s1-s2);
+                    pvWalls[npoints2].cameraSpaceCoo[1][VEC_X] = pvWalls[z].cameraSpaceCoo[0][VEC_X]+scale(pvWalls[zz].cameraSpaceCoo[0][VEC_X]-pvWalls[z].cameraSpaceCoo[0][VEC_X],s1,s1-s2);
+                    pvWalls[npoints2].cameraSpaceCoo[1][VEC_Y] = pvWalls[z].cameraSpaceCoo[0][VEC_Y]+scale(pvWalls[zz].cameraSpaceCoo[0][VEC_Y]-pvWalls[z].cameraSpaceCoo[0][VEC_Y],s1,s1-s2);
                     if (s1 < 0) bunchWallsList[splitcnt++] = npoints2;
                     xb2[npoints2] = npoints2+1;
                     npoints2++;
@@ -8469,10 +8570,10 @@ static int clippoly (int32_t npoints, int32_t clipstat)
                 z2 = xb2[z1];
                 z3 = bunchWallsList[zz];
                 z4 = xb2[z3];
-                s1  = klabs(rx2[z1]-rx2[z2])+klabs(ry2[z1]-ry2[z2]);
-                s1 += klabs(rx2[z3]-rx2[z4])+klabs(ry2[z3]-ry2[z4]);
-                s2  = klabs(rx2[z1]-rx2[z4])+klabs(ry2[z1]-ry2[z4]);
-                s2 += klabs(rx2[z3]-rx2[z2])+klabs(ry2[z3]-ry2[z2]);
+                s1  = klabs(pvWalls[z1].cameraSpaceCoo[1][VEC_X]-pvWalls[z2].cameraSpaceCoo[1][VEC_X])+klabs(pvWalls[z1].cameraSpaceCoo[1][VEC_Y]-pvWalls[z2].cameraSpaceCoo[1][VEC_Y]);
+                s1 += klabs(pvWalls[z3].cameraSpaceCoo[1][VEC_X]-pvWalls[z4].cameraSpaceCoo[1][VEC_X])+klabs(pvWalls[z3].cameraSpaceCoo[1][VEC_Y]-pvWalls[z4].cameraSpaceCoo[1][VEC_Y]);
+                s2  = klabs(pvWalls[z1].cameraSpaceCoo[1][VEC_X]-pvWalls[z4].cameraSpaceCoo[1][VEC_X])+klabs(pvWalls[z1].cameraSpaceCoo[1][VEC_Y]-pvWalls[z4].cameraSpaceCoo[1][VEC_Y]);
+                s2 += klabs(pvWalls[z3].cameraSpaceCoo[1][VEC_X]-pvWalls[z2].cameraSpaceCoo[1][VEC_X])+klabs(pvWalls[z3].cameraSpaceCoo[1][VEC_Y]-pvWalls[z2].cameraSpaceCoo[1][VEC_Y]);
                 if (s2 < s1)
                 {
                     t = xb2[bunchWallsList[z]];
@@ -8488,24 +8589,24 @@ static int clippoly (int32_t npoints, int32_t clipstat)
         splitcnt = 0;
         do
         {
-            s2 = ry2[z]-cy2;
+            s2 = pvWalls[z].cameraSpaceCoo[1][VEC_Y]-cy2;
             do
             {
                 zz = xb2[z];
                 xb2[z] = -1;
                 s1 = s2;
-                s2 = ry2[zz]-cy2;
+                s2 = pvWalls[zz].cameraSpaceCoo[1][VEC_Y]-cy2;
                 if (s1 < 0)
                 {
-                    rx1[npoints] = rx2[z];
-                    ry1[npoints] = ry2[z];
+                    pvWalls[npoints].cameraSpaceCoo[0][VEC_X] = pvWalls[z].cameraSpaceCoo[1][VEC_X];
+                    pvWalls[npoints].cameraSpaceCoo[0][VEC_Y] = pvWalls[z].cameraSpaceCoo[1][VEC_Y];
                     xb1[npoints] = npoints+1;
                     npoints++;
                 }
                 if ((s1^s2) < 0)
                 {
-                    rx1[npoints] = rx2[z]+scale(rx2[zz]-rx2[z],s1,s1-s2);
-                    ry1[npoints] = ry2[z]+scale(ry2[zz]-ry2[z],s1,s1-s2);
+                    pvWalls[npoints].cameraSpaceCoo[0][VEC_X] = pvWalls[z].cameraSpaceCoo[1][VEC_X]+scale(pvWalls[zz].cameraSpaceCoo[1][VEC_X]-pvWalls[z].cameraSpaceCoo[1][VEC_X],s1,s1-s2);
+                    pvWalls[npoints].cameraSpaceCoo[0][VEC_Y] = pvWalls[z].cameraSpaceCoo[1][VEC_Y]+scale(pvWalls[zz].cameraSpaceCoo[1][VEC_Y]-pvWalls[z].cameraSpaceCoo[1][VEC_Y],s1,s1-s2);
                     if (s1 < 0) bunchWallsList[splitcnt++] = npoints;
                     xb1[npoints] = npoints+1;
                     npoints++;
@@ -8530,10 +8631,10 @@ static int clippoly (int32_t npoints, int32_t clipstat)
                 z2 = xb1[z1];
                 z3 = bunchWallsList[zz];
                 z4 = xb1[z3];
-                s1  = klabs(rx1[z1]-rx1[z2])+klabs(ry1[z1]-ry1[z2]);
-                s1 += klabs(rx1[z3]-rx1[z4])+klabs(ry1[z3]-ry1[z4]);
-                s2  = klabs(rx1[z1]-rx1[z4])+klabs(ry1[z1]-ry1[z4]);
-                s2 += klabs(rx1[z3]-rx1[z2])+klabs(ry1[z3]-ry1[z2]);
+                s1  = klabs(pvWalls[z1].cameraSpaceCoo[0][VEC_X]-pvWalls[z2].cameraSpaceCoo[0][VEC_X])+klabs(pvWalls[z1].cameraSpaceCoo[0][VEC_Y]-pvWalls[z2].cameraSpaceCoo[0][VEC_Y]);
+                s1 += klabs(pvWalls[z3].cameraSpaceCoo[0][VEC_X]-pvWalls[z4].cameraSpaceCoo[0][VEC_X])+klabs(pvWalls[z3].cameraSpaceCoo[0][VEC_Y]-pvWalls[z4].cameraSpaceCoo[0][VEC_Y]);
+                s2  = klabs(pvWalls[z1].cameraSpaceCoo[0][VEC_X]-pvWalls[z4].cameraSpaceCoo[0][VEC_X])+klabs(pvWalls[z1].cameraSpaceCoo[0][VEC_Y]-pvWalls[z4].cameraSpaceCoo[0][VEC_Y]);
+                s2 += klabs(pvWalls[z3].cameraSpaceCoo[0][VEC_X]-pvWalls[z2].cameraSpaceCoo[0][VEC_X])+klabs(pvWalls[z3].cameraSpaceCoo[0][VEC_Y]-pvWalls[z2].cameraSpaceCoo[0][VEC_Y]);
                 if (s2 < s1)
                 {
                     t = xb1[bunchWallsList[z]];
@@ -8589,8 +8690,8 @@ void drawmapview(int32_t dax, int32_t day, int32_t zoome, short ang)
                 x = dmulscale16(ox,xvect,-oy,yvect) + (xdim<<11);
                 y = dmulscale16(oy,xvect2,ox,yvect2) + (ydim<<11);
                 i |= getclipmask(x-cx1,cx2-x,y-cy1,cy2-y);
-                rx1[npoints] = x;
-                ry1[npoints] = y;
+                pvWalls[npoints].cameraSpaceCoo[0][VEC_X] = x;
+                pvWalls[npoints].cameraSpaceCoo[0][VEC_Y] = y;
                 xb1[npoints] = wal->point2 - startwall;
                 npoints++;
             }
@@ -8598,8 +8699,8 @@ void drawmapview(int32_t dax, int32_t day, int32_t zoome, short ang)
             if ((i&0xf0) != 0xf0)
                 continue;
             
-            bakx1 = rx1[0];
-            baky1 = mulscale16(ry1[0]-(ydim<<11),xyaspect)+(ydim<<11);
+            bakx1 = pvWalls[0].cameraSpaceCoo[0][VEC_X];
+            baky1 = mulscale16(pvWalls[3].cameraSpaceCoo[0][VEC_Y]-(ydim<<11),xyaspect)+(ydim<<11);
             if (i&0x0f)
             {
                 npoints = clippoly(npoints,i);
@@ -8773,34 +8874,34 @@ void drawmapview(int32_t dax, int32_t day, int32_t zoome, short ang)
             x = dmulscale16(ox,xvect,-oy,yvect) + (xdim<<11);
             y = dmulscale16(oy,xvect2,ox,yvect2) + (ydim<<11);
             i |= getclipmask(x-cx1,cx2-x,y-cy1,cy2-y);
-            rx1[0] = x;
-            ry1[0] = y;
+            pvWalls[0].cameraSpaceCoo[0][VEC_X] = x;
+            pvWalls[3].cameraSpaceCoo[0][VEC_Y] = y;
 
             ox = x2 - dax;
             oy = y2 - day;
             x = dmulscale16(ox,xvect,-oy,yvect) + (xdim<<11);
             y = dmulscale16(oy,xvect2,ox,yvect2) + (ydim<<11);
             i |= getclipmask(x-cx1,cx2-x,y-cy1,cy2-y);
-            rx1[1] = x;
-            ry1[1] = y;
+            pvWalls[1].cameraSpaceCoo[0][VEC_X] = x;
+            pvWalls[1].cameraSpaceCoo[0][VEC_Y] = y;
 
             ox = x3 - dax;
             oy = y3 - day;
             x = dmulscale16(ox,xvect,-oy,yvect) + (xdim<<11);
             y = dmulscale16(oy,xvect2,ox,yvect2) + (ydim<<11);
             i |= getclipmask(x-cx1,cx2-x,y-cy1,cy2-y);
-            rx1[2] = x;
-            ry1[2] = y;
+            pvWalls[2].cameraSpaceCoo[0][VEC_X] = x;
+            pvWalls[2].cameraSpaceCoo[0][VEC_Y] = y;
 
-            x = rx1[0]+rx1[2]-rx1[1];
-            y = ry1[0]+ry1[2]-ry1[1];
+            x = pvWalls[0].cameraSpaceCoo[0][VEC_X]+pvWalls[2].cameraSpaceCoo[0][VEC_X]-pvWalls[1].cameraSpaceCoo[0][VEC_X];
+            y = pvWalls[3].cameraSpaceCoo[0][VEC_Y]+pvWalls[2].cameraSpaceCoo[0][VEC_Y]-pvWalls[1].cameraSpaceCoo[0][VEC_Y];
             i |= getclipmask(x-cx1,cx2-x,y-cy1,cy2-y);
-            rx1[3] = x;
-            ry1[3] = y;
+            pvWalls[3].cameraSpaceCoo[0][VEC_X] = x;
+            pvWalls[3].cameraSpaceCoo[0][VEC_Y] = y;
 
             if ((i&0xf0) != 0xf0) continue;
-            bakx1 = rx1[0];
-            baky1 = mulscale16(ry1[0]-(ydim<<11),xyaspect)+(ydim<<11);
+            bakx1 = pvWalls[0].cameraSpaceCoo[0][VEC_X];
+            baky1 = mulscale16(pvWalls[3].cameraSpaceCoo[0][VEC_Y]-(ydim<<11),xyaspect)+(ydim<<11);
             if (i&0x0f)
             {
                 npoints = clippoly(npoints,i);
