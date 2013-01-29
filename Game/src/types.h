@@ -60,7 +60,6 @@ typedef int32                   fixed;
 #define boolean uint8_t
 typedef float                   float32;
 typedef double                  float64;
-typedef int64_t                 float128;
 typedef float64                 appfloat;
 
 
