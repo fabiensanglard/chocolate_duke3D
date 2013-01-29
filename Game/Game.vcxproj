@@ -61,7 +61,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
-      <AdditionalIncludeDirectories>..\..\SDL-1.2.9\include;..\..\SDL_mixer-1.2.6;..\Engine\src;.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../external/SDL-1.2.15/include;../external/SDL_mixer-1.2.12/include;../Engine/src;.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>nDBGRECORD; CHECK_XDUKE_REV; nDEBUG; WIN32; _CONSOLE; PLATFORM_WIN32; _CRT_SECURE_NO_DEPRECATE; _CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -81,7 +81,7 @@
       <OutputFile>$(OutDir)$(SolutionName).exe</OutputFile>
       <Version>19.4</Version>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\..\Directx_dec_2005\;..\..\SDL-1.2.9\VisualC\SDL\Release;..\..\SDL_mixer-1.2.6\VisualC\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../external/SDL-1.2.15\lib\x86;../external/SDL_mixer-1.2.12\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
@@ -92,7 +92,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\SDL-1.2.9\include;..\SDL_mixer-1.2.6;..\Engine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../external/SDL-1.2.15/include;../external/SDL_mixer-1.2.12/include;../Engine/src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>nDBGRECORD; CHECK_XDUKE_REV; nDEBUG; WIN32; _CONSOLE; PLATFORM_WIN32; _CRT_SECURE_NO_DEPRECATE; _CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -112,7 +112,7 @@
       <AdditionalDependencies>dxguid.lib;sdl.lib;sdl_mixer.lib;winmm.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)Game.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\Directx_dec_2005\;..\SDL-1.2.9\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../external/SDL-1.2.15\lib\x86;../external/SDL_mixer-1.2.12\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
     </Link>
