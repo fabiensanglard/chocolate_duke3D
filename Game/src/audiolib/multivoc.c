@@ -288,7 +288,7 @@ char *MV_ErrorString
 
 static void MV_Mix( VoiceNode *voice )
 {
-   char          *start;
+   uint8_t        *start;
    int            length;
    long           voclength;
    unsigned long  position;
@@ -538,7 +538,7 @@ playbackstatus MV_GetNextVOCBlock
    unsigned char *ptr;
    int            blocktype;
    int            lastblocktype;
-   unsigned long  blocklength;
+   uint32_t       blocklength;
    unsigned long  samplespeed;
    unsigned int   tc;
    int            packtype;
@@ -2163,8 +2163,8 @@ int MV_PlayLoopedRaw
    (
    uint8_t *ptr,
    unsigned long length,
-   char *loopstart,
-   char *loopend,
+   uint8_t *loopstart,
+   uint8_t *loopend,
    unsigned rate,
    int   pitchoffset,
    int   vol,
@@ -2230,7 +2230,7 @@ int MV_PlayLoopedRaw
 
 int MV_PlayWAV
    (
-   char *ptr,
+   uint8_t *ptr,
    int   pitchoffset,
    int   vol,
    int   left,
@@ -2499,7 +2499,7 @@ int MV_PlayVOC3D
 
 int MV_PlayVOC
    (
-   char *ptr,
+   uint8_t *ptr,
    int   pitchoffset,
    int   vol,
    int   left,
@@ -2549,7 +2549,7 @@ int MV_PlayLoopedVOC
       }
 
    // Make sure it's a valid VOC file.
-   status = strncmp( ptr, "Creative Voice File", 19 );
+   status = strncmp( (char*)ptr, "Creative Voice File", 19 );
    if ( status != 0 )
       {
       MV_SetErrorCode( MV_InvalidVOCFile );

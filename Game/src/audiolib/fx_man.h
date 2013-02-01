@@ -106,12 +106,12 @@ int FX_SetPan( int handle, int vol, int left, int right );
 int FX_SetPitch( int handle, int pitchoffset );
 int FX_SetFrequency( int handle, int frequency );
 
-int FX_PlayVOC( char *ptr, int pitchoffset, int vol, int left, int right,
+int FX_PlayVOC( uint8_t *ptr, int pitchoffset, int vol, int left, int right,
        int priority, uint32_t callbackval );
 int FX_PlayLoopedVOC( uint8_t *ptr, int32_t loopstart, int32_t loopend,
        int32_t pitchoffset, int32_t vol, int32_t left, int32_t right, int32_t priority,
        uint32_t callbackval );
-int FX_PlayWAV( char *ptr, int pitchoffset, int vol, int left, int right,
+int FX_PlayWAV( uint8_t *ptr, int pitchoffset, int vol, int left, int right,
        int priority, uint32_t callbackval );
 int FX_PlayLoopedWAV( uint8_t *ptr, int32_t loopstart, int32_t loopend,
        int32_t pitchoffset, int32_t vol, int32_t left, int32_t right, int32_t priority,

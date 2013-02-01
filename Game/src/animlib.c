@@ -199,7 +199,7 @@ stop:   /* all done */
 //****************************************************************************
 
 void renderframe (uint16 framenumber, uint16 *pagepointer)
-   {
+{
    uint16 offset=0;
    uint16 i;
    uint16 destframe;
@@ -209,23 +209,18 @@ void renderframe (uint16 framenumber, uint16 *pagepointer)
    destframe = framenumber - anim->curlp.baseRecord;
 
    for(i = 0; i < destframe; i++)
-      {
       offset += pagepointer[i];
-      }
+      
    ppointer = (byte *)pagepointer;
 
    ppointer+=anim->curlp.nRecords*2+offset;
    if(ppointer[1])
-      {
       ppointer += (4 + (((uint16 *)ppointer)[1] + (((uint16 *)ppointer)[1] & 1)));
-      }
    else
-      {
       ppointer+=4;
-      }
 
    CPlayRunSkipDump (ppointer, anim->imagebuffer);
-   }
+}
 
 
 //****************************************************************************

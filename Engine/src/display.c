@@ -1246,7 +1246,7 @@ void WriteTranslucToFile(void){
     uint8_t* transPointer = transluc;
     uint8_t* bufferPointer = buffer;
     int i;
-    
+    FILE* file;
     
     for (i=0; i < 65535; i++) {
         
@@ -1265,7 +1265,7 @@ void WriteTranslucToFile(void){
     
     
     
-    FILE* file = fopen("transluc.tga", "w");
+    file = fopen("transluc.tga", "w");
     
     memset(tga_header, 0, 18);
     tga_header[2] = 2;

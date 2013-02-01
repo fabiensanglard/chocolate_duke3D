@@ -16,7 +16,7 @@ extern "C"
 {
 
 #include "platform.h"
-#include "pragmas.h"
+#include "fixedPoint_math.h"
 #include "signal.h"
 #include "mmulti_stable.h"
 #include "filesystem.h"

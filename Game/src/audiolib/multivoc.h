@@ -95,10 +95,10 @@ int   MV_PlayRaw( uint8_t *ptr, unsigned long length,
          unsigned rate, int pitchoffset, int vol, int left,
          int right, int priority, unsigned long callbackval );
 int   MV_PlayLoopedRaw( uint8_t *ptr, unsigned long length,
-         char *loopstart, char *loopend, unsigned rate, int pitchoffset,
+         uint8_t *loopstart, uint8_t *loopend, unsigned rate, int pitchoffset,
          int vol, int left, int right, int priority,
          unsigned long callbackval );
-int   MV_PlayWAV( char *ptr, int pitchoffset, int vol, int left,
+int   MV_PlayWAV( uint8_t *ptr, int pitchoffset, int vol, int left,
          int right, int priority, unsigned long callbackval );
 int   MV_PlayWAV3D( uint8_t *ptr, int pitchoffset, int angle, int distance,
          int priority, unsigned long callbackval );
@@ -107,7 +107,7 @@ int   MV_PlayLoopedWAV( uint8_t *ptr, long loopstart, long loopend,
          unsigned long callbackval );
 int   MV_PlayVOC3D( uint8_t *ptr, int pitchoffset, int angle, int distance,
          int priority, unsigned long callbackval );
-int   MV_PlayVOC( char *ptr, int pitchoffset, int vol, int left, int right,
+int   MV_PlayVOC( uint8_t * ptr, int pitchoffset, int vol, int left, int right,
          int priority, unsigned long callbackval );
 int   MV_PlayLoopedVOC( uint8_t *ptr, long loopstart, long loopend,
          int pitchoffset, int vol, int left, int right, int priority,
