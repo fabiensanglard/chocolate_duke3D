@@ -15,52 +15,27 @@
 
 char game_dir[512];
 
-
+//The multiplayer module in game.dll needs direct access to the crc32 (sic).
 int32_t groupefil_crc32[MAXGROUPFILES];
 
-/*
 
- uint8_t  toupperlookup[256] =
-{
-	0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0a,0x0b,0x0c,0x0d,0x0e,0x0f,
-	0x10,0x11,0x12,0x13,0x14,0x15,0x16,0x17,0x18,0x19,0x1a,0x1b,0x1c,0x1d,0x1e,0x1f,
-	0x20,0x21,0x22,0x23,0x24,0x25,0x26,0x27,0x28,0x29,0x2a,0x2b,0x2c,0x2d,0x2e,0x2f,
-	0x30,0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x39,0x3a,0x3b,0x3c,0x3d,0x3e,0x3f,
-	0x40,0x41,0x42,0x43,0x44,0x45,0x46,0x47,0x48,0x49,0x4a,0x4b,0x4c,0x4d,0x4e,0x4f,
-	0x50,0x51,0x52,0x53,0x54,0x55,0x56,0x57,0x58,0x59,0x5a,0x5b,0x5c,0x5d,0x5e,0x5f,
-	0x60,0x41,0x42,0x43,0x44,0x45,0x46,0x47,0x48,0x49,0x4a,0x4b,0x4c,0x4d,0x4e,0x4f,
-	0x50,0x51,0x52,0x53,0x54,0x55,0x56,0x57,0x58,0x59,0x5a,0x7b,0x7c,0x7d,0x7e,0x7f,
-	0x80,0x81,0x82,0x83,0x84,0x85,0x86,0x87,0x88,0x89,0x8a,0x8b,0x8c,0x8d,0x8e,0x8f,
-	0x90,0x91,0x92,0x93,0x94,0x95,0x96,0x97,0x98,0x99,0x9a,0x9b,0x9c,0x9d,0x9e,0x9f,
-	0xa0,0xa1,0xa2,0xa3,0xa4,0xa5,0xa6,0xa7,0xa8,0xa9,0xaa,0xab,0xac,0xad,0xae,0xaf,
-	0xb0,0xb1,0xb2,0xb3,0xb4,0xb5,0xb6,0xb7,0xb8,0xb9,0xba,0xbb,0xbc,0xbd,0xbe,0xbf,
-	0xc0,0xc1,0xc2,0xc3,0xc4,0xc5,0xc6,0xc7,0xc8,0xc9,0xca,0xcb,0xcc,0xcd,0xce,0xcf,
-	0xd0,0xd1,0xd2,0xd3,0xd4,0xd5,0xd6,0xd7,0xd8,0xd9,0xda,0xdb,0xdc,0xdd,0xde,0xdf,
-	0xe0,0xe1,0xe2,0xe3,0xe4,0xe5,0xe6,0xe7,0xe8,0xe9,0xea,0xeb,0xec,0xed,0xee,0xef,
-	0xf0,0xf1,0xf2,0xf3,0xf4,0xf5,0xf6,0xf7,0xf8,0xf9,0xfa,0xfb,0xfc,0xfd,0xfe,0xff,
-};
-
-/*
-int32_t numgroupfiles = 0;			// number of GRP files actually used.
-int32_t gnumfiles[MAXGROUPFILES];	// number of files on grp
-int32_t groupfil[MAXGROUPFILES] = {-1,-1,-1,-1}; // grp file handles
-int32_t groupfilpos[MAXGROUPFILES];
-*/
-
-typedef uint8_t grpIndexEntry_t[16]; //12 bytes for filename + 4 for filesize
+// A typical GRP index entry:
+//     - 12 bytes for filename
+//     -  4 for filesize
+typedef uint8_t grpIndexEntry_t[16]; 
 
 typedef struct grpArchive_s{
     
-    int32_t  numFiles           ;//Number of files in the archive.
+    int32_t  numFiles             ;//Number of files in the archive.
     grpIndexEntry_t  *gfilelist   ;//Array containing the filenames.
-    int32_t  *gfileoffs         ;//Array containing the file offsets.
-    int32_t  *gfilesize         ;//Array containing the file offsets.
-    //uint8_t  *rawData           ;//Mem address from where files offsets start.
-    int fileDescriptor          ;//The fd used for open,read operations.
-    uint32_t crc32              ;//Hash to recognize GRP: Duke Shareware, Duke plutonimum etc...
+    int32_t  *fileOffsets         ;//Array containing the file offsets.
+    int32_t  *filesizes           ;//Array containing the file offsets.
+    int fileDescriptor            ;//The fd used for open,read operations.
+    uint32_t crc32                ;//Hash to recognize GRP: Duke Shareware, Duke plutonimum etc...
     
 } grpArchive_t;
 
+//All GRP opened are in this structure
 typedef struct grpSet_s{
     grpArchive_t archives[MAXGROUPFILES];
     int32_t num;
@@ -70,22 +45,6 @@ typedef struct grpSet_s{
 // but also that the content will be set to 0.
 static grpSet_t grpSet;
 
-/*
-uint8_t  *gfilelist[MAXGROUPFILES];	// name list + size list of all the files in grp
-int32_t *gfileoffs[MAXGROUPFILES];	// offset of the files
-uint8_t  *groupfil_memory[MAXGROUPFILES]; // addresses of raw GRP files in memory
-int32_t groupefil_crc32[MAXGROUPFILES];
-
-uint8_t  filegrp[MAXOPENFILES];
-int32_t filepos[MAXOPENFILES];
-int32_t filehan[MAXOPENFILES] =
-{
-	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
-	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
-	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
-	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
-};
-*/
 
 
 int32_t initgroupfile(const char  *filename)
@@ -147,14 +106,14 @@ int32_t initgroupfile(const char  *filename)
     
     
     archive->gfilelist = kmalloc(archive->numFiles * sizeof(grpIndexEntry_t));
-    archive->gfileoffs = kmalloc(archive->numFiles * sizeof(int32_t));
-    archive->gfilesize = kmalloc(archive->numFiles * sizeof(int32_t));
+    archive->fileOffsets = kmalloc(archive->numFiles * sizeof(int32_t));
+    archive->filesizes = kmalloc(archive->numFiles * sizeof(int32_t));
     
     // Load the full index 16 bytes per file (12bytes for name + 4 bytes for the size).
     read(archive->fileDescriptor,archive->gfilelist, archive->numFiles * 16);
     
     //Initialize all file offset and pointers.
-    j = 12 + archive->numFiles * sizeof(grpIndexEntry_t);
+    j = 12 + 4 + archive->numFiles * sizeof(grpIndexEntry_t);
     for(i=0;i<archive->numFiles;i++){
         
         k = BUILDSWAP_INTEL32(*((int32_t *)&archive->gfilelist[i][12])); // get size
@@ -162,11 +121,11 @@ int32_t initgroupfile(const char  *filename)
         // Now that the filesize has been read, we can replace it with '0' and hence have a
         // valid, null terminated character string that will be usable.
         archive->gfilelist[i][12] = '\0';
-        archive->gfilesize[i] = k;
-        archive->gfileoffs[i] = j; // absolute offset list of all files.
+        archive->filesizes[i] = k;
+        archive->fileOffsets[i] = j; // absolute offset list of all files.
         j += k;
     }
-    //archive->gfileoffs[archive->numFiles-1] = j;
+    //archive->fileOffsets[archive->numFiles-1] = j;
 	
     
 	// Compute CRC32 of the whole grp and implicitely caches the GRP in memory through windows caching service.
@@ -200,8 +159,8 @@ void uninitgroupfile(void)
     
 	for( i=0 ; i < grpSet.num ;i++){
         free(grpSet.archives[i].gfilelist);
-        free(grpSet.archives[i].gfileoffs);
-        free(grpSet.archives[i].gfilesize);
+        free(grpSet.archives[i].fileOffsets);
+        free(grpSet.archives[i].filesizes);
         memset(&grpSet.archives[i], 0, sizeof(grpArchive_t));
     }
     
@@ -288,16 +247,16 @@ uint16_t crc16(uint8_t  *data_p, uint16_t length)
     return (crc);
 }
 
-
+// The engine can open files transparently on the filesystem or on the GRPsystem
 enum fileType_e{ SYSTEM_FILE, GRP_FILE} ;
 
 //An entry in the array tracking open files
 typedef struct openFile_s{
     enum fileType_e type ;
-    int fd        ;         //This can be either the fileDescriptor or the fileIndex in a GRP.
-    int cursor    ;
-    int grpID     ;
-    int used      ;
+    int fd        ;  //Either the fileDescriptor or the fileIndex in a GRP depending on the type.
+    int cursor    ;  //lseek cursor
+    int grpID     ;  //GRP id
+    int used      ;  //Marker 1=used
 } openFile_t;
 
 
@@ -311,7 +270,7 @@ int32_t kopen4load(const char  *filename, int openOnlyFromGRP){
 
     grpArchive_t* archive;
     
-    //Search a few slot
+    //Search a free slot
 	newhandle = MAXOPENFILES-1;
 	while (openFiles[newhandle].used && newhandle >= 0)
 		newhandle--;
@@ -379,11 +338,11 @@ int32_t kread(int32_t handle, void *buffer, int32_t leng){
     archive = & grpSet.archives[openFile->grpID];
         
     lseek(archive->fileDescriptor,
-          archive->gfileoffs[openFile->fd] + openFile->cursor,
+          archive->fileOffsets[openFile->fd] + openFile->cursor,
           SEEK_SET);
     
     //Adjust leng so we cannot read more than filesystem-cursor location.
-    leng = min(leng,archive->gfilesize[openFile->fd]-openFile->cursor);
+    leng = min(leng,archive->filesizes[openFile->fd]-openFile->cursor);
     
     leng = read(archive->fileDescriptor,buffer,leng);
     
@@ -436,7 +395,7 @@ int32_t klseek(int32_t handle, int32_t offset, int whence){
 	
     switch(whence){
         case SEEK_SET: openFiles[handle].cursor = offset; break;
-        case SEEK_END: openFiles[handle].cursor = archive->gfilesize[openFiles[handle].fd]; break;
+        case SEEK_END: openFiles[handle].cursor = archive->filesizes[openFiles[handle].fd]; break;
         case SEEK_CUR: openFiles[handle].cursor += offset; break;
     }
     
@@ -469,7 +428,7 @@ int32_t kfilelength(int32_t handle)
     
     else{
         grpArchive_t* archive = &grpSet.archives[ openFile->grpID ];
-        return archive->gfilesize[openFile->fd];
+        return archive->filesizes[openFile->fd];
     }
     
 }
