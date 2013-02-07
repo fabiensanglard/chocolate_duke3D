@@ -9,7 +9,7 @@
 #include "build.h"
 
 
-short numplayers = 0, myconnectindex = 0;
+short numplayers = 1, myconnectindex = 0;
 short connecthead, connectpoint2[MAXPLAYERS];
 
 
