@@ -46,13 +46,13 @@ typedef struct grpSet_s{
 static grpSet_t grpSet;
 
 
-
+uint8_t         crcBuffer[ 1 << 20]     ;
 int32_t initgroupfile(const char  *filename)
 {
 	uint8_t         buf[16]                 ;
 	int32_t         i, j, k                 ;
     grpArchive_t*   archive                 ;
-    uint8_t         crcBuffer[ 1 << 20]     ;
+    
     
     
 	printf("Loading %s ...\n", filename);
