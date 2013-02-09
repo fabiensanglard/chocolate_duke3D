@@ -98,10 +98,11 @@ extern uint8_t  grpVersion;
 #define	XDUKE_ID  2
 #define JONOF_ID  3
 
+//Chocolate DukeNukem3D is a fork of xDuke v17.9
+
 #define DUKE_ID			XDUKE_ID
-#define	XDUKE_REV_X		19
-#define XDUKE_REV_DOT_Y	7   // rev is: vXDUKE_REV_X.XDUKE_REV_DOT_Y
-#define XDUKE_SUBVERSION 1
+#define	CHOCOLATE_DUKE_REV_X		1
+#define CHOCOLATE_DUKE_REV_DOT_Y	0   // rev is: CHOCOLATE_DUKE_REV_X.CHOCOLATE_DUKE_REV_DOT_Y
 
 #define MAX_KNOWN_GRP 4
 

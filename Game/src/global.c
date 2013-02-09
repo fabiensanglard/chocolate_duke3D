@@ -505,10 +505,14 @@ void Error (int errorType, char  *error, ...)
 
    SDL_Quit();
 
+   //FCS: http://duke3d.m-klein.com is obscolete :/ !
+   /*
    if(errorType==EXIT_FAILURE)
 	   printf("ERROR: Please copy that screen and visit http://duke3d.m-klein.com for report:\n");
 	else
 		printf("http://duke3d.m-klein.com\n");
+	*/
+
 
    va_start (argptr, error);
    vprintf(error, argptr);

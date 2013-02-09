@@ -642,7 +642,7 @@ void getpackets(void)
 				{
 					// Old rancid was using either BYTEVERSION_27 or BYTEVERSION_117
 					Error(EXIT_SUCCESS,	"STOP: Your opponent is using an obsolete version\n"
-										"Please ask him to update to xDuke v%d.%d!\n", XDUKE_REV_X, XDUKE_REV_DOT_Y);
+										"Please ask him to update to xDuke v%d.%d!\n", CHOCOLATE_DUKE_REV_X, CHOCOLATE_DUKE_REV_DOT_Y);
 				}
 				break;
 
@@ -7814,8 +7814,8 @@ void getnames(void)
 #ifdef CHECK_XDUKE_REV // must not be under "if(numplayers > 1)" so it runs in any case
 	ud.rev[myconnectindex][0] = true; // always true. Used to check who we validated
 	ud.rev[myconnectindex][1] = DUKE_ID;
-	ud.rev[myconnectindex][2] = XDUKE_REV_X;
-	ud.rev[myconnectindex][3] = XDUKE_REV_DOT_Y;
+	ud.rev[myconnectindex][2] = CHOCOLATE_DUKE_REV_X;
+	ud.rev[myconnectindex][3] = CHOCOLATE_DUKE_REV_DOT_Y;
 #endif
 
 	memcpy(ud.groupefil_crc32[myconnectindex],groupefil_crc32, sizeof(groupefil_crc32));
@@ -7916,7 +7916,7 @@ void getnames(void)
 #ifdef CHECK_XDUKE_REV
 		// from command "case 131:"
 		for(l=0,i=connecthead;i>=0;i=connectpoint2[i])
-			if(((ud.rev[i][2]<<8)+ud.rev[i][3]) != ((XDUKE_REV_X<<8)+XDUKE_REV_DOT_Y))
+			if(((ud.rev[i][2]<<8)+ud.rev[i][3]) != ((CHOCOLATE_DUKE_REV_X<<8)+CHOCOLATE_DUKE_REV_DOT_Y))
 				l=1;
 			else
 				ud.rev[i][0] = true; // means we validated this guy
@@ -7925,7 +7925,7 @@ void getnames(void)
 		{
 			printf("\n*** One or more players do not have the same xDuke version:\n\n");
 			for(l=0,i=connecthead;i>=0;i=connectpoint2[i])
-				printf("Player [%-10s] is using xDuke v%d.%d\n", ud.user_name[i], 
+				printf("Player [%-10s] is using Chocolate DukeNukem3D v%d.%d\n", ud.user_name[i], 
 				ud.rev[i][2],ud.rev[i][3]);
 			Error(EXIT_SUCCESS, "");
 		}		
@@ -8127,10 +8127,8 @@ int main(int argc,char  **argv)
 	//		"using it as it may contain new unsuspected bugs. Only a select\n"
 	//		"group of known dukers who know what they are doing should be using\n"
 	//		"it. Please report new bugs at xd@m-klein.com or on DX forums. Thx!\n\n");
-	if(XDUKE_SUBVERSION)
-		printf("*** xDuke v%d.%d.%d ***\n\n", XDUKE_REV_X, XDUKE_REV_DOT_Y,XDUKE_SUBVERSION);
-	else
-		printf("*** xDuke v%d.%d ***\n\n", XDUKE_REV_X, XDUKE_REV_DOT_Y);
+	
+	printf("*** Chocolate DukeNukem3D v%d.%d ***\n\n", CHOCOLATE_DUKE_REV_X, CHOCOLATE_DUKE_REV_DOT_Y);
 
 	// FIX_00033: Fake multi and AI are now fully working
 	ud.multimode = 1;  // xduke: must be done before checkcommandline or that will prevent Fakeplayer and AI
@@ -10585,9 +10583,9 @@ void takescreenshot(void)
 	time(&time4file);
 	tmHMS = localtime(&time4file);
 
-	sprintf(text, "xDuke(v%d.%d) %.4d.%.2d.%.2d %.2dh%.2dm%.2ds", 
-			XDUKE_REV_X,
-			XDUKE_REV_DOT_Y,
+	sprintf(text, "Chocolate DukeNukem3D(v%d.%d) %.4d.%.2d.%.2d %.2dh%.2dm%.2ds", 
+			CHOCOLATE_DUKE_REV_X,
+			CHOCOLATE_DUKE_REV_DOT_Y,
 			tmHMS->tm_year+1900,
 			tmHMS->tm_mon+1,
 			tmHMS->tm_mday,

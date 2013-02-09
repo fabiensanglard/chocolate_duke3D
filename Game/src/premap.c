@@ -1542,7 +1542,7 @@ if (!VOLUMEONE)
 			if(!ud.rev[i][0] && !ps[i].fakeplayer)
 				Error(EXIT_SUCCESS, "Your opponent [%s] is using an unknown version of xDuke."
 									"You are using v%d.%d\n",
-				ud.user_name[i], XDUKE_REV_X, XDUKE_REV_DOT_Y);
+				ud.user_name[i], CHOCOLATE_DUKE_REV_X, CHOCOLATE_DUKE_REV_DOT_Y);
 		}
 #endif
 

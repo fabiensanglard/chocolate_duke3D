@@ -7683,6 +7683,8 @@ void printext256(int32_t xpos, int32_t ypos, short col, short backcol, char*  na
     int32_t stx, i, x, y, charxsiz;
     uint8_t  *fontptr, *letptr, *ptr;
 
+	printf("******* %s\n",name);
+
     stx = xpos;
 
     if (fontsize) {
