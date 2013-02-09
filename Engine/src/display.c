@@ -700,7 +700,7 @@ uint8_t  _readlastkeyhit(void)
 #define __DATE__ "a long, int32_t time ago"
 #endif
 
-static __inline void output_sdl_versions(void)
+static void output_sdl_versions(void)
 {
     const SDL_version *linked_ver = SDL_Linked_Version();
     SDL_version compiled_ver;
@@ -1454,8 +1454,10 @@ void _updateScreenRect(int32_t x, int32_t y, int32_t w, int32_t h)
     SDL_UpdateRect(surface, x, y, w, h);
 }
 
-
+//int counter= 0 ;
+//char bmpName[256];
 void _nextpage(void)
+
 {
     Uint32 ticks;
 
@@ -1463,6 +1465,13 @@ void _nextpage(void)
 
     
     SDL_UpdateRect(surface, 0, 0, 0, 0);
+    
+    //sprintf(bmpName,"%d.bmp",counter++);
+    //SDL_SaveBMP(surface,bmpName);
+    
+    
+    //if (CLEAR_FRAMEBUFFER)
+    //    SDL_FillRect(surface,NULL,0);
 
     ticks = getticks();
     total_render_time = (ticks - last_render_ticks);

@@ -2770,7 +2770,7 @@ static int bunchfront(int32_t firstBunchID, int32_t secondBunchID)
 	}
 }
 
-int pixelRenderable = 100000000;
+int pixelRenderable = 0;
 //#include "keyboard.h"
 //void WriteLastPaletteToFile(void);
 //void WriteTranslucToFile(void);
@@ -2800,7 +2800,7 @@ void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,short daang, int32
     }        
     */
 
-	pixelRenderable+=10;
+	pixelRenderable+=100;
 	if (pixelRenderable >= MAX_PIXEL_RENDERERED)
 		pixelRenderable =  0 ;
 

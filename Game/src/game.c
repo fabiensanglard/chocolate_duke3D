@@ -2874,7 +2874,7 @@ void displayrest(int32_t smoothratio)
 		}
 		else
 		{
-			menutext(160,120,0,0,"GAME PAUSED");
+            menutext(160,120,0,0,"GAME PAUSED");
 		}
 	}
 
