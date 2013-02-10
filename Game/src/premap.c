@@ -1576,7 +1576,7 @@ if (!VOLUMEONE)
 //    if(ud.level_number == 0 && ud.recstat != 2) FTA(40,&ps[myconnectindex]);
 
 #ifdef CHECK_XDUKE_REV
-	sprintf(fta_quotes[103],"xDuke v%d.%d", ud.rev[myconnectindex][2], ud.rev[myconnectindex][3]);
+	sprintf(fta_quotes[103],"Chocolate Duke3D v%d.%d", ud.rev[myconnectindex][2], ud.rev[myconnectindex][3]);
 	FTA(103,&ps[myconnectindex],1);
 #endif
 

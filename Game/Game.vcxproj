@@ -78,7 +78,7 @@
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>dxguid.lib;sdl.lib;sdl_mixer.lib;winmm.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)Duke3D.exe</OutputFile>
+      <OutputFile>$(OutDir)ChocolateDuke3D.exe</OutputFile>
       <Version>19.4</Version>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\Directx_dec_2005\;..\SDL-1.2.9\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -182,6 +182,9 @@
       <Project>{05511b4a-fb13-49e5-ae53-ee1f063c055d}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="chocolateDukeRessources.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

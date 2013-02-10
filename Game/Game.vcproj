@@ -24,6 +24,7 @@
 			CharacterSet="2"
 			WholeProgramOptimization="0"
 			>
+			
 			<Tool
 				Name="VCPreBuildEventTool"
 			/>

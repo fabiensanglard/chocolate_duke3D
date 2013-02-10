@@ -185,4 +185,7 @@
       <Filter>Console Headers</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="chocolateDukeRessources.rc" />
+  </ItemGroup>
 </Project>
