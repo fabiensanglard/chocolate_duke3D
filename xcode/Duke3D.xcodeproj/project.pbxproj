@@ -150,7 +150,7 @@
 		2D47FADE16C6B94600DB3597 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		2D47FAE116C6B94600DB3597 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		2D47FAE316C6B94600DB3597 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		2D47FAFD16C6BA0D00DB3597 /* Duke3DBundle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Duke3DBundle.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D47FAFD16C6BA0D00DB3597 /* Chocolate Duke3D.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Chocolate Duke3D.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D47FB0016C6BA0D00DB3597 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		2D47FB0316C6BA0D00DB3597 /* Duke3DBundle-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Duke3DBundle-Info.plist"; sourceTree = "<group>"; };
 		2D47FB0516C6BA0D00DB3597 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -453,7 +453,7 @@
 			isa = PBXGroup;
 			children = (
 				2D7B61DE167886FB00E35E54 /* Duke3D */,
-				2D47FAFD16C6BA0D00DB3597 /* Duke3DBundle.app */,
+				2D47FAFD16C6BA0D00DB3597 /* Chocolate Duke3D.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -568,7 +568,7 @@
 			);
 			name = Duke3DBundle;
 			productName = Duke3DBundle;
-			productReference = 2D47FAFD16C6BA0D00DB3597 /* Duke3DBundle.app */;
+			productReference = 2D47FAFD16C6BA0D00DB3597 /* Chocolate Duke3D.app */;
 			productType = "com.apple.product-type.application";
 		};
 		2D7B61DD167886FB00E35E54 /* Duke3D */ = {
@@ -766,7 +766,7 @@
 				GCC_PREFIX_HEADER = "Duke3DBundle/Duke3DBundle-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "Duke3DBundle/Duke3DBundle-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Chocolate Duke3D";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -779,7 +779,7 @@
 				GCC_PREFIX_HEADER = "Duke3DBundle/Duke3DBundle-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "Duke3DBundle/Duke3DBundle-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Chocolate Duke3D";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
