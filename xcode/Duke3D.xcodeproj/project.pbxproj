@@ -63,7 +63,6 @@
 		2D47FB4716C6BB4000DB3597 /* SDL_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D47FB4516C6BB4000DB3597 /* SDL_mixer.framework */; };
 		2D47FB4916C6BC2200DB3597 /* SDL_mixer.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2D7B623216788AAB00E35E54 /* SDL_mixer.framework */; };
 		2D47FB4A16C6BC2200DB3597 /* SDL.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2D7B623016788A9B00E35E54 /* SDL.framework */; };
-		2D47FB4C16C6BD1500DB3597 /* duke_3d_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D47FB4B16C6BD1500DB3597 /* duke_3d_icon.png */; };
 		2D47FB4E16C6BF1C00DB3597 /* duke_3d_icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2D47FB4D16C6BF1C00DB3597 /* duke_3d_icon.icns */; };
 		2D4FB6FF167D430F00915887 /* sdl_midi.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D4FB6FE167D430F00915887 /* sdl_midi.c */; };
 		2D7B621D1678885A00E35E54 /* draw.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B61F11678885A00E35E54 /* draw.c */; };
@@ -159,7 +158,6 @@
 		2D47FB0B16C6BA0D00DB3597 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		2D47FB4416C6BB4000DB3597 /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = Library/Frameworks/SDL.framework; sourceTree = SDKROOT; };
 		2D47FB4516C6BB4000DB3597 /* SDL_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_mixer.framework; path = Library/Frameworks/SDL_mixer.framework; sourceTree = SDKROOT; };
-		2D47FB4B16C6BD1500DB3597 /* duke_3d_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = duke_3d_icon.png; sourceTree = "<group>"; };
 		2D47FB4D16C6BF1C00DB3597 /* duke_3d_icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = duke_3d_icon.icns; sourceTree = "<group>"; };
 		2D4FB6FE167D430F00915887 /* sdl_midi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sdl_midi.c; sourceTree = "<group>"; };
 		2D7B61DE167886FB00E35E54 /* Duke3D */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Duke3D; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -431,7 +429,6 @@
 			isa = PBXGroup;
 			children = (
 				2D47FB4D16C6BF1C00DB3597 /* duke_3d_icon.icns */,
-				2D47FB4B16C6BD1500DB3597 /* duke_3d_icon.png */,
 				2D47FB0316C6BA0D00DB3597 /* Duke3DBundle-Info.plist */,
 				2D47FB0416C6BA0D00DB3597 /* InfoPlist.strings */,
 				2D47FB0916C6BA0D00DB3597 /* Duke3DBundle-Prefix.pch */,
@@ -625,7 +622,6 @@
 			files = (
 				2D47FB0616C6BA0D00DB3597 /* InfoPlist.strings in Resources */,
 				2D47FB0C16C6BA0D00DB3597 /* Credits.rtf in Resources */,
-				2D47FB4C16C6BD1500DB3597 /* duke_3d_icon.png in Resources */,
 				2D47FB4E16C6BF1C00DB3597 /* duke_3d_icon.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -875,6 +871,7 @@
 				2D47FB1516C6BA0D00DB3597 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		2D7B61D8167886FB00E35E54 /* Build configuration list for PBXProject "Duke3D" */ = {
 			isa = XCConfigurationList;
