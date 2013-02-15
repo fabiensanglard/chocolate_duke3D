@@ -16,7 +16,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-aint32_t with this program; if not, write to the Free Software
+along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 Original Source: 1996 - Todd Replogle
@@ -797,7 +797,7 @@ int probeXduke(int x,int y,int i,int n, int32_t spriteSize)
 	static int32_t delay_counter_up = 0, delay_counter_down = 0, delay_up = 50, delay_down = 50;
 	static int32_t mi = 0;
 
-	// FIX_00075: Bad Sensitivity aint32_t Y axis when using mouse in menu (Thanks to Turrican)
+	// FIX_00075: Bad Sensitivity along Y axis when using mouse in menu (Thanks to Turrican)
 	mouseSens = CONTROL_GetMouseSensitivity_Y();
 	mouseSens = mouseSens ? mouseSens : 1;
 
@@ -1500,7 +1500,7 @@ void menus(void)
             gametext(160,59-8,"VERSION OF DUKE NUKEM 3D.  WHILE",0,2+8+16);
             gametext(160,68-8,"THIS VERSION IS REALLY COOL, YOU",0,2+8+16);
             gametext(160,77-8,"ARE MISSING OVER 75% OF THE TOTAL",0,2+8+16);
-            gametext(160,86-8,"GAME, Aint32_t WITH OTHER GREAT EXTRAS",0,2+8+16);
+            gametext(160,86-8,"GAME, ALONG WITH OTHER GREAT EXTRAS",0,2+8+16);
             gametext(160,95-8,"AND GAMES, WHICH YOU'LL GET WHEN",0,2+8+16);
             gametext(160,104-8,"YOU ORDER THE COMPLETE VERSION AND",0,2+8+16);
             gametext(160,113-8,"GET THE FINAL TWO EPISODES.",0,2+8+16);
