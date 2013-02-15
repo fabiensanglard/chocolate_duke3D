@@ -10,6 +10,60 @@
 		2D058BD01686520B00E283DC /* tiles.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D058BCF1686520B00E283DC /* tiles.c */; };
 		2D058BE4168689B200E283DC /* network.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D058BE3168689B200E283DC /* network.c */; };
 		2D2A07CA168286D500064107 /* filesystem.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A07C9168286D400064107 /* filesystem.c */; };
+		2D47FAFF16C6BA0D00DB3597 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D7B623416788AB200E35E54 /* Cocoa.framework */; };
+		2D47FB0616C6BA0D00DB3597 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D47FB0416C6BA0D00DB3597 /* InfoPlist.strings */; };
+		2D47FB0C16C6BA0D00DB3597 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 2D47FB0A16C6BA0D00DB3597 /* Credits.rtf */; };
+		2D47FB1616C6BA2E00DB3597 /* actors.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B623C16788F9B00E35E54 /* actors.c */; };
+		2D47FB1716C6BA2E00DB3597 /* animlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B623D16788F9B00E35E54 /* animlib.c */; };
+		2D47FB1816C6BA2E00DB3597 /* config.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B623F16788F9B00E35E54 /* config.c */; };
+		2D47FB1916C6BA2E00DB3597 /* console.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B624116788F9B00E35E54 /* console.c */; };
+		2D47FB1A16C6BA2E00DB3597 /* control.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B624316788F9B00E35E54 /* control.c */; };
+		2D47FB1B16C6BA2E00DB3597 /* cvar_defs.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B624516788F9B00E35E54 /* cvar_defs.c */; };
+		2D47FB1C16C6BA2E00DB3597 /* cvars.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B624716788F9B00E35E54 /* cvars.c */; };
+		2D47FB1D16C6BA2E00DB3597 /* game.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B625016788F9B00E35E54 /* game.c */; };
+		2D47FB1E16C6BA2E00DB3597 /* gamedef.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B625216788F9B00E35E54 /* gamedef.c */; };
+		2D47FB1F16C6BA2E00DB3597 /* global.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B625416788F9B00E35E54 /* global.c */; };
+		2D47FB2016C6BA2E00DB3597 /* keyboard.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B625616788F9B00E35E54 /* keyboard.c */; };
+		2D47FB2116C6BA2E00DB3597 /* menues.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B625816788F9B00E35E54 /* menues.c */; };
+		2D47FB2216C6BA2E00DB3597 /* player.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B626116788F9B00E35E54 /* player.c */; };
+		2D47FB2316C6BA2E00DB3597 /* premap.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B626216788F9B00E35E54 /* premap.c */; };
+		2D47FB2416C6BA2E00DB3597 /* rts.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B626316788F9B00E35E54 /* rts.c */; };
+		2D47FB2516C6BA2E00DB3597 /* scriplib.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B626516788F9B00E35E54 /* scriplib.c */; };
+		2D47FB2616C6BA2E00DB3597 /* sector.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B626716788F9B00E35E54 /* sector.c */; };
+		2D47FB2716C6BA2E00DB3597 /* sounds.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B626A16788F9B00E35E54 /* sounds.c */; };
+		2D47FB2816C6BA2E00DB3597 /* dummy_audiolib.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62FE16790E8000E35E54 /* dummy_audiolib.c */; };
+		2D47FB2916C6BA6F00DB3597 /* pitch.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7C17DF167ADE1F00E1BBA1 /* pitch.c */; };
+		2D47FB2A16C6BA6F00DB3597 /* dsl.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7C17CE167AD6A500E1BBA1 /* dsl.c */; };
+		2D47FB2B16C6BA6F00DB3597 /* fx_man.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7C17CF167AD6A500E1BBA1 /* fx_man.c */; };
+		2D47FB2C16C6BA6F00DB3597 /* ll_man.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7C17D0167AD6A500E1BBA1 /* ll_man.c */; };
+		2D47FB2D16C6BA6F00DB3597 /* multivoc.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7C17D1167AD6A500E1BBA1 /* multivoc.c */; };
+		2D47FB2E16C6BA6F00DB3597 /* mv_mix.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7C17D2167AD6A500E1BBA1 /* mv_mix.c */; };
+		2D47FB2F16C6BA6F00DB3597 /* mvreverb.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7C17D3167AD6A500E1BBA1 /* mvreverb.c */; };
+		2D47FB3016C6BA6F00DB3597 /* nodpmi.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7C17D4167AD6A500E1BBA1 /* nodpmi.c */; };
+		2D47FB3116C6BA6F00DB3597 /* user.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7C17D6167AD6A500E1BBA1 /* user.c */; };
+		2D47FB3216C6BA6F00DB3597 /* sdl_midi.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D4FB6FE167D430F00915887 /* sdl_midi.c */; };
+		2D47FB3316C6BA8200DB3597 /* cache.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B61F41678885A00E35E54 /* cache.c */; };
+		2D47FB3416C6BA8200DB3597 /* display.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B621C1678885A00E35E54 /* display.c */; };
+		2D47FB3516C6BA8200DB3597 /* draw.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B61F11678885A00E35E54 /* draw.c */; };
+		2D47FB3616C6BA8200DB3597 /* dummy_multi.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B630016791C0200E35E54 /* dummy_multi.c */; };
+		2D47FB3716C6BA8200DB3597 /* host.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B61FA1678885A00E35E54 /* host.c */; };
+		2D47FB3816C6BA8200DB3597 /* list.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62061678885A00E35E54 /* list.c */; };
+		2D47FB3916C6BA8200DB3597 /* memory.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62071678885A00E35E54 /* memory.c */; };
+		2D47FB3A16C6BA8200DB3597 /* packet.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62081678885A00E35E54 /* packet.c */; };
+		2D47FB3B16C6BA8200DB3597 /* peer.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62091678885A00E35E54 /* peer.c */; };
+		2D47FB3C16C6BA8200DB3597 /* protocol.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B620A1678885A00E35E54 /* protocol.c */; };
+		2D47FB3D16C6BA8200DB3597 /* unix.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B620D1678885A00E35E54 /* unix.c */; };
+		2D47FB3E16C6BA8200DB3597 /* engine.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B62101678885A00E35E54 /* engine.c */; };
+		2D47FB3F16C6BA8200DB3597 /* filesystem.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A07C9168286D400064107 /* filesystem.c */; };
+		2D47FB4016C6BA8200DB3597 /* fixedPoint_math.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B621A1678885A00E35E54 /* fixedPoint_math.c */; };
+		2D47FB4116C6BA8200DB3597 /* tiles.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D058BCF1686520B00E283DC /* tiles.c */; };
+		2D47FB4216C6BA8200DB3597 /* network.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D058BE3168689B200E283DC /* network.c */; };
+		2D47FB4316C6BA8200DB3597 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B7AED16792D6700DB503A /* SDLMain.m */; };
+		2D47FB4616C6BB4000DB3597 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D47FB4416C6BB4000DB3597 /* SDL.framework */; };
+		2D47FB4716C6BB4000DB3597 /* SDL_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D47FB4516C6BB4000DB3597 /* SDL_mixer.framework */; };
+		2D47FB4916C6BC2200DB3597 /* SDL_mixer.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2D7B623216788AAB00E35E54 /* SDL_mixer.framework */; };
+		2D47FB4A16C6BC2200DB3597 /* SDL.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2D7B623016788A9B00E35E54 /* SDL.framework */; };
+		2D47FB4E16C6BF1C00DB3597 /* duke_3d_icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2D47FB4D16C6BF1C00DB3597 /* duke_3d_icon.icns */; };
 		2D4FB6FF167D430F00915887 /* sdl_midi.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D4FB6FE167D430F00915887 /* sdl_midi.c */; };
 		2D7B621D1678885A00E35E54 /* draw.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B61F11678885A00E35E54 /* draw.c */; };
 		2D7B621E1678885A00E35E54 /* cache.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B61F41678885A00E35E54 /* cache.c */; };
@@ -61,11 +115,22 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		2D47FB4816C6BC0F00DB3597 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				2D47FB4916C6BC2200DB3597 /* SDL_mixer.framework in CopyFiles */,
+				2D47FB4A16C6BC2200DB3597 /* SDL.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2D7B61DC167886FB00E35E54 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
+			buildActionMask = 8;
+			dstPath = "";
+			dstSubfolderSpec = 10;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 1;
@@ -82,6 +147,18 @@
 		2D2A07BB167F1ABA00064107 /* global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = global.h; path = ../../Game/src/global.h; sourceTree = "<group>"; };
 		2D2A07C9168286D400064107 /* filesystem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = filesystem.c; path = ../../Engine/src/filesystem.c; sourceTree = "<group>"; };
 		2D2A07CB168286F200064107 /* filesystem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = filesystem.h; path = ../../Engine/src/filesystem.h; sourceTree = "<group>"; };
+		2D47FADE16C6B94600DB3597 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		2D47FAE116C6B94600DB3597 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		2D47FAE316C6B94600DB3597 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		2D47FAFD16C6BA0D00DB3597 /* Chocolate Duke3D.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Chocolate Duke3D.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D47FB0016C6BA0D00DB3597 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		2D47FB0316C6BA0D00DB3597 /* Duke3DBundle-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Duke3DBundle-Info.plist"; sourceTree = "<group>"; };
+		2D47FB0516C6BA0D00DB3597 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2D47FB0916C6BA0D00DB3597 /* Duke3DBundle-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Duke3DBundle-Prefix.pch"; sourceTree = "<group>"; };
+		2D47FB0B16C6BA0D00DB3597 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		2D47FB4416C6BB4000DB3597 /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = Library/Frameworks/SDL.framework; sourceTree = SDKROOT; };
+		2D47FB4516C6BB4000DB3597 /* SDL_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_mixer.framework; path = Library/Frameworks/SDL_mixer.framework; sourceTree = SDKROOT; };
+		2D47FB4D16C6BF1C00DB3597 /* duke_3d_icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = duke_3d_icon.icns; sourceTree = "<group>"; };
 		2D4FB6FE167D430F00915887 /* sdl_midi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sdl_midi.c; sourceTree = "<group>"; };
 		2D7B61DE167886FB00E35E54 /* Duke3D */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Duke3D; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D7B61F11678885A00E35E54 /* draw.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = draw.c; path = ../../Engine/src/draw.c; sourceTree = "<group>"; };
@@ -184,6 +261,16 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		2D47FAFA16C6BA0D00DB3597 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2D47FB4616C6BB4000DB3597 /* SDL.framework in Frameworks */,
+				2D47FB4716C6BB4000DB3597 /* SDL_mixer.framework in Frameworks */,
+				2D47FAFF16C6BA0D00DB3597 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2D7B61DB167886FB00E35E54 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -307,11 +394,57 @@
 			name = implementations;
 			sourceTree = "<group>";
 		};
+		2D47FADD16C6B94600DB3597 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2D7B623416788AB200E35E54 /* Cocoa.framework */,
+				2D7B623216788AAB00E35E54 /* SDL_mixer.framework */,
+				2D7B623016788A9B00E35E54 /* SDL.framework */,
+				2D7B7B111679325D00DB503A /* CoreFoundation.framework */,
+				2D47FADE16C6B94600DB3597 /* Cocoa.framework */,
+				2D47FAE016C6B94600DB3597 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2D47FAE016C6B94600DB3597 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2D47FAE116C6B94600DB3597 /* AppKit.framework */,
+				2D47FAE316C6B94600DB3597 /* Foundation.framework */,
+				2D47FB0016C6BA0D00DB3597 /* CoreData.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		2D47FB0116C6BA0D00DB3597 /* Duke3DBundle */ = {
+			isa = PBXGroup;
+			children = (
+				2D47FB0216C6BA0D00DB3597 /* Supporting Files */,
+			);
+			path = Duke3DBundle;
+			sourceTree = "<group>";
+		};
+		2D47FB0216C6BA0D00DB3597 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				2D47FB4D16C6BF1C00DB3597 /* duke_3d_icon.icns */,
+				2D47FB0316C6BA0D00DB3597 /* Duke3DBundle-Info.plist */,
+				2D47FB0416C6BA0D00DB3597 /* InfoPlist.strings */,
+				2D47FB0916C6BA0D00DB3597 /* Duke3DBundle-Prefix.pch */,
+				2D47FB0A16C6BA0D00DB3597 /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		2D7B61D3167886FB00E35E54 = {
 			isa = PBXGroup;
 			children = (
-				2D7B7B111679325D00DB503A /* CoreFoundation.framework */,
+				2D47FB4416C6BB4000DB3597 /* SDL.framework */,
+				2D47FB4516C6BB4000DB3597 /* SDL_mixer.framework */,
 				2D7B61E1167886FB00E35E54 /* Duke3D */,
+				2D47FB0116C6BA0D00DB3597 /* Duke3DBundle */,
+				2D47FADD16C6B94600DB3597 /* Frameworks */,
 				2D7B61DF167886FB00E35E54 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -320,6 +453,7 @@
 			isa = PBXGroup;
 			children = (
 				2D7B61DE167886FB00E35E54 /* Duke3D */,
+				2D47FAFD16C6BA0D00DB3597 /* Chocolate Duke3D.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -328,9 +462,6 @@
 			isa = PBXGroup;
 			children = (
 				2D7B623916788F7900E35E54 /* Game */,
-				2D7B623416788AB200E35E54 /* Cocoa.framework */,
-				2D7B623216788AAB00E35E54 /* SDL_mixer.framework */,
-				2D7B623016788A9B00E35E54 /* SDL.framework */,
 				2D7B61F01678884400E35E54 /* Engine */,
 				2D7B7AED16792D6700DB503A /* SDLMain.m */,
 				2D7B7AEF16792D8900DB503A /* SDLMain.h */,
@@ -422,6 +553,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		2D47FAFC16C6BA0D00DB3597 /* Duke3DBundle */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2D47FB1316C6BA0D00DB3597 /* Build configuration list for PBXNativeTarget "Duke3DBundle" */;
+			buildPhases = (
+				2D47FAF916C6BA0D00DB3597 /* Sources */,
+				2D47FAFA16C6BA0D00DB3597 /* Frameworks */,
+				2D47FAFB16C6BA0D00DB3597 /* Resources */,
+				2D47FB4816C6BC0F00DB3597 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Duke3DBundle;
+			productName = Duke3DBundle;
+			productReference = 2D47FAFD16C6BA0D00DB3597 /* Chocolate Duke3D.app */;
+			productType = "com.apple.product-type.application";
+		};
 		2D7B61DD167886FB00E35E54 /* Duke3D */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D7B61E8167886FB00E35E54 /* Build configuration list for PBXNativeTarget "Duke3D" */;
@@ -461,11 +610,78 @@
 			projectRoot = "";
 			targets = (
 				2D7B61DD167886FB00E35E54 /* Duke3D */,
+				2D47FAFC16C6BA0D00DB3597 /* Duke3DBundle */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		2D47FAFB16C6BA0D00DB3597 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2D47FB0616C6BA0D00DB3597 /* InfoPlist.strings in Resources */,
+				2D47FB0C16C6BA0D00DB3597 /* Credits.rtf in Resources */,
+				2D47FB4E16C6BF1C00DB3597 /* duke_3d_icon.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		2D47FAF916C6BA0D00DB3597 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2D47FB3316C6BA8200DB3597 /* cache.c in Sources */,
+				2D47FB3416C6BA8200DB3597 /* display.c in Sources */,
+				2D47FB3516C6BA8200DB3597 /* draw.c in Sources */,
+				2D47FB3616C6BA8200DB3597 /* dummy_multi.c in Sources */,
+				2D47FB3716C6BA8200DB3597 /* host.c in Sources */,
+				2D47FB3816C6BA8200DB3597 /* list.c in Sources */,
+				2D47FB3916C6BA8200DB3597 /* memory.c in Sources */,
+				2D47FB3A16C6BA8200DB3597 /* packet.c in Sources */,
+				2D47FB3B16C6BA8200DB3597 /* peer.c in Sources */,
+				2D47FB3C16C6BA8200DB3597 /* protocol.c in Sources */,
+				2D47FB3D16C6BA8200DB3597 /* unix.c in Sources */,
+				2D47FB3E16C6BA8200DB3597 /* engine.c in Sources */,
+				2D47FB3F16C6BA8200DB3597 /* filesystem.c in Sources */,
+				2D47FB4016C6BA8200DB3597 /* fixedPoint_math.c in Sources */,
+				2D47FB4116C6BA8200DB3597 /* tiles.c in Sources */,
+				2D47FB4216C6BA8200DB3597 /* network.c in Sources */,
+				2D47FB4316C6BA8200DB3597 /* SDLMain.m in Sources */,
+				2D47FB2916C6BA6F00DB3597 /* pitch.c in Sources */,
+				2D47FB2A16C6BA6F00DB3597 /* dsl.c in Sources */,
+				2D47FB2B16C6BA6F00DB3597 /* fx_man.c in Sources */,
+				2D47FB2C16C6BA6F00DB3597 /* ll_man.c in Sources */,
+				2D47FB2D16C6BA6F00DB3597 /* multivoc.c in Sources */,
+				2D47FB2E16C6BA6F00DB3597 /* mv_mix.c in Sources */,
+				2D47FB2F16C6BA6F00DB3597 /* mvreverb.c in Sources */,
+				2D47FB3016C6BA6F00DB3597 /* nodpmi.c in Sources */,
+				2D47FB3116C6BA6F00DB3597 /* user.c in Sources */,
+				2D47FB3216C6BA6F00DB3597 /* sdl_midi.c in Sources */,
+				2D47FB1616C6BA2E00DB3597 /* actors.c in Sources */,
+				2D47FB1716C6BA2E00DB3597 /* animlib.c in Sources */,
+				2D47FB1816C6BA2E00DB3597 /* config.c in Sources */,
+				2D47FB1916C6BA2E00DB3597 /* console.c in Sources */,
+				2D47FB1A16C6BA2E00DB3597 /* control.c in Sources */,
+				2D47FB1B16C6BA2E00DB3597 /* cvar_defs.c in Sources */,
+				2D47FB1C16C6BA2E00DB3597 /* cvars.c in Sources */,
+				2D47FB1D16C6BA2E00DB3597 /* game.c in Sources */,
+				2D47FB1E16C6BA2E00DB3597 /* gamedef.c in Sources */,
+				2D47FB1F16C6BA2E00DB3597 /* global.c in Sources */,
+				2D47FB2016C6BA2E00DB3597 /* keyboard.c in Sources */,
+				2D47FB2116C6BA2E00DB3597 /* menues.c in Sources */,
+				2D47FB2216C6BA2E00DB3597 /* player.c in Sources */,
+				2D47FB2316C6BA2E00DB3597 /* premap.c in Sources */,
+				2D47FB2416C6BA2E00DB3597 /* rts.c in Sources */,
+				2D47FB2516C6BA2E00DB3597 /* scriplib.c in Sources */,
+				2D47FB2616C6BA2E00DB3597 /* sector.c in Sources */,
+				2D47FB2716C6BA2E00DB3597 /* sounds.c in Sources */,
+				2D47FB2816C6BA2E00DB3597 /* dummy_audiolib.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2D7B61DA167886FB00E35E54 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -522,7 +738,52 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXVariantGroup section */
+		2D47FB0416C6BA0D00DB3597 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2D47FB0516C6BA0D00DB3597 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		2D47FB0A16C6BA0D00DB3597 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2D47FB0B16C6BA0D00DB3597 /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
+		2D47FB1416C6BA0D00DB3597 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Duke3DBundle/Duke3DBundle-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				INFOPLIST_FILE = "Duke3DBundle/Duke3DBundle-Info.plist";
+				PRODUCT_NAME = "Chocolate Duke3D";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		2D47FB1516C6BA0D00DB3597 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Duke3DBundle/Duke3DBundle-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				INFOPLIST_FILE = "Duke3DBundle/Duke3DBundle-Info.plist";
+				PRODUCT_NAME = "Chocolate Duke3D";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 		2D7B61E6167886FB00E35E54 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -603,6 +864,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		2D47FB1316C6BA0D00DB3597 /* Build configuration list for PBXNativeTarget "Duke3DBundle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2D47FB1416C6BA0D00DB3597 /* Debug */,
+				2D47FB1516C6BA0D00DB3597 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		2D7B61D8167886FB00E35E54 /* Build configuration list for PBXProject "Duke3D" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

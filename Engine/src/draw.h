@@ -80,8 +80,8 @@ void settrans(int32_t type);
 //FCS: In order to see how the engine renders different part of the screen you can set the following macros
 //VISUALIZE RENDERER
 
-#define MAX_PIXEL_RENDERERED (800*600)
-extern uint32_t pixelsAllowed;
+#define MAX_PIXEL_RENDERERED ((1600*1200)+20000 )
+extern int32_t pixelsAllowed;
 
 #define RENDER_DRAW_WALL_BORDERS 1
 #define RENDER_DRAW_WALL_INSIDE 1

@@ -61,7 +61,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
-      <AdditionalIncludeDirectories>../external/SDL-1.2.15/include;../external/SDL_mixer-1.2.12/include;../Engine/src;.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../external/SDL-1.2.15/include;../external/SDL_mixer-1.2.12/include;..\Engine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>nDBGRECORD; CHECK_XDUKE_REV; nDEBUG; WIN32; _CONSOLE; PLATFORM_WIN32; _CRT_SECURE_NO_DEPRECATE; _CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -78,7 +78,7 @@
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>dxguid.lib;sdl.lib;sdl_mixer.lib;winmm.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)$(SolutionName).exe</OutputFile>
+      <OutputFile>$(OutDir)ChocolateDuke3D.exe</OutputFile>
       <Version>19.4</Version>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>../external/SDL-1.2.15\lib\x86;../external/SDL_mixer-1.2.12\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -92,7 +92,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../external/SDL-1.2.15/include;../external/SDL_mixer-1.2.12/include;../Engine/src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../external/SDL-1.2.15/include;../external/SDL_mixer-1.2.12/include;..\Engine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>nDBGRECORD; CHECK_XDUKE_REV; nDEBUG; WIN32; _CONSOLE; PLATFORM_WIN32; _CRT_SECURE_NO_DEPRECATE; _CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -182,6 +182,9 @@
       <Project>{05511b4a-fb13-49e5-ae53-ee1f063c055d}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="chocolateDukeRessources.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

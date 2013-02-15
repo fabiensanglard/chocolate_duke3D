@@ -2770,7 +2770,7 @@ static int bunchfront(int32_t firstBunchID, int32_t secondBunchID)
 	}
 }
 
-int pixelRenderable = 100000000;
+int pixelRenderable = 0;
 //#include "keyboard.h"
 //void WriteLastPaletteToFile(void);
 //void WriteTranslucToFile(void);
@@ -2800,7 +2800,7 @@ void drawrooms(int32_t daposx, int32_t daposy, int32_t daposz,short daang, int32
     }        
     */
 
-	pixelRenderable+=10;
+	pixelRenderable+=100;
 	if (pixelRenderable >= MAX_PIXEL_RENDERERED)
 		pixelRenderable =  0 ;
 
@@ -4535,7 +4535,7 @@ void drawline256 (int32_t x1, int32_t y1, int32_t x2, int32_t y2, uint8_t  col)
 
  Algorithm: This is an optimized raycasting inside polygon test:
  http://en.wikipedia.org/wiki/Point_in_polygon#Ray_casting_algorithm
- The goal is to follow an horizontal ray passing by (x,y) and count how many
+ The goal is to follow an ***horizontal*** ray passing by (x,y) and count how many
  wall are being crossed.
  If it is an odd number of time: (x,y) is inside the sector.
  If it is an even nymber of time:(x,y) is outside the sector.
@@ -4560,6 +4560,7 @@ int inside(int32_t x, int32_t y, short sectnum)
 
         // Compare the sign of y1 and y2.
         // If (y1^y2) < 0 : y1 and y2 have different sign bit:  y is between wal->y and wall[wal->point2].y.
+        // The goal is to not take into consideration any wall that is totally above or totally under the point [x,y].
         if ((y1^y2) < 0)
         {
             x1 = wal->x-x;
@@ -4568,13 +4569,13 @@ int inside(int32_t x, int32_t y, short sectnum)
             //If (x1^x2) >= 0 x1 and x2 have identic sign bit: x is on the left or the right of both wal->x and wall[wal->point2].x.
             if ((x1^x2) >= 0)
             {
-                // If (x,y) is on totally on the left or on the right, just count x1 (which indicate if we are on
-                // (x,y) is on the left or on the right.
+                // If (x,y) is totally on the left or on the right, just count x1 (which indicate if we are on
+                // on the left or on the right.
                 wallCrossed ^= x1;
             }
             else
             {
-                // This is the most complicated case: X is between x1 and x2 and y is between y1 and y2.
+                // This is the most complicated case: X is between x1 and x2, we need a fine grained test.
                 // We need to know exactly if it is on the left or on the right in order to know if the ray
                 // is crossing the wall or not,
                 // The sign of the Cross-Product can answer this case :) !
@@ -7681,6 +7682,8 @@ void printext256(int32_t xpos, int32_t ypos, short col, short backcol, char*  na
 {
     int32_t stx, i, x, y, charxsiz;
     uint8_t  *fontptr, *letptr, *ptr;
+
+	
 
     stx = xpos;
 

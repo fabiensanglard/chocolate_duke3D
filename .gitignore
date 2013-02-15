@@ -11,4 +11,5 @@ xcshareddata
 DebugVC7
 ReleaseVC7
 bin
+*/ReleaseVC7
 *vcxproj.user

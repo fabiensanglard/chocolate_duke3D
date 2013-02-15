@@ -98,10 +98,11 @@ extern uint8_t  grpVersion;
 #define	XDUKE_ID  2
 #define JONOF_ID  3
 
+//Chocolate DukeNukem3D is a fork of xDuke v17.9
+
 #define DUKE_ID			XDUKE_ID
-#define	XDUKE_REV_X		19
-#define XDUKE_REV_DOT_Y	7   // rev is: vXDUKE_REV_X.XDUKE_REV_DOT_Y
-#define XDUKE_SUBVERSION 1
+#define	CHOCOLATE_DUKE_REV_X		1
+#define CHOCOLATE_DUKE_REV_DOT_Y	0   // rev is: CHOCOLATE_DUKE_REV_X.CHOCOLATE_DUKE_REV_DOT_Y
 
 #define MAX_KNOWN_GRP 4
 
@@ -121,9 +122,9 @@ enum
 
 // implies  conVersion == 14 or conVersion == 15
 #define PLUTOPAK  (!VOLUMEONE && !VOLUMEALL) 
-#define VOLUMEONE (groupefil_crc32[0]==CRC_BASE_GRP_SHAREWARE_13)
+#define VOLUMEONE (getGRPcrc32(0)==CRC_BASE_GRP_SHAREWARE_13)
 // VOLUMEALL = 1.3d full
-#define VOLUMEALL (groupefil_crc32[0]==CRC_BASE_GRP_FULL_13 || conVersion == 13 && groupefil_crc32[0]!=CRC_BASE_GRP_SHAREWARE_13 && groupefil_crc32[0]!=CRC_BASE_GRP_PLUTONIUM_14 && groupefil_crc32[0]!=CRC_BASE_GRP_ATOMIC_15)
+#define VOLUMEALL (getGRPcrc32(0)==CRC_BASE_GRP_FULL_13 || conVersion == 13 && getGRPcrc32(0)!=CRC_BASE_GRP_SHAREWARE_13 && getGRPcrc32(0)!=CRC_BASE_GRP_PLUTONIUM_14 && getGRPcrc32(0)!=CRC_BASE_GRP_ATOMIC_15)
 
 #define SCREENSHOTPATH "screenshots"
 

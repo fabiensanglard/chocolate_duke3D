@@ -1588,7 +1588,7 @@ void loadefs(char  *filenam, char  *mptr, int readfromGRP)
     *script = (int32_t) scriptptr;
 
     if(warning|error)
-        printf("Found %hhd warning(s), %c error(s).\n",warning,error);
+        printf("Found %hhd warning(s), '%c' error(s).\n",warning,error);
 
     if(error)
     {
@@ -1608,8 +1608,8 @@ void loadefs(char  *filenam, char  *mptr, int readfromGRP)
 			// FIX_00022: Automatically recognize the shareware grp (v1.3) + full version (1.3d) +
 			//            atomic (1.4/1.5 grp) and the con files version (either 1.3 or 1.4) (JonoF's idea)
 
-		if(conVersion != 13 && (groupefil_crc32[0]==CRC_BASE_GRP_SHAREWARE_13 || 
-			groupefil_crc32[0]==CRC_BASE_GRP_FULL_13) && !groupefil_crc32[1])
+		if(conVersion != 13 && (getGRPcrc32(0)==CRC_BASE_GRP_SHAREWARE_13 ||
+			getGRPcrc32(0)==CRC_BASE_GRP_FULL_13) && !getGRPcrc32(1))
 		{
 			printf(	"\nYou are trying to use a v1.3 Shareware/Full *.GRP with v1.4 or v1.5\n"
 					"external *.CON files. You may run in troubles by doing so and/or get\n"
@@ -1627,7 +1627,7 @@ void loadefs(char  *filenam, char  *mptr, int readfromGRP)
 				loadefs(filenam, mptr, 1); // force GRP con files
 			}
 		}
-		else if(conVersion != 15 && groupefil_crc32[0]==CRC_BASE_GRP_ATOMIC_15 && !groupefil_crc32[1])
+		else if(conVersion != 15 && getGRPcrc32(0)==CRC_BASE_GRP_ATOMIC_15 && !getGRPcrc32(1))
 		{
 			printf(	"\nYou are trying to use a v1.5 ATOMIC *.GRP with v1.4 or v1.3\n"
 					"external *.CON files. You may run in troubles by doing so and/or get\n"
@@ -1643,7 +1643,7 @@ void loadefs(char  *filenam, char  *mptr, int readfromGRP)
 			{
 				loadefs(filenam, mptr, 1); // force GRP con files
 			}
-		}else if(conVersion != 14 && groupefil_crc32[0]==CRC_BASE_GRP_PLUTONIUM_14 && !groupefil_crc32[1])
+		}else if(conVersion != 14 && getGRPcrc32(0)==CRC_BASE_GRP_PLUTONIUM_14 && !getGRPcrc32(1))
 		{
 			printf(	"\nYou are trying to use a v1.4 PLUTONIUM *.GRP with v1.3 or v1.5\n"
 					"external *.CON files. You may run in troubles by doing so and/or get\n"
