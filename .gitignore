@@ -7,9 +7,9 @@ DerivedData
 *.xcuserdatad
 .DS_Store
 xcshareddata
+SDL-1.2.9
 *.opensdf
 DebugVC7
-ReleaseVC7
 bin
 */ReleaseVC7
 *vcxproj.user
