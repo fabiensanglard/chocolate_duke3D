@@ -99,7 +99,7 @@ int MUSIC_PlaySong(char  *songFilename, int loopflag)
     SDL_RWops *rw;
     Mix_Music* sdlMusic;
     
-    fd = kopen4load(songFilename,0);
+    fd = TCkopen4load(songFilename,0);
     
 	if(fd == -1){ 
         printf("The music '%s' cannot be found in the GRP or the filesystem.\n",songFilename);

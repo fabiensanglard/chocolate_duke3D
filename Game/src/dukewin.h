@@ -2,7 +2,7 @@
 #define _INCL_DUKEWIN_H_ 1
 
 #ifndef _MSC_VER  /* might need this. */
-typedef int32_t int32_t __int64;
+typedef int64_t __int64;
 #endif
 
 #pragma warning(disable:4761)
