@@ -27,7 +27,9 @@ Build :
 =======
 
 Windows : Use Visual Studio 2005 or Visual Studio 2012
+
 Mac OS X: Use Xcode 4.0
+
 Linux   : Never tested :/ !
 
 Fabien Sanglard
