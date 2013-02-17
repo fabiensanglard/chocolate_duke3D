@@ -13,6 +13,9 @@ DebugVC7
 bin
 */ReleaseVC7
 *vcxproj.user
+Lib\DirectX_SDK\*
+Lib\SDL\*
+Lib\SDL_Mixer\*
 _ReSharper*
 vs/ipch/
 *ncrunch*
