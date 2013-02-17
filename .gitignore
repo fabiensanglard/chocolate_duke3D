@@ -13,3 +13,6 @@ DebugVC7
 bin
 */ReleaseVC7
 *vcxproj.user
+_ReSharper*
+vs/ipch/
+*ncrunch*

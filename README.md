@@ -11,6 +11,16 @@ A port that:
 
 Cheers,
 
+Prerequities :
+=======
+
+SDL: http://www.libsdl.org/ - Get the correct Development Library "devel" for your OS - version 1.2.15
+SDL Mixer: http://www.libsdl.org/projects/SDL_mixer/ - Get the correct Development Library "devel" for your OS - version 1.2.12
+DirectX SDK : http://www.microsoft.com/en-us/download/details.aspx?id=6812 - Install and copy the whole directory
+
+Each Lib has a folder to extract into in \Lib\
+
+
 Build :
 =======
 

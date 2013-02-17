@@ -1,8 +1,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game", "Game\Game.vcxproj", "{6D80B050-1DC6-406A-98E3-60C65C3304F3}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game", "..\Game\Game.vcxproj", "{6D80B050-1DC6-406A-98E3-60C65C3304F3}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine", "Engine\Engine.vcxproj", "{05511B4A-FB13-49E5-AE53-EE1F063C055D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine", "..\Engine\Engine.vcxproj", "{05511B4A-FB13-49E5-AE53-EE1F063C055D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
