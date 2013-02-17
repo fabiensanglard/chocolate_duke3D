@@ -19,3 +19,27 @@ Lib\SDL_Mixer\*
 _ReSharper*
 vs/ipch/
 *ncrunch*
+/Lib/SDL/docs.html
+/Lib/SDL/README.txt
+/Lib/SDL/README-SDL.txt
+/Lib/SDL/VisualC.html
+/Lib/SDL/WhatsNew.txt
+/Lib/SDL/docs
+/Lib/SDL/include
+/Lib/SDL/lib
+/Lib/SDL/BUGS.txt
+/Lib/SDL/COPYING.txt
+/Lib/SDL_Mixer/include
+/Lib/SDL_Mixer/lib
+/Lib/SDL_Mixer/CHANGES.txt
+/Lib/SDL_Mixer/COPYING.txt
+/Lib/SDL_Mixer/README.txt
+/Lib/DirectX_SDK/Developer Runtime
+/Lib/DirectX_SDK/Documentation
+/Lib/DirectX_SDK/Extras
+/Lib/DirectX_SDK/Include
+/Lib/DirectX_SDK/Lib
+/Lib/DirectX_SDK/Redist
+/Lib/DirectX_SDK/Samples
+/Lib/DirectX_SDK/system
+/Lib/DirectX_SDK/Utilities
