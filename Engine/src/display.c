@@ -943,12 +943,14 @@ int _setgamemode(uint8_t  davidoption, int32_t daxdim, int32_t daydim)
 	SDL_Surface     *image;
 	Uint32          colorkey;
 
+    // don't override higher-res app icon on OS X
+#ifndef PLATFORM_MACOSX
 	// Install icon
 	image = SDL_LoadBMP_RW(SDL_RWFromMem(iconBMP, sizeof(iconBMP)), 1);
 	colorkey = 0; // index in this image to be transparent
     SDL_SetColorKey(image, SDL_SRCCOLORKEY, colorkey);
 	SDL_WM_SetIcon(image,NULL);
-
+#endif
     
     if (daxdim > MAXXDIM || daydim > MAXYDIM)
     {
