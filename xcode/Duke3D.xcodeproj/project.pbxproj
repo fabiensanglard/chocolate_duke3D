@@ -59,8 +59,6 @@
 		2D47FB4116C6BA8200DB3597 /* tiles.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D058BCF1686520B00E283DC /* tiles.c */; };
 		2D47FB4216C6BA8200DB3597 /* network.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D058BE3168689B200E283DC /* network.c */; };
 		2D47FB4316C6BA8200DB3597 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B7AED16792D6700DB503A /* SDLMain.m */; };
-		2D47FB4616C6BB4000DB3597 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D47FB4416C6BB4000DB3597 /* SDL.framework */; };
-		2D47FB4716C6BB4000DB3597 /* SDL_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D47FB4516C6BB4000DB3597 /* SDL_mixer.framework */; };
 		2D47FB4916C6BC2200DB3597 /* SDL_mixer.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2D7B623216788AAB00E35E54 /* SDL_mixer.framework */; };
 		2D47FB4A16C6BC2200DB3597 /* SDL.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2D7B623016788A9B00E35E54 /* SDL.framework */; };
 		2D47FB4E16C6BF1C00DB3597 /* duke_3d_icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2D47FB4D16C6BF1C00DB3597 /* duke_3d_icon.icns */; };
@@ -112,6 +110,8 @@
 		2D7C17DD167AD6A500E1BBA1 /* nodpmi.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7C17D4167AD6A500E1BBA1 /* nodpmi.c */; };
 		2D7C17DE167AD6A500E1BBA1 /* user.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7C17D6167AD6A500E1BBA1 /* user.c */; };
 		2D7C17E0167ADE2000E1BBA1 /* pitch.c in Sources */ = {isa = PBXBuildFile; fileRef = 2D7C17DF167ADE1F00E1BBA1 /* pitch.c */; };
+		51516E1816E3BBED00A480FC /* SDL_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D7B623216788AAB00E35E54 /* SDL_mixer.framework */; };
+		51516E1916E3BBED00A480FC /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D7B623016788A9B00E35E54 /* SDL.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -156,8 +156,6 @@
 		2D47FB0516C6BA0D00DB3597 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		2D47FB0916C6BA0D00DB3597 /* Duke3DBundle-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Duke3DBundle-Prefix.pch"; sourceTree = "<group>"; };
 		2D47FB0B16C6BA0D00DB3597 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
-		2D47FB4416C6BB4000DB3597 /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = Library/Frameworks/SDL.framework; sourceTree = SDKROOT; };
-		2D47FB4516C6BB4000DB3597 /* SDL_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_mixer.framework; path = Library/Frameworks/SDL_mixer.framework; sourceTree = SDKROOT; };
 		2D47FB4D16C6BF1C00DB3597 /* duke_3d_icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = duke_3d_icon.icns; sourceTree = "<group>"; };
 		2D4FB6FE167D430F00915887 /* sdl_midi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sdl_midi.c; sourceTree = "<group>"; };
 		2D7B61DE167886FB00E35E54 /* Duke3D */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Duke3D; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -265,8 +263,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D47FB4616C6BB4000DB3597 /* SDL.framework in Frameworks */,
-				2D47FB4716C6BB4000DB3597 /* SDL_mixer.framework in Frameworks */,
+				51516E1816E3BBED00A480FC /* SDL_mixer.framework in Frameworks */,
+				51516E1916E3BBED00A480FC /* SDL.framework in Frameworks */,
 				2D47FAFF16C6BA0D00DB3597 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -440,8 +438,6 @@
 		2D7B61D3167886FB00E35E54 = {
 			isa = PBXGroup;
 			children = (
-				2D47FB4416C6BB4000DB3597 /* SDL.framework */,
-				2D47FB4516C6BB4000DB3597 /* SDL_mixer.framework */,
 				2D7B61E1167886FB00E35E54 /* Duke3D */,
 				2D47FB0116C6BA0D00DB3597 /* Duke3DBundle */,
 				2D47FADD16C6B94600DB3597 /* Frameworks */,
@@ -761,6 +757,7 @@
 		2D47FB1416C6BA0D00DB3597 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Duke3DBundle/Duke3DBundle-Prefix.pch";
@@ -774,11 +771,13 @@
 		2D47FB1516C6BA0D00DB3597 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Duke3DBundle/Duke3DBundle-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "Duke3DBundle/Duke3DBundle-Info.plist";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "Chocolate Duke3D";
 				WRAPPER_EXTENSION = app;
 			};
@@ -813,7 +812,9 @@
 					"/Library/Frameworks/SDL.framework/Headers/**",
 					"/Library/Frameworks/SDL_Mixer.framework/Headers/**",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				INSTALL_PATH = "@rpath";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
@@ -842,7 +843,9 @@
 					"/Library/Frameworks/SDL.framework/Headers/**",
 					"/Library/Frameworks/SDL_Mixer.framework/Headers/**",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				INSTALL_PATH = "@rpath";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
 			};
 			name = Release;
