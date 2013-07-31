@@ -839,7 +839,7 @@ uint8_t  *ltoa(int32_t value, uint8_t  *string, int radix)
 	return string;
 }
 
-uint8_t  *ultoa(unsigned int32_t value, uint8_t  *string, int radix)
+uint8_t  *ultoa(uint32_t value, uint8_t  *string, int radix)
 {
 	switch (radix) {
 		case 10:
@@ -866,7 +866,8 @@ int setup_homedir (void)
 
 	snprintf (ApogeePath, sizeof (ApogeePath), "%s/.duke3d/", getenv ("HOME"));
 
-	err = mkdir (ApogeePath, S_IRWXU);
+	//err = mkdir (ApogeePath, S_IRWXU);
+	err = mkdir (ApogeePath);
 	if (err == -1 && errno != EEXIST)
 	{
 		fprintf (stderr, "Couldn't create preferences directory: %s\n", 

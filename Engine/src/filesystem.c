@@ -404,7 +404,7 @@ int32_t klseek(int32_t handle, int32_t offset, int whence){
 	
 }
 
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__linux__)
 int32_t filelength(int32_t fd){
     struct stat stats;
     fstat(fd, &stats);

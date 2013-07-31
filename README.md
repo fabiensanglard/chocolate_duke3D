@@ -13,7 +13,7 @@ A port that:
 Requirements
 ============
 
-[SDL](http://libsdl.org) and SDL_mixer to compile and run the code.
+[SDL](http://libsdl.org), SDL_mixer and [enet](http://enet.bespin.org) to compile and run the code.
 
 An original copy of Duke Nukem 3D (specifically the DUKE3D.GRP file from the original CD).
 
@@ -23,14 +23,14 @@ Build
 
 Windows: Use Visual Studio 2005 or Visual Studio 2012  
 OS X: Use Xcode 4.0  
-Linux: Not yet tested 
+Linux: Use 'make' (.grp in working directory and with rw permissions)
 
 
 Background
 ==========
 
 **Project initiator:** Fabien Sanglard 
+**Linux integration:** Juan Manuel Borges Caño
 
-**More information:** [Review of the Duke 3D source code](http://fabiensanglard.net/duke3d/)
-
+**More information:** [Review of the Duke 3D source code](http://fabiensanglard.net/duke3d/) [Linux integration](http://juanmabcblog.blogspot.com/2013/07/chocolate-duke3d.html)
 
