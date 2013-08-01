@@ -13,7 +13,7 @@ A port that:
 Requirements
 ============
 
-[SDL](http://libsdl.org), SDL_mixer and [enet](http://enet.bespin.org) to compile and run the code.
+[SDL](http://libsdl.org) and SDL_mixer to compile and run the code.
 
 An original copy of Duke Nukem 3D (specifically the DUKE3D.GRP file from the original CD).
 
