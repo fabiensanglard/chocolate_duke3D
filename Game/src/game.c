@@ -7151,7 +7151,18 @@ void checkcommandline(int argc,char  **argv)
         {
             c = argv[i];
 
-            if (stricmp(c, "-net") == 0)
+			if (stricmp(c, "-map") == 0)
+            {
+				i++;
+				strcpy(boardfilename,argv[i]);
+				if( strchr(boardfilename,'.') == 0)
+					strcat(boardfilename,".map");
+				printf("Using level: '%s'.\n",boardfilename);
+				continue;
+
+			}
+
+			if (stricmp(c, "-net") == 0)
             {
                 i += 2;  // skip filename.
 				// FIX_00044: Markers are now on by default in netgames (as real DOS duke3d)
