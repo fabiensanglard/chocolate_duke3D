@@ -30,7 +30,10 @@ Background
 ==========
 
 **Project initiator:** Fabien Sanglard 
-**Linux integration:** Juan Manuel Borges Caño
 
-**More information:** [Review of the Duke 3D source code](http://fabiensanglard.net/duke3d/) [Linux integration](http://juanmabcblog.blogspot.com/2013/07/chocolate-duke3d.html)
+Contributors
+==========
+**Linux Tweaks:** [Juan Manuel Borges Caño](juanmabcmail@gmail.com) [Blog Post] (http://juanmabcblog.blogspot.com/2013/07/chocolate-duke3d.html)
+
+**More information:** [Review of the Duke 3D source code](http://fabiensanglard.net/duke3d/) 
 
