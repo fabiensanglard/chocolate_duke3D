@@ -23,7 +23,7 @@ Build
 
 Windows: Use Visual Studio 2005 or Visual Studio 2012  
 OS X: Use Xcode 4.0  
-Linux: Use 'make' (.grp in working directory and with rw permissions)
+Linux: Use 'make' (.grp in binary working directory and with rw permissions)
 
 
 Background
@@ -32,5 +32,11 @@ Background
 **Project initiator:** Fabien Sanglard 
 **Linux integration:** Juan Manuel Borges Caño
 
-**More information:** [Review of the Duke 3D source code](http://fabiensanglard.net/duke3d/) [Linux integration](http://juanmabcblog.blogspot.com/2013/07/chocolate-duke3d.html)
+**More information:** [Linux integration](http://juanmabcblog.blogspot.com/2013/07/chocolate-duke3d.html) [Review of the Duke 3D source code](http://fabiensanglard.net/duke3d/)
 
+chocolate-duke3d (Chocolate Duke Nukem 3D) Linux integration licensed GPLv3 by Juan Manuel Borges Caño
+* homepage: < http://juanmabcblog.blogspot.com/2013/07/chocolate-duke3d.html >
+* mail < mailto:juanmabcmail@gmail.com >
+* blog < http://juanmabcblog.blogspot.com >
+
+Copyright (C) 2013 - 2014 Juan Manuel Borges Caño :-) Thanks through email (suggested subject chocolate-duke3d) or/and Payments through blog with BitCoin, Flattr, Western Union and PayPal Welcome :-)
