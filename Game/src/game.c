@@ -1446,7 +1446,7 @@ void myospal(int32_t x, int32_t y, short tilenum, int8_t shade, uint8_t  orienta
 void invennum(int32_t x,int32_t y,uint8_t  num1,uint8_t  ha,uint8_t  sbits)
 {
     char  dabuf[80] = {0};
-    sprintf(dabuf,"%c",num1);
+    sprintf(dabuf,"%d",num1);
     if(num1 > 99)
     {
         rotatesprite((x-4)<<16,y<<16,65536L,0,THREEBYFIVE+dabuf[0]-'0',ha,0,sbits,0,0,xdim-1,ydim-1);
