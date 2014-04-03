@@ -21,16 +21,26 @@ An original copy of Duke Nukem 3D (specifically the DUKE3D.GRP file from the ori
 Build
 =====
 
+Linux: Use 'make' (.grp in binary working directory and with rw permissions)
 Windows: Use Visual Studio 2005 or Visual Studio 2012  
 OS X: Use Xcode 4.0  
-Linux: Not yet tested 
 
 
-Background
-==========
+Contributors
+============
 
-**Project initiator:** Fabien Sanglard 
+**Project Initiator:** Fabien Sanglard 
+**Linux Tweaks:** Juan Manuel Borges Caño 
 
-**More information:** [Review of the Duke 3D source code](http://fabiensanglard.net/duke3d/)
+More Information
+================
 
+[Linux Integration](http://juanmabcblog.blogspot.com/2013/07/chocolate-duke3d.html)
+[Review of the Duke 3D source code](http://fabiensanglard.net/duke3d/)
 
+chocolate-duke3d (Chocolate Duke Nukem 3D) Linux integration licensed GPLv3 by Juan Manuel Borges Caño
+* homepage: < http://juanmabcblog.blogspot.com/2013/07/chocolate-duke3d.html >
+* blog < http://juanmabcblog.blogspot.com >
+* mail < mailto:juanmabcmail@gmail.com >
+
+Copyright (C) 2013 - 2014 Juan Manuel Borges Caño :-) Thanks through email (suggested subject chocolate-duke3d) or/and Payments through blog with BitCoin, Flattr, Western Union and PayPal Welcome :-)

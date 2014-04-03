@@ -14,3 +14,9 @@ bin
 */ReleaseVC7
 *vcxproj.user
 DUKE3D.GRP
+
+# Linux
+*.o
+*.a
+chocolate-duke3d
+duke3d.grp
