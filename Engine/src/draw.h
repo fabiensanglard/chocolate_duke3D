@@ -27,7 +27,7 @@ extern uint8_t  *transluc;
 extern uint8_t  *globalpalwritten;
 extern int16_t  globalshiftval;
 extern int32_t vplce[4], vince[4];
-extern int32_t bufplce[4];
+extern intptr_t bufplce[4];
 extern uint8_t* palookupoffse[4];
         
 void sethlinesizes(int32_t,int32_t,uint8_t *);
@@ -37,7 +37,7 @@ void hlineasm4(int32_t,int32_t,uint32_t,uint32_t,uint8_t*);
 void setuprhlineasm4(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
 void rhlineasm4(int32_t,uint8_t*,int32_t,uint32_t,uint32_t,int32_t);
 void setuprmhlineasm4(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
-void rmhlineasm4(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
+void rmhlineasm4(int32_t,intptr_t,int32_t,int32_t,int32_t,int32_t);
 
 
 void setBytesPerLine(int32_t);
@@ -47,12 +47,12 @@ int32_t vlineasm1(int32_t,uint8_t*,int32_t,int32_t,uint8_t  *,uint8_t*);
 
 int32_t tvlineasm1(int32_t,uint8_t  *,int32_t,int32_t,uint8_t  *,uint8_t  * dest);
 void setuptvlineasm2(int32_t,int32_t,int32_t);
-void tvlineasm2(uint32_t,uint32_t,uint32_t,uint32_t,uint32_t,uint32_t);
+void tvlineasm2(uint32_t,uint32_t,uintptr_t,uintptr_t,uint32_t,uintptr_t);
 int32_t mvlineasm1(int32_t,uint8_t*,int32_t,int32_t,uint8_t* texture,uint8_t* dest);
 void setupvlineasm(int32_t);
-void vlineasm4(int32_t,int32_t);
+void vlineasm4(int32_t,intptr_t);
 void setupmvlineasm(int32_t);
-void mvlineasm4(int32_t,int32_t);
+void mvlineasm4(int32_t,intptr_t);
 void setupspritevline(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
 void spritevline(int32_t,uint32_t,int32_t,uint32_t,uint8_t*,uint8_t*);
 void msetupspritevline(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
@@ -65,8 +65,8 @@ void msethlineshift(int32_t,int32_t);
 void thline(uint8_t*,int32_t,int32_t,int32_t,int32_t,uint8_t *);
 void thlineskipmodify(int32_t,uint32_t,uint32_t,int32_t,int32_t,uint8_t *);
 void tsethlineshift(int32_t,int32_t);
-void setupslopevlin(int32_t,int32_t,int32_t);
-void slopevlin(int32_t,uint32_t,int32_t,int32_t,int32_t,int32_t);
+void setupslopevlin(int32_t,intptr_t,int32_t);
+void slopevlin(intptr_t,uint32_t,int32_t,int32_t,int32_t,int32_t);
     
     
 #define TRANS_NORMAL  0

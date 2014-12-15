@@ -152,7 +152,7 @@ void setuprmhlineasm4(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t ti
 
 
 //FCS: ????
-void rmhlineasm4(int32_t i1, int32_t shade, int32_t colorIndex, int32_t i4, int32_t i5, int32_t dest)
+void rmhlineasm4(int32_t i1, intptr_t shade, int32_t colorIndex, int32_t i4, int32_t i5, int32_t dest)
 {
     uint32_t ebp = dest - i1;
     uint32_t rmach6b = ebp-1;
@@ -305,13 +305,13 @@ void setuptvlineasm2(int32_t i1, int32_t i2, int32_t i3)
 } /* */
 
 
-void tvlineasm2(uint32_t i1, uint32_t i2, uint32_t i3, uint32_t i4, uint32_t i5, uint32_t i6)
+void tvlineasm2(uint32_t i1, uint32_t i2, uintptr_t i3, uintptr_t i4, uint32_t i5, uintptr_t i6)
 {
 	uint32_t ebp = i1;
 	uint32_t tran2inca = i2;
 	uint32_t tran2incb = asm1;
-	uint32_t tran2bufa = i3;
-	uint32_t tran2bufb = i4;
+	uintptr_t tran2bufa = i3;
+	uintptr_t tran2bufb = i4;
 	uint32_t tran2edi = asm2;
 	uint32_t tran2edi1 = asm2 + 1;
 
@@ -400,7 +400,7 @@ void setupvlineasm(int32_t i1)
 }
 
 //FCS This is used to fill the inside of a wall (so it draws VERTICAL column, always).
-void vlineasm4(int32_t columnIndex, int32_t framebuffer)
+void vlineasm4(int32_t columnIndex, intptr_t framebuffer)
 {
 
 	if (!RENDER_DRAW_WALL_INSIDE)
@@ -410,7 +410,7 @@ void vlineasm4(int32_t columnIndex, int32_t framebuffer)
         int i;
         uint32_t temp;
         
-        uint32_t index = (framebuffer + ylookup[columnIndex]);
+        uintptr_t index = (framebuffer + ylookup[columnIndex]);
         uint8_t  *dest= (uint8_t *)(-ylookup[columnIndex]);
         //uint8_t  *dest= (uint8_t *)framebuffer;
         
@@ -440,11 +440,11 @@ void setupmvlineasm(int32_t i1)
 } 
 
 
-void mvlineasm4(int32_t column, int32_t framebufferOffset)
+void mvlineasm4(int32_t column, intptr_t framebufferOffset)
 {
     int i;
     uint32_t temp;
-    uint32_t index = (framebufferOffset + ylookup[column]);
+    uintptr_t index = (framebufferOffset + ylookup[column]);
     uint8_t  *dest = (uint8_t *)(-ylookup[column]);
 
     do {
@@ -821,14 +821,14 @@ void tsethlineshift(int32_t i1, int32_t i2)
 
 
 
-static int32_t slopemach_ebx;
+static intptr_t slopemach_ebx;
 static int32_t slopemach_ecx;
 static int32_t slopemach_edx;
 static uint8_t  slopemach_ah1;
 static uint8_t  slopemach_ah2;
 static float asm2_f;
 typedef union { unsigned int i; float f; } bitwisef2i;
-void setupslopevlin(int32_t i1, int32_t i2, int32_t i3)
+void setupslopevlin(int32_t i1, intptr_t i2, int32_t i3)
 {
     bitwisef2i c;
     slopemach_ebx = i2;
@@ -848,7 +848,7 @@ extern int32_t fpuasm;
 #define high32(a) ((int)(((__int64)a&(__int64)0xffffffff00000000)>>32))
 
 //FCS: Render RENDER_SLOPPED_CEILING_AND_FLOOR
-void slopevlin(int32_t i1, uint32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6)
+void slopevlin(intptr_t i1, uint32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6)
 {
     bitwisef2i c;
     uint32_t ecx,eax,ebx,edx,esi,edi;

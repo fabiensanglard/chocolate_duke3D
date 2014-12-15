@@ -190,11 +190,12 @@ uint8_t  globparaceilclip, globparaflorclip;
 
 int32_t xyaspect, viewingrangerecip;
 
-int32_t asm1, asm2, asm3, asm4;
+int32_t asm1, asm2, asm4;
+intptr_t asm3;
 
 
 int32_t vplce[4], vince[4];
-int32_t bufplce[4];
+intptr_t bufplce[4];
 
 uint8_t*  palookupoffse[4];
 
@@ -1224,7 +1225,8 @@ static void wallscan(int32_t x1, int32_t x2,
                      int16_t *uwal, int16_t *dwal,
                      int32_t *swal, int32_t *lwal)
 {
-    int32_t i, x, xnice, ynice;
+    int32_t x, xnice, ynice;
+    intptr_t i;
     uint8_t* fpalookup;
     int32_t y1ve[4], y2ve[4], u4, d4, z, tileWidth, tsizy;
     uint8_t  bad;
@@ -1413,7 +1415,8 @@ static void maskwallscan(int32_t x1, int32_t x2,
                          short *uwal, short *dwal,
                          int32_t *swal, int32_t *lwal)
 {
-    int32_t i, x, startx, xnice, ynice;
+    int32_t x, startx, xnice, ynice;
+    intptr_t i;
     uint8_t* fpalookup;
     int32_t y1ve[4], y2ve[4], u4, d4, dax, z, tileWidth, tileHeight;
     uint8_t*  p;
@@ -3044,7 +3047,8 @@ static int spritewallfront (spritetype *s, int32_t w)
 
 static void transmaskvline(int32_t x)
 {
-    int32_t vplc, vinc, p, i, palookupoffs, bufplc;
+    int32_t vplc, vinc, p, i, palookupoffs;
+    intptr_t bufplc;
     short y1v, y2v;
 
     if ((x < 0) || (x >= xdimen)) return;
