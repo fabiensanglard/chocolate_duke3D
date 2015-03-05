@@ -36,7 +36,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 #include <time.h>
 #include "duke3d.h"
 #include "scriplib.h"
-#include "build.h"
+#include "../../Engine/src/build.h"
 
 
 // we load this in to get default button and key assignments

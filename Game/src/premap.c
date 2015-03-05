@@ -25,7 +25,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 //-------------------------------------------------------------------------
 
 #include "duke3d.h"
-#include "filesystem.h"
+#include "../../Engine/src/filesystem.h"
 #include "game.h"
 
 

@@ -6,7 +6,7 @@
 
 // Required for certain cvars
 #include "types.h"
-#include "build.h"
+#include "../../Engine/src/build.h"
 #include "funct.h"
 
 //We need a way to access duke to change the level

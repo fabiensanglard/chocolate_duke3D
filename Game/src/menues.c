@@ -29,10 +29,10 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 #include "animlib.h"
 #include "control.h"
 
-#include "filesystem.h"
+#include "../../Engine/src/filesystem.h"
 #include "SDL.h"
 #include "premap.h"
-#include "display.h"
+#include "../../Engine/src/display.h"
 
 extern SDL_Surface *surface;
 extern short inputloc;
