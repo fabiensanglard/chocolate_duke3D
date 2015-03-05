@@ -1,5 +1,12 @@
 #!/bin/sh
 
+if [ -e "/usr/local/include/enet/enet.h"]; then
+   CPPFLAGS="${CPPFLAGS} -D__SYSTEM_ENET"
+   CFLAGS="${CFLAGS} -I/usr/local/include"
+elif [ -e "/usr/include/enet/enet.h" ]; then
+   CPPFLAGS="${CPPFLAGS} -D__SYSTEM_ENET"
+fi
+
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig:/usr/lib/i386-linux-gnu/pkgconfig:${PKG_CONFIG_PATH}"
 export CFLAGS="${CFLAGS}"
 export CPPFLAGS="${CPPFLAGS}"

@@ -4,11 +4,14 @@ AR     ?= ar
 RANLIB ?= ranlib
 
 
-D3D_CFLAGS   = -m32 -O2 $(shell pkg-config --cflags sdl SDL_mixer) -Wall -Wno-unused-result -Wno-unused-function \
+D3D_CFLAGS    = -m32 -O2 $(shell pkg-config --cflags sdl SDL_mixer) -Wall -Wno-unused-result -Wno-unused-function \
 				-Wno-unused-but-set-variable -Wno-parentheses -Wno-maybe-uninitialized $(CFLAGS)
-D3D_CPPFLAGS = -DPLATFORM_UNIX $(CPPFLAGS)
-D3D_LDFLAGS  = -m32 $(LDFLAGS)
-D3D_LIBS     = $(shell pkg-config --libs sdl SDL_mixer) $(LIBS)
+D3D_CPPFLAGS  = -DPLATFORM_UNIX $(CPPFLAGS)
+# use the system's enet header files
+#D3D_CPPFLAGS += -D__SYSTEM_ENET
+
+D3D_LDFLAGS   = -m32 $(LDFLAGS)
+D3D_LIBS      = $(shell pkg-config --libs sdl SDL_mixer) $(LIBS)
 
 
 GAME_SRCS = $(addprefix Game/src/, \
