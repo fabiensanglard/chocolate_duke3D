@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ -e "/usr/local/include/enet/enet.h"]; then
+if [ -e "/usr/local/include/enet/enet.h" ]; then
    CPPFLAGS="${CPPFLAGS} -D__SYSTEM_ENET"
    CFLAGS="${CFLAGS} -I/usr/local/include"
 elif [ -e "/usr/include/enet/enet.h" ]; then
