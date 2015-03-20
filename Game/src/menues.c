@@ -1500,7 +1500,7 @@ void menus(void)
             gametext(160,59-8,"VERSION OF DUKE NUKEM 3D.  WHILE",0,2+8+16);
             gametext(160,68-8,"THIS VERSION IS REALLY COOL, YOU",0,2+8+16);
             gametext(160,77-8,"ARE MISSING OVER 75% OF THE TOTAL",0,2+8+16);
-            gametext(160,86-8,"GAME, Aint32_t WITH OTHER GREAT EXTRAS",0,2+8+16);
+            gametext(160,86-8,"GAME, ALONG WITH OTHER GREAT EXTRAS",0,2+8+16);
             gametext(160,95-8,"AND GAMES, WHICH YOU'LL GET WHEN",0,2+8+16);
             gametext(160,104-8,"YOU ORDER THE COMPLETE VERSION AND",0,2+8+16);
             gametext(160,113-8,"GET THE FINAL TWO EPISODES.",0,2+8+16);
