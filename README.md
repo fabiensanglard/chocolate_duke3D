@@ -39,7 +39,6 @@ More Information
 [Review of the Duke 3D source code](http://fabiensanglard.net/duke3d/)
 
 chocolate-duke3d (Chocolate Duke Nukem 3D) Linux integration licensed GPLv3 by Juan Manuel Borges Caño
-* homepage: < http://juanmabcblog.blogspot.com/2013/07/chocolate-duke3d.html >
 * blog < http://juanmabcblog.blogspot.com >
 * mail < mailto:juanmabcmail@gmail.com >
 
