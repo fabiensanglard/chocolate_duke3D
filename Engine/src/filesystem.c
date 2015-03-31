@@ -473,8 +473,8 @@ int32_t compress(uint8_t  *lzwinbuf, int32_t uncompleng, uint8_t  *lzwoutbuf)
 	short *shortptr;
     
 	for(i=255;i>=0;i--) { lzwbuf1[i] = (uint8_t ) i; lzwbuf3[i] = (short) ((i+1)&255); }
-	clearbuf((void *) FP_OFF(lzwbuf2),256>>1,0xffffffff);
-	clearbuf((void *) FP_OFF(lzwoutbuf),((uncompleng+15)+3)>>2,0L);
+	clearbuf((void *) (lzwbuf2),256>>1,0xffffffff);
+	clearbuf((void *) (lzwoutbuf),((uncompleng+15)+3)>>2,0L);
     
 	addrcnt = 256; bytecnt1 = 0; bitcnt = (4<<3);
 	numbits = 8; oneupnumbits = (1<<8);
@@ -538,7 +538,7 @@ int32_t uncompress(uint8_t  *lzwinbuf, int32_t compleng, uint8_t  *lzwoutbuf)
 	strtot = (int32_t )shortptr[1];
 	if (strtot == 0)
 	{
-		copybuf((void *)(FP_OFF(lzwinbuf)+4),(void *)(FP_OFF(lzwoutbuf)),((compleng-4)+3)>>2);
+		copybuf((void *)((lzwinbuf)+4),(void *)((lzwoutbuf)),((compleng-4)+3)>>2);
 		return((int32_t )shortptr[0]); /* uncompleng */
 	}
 	for(i=255;i>=0;i--) { lzwbuf2[i] = (short) i; lzwbuf3[i] = (short) i; }
