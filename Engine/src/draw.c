@@ -36,7 +36,7 @@ static int transrev = 0;
 
 /* ---------------  WALLS RENDERING METHOD (USED TO BE HIGHLY OPTIMIZED ASSEMBLY) ----------------------------*/
 extern int32_t asm1;
-extern int32_t asm2;
+extern intptr_t asm2;
 extern uint8_t *asm3;
 extern int32_t asm4;
 
@@ -312,8 +312,8 @@ void tvlineasm2(uint32_t i1, uint32_t i2, uintptr_t i3, uintptr_t i4, uint32_t i
 	uint32_t tran2incb = asm1;
 	uintptr_t tran2bufa = i3;
 	uintptr_t tran2bufb = i4;
-	uint32_t tran2edi = asm2;
-	uint32_t tran2edi1 = asm2 + 1;
+	uintptr_t tran2edi = asm2;
+	uintptr_t tran2edi1 = asm2 + 1;
 
 	i6 -= asm2;
 

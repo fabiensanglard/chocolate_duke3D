@@ -190,8 +190,8 @@ uint8_t  globparaceilclip, globparaflorclip;
 
 int32_t xyaspect, viewingrangerecip;
 
-int32_t asm1, asm2, asm4;
-intptr_t asm3;
+int32_t asm1, asm4;
+intptr_t asm2, asm3;
 
 
 int32_t vplce[4], vince[4];
@@ -3047,8 +3047,8 @@ static int spritewallfront (spritetype *s, int32_t w)
 
 static void transmaskvline(int32_t x)
 {
-    int32_t vplc, vinc, p, i, palookupoffs;
-    intptr_t bufplc;
+    int32_t vplc, vinc, i, palookupoffs;
+    intptr_t bufplc, p;
     short y1v, y2v;
 
     if ((x < 0) || (x >= xdimen)) return;
@@ -3079,7 +3079,8 @@ static void transmaskvline(int32_t x)
 
 static void transmaskvline2 (int32_t x)
 {
-    int32_t i, y1, y2, x2;
+    int32_t y1, y2, x2;
+    intptr_t i;
     short y1ve[2], y2ve[2];
 
     if ((x < 0) || (x >= xdimen)) return;
