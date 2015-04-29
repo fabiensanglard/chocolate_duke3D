@@ -70,7 +70,7 @@ int32_t initgroupfile(const char  *filename)
 	//groupfil_memory[numgroupfiles] = NULL; // addresses of raw GRP files in memory
 	//groupefil_crc32[numgroupfiles] = 0;
     
-	archive->fileDescriptor = open(filename,O_BINARY|O_RDWR,S_IREAD);
+	archive->fileDescriptor = open(filename,O_BINARY|O_RDONLY,S_IREAD);
     
     if (archive->fileDescriptor < 0){
         printf("Error: Unable to open file %s.\n",filename);
