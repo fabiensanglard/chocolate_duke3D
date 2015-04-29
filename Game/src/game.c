@@ -789,7 +789,8 @@ void faketimerhandler()
     input *osyn, *nsyn;
 
     //Check if we should quit the game.
-    if(qe == 0 && KB_KeyPressed(sc_LeftControl) && KB_KeyPressed(sc_LeftAlt) && KB_KeyPressed(sc_Delete))
+    if ((qe == 0 && KB_KeyPressed(sc_LeftControl) && KB_KeyPressed(sc_LeftAlt) && KB_KeyPressed(sc_Delete)) ||
+        (qe == 0 && KB_KeyPressed(sc_LeftAlt) && KB_KeyPressed(sc_F4)))
     {
         qe = 1;
         gameexit("Quick Exit.");
@@ -3309,7 +3310,7 @@ void displayrooms(short snum,int32_t smoothratio)
                 else
                     setviewtotile(MAXTILES-2,320L>>(1-ud.detail),320L>>(1-ud.detail));
                 if ((tang&1023) == 512)
-                {     //Block off unscreen section of 90ø tilted screen
+                {     //Block off unscreen section of 90Ã¸ tilted screen
                     j = ((320-60)>>(1-ud.detail));
                     for(i=(60>>(1-ud.detail))-1;i>=0;i--)
                     {
