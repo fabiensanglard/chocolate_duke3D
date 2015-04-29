@@ -852,7 +852,7 @@ void slopevlin(int32_t i1, uint32_t i2, int32_t i3, int32_t i4, int32_t i5, int3
 {
     bitwisef2i c;
     uint32_t ecx,eax,ebx,edx,esi,edi;
-#pragma This is so bad to cast asm3 to int then float :( !!!
+//This is so bad to cast asm3 to int then float :( !!!
     float a = (float)(int32_t) asm3 + asm2_f;
     i1 -= slopemach_ecx;
     esi = i5 + low32((__int64)globalx3 * (__int64)(i2<<3));
