@@ -84,7 +84,6 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 #include "SDL_mixer.h"
 #endif
 
-#include "build.h"
 #include "function.h"
 
 //  FIX_00022: Automatically recognize the shareware grp (v1.3) + full version (1.3d) +
@@ -159,7 +158,7 @@ extern int BYTEVERSION_1_3;
 
 struct player_struct;
 
-#include "types.h"
+#include "../../Game/src/types.h"
 #include "file_lib.h"
 #include "develop.h"
 #include "gamedefs.h"

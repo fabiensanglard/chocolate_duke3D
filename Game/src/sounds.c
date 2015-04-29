@@ -30,7 +30,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 
 #include <stdio.h>
 #include <string.h>
-#include "types.h"
+#include "../../Game/src/types.h"
 #include "util_lib.h"
 #include "duke3d.h"
 #include "global.h"
