@@ -9105,7 +9105,8 @@ void preparemirror(int32_t dax, int32_t day, int32_t daz,
 
 void completemirror(void)
 {
-    int32_t i, dy, p;
+    int32_t i, dy;
+    intptr_t p;
 
     /* Can't reverse with uninitialized data */
     if (inpreparemirror) {
