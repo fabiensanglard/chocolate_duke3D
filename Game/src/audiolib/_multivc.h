@@ -113,7 +113,7 @@ typedef struct VoiceNode
 
    uint8_t       *sound;
    unsigned long length;
-   unsigned long SamplingRate;
+   uint32_t SamplingRate;
    unsigned long RateScale;
    unsigned long position;
    int           Playing;

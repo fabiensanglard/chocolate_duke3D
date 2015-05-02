@@ -2712,7 +2712,7 @@ void cheatkeys(short snum)
                     sb_snum |= 1<<19;
                     p->weapon_pos = -9;
                 }
-                else if( p->gotweapon[j] && p->curr_weapon != j ) switch(j)
+                else if(j < MAX_WEAPONS && p->gotweapon[j] && p->curr_weapon != j ) switch(j)
                 {
                     case KNEE_WEAPON:
                         addweapon( p, KNEE_WEAPON );
