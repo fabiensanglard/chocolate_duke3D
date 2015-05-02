@@ -2474,7 +2474,7 @@ void gameexit(char  *msg)
             #if PLATFORM_DOS   // Is there a good reason for this? --ryan.
             printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
             #else
-            printf("\n%s",t);
+            printf("\n%s\n",t);
             #endif
         }
 // CTW END - MODIFICATION        

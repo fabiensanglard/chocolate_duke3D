@@ -518,10 +518,10 @@ void Error (int errorType, char  *error, ...)
    vprintf(error, argptr);
    va_end (argptr);
 
-   printf("Press any key to continue...\n");
+   //printf("Press any key to continue...\n");
 
 	// FIX_00043: Nicer exit on error. Ask the user to hit a key on exits and error exits.
-   getch();
+   //getch();
 
    exit (errorType);
 }
