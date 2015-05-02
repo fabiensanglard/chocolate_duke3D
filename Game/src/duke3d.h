@@ -32,7 +32,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 
 
 
-#include "platform.h"
+#include "../../Engine/src/platform.h"
 #if !PLATFORM_MACOSX
 #include <malloc.h>
 #endif
@@ -47,7 +47,7 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 #include <time.h>
 #include <ctype.h>
 
-#include "build.h"
+#include "../../Engine/src/build.h"
 
 #if (!defined MAX_PATH)
   #if (defined MAXPATHLEN)
@@ -84,7 +84,6 @@ Prepared for public release: 03/21/2003 - Charlie Wiederhold, 3D Realms
 #include "SDL_mixer.h"
 #endif
 
-#include "build.h"
 #include "function.h"
 
 //  FIX_00022: Automatically recognize the shareware grp (v1.3) + full version (1.3d) +
@@ -179,7 +178,7 @@ struct player_struct;
 #include "names.h"
 
 #include "../../Engine/src/engine.h"
-#include "fixedPoint_math.h"
+#include "../../Engine/src/fixedPoint_math.h"
 
 //#define TICRATE (120)
 //#define TICSPERFRAME (TICRATE/26)

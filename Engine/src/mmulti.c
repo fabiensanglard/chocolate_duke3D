@@ -14,10 +14,10 @@
 
 #include "mmulti_unstable.h"
 
-#if defined(__APPLE__)
-   #include "enet/include/enet.h"
+#if defined(__SYSTEM_ENET)
+   #include <enet/enet.h>
 #else
-   #include <enet.h>
+   #include "enet/include/enet.h"
 #endif
 
 //STL

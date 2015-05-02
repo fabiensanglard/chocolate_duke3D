@@ -22,7 +22,11 @@
 
 #include "../../Game/src/cvar_defs.h"
 
-#include "types.h"
+#if defined(__SYSTEM_ENET)
+   #include <enet/types.h>
+#else
+   #include "enet/include/types.h"
+#endif
 
 /*
  *   This module keeps track of a standard linear cacheing system.
