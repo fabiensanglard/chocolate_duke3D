@@ -14,11 +14,7 @@
 
 #include "mmulti_unstable.h"
 
-#if defined(__APPLE__)
-   #include "enet/include/enet.h"
-#else
-   #include <enet.h>
-#endif
+#include "enet/enet.h"
 
 //STL
 //#include <vector>
