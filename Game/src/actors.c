@@ -1471,7 +1471,7 @@ void movefallers(void)
                 s->lotag-=3;
                 if(s->lotag <= 0)
                 {
-                    s->xvel = (32+TRAND&63);
+                    s->xvel = (32+(TRAND&63));
                     s->zvel = -(1024+(TRAND&1023));
                 }
             }
