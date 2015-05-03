@@ -7241,14 +7241,15 @@ int pushmove(int32_t *x, int32_t *y, int32_t *z, short *sectnum,
     sectortype *sec, *sec2;
     walltype *wal;
     int32_t i, j, k, t, dx, dy, dax, day, daz, daz2, bad, dir;
-    int32_t dasprclipmask, dawalclipmask;
+//    int32_t dasprclipmask;
+    int32_t dawalclipmask;
     short startwall, endwall, clipsectcnt;
     uint8_t  bad2;
 
     if ((*sectnum) < 0) return(-1);
 
     dawalclipmask = (cliptype&65535);
-    dasprclipmask = (cliptype>>16);
+//    dasprclipmask = (cliptype>>16);
 
     k = 32;
     dir = 1;
@@ -7428,7 +7429,7 @@ void getmousevalues(short *mousx, short *mousy, short *bstatus)
 
 void draw2dgrid(int32_t posxe, int32_t posye, short ange, int32_t zoome, short gride)
 {
-    int32_t i, xp1, yp1, xp2=0, yp2, tempy, tempint;
+    int32_t i, xp1, yp1, xp2=0, yp2, tempy; // tempint;
     uint8_t  mask;
 
     if (gride > 0)
@@ -7442,7 +7443,7 @@ void draw2dgrid(int32_t posxe, int32_t posye, short ange, int32_t zoome, short g
         {
             setcolor16(8);
 
-            tempint = ((yp1*640+pageoffset)>>3)+(int32_t)_getVideoBase();
+//            tempint = ((yp1*640+pageoffset)>>3)+(int32_t)_getVideoBase();
             tempy = yp2-yp1+1;
             mask = 0;
             xp1 = 320-mulscale14(posxe+131072,zoome);

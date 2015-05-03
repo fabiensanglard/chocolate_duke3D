@@ -1431,14 +1431,14 @@ void myos(int32_t x, int32_t y, short tilenum, int8_t shade, uint8_t  orientatio
 
 void myospal(int32_t x, int32_t y, short tilenum, int8_t shade, uint8_t  orientation, uint8_t  p)
 {
-    uint8_t  fp;
+//    uint8_t  fp;
     short a;
 
     if(orientation&4)
         a = 1024;
     else a = 0;
 
-    fp = sector[ps[screenpeek].cursectnum].floorpal;
+//    fp = sector[ps[screenpeek].cursectnum].floorpal;
 
     rotatesprite(x<<16,y<<16,65536L,a,tilenum,shade,p,2|orientation,windowx1,windowy1,windowx2,windowy2);
 
@@ -9731,7 +9731,8 @@ void doorders(void)
 
 void dobonus(uint8_t  bonusonly)
 {
-    short t, tinc,gfx_offset;
+    short t, gfx_offset;
+//    short tinc;
     int32_t i, y,xfragtotal,yfragtotal;
     short bonuscnt;
     char text[512];
@@ -9781,7 +9782,7 @@ void dobonus(uint8_t  bonusonly)
                 for(t=63;t>=0;t--) palto(0,0,0,t);
 
                 KB_FlushKeyboardQueue();
-                totalclock = 0; tinc = 0;
+                totalclock = 0; //tinc = 0;
                 while( 1 )
                 {
                     clearview(0L);
@@ -9979,7 +9980,7 @@ void dobonus(uint8_t  bonusonly)
 
     ps[myconnectindex].palette = palette;
     KB_FlushKeyboardQueue();
-    totalclock = 0; tinc = 0;
+    totalclock = 0; //tinc = 0;
     bonuscnt = 0;
 
     MUSIC_StopSong();
@@ -10103,7 +10104,7 @@ void dobonus(uint8_t  bonusonly)
     KB_FlushKeyboardQueue();
     for(t=0;t<64;t++) palto(0,0,0,63-t);
     bonuscnt = 0;
-    totalclock = 0; tinc = 0;
+    totalclock = 0; //tinc = 0;
 
     while( 1 )
     {

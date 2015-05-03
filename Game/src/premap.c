@@ -1070,8 +1070,8 @@ void newgame(uint8_t  vn,uint8_t  ln,uint8_t  sk)
 
 void resetpspritevars(uint8_t  g)
 {
-    short i, j, nexti,circ;
-    int32_t firstx,firsty;
+    short i, j, nexti; //circ;
+//    int32_t firstx,firsty;
     spritetype *s;
     uint8_t  aimmode[MAXPLAYERS];
     STATUSBARTYPE tsbar[MAXPLAYERS];
@@ -1190,7 +1190,7 @@ void resetpspritevars(uint8_t  g)
     }
 
     numplayersprites = 0;
-    circ = 2048/ud.multimode;
+//    circ = 2048/ud.multimode;
 
     which_palookup = 9;
     j = connecthead;
@@ -1203,11 +1203,11 @@ void resetpspritevars(uint8_t  g)
         if( numplayersprites == MAXPLAYERS)
             gameexit("\nToo many player sprites (max 16.)");
 
-        if(numplayersprites == 0)
-        {
-            firstx = ps[0].posx;
-            firsty = ps[0].posy;
-        }
+//        if(numplayersprites == 0)
+//        {
+//            firstx = ps[0].posx;
+//            firsty = ps[0].posy;
+//        }
 
         po[numplayersprites].ox = s->x;
         po[numplayersprites].oy = s->y;

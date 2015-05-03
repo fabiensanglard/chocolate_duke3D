@@ -41,6 +41,7 @@ int MV_cubic(int position)
 	return fa;
 }
 
+/*
 static int MV_cubic8(const unsigned char *src, int position, int rate)
 {
 	int temp, hpos = position >> 16;
@@ -58,6 +59,7 @@ static int MV_cubic8(const unsigned char *src, int position, int rate)
 
 	return do_cubic ? (MV_cubic(position) >> 8) + 0x80 : (gval(3) >> 8) + 0x80;
 }
+*/
 
 static int MV_cubic16(const short *src, int position, int rate)
 {
@@ -95,6 +97,7 @@ static int MV_cubic8to16(const unsigned char *src, int position, int rate)
 	return do_cubic ? MV_cubic(position) : gval(3);
 }
 
+/*
 static int MV_cubic16to8(const short *src, int position, int rate)
 {
 	int temp, hpos = position >> 16;
@@ -112,6 +115,7 @@ static int MV_cubic16to8(const short *src, int position, int rate)
 
 	return do_cubic ? (MV_cubic(position) >> 8) + 0x80 : (gval(3) >> 8) + 0x80;
 }
+*/
 
 void MV_Mix8BitMono( uint32_t position, uint32_t rate,
    const char *start, uint32_t length )

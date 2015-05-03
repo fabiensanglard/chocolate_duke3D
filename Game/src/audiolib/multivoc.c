@@ -929,6 +929,7 @@ playbackstatus MV_GetNextWAVBlock
    Starts recording of the waiting buffer.
 ---------------------------------------------------------------------*/
 
+#ifdef PLAT_DOS
 static void MV_ServiceRecord
    (
    void
@@ -948,6 +949,7 @@ static void MV_ServiceRecord
       MV_MixPage = 0;
       }
    }
+#endif
 
 
 /*---------------------------------------------------------------------
@@ -1384,7 +1386,7 @@ static int MV_GetVolumeTable
    Selects which method should be used to mix the voice.
 ---------------------------------------------------------------------*/
 
-static void MV_SetVoiceMixMode
+void MV_SetVoiceMixMode
    (
    VoiceNode *voice
    )

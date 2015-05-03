@@ -2337,13 +2337,13 @@ else
 				{
 					int y, x1;
 					int32_t xPos, xPos2;
-					int32_t yPos, yPos2;
+					int32_t yPos; //yPos2;
 
 					xPos =  ( xdim *32) / 320;
 					yPos =  ( ydim *30) / 200;
 
 					xPos2 =  ( xdim *282) / 320;
-					yPos2 =  ( ydim *130) / 200;
+					//yPos2 =  ( ydim *130) / 200;
 
 					for(y=yPos; y < (ydim - (yPos*2)); y+=128)
 					{

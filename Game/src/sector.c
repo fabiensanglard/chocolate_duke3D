@@ -550,10 +550,10 @@ void operatesectors(short sn,short ii)
 {
     int32_t j=0, l, q, startwall, endwall;
     short i;
-    uint8_t  sect_error;
+//    uint8_t  sect_error;
     sectortype *sptr;
 
-    sect_error = 0;
+//    sect_error = 0;
     sptr = &sector[sn];
 
     switch(sptr->lotag&(0xffff-49152))
