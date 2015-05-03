@@ -13,6 +13,12 @@ AM_SILENT_RULES([yes])
 # Checks for programs.
 AC_PROG_CC
 AC_PROG_RANLIB
+case "$host" in
+  *cygwin*|*mingw*)
+    AC_CHECK_TOOL([WINDRES], [windres], [])
+    ;;
+esac
+AM_CONDITIONAL([WITH_WIN_ICON], [test "$WINDRES" != ""])
 
 # Checks for libraries.
 PKG_CHECK_MODULES([SDL], [sdl], [], [
@@ -34,5 +40,6 @@ AC_CONFIG_FILES([Engine/src/Makefile
                  Game/src/Makefile
                  Game/src/audiolib/Makefile
                  Game/src/midi/Makefile
+                 Game/Makefile
                  Makefile])
 AC_OUTPUT
