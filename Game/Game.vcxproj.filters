@@ -186,6 +186,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="chocolateDukeRessources.rc" />
+    <ResourceCompile Include="chocolateDukeResources.rc" />
   </ItemGroup>
 </Project>
