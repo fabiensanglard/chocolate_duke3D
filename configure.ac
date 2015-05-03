@@ -31,7 +31,7 @@ PKG_CHECK_MODULES([SDL_MIXER], [SDL_mixer], [], [
 dnl Compiler flags
 CFLAGS_WARNINGS="-Wall -Wno-pointer-sign -Wno-pointer-to-int-cast -Wno-int-to-pointer-cast \
 -Wno-parentheses -Wno-maybe-uninitialized -Wno-unused-but-set-variable -Wno-unused-function -Wno-unused-result"
-CFLAGS="${CFLAGS_WARNINGS} -DPLATFORM_UNIX $(pkg-config --cflags SDL_mixer) ${CFLAGS}"
+CFLAGS="${CFLAGS_WARNINGS} -fno-strict-aliasing -fno-aggressive-loop-optimizations -DPLATFORM_UNIX $(pkg-config --cflags SDL_mixer) ${CFLAGS}"
 LDFLAGS="$(pkg-config --libs sdl) $(pkg-config --libs SDL_mixer) ${LDFLAGS}"
 
 # Checks for header files.
