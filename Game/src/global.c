@@ -826,10 +826,10 @@ uint8_t  *ltoa(int32_t value, uint8_t  *string, int radix)
 {
 	switch (radix) {
 		case 10:
-			sprintf(string, "%ld", value);
+			sprintf(string, "%d", value);
 			break;
 		case 16:
-			sprintf(string, "%lx", value);
+			sprintf(string, "%x", value);
 			break;
 		default:
 			STUBBED("unknown radix");
@@ -843,10 +843,10 @@ uint8_t  *ultoa(uint32_t value, uint8_t  *string, int radix)
 {
 	switch (radix) {
 		case 10:
-			sprintf(string, "%lu", value);
+			sprintf(string, "%u", value);
 			break;
 		case 16:
-			sprintf(string, "%lux", value);
+			sprintf(string, "%ux", value);
 			break;
 		default:
 			STUBBED("unknown radix");
