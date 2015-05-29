@@ -987,7 +987,7 @@ static void florscan (int32_t x1, int32_t x2, int32_t sectnum)
     
     globvis = globalcisibility;
     if (sec->visibility != 0)
-        globvis = mulscale4(globvis,(int32_t)((sec->visibility+16)));
+        globvis = mulscale4(globvis,(int32_t)((uint8_t)(sec->visibility+16)));
     
     
     globalorientation = (int32_t)sec->floorstat;
