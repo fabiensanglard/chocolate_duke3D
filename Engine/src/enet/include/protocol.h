@@ -5,7 +5,7 @@
 #ifndef __ENET_PROTOCOL_H__
 #define __ENET_PROTOCOL_H__
 
-#include "types.h"
+#include "enet/types.h"
 
 enum
 {
@@ -13,12 +13,14 @@ enum
    ENET_PROTOCOL_MAXIMUM_MTU             = 4096,
    ENET_PROTOCOL_MAXIMUM_PACKET_COMMANDS = 32,
    ENET_PROTOCOL_MINIMUM_WINDOW_SIZE     = 4096,
-   ENET_PROTOCOL_MAXIMUM_WINDOW_SIZE     = 32768,
+   ENET_PROTOCOL_MAXIMUM_WINDOW_SIZE     = 65536,
    ENET_PROTOCOL_MINIMUM_CHANNEL_COUNT   = 1,
-   ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT   = 255
+   ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT   = 255,
+   ENET_PROTOCOL_MAXIMUM_PEER_ID         = 0xFFF,
+   ENET_PROTOCOL_MAXIMUM_FRAGMENT_COUNT  = 1024 * 1024
 };
 
-typedef enum
+typedef enum _ENetProtocolCommand
 {
    ENET_PROTOCOL_COMMAND_NONE               = 0,
    ENET_PROTOCOL_COMMAND_ACKNOWLEDGE        = 1,
@@ -29,46 +31,64 @@ typedef enum
    ENET_PROTOCOL_COMMAND_SEND_RELIABLE      = 6,
    ENET_PROTOCOL_COMMAND_SEND_UNRELIABLE    = 7,
    ENET_PROTOCOL_COMMAND_SEND_FRAGMENT      = 8,
-   ENET_PROTOCOL_COMMAND_BANDWIDTH_LIMIT    = 9,
-   ENET_PROTOCOL_COMMAND_THROTTLE_CONFIGURE = 10
+   ENET_PROTOCOL_COMMAND_SEND_UNSEQUENCED   = 9,
+   ENET_PROTOCOL_COMMAND_BANDWIDTH_LIMIT    = 10,
+   ENET_PROTOCOL_COMMAND_THROTTLE_CONFIGURE = 11,
+   ENET_PROTOCOL_COMMAND_SEND_UNRELIABLE_FRAGMENT = 12,
+   ENET_PROTOCOL_COMMAND_COUNT              = 13,
+
+   ENET_PROTOCOL_COMMAND_MASK               = 0x0F
 } ENetProtocolCommand;
 
-typedef enum
+typedef enum _ENetProtocolFlag
 {
-   ENET_PROTOCOL_FLAG_ACKNOWLEDGE = (1 << 0)
+   ENET_PROTOCOL_COMMAND_FLAG_ACKNOWLEDGE = (1 << 7),
+   ENET_PROTOCOL_COMMAND_FLAG_UNSEQUENCED = (1 << 6),
+
+   ENET_PROTOCOL_HEADER_FLAG_COMPRESSED = (1 << 14),
+   ENET_PROTOCOL_HEADER_FLAG_SENT_TIME  = (1 << 15),
+   ENET_PROTOCOL_HEADER_FLAG_MASK       = ENET_PROTOCOL_HEADER_FLAG_COMPRESSED | ENET_PROTOCOL_HEADER_FLAG_SENT_TIME,
+
+   ENET_PROTOCOL_HEADER_SESSION_MASK    = (3 << 12),
+   ENET_PROTOCOL_HEADER_SESSION_SHIFT   = 12
 } ENetProtocolFlag;
 
-typedef struct
+#ifdef _MSC_VER
+#pragma pack(push, 1)
+#define ENET_PACKED
+#elif defined(__GNUC__) || defined(__clang__)
+#define ENET_PACKED __attribute__ ((packed))
+#else
+#define ENET_PACKED
+#endif
+
+typedef struct _ENetProtocolHeader
 {
    enet_uint16 peerID;
-   enet_uint8 flags;
-   enet_uint8 commandCount;
-   enet_uint32 sentTime;
-   enet_uint32 challenge;
-} ENetProtocolHeader;
+   enet_uint16 sentTime;
+} ENET_PACKED ENetProtocolHeader;
 
-typedef struct
+typedef struct _ENetProtocolCommandHeader
 {
    enet_uint8 command;
    enet_uint8 channelID;
-   enet_uint8 flags;
-   enet_uint8 reserved;
-   enet_uint32 commandLength;
-   enet_uint32 reliableSequenceNumber;
-} ENetProtocolCommandHeader;
+   enet_uint16 reliableSequenceNumber;
+} ENET_PACKED ENetProtocolCommandHeader;
 
-typedef struct
+typedef struct _ENetProtocolAcknowledge
 {
    ENetProtocolCommandHeader header;
-   enet_uint32 receivedReliableSequenceNumber;
-   enet_uint32 receivedSentTime;
-} ENetProtocolAcknowledge;
+   enet_uint16 receivedReliableSequenceNumber;
+   enet_uint16 receivedSentTime;
+} ENET_PACKED ENetProtocolAcknowledge;
 
-typedef struct
+typedef struct _ENetProtocolConnect
 {
    ENetProtocolCommandHeader header;
    enet_uint16 outgoingPeerID;
-   enet_uint16 mtu;
+   enet_uint8  incomingSessionID;
+   enet_uint8  outgoingSessionID;
+   enet_uint32 mtu;
    enet_uint32 windowSize;
    enet_uint32 channelCount;
    enet_uint32 incomingBandwidth;
@@ -76,13 +96,17 @@ typedef struct
    enet_uint32 packetThrottleInterval;
    enet_uint32 packetThrottleAcceleration;
    enet_uint32 packetThrottleDeceleration;
-} ENetProtocolConnect;
+   enet_uint32 connectID;
+   enet_uint32 data;
+} ENET_PACKED ENetProtocolConnect;
 
-typedef struct
+typedef struct _ENetProtocolVerifyConnect
 {
    ENetProtocolCommandHeader header;
    enet_uint16 outgoingPeerID;
-   enet_uint16 mtu;
+   enet_uint8  incomingSessionID;
+   enet_uint8  outgoingSessionID;
+   enet_uint32 mtu;
    enet_uint32 windowSize;
    enet_uint32 channelCount;
    enet_uint32 incomingBandwidth;
@@ -90,55 +114,67 @@ typedef struct
    enet_uint32 packetThrottleInterval;
    enet_uint32 packetThrottleAcceleration;
    enet_uint32 packetThrottleDeceleration;
-} ENetProtocolVerifyConnect;
+   enet_uint32 connectID;
+} ENET_PACKED ENetProtocolVerifyConnect;
 
-typedef struct
+typedef struct _ENetProtocolBandwidthLimit
 {
    ENetProtocolCommandHeader header;
    enet_uint32 incomingBandwidth;
    enet_uint32 outgoingBandwidth;
-} ENetProtocolBandwidthLimit;
+} ENET_PACKED ENetProtocolBandwidthLimit;
 
-typedef struct
+typedef struct _ENetProtocolThrottleConfigure
 {
    ENetProtocolCommandHeader header;
    enet_uint32 packetThrottleInterval;
    enet_uint32 packetThrottleAcceleration;
    enet_uint32 packetThrottleDeceleration;
-} ENetProtocolThrottleConfigure;
+} ENET_PACKED ENetProtocolThrottleConfigure;
 
-typedef struct
+typedef struct _ENetProtocolDisconnect
 {
    ENetProtocolCommandHeader header;
-} ENetProtocolDisconnect;
+   enet_uint32 data;
+} ENET_PACKED ENetProtocolDisconnect;
 
-typedef struct
+typedef struct _ENetProtocolPing
 {
    ENetProtocolCommandHeader header;
-} ENetProtocolPing;
+} ENET_PACKED ENetProtocolPing;
 
-typedef struct
+typedef struct _ENetProtocolSendReliable
 {
    ENetProtocolCommandHeader header;
-} ENetProtocolSendReliable;
+   enet_uint16 dataLength;
+} ENET_PACKED ENetProtocolSendReliable;
 
-typedef struct
+typedef struct _ENetProtocolSendUnreliable
 {
    ENetProtocolCommandHeader header;
-   enet_uint32 unreliableSequenceNumber;
-} ENetProtocolSendUnreliable;
+   enet_uint16 unreliableSequenceNumber;
+   enet_uint16 dataLength;
+} ENET_PACKED ENetProtocolSendUnreliable;
 
-typedef struct
+typedef struct _ENetProtocolSendUnsequenced
 {
    ENetProtocolCommandHeader header;
-   enet_uint32 startSequenceNumber;
+   enet_uint16 unsequencedGroup;
+   enet_uint16 dataLength;
+} ENET_PACKED ENetProtocolSendUnsequenced;
+
+typedef struct _ENetProtocolSendFragment
+{
+   ENetProtocolCommandHeader header;
+   enet_uint16 startSequenceNumber;
+   enet_uint16 dataLength;
    enet_uint32 fragmentCount;
    enet_uint32 fragmentNumber;
    enet_uint32 totalLength;
    enet_uint32 fragmentOffset;
-} ENetProtocolSendFragment;
+} ENET_PACKED ENetProtocolSendFragment;
 
-typedef union
+typedef union _ENetProtocol
 {
    ENetProtocolCommandHeader header;
    ENetProtocolAcknowledge acknowledge;
@@ -148,10 +184,15 @@ typedef union
    ENetProtocolPing ping;
    ENetProtocolSendReliable sendReliable;
    ENetProtocolSendUnreliable sendUnreliable;
+   ENetProtocolSendUnsequenced sendUnsequenced;
    ENetProtocolSendFragment sendFragment;
    ENetProtocolBandwidthLimit bandwidthLimit;
    ENetProtocolThrottleConfigure throttleConfigure;
-} ENetProtocol;
+} ENET_PACKED ENetProtocol;
+
+#ifdef _MSC_VER
+#pragma pack(pop)
+#endif
 
 #endif /* __ENET_PROTOCOL_H__ */
 
