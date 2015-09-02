@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <stdarg.h>
 #include <ctype.h>
 #include <time.h>
@@ -24,7 +25,7 @@
 //#include <vector>
 //#include "buildqueue.h"
 
-#include "platform.h"
+#include "network.h"
 
 #include "fixedPoint_math.h"
 
@@ -36,6 +37,8 @@
 #define PRINTERRORS 0
 
 #define updatecrc16(crc,dat) crc = (((crc<<8)&65535)^crctable[((((unsigned short)crc)>>8)&65535)^dat])
+
+void Error (int errorType, char *error, ...);
 
 static long incnt[MAXPLAYERS], outcntplc[MAXPLAYERS], outcntend[MAXPLAYERS];
 static char errorgotnum[MAXPLAYERS];
