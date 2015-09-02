@@ -22,7 +22,7 @@
 
 #include "../../Game/src/cvar_defs.h"
 
-#include "types.h"
+#include "../../Game/src/types.h"
 
 /*
  *   This module keeps track of a standard linear cacheing system.

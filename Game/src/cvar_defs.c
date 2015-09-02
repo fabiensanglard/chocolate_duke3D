@@ -5,7 +5,7 @@
 #include "console.h"
 
 // Required for certain cvars
-#include "types.h"
+#include "../../Game/src/types.h"
 #include "build.h"
 #include "funct.h"
 
