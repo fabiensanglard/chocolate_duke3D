@@ -7489,7 +7489,7 @@ void printstr(short x, short y, uint8_t  string[81], uint8_t  attribute)
         while (string[i] != 0)
         {
                 character = string[i];
-                printchrasm(0xb8000+(int32_t)pos,1L,((int32_t)attribute<<8)+(int32_t)character);
+                printchrasm(0xb8000+(int32_t)pos,1L,(((int32_t)attribute<<8)+(int32_t)character));
                 i++;
                 pos+=2;
         }

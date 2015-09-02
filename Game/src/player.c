@@ -1227,13 +1227,13 @@ void displaymasks(short snum)
 	 {
         if(ud.screen_size > 4)
         {
-            rotatesprite(43<<16,(200-8-(tiles[SCUBAMASK].dim.height)<<16),65536,0,SCUBAMASK,0,p,2+16,windowx1,windowy1,windowx2,windowy2);
-            rotatesprite((320-43)<<16,(200-8-(tiles[SCUBAMASK].dim.height)<<16),65536,1024,SCUBAMASK,0,p,2+4+16,windowx1,windowy1,windowx2,windowy2);
+            rotatesprite((43<<16),(200-8-((tiles[SCUBAMASK].dim.height)<<16)),65536,0,SCUBAMASK,0,p,2+16,windowx1,windowy1,windowx2,windowy2);
+            rotatesprite(((320-43)<<16),(200-8-((tiles[SCUBAMASK].dim.height)<<16)),65536,1024,SCUBAMASK,0,p,2+4+16,windowx1,windowy1,windowx2,windowy2);
         }
         else
         {
-            rotatesprite(43<<16,(200-(tiles[SCUBAMASK].dim.height)<<16),65536,0,SCUBAMASK,0,p,2+16,windowx1,windowy1,windowx2,windowy2);
-            rotatesprite((320-43)<<16,(200-(tiles[SCUBAMASK].dim.height)<<16),65536,1024,SCUBAMASK,0,p,2+4+16,windowx1,windowy1,windowx2,windowy2);
+            rotatesprite((43<<16),(200-((tiles[SCUBAMASK].dim.height)<<16)),65536,0,SCUBAMASK,0,p,2+16,windowx1,windowy1,windowx2,windowy2);
+            rotatesprite(((320-43)<<16),(200-((tiles[SCUBAMASK].dim.height)<<16)),65536,1024,SCUBAMASK,0,p,2+4+16,windowx1,windowy1,windowx2,windowy2);
         }
 	 }
 }
@@ -1429,7 +1429,7 @@ void displayweapon(short snum)
 					else pal = sector[p->cursectnum].floorpal;
 
 					weapon_xoffset -= sintable[(768+((*kb)<<7))&2047]>>11;
-					gun_pos += sintable[(768+((*kb)<<7)&2047)]>>11;
+					gun_pos += sintable[(768+(((*kb)<<7)&2047))]>>11;
 
 					if(*kb > 0)
 					{
