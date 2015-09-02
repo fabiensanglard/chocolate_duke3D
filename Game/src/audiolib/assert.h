@@ -17,6 +17,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+#if (HAVE_ASSERT_H != 1)
+
 #ifndef    __ASSERT_H
 
     #define    __ASSERT_H
@@ -43,3 +45,5 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     #error Multiple definition of ASSERT()
 
 #endif
+
+#endif //HAVE_ASSERT_H

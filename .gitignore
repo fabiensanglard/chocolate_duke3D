@@ -18,5 +18,21 @@ DUKE3D.GRP
 # Linux
 *.o
 *.a
+*~
 chocolate-duke3d
+duke3d.cfg
 duke3d.grp
+
+# GNU automake
+.deps
+/aclocal.m4
+/autom4te.cache
+/build-aux
+Makefile
+Makefile.in
+/config.h
+/config.h.in
+/config.log
+/config.status
+/configure
+/stamp-h1
