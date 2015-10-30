@@ -22,17 +22,25 @@ AM_CONDITIONAL([WITH_WIN_ICON], [test "$WINDRES" != ""])
 
 # Checks for libraries.
 PKG_CHECK_MODULES([SDL], [sdl], [], [
-    AC_CHECK_LIB([SDL], [main], [], [exit 1])
+    AC_CHECK_LIB([SDL], [main], [
+        SDL_CFLAGS="-D_GNU_SOURCE=1 -D_REENTRANT -I/usr/include/SDL"
+        LIBS="$LIBS -lSDL"
+        ], [exit 1])
 ])
 PKG_CHECK_MODULES([SDL_MIXER], [SDL_mixer], [], [
-    AC_CHECK_LIB([SDL_mixer], [main], [], [exit 1])
+    AC_CHECK_LIB([SDL_mixer], [main], [
+        LIBS="$LIBS -lSDL_mixer"
+        ], [exit 1])
 ])
 
 dnl Compiler flags
-CFLAGS_WARNINGS="-Wall -Wno-pointer-sign -Wno-pointer-to-int-cast -Wno-int-to-pointer-cast \
--Wno-parentheses -Wno-maybe-uninitialized -Wno-unused-but-set-variable -Wno-unused-function -Wno-unused-result"
-CFLAGS="${CFLAGS_WARNINGS} -fno-strict-aliasing -fno-aggressive-loop-optimizations -DPLATFORM_UNIX $(pkg-config --cflags SDL_mixer) ${CFLAGS}"
-LDFLAGS="$(pkg-config --libs sdl) $(pkg-config --libs SDL_mixer) ${LDFLAGS}"
+CFLAGS="-Wall \
+-Wno-pointer-sign -Wno-pointer-to-int-cast -Wno-int-to-pointer-cast \
+-Wno-parentheses -Wno-maybe-uninitialized -Wno-unused-but-set-variable \
+-Wno-unused-function -Wno-unused-result \
+-fno-strict-aliasing -fno-aggressive-loop-optimizations \
+-DPLATFORM_UNIX $SDL_CFLAGS $CFLAGS"
+
 
 # Checks for header files.
 AC_CHECK_HEADERS([assert.h enet/enet.h])
