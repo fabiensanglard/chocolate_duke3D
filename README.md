@@ -3,7 +3,7 @@ Chocolate Duke3D
 
 Chocolate Duke Nukem 3D is the equivalent of [Chocolate Doom](http://www.chocolate-doom.org/wiki/index.php/Chocolate_Doom).
 
-A port that:
+A **port** that:
 
 1. Remains as faithful as possible to the original source code.
 2. Portable and compiling in one click on Windows, OS X and Linux.
@@ -20,22 +20,22 @@ An original copy of [Duke Nukem 3D](https://3drealms.com/catalog/duke-nukem-3d_2
 Build
 =====
 
-Linux: Use [Autoconf/Automake](https://www.gnu.org/software/autoconf/manual/autoconf.html#Basic-Installation)
-Windows: Use Visual Studio 2005 or Visual Studio 2012 or [Autoconf/Automake](https://www.gnu.org/software/autoconf/manual/autoconf.html#Basic-Installation)
-OS X: Use Xcode 4.0
+* **Linux**: Use [Autoconf/Automake](https://www.gnu.org/software/autoconf/manual/autoconf.html#Basic-Installation)
+* **Windows**: Use Visual Studio 2005 or Visual Studio 2012 or [Autoconf/Automake](https://www.gnu.org/software/autoconf/manual/autoconf.html#Basic-Installation)
+* **OS X**: Use Xcode 4.0
 
 
 Contributors
 ============
 
-**Project Initiator:** (Fabien Sanglard)[https://github.com/fabiensanglard]
-**Linux Integration:** (Juan Manuel Borges Caño)[https://github.com/juanmabc]
-**Autoconf/Automake Build System:** [darealshinji](https://github.com/darealshinji)
+* **Project Initiator:** [Fabien Sanglard](https://github.com/fabiensanglard)
+* **Linux Integration:** [Juan Manuel Borges Caño](https://github.com/juanmabc)
+* **Autoconf/Automake Build System:** [darealshinji](https://github.com/darealshinji)
 
 
 More Information
 ================
 
-[Review of the Duke 3D source code](http://fabiensanglard.net/duke3d/)
-[Simple DirectMedia Layer](https://wiki.libsdl.org/FrontPage), [SDL_Mixer](http://www.libsdl.org/projects/SDL_mixer/)
-[Duke Nukem 3D](https://3drealms.com/catalog/duke-nukem-3d_27/)
+* **[Review of the Duke 3D source code](http://fabiensanglard.net/duke3d/)**
+* [Simple DirectMedia Layer](https://wiki.libsdl.org/FrontPage), [SDL_Mixer](http://www.libsdl.org/projects/SDL_mixer/)
+* [Duke Nukem 3D](https://3drealms.com/catalog/duke-nukem-3d_27/)
