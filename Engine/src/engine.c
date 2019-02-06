@@ -3534,8 +3534,8 @@ static void initfastcolorlookup(int32_t rscale, int32_t gscale, int32_t bscale)
         j += 129-(i<<1);
     }
 
-    clearbufbyte((void *)FP_OFF(colhere),sizeof(colhere),0L);
-    clearbufbyte((void *)FP_OFF(colhead),sizeof(colhead),0L);
+    clearbufbyte((void *)colhere,sizeof(colhere),0L);
+    clearbufbyte((void *)colhead,sizeof(colhead),0L);
 
     pal1 = &palette[768-3];
     for(i=255; i>=0; i--,pal1-=3)
@@ -8217,8 +8217,8 @@ void makepalookup(int32_t palnum, uint8_t  *remapbuf, int8_t r,
     {
         for(i=0; i<256; i++)
         {
-            ptr = (uint8_t  *)(FP_OFF(palookup[0])+remapbuf[i]);
-            ptr2 = (uint8_t  *)(FP_OFF(palookup[palnum])+i);
+            ptr = (uint8_t  *)(palookup[0])+remapbuf[i];
+            ptr2 = (uint8_t  *)(palookup[palnum])+i;
             for(j=0; j<numpalookups; j++)
             {
                 *ptr2 = *ptr;
@@ -8994,7 +8994,8 @@ void drawmapview(int32_t dax, int32_t day, int32_t zoome, short ang)
 
 void clearview(int32_t dacol)
 {
-    int32_t p, y, dx;
+    int32_t y, dx;
+    intptr_t p;
 
     if (qsetmode != 200) return;
 
