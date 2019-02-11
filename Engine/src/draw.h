@@ -34,8 +34,8 @@ void sethlinesizes(int32_t,int32_t,uint8_t *);
 
 
 void hlineasm4(int32_t,int32_t,uint32_t,uint32_t,uint8_t*);
-void setuprhlineasm4(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
-void rhlineasm4(int32_t,uint8_t*,int32_t,uint32_t,uint32_t,int32_t);
+void setuprhlineasm4(int32_t,int32_t,int32_t,intptr_t,int32_t,int32_t);
+void rhlineasm4(int32_t,uint8_t*,int32_t,uint32_t,uint32_t,uint8_t*);
 void setuprmhlineasm4(int32_t,int32_t,int32_t,int32_t,int32_t,int32_t);
 void rmhlineasm4(int32_t,intptr_t,int32_t,int32_t,int32_t,int32_t);
 

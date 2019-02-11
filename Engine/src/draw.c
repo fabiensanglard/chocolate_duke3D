@@ -90,9 +90,9 @@ void hlineasm4(int32_t numPixels, int32_t shade, uint32_t i4, uint32_t i5, uint8
 static int32_t rmach_eax;
 static int32_t rmach_ebx;
 static int32_t rmach_ecx;
-static int32_t rmach_edx;
+static intptr_t rmach_edx;
 static int32_t rmach_esi;
-void setuprhlineasm4(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6)
+void setuprhlineasm4(int32_t i1, int32_t i2, int32_t i3, intptr_t i4, int32_t i5, int32_t i6)
 {
     rmach_eax = i1;
     rmach_ebx = i2;
@@ -102,11 +102,11 @@ void setuprhlineasm4(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5,
 } 
 
 
-void rhlineasm4(int32_t i1, uint8_t* texture, int32_t i3, uint32_t i4, uint32_t i5, int32_t dest)
+void rhlineasm4(int32_t i1, uint8_t* texture, int32_t i3, uint32_t i4, uint32_t i5, uint8_t* dest)
 {
     uint32_t ebp = dest - i1;
-    uint32_t rmach6b = ebp-1;
     int32_t numPixels;
+    int32_t offset = i1 + 1;
     
     if (i1 <= 0) return;
 
@@ -129,7 +129,7 @@ void rhlineasm4(int32_t i1, uint8_t* texture, int32_t i3, uint32_t i4, uint32_t 
 	    i1 = ((i1&0xffffff00)|(((uint8_t *)i3)[rmach_edx]));
 
 		if (pixelsAllowed-- > 0)
-			 ((uint8_t *)rmach6b)[numPixels] = (i1&0xff);
+             dest[numPixels - offset] = (i1&0xff);
 
 	    texture -= ebp;
 	    numPixels--;
