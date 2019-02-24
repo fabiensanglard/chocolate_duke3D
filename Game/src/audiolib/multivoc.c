@@ -117,7 +117,7 @@ static int MV_BuffShift;
 static int MV_TotalMemory;
 static int MV_FooMemory;
 
-static int   MV_BufferDescriptor;
+static long   MV_BufferDescriptor;
 static int   MV_BufferEmpty[ NumberOfBuffers ];
 char *MV_MixBuffer[ NumberOfBuffers + 1 ];
 double *MV_FooBuffer = NULL;
