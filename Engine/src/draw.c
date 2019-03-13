@@ -139,9 +139,9 @@ void rhlineasm4(int32_t i1, uint8_t* texture, int32_t i3, uint32_t i4, uint32_t 
 static int32_t rmmach_eax;
 static int32_t rmmach_ebx;
 static int32_t rmmach_ecx;
-static int32_t rmmach_edx;
+static long rmmach_edx;
 static int32_t setupTileHeight;
-void setuprmhlineasm4(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t tileHeight, int32_t i6)
+void setuprmhlineasm4(int32_t i1, int32_t i2, int32_t i3, long i4, int32_t tileHeight, int32_t i6)
 {
     rmmach_eax = i1;
     rmmach_ebx = i2;
@@ -152,11 +152,11 @@ void setuprmhlineasm4(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t ti
 
 
 //FCS: ????
-void rmhlineasm4(int32_t i1, intptr_t shade, int32_t colorIndex, int32_t i4, int32_t i5, int32_t dest)
+void rmhlineasm4(int32_t i1, uint8_t* shade, int32_t colorIndex, int32_t i4, int32_t i5, uint8_t* dest)
 {
     uint32_t ebp = dest - i1;
-    uint32_t rmach6b = ebp-1;
     int32_t numPixels;
+    int32_t offset = i1 + 1;
     
     if (i1 <= 0)
         return;
@@ -183,7 +183,7 @@ void rmhlineasm4(int32_t i1, intptr_t shade, int32_t colorIndex, int32_t i4, int
 			if (pixelsAllowed-- > 0)
 			{
 				i1 = ((i1&0xffffff00)|(((uint8_t  *)colorIndex)[rmmach_edx]));
-				((uint8_t  *)rmach6b)[numPixels] = (i1&0xff);
+				dest[numPixels - offset] = (i1&0xff);
 			}
 	    }
         
@@ -295,9 +295,9 @@ int32_t tvlineasm1(int32_t i1, uint8_t  * texture, int32_t numPixels, int32_t i4
 
 
 static uint8_t  tran2shr;
-static uint32_t tran2pal_ebx;
-static uint32_t tran2pal_ecx;
-void setuptvlineasm2(int32_t i1, int32_t i2, int32_t i3)
+static unsigned long tran2pal_ebx;
+static unsigned long tran2pal_ecx;
+void setuptvlineasm2(int32_t i1, long i2, long i3)
 {
 	tran2shr = (i1&0x1f);
 	tran2pal_ebx = i2;
@@ -823,7 +823,7 @@ void tsethlineshift(int32_t i1, int32_t i2)
 
 static intptr_t slopemach_ebx;
 static int32_t slopemach_ecx;
-static int32_t slopemach_edx;
+static long slopemach_edx;
 static uint8_t  slopemach_ah1;
 static uint8_t  slopemach_ah2;
 static float asm2_f;
@@ -848,10 +848,11 @@ extern int32_t fpuasm;
 #define high32(a) ((int)(((__int64)a&(__int64)0xffffffff00000000)>>32))
 
 //FCS: Render RENDER_SLOPPED_CEILING_AND_FLOOR
-void slopevlin(intptr_t i1, uint32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6)
+void slopevlin(long i1, uint32_t i2, long* i3, uint32_t index, int32_t i4, int32_t i5, int32_t i6)
 {
     bitwisef2i c;
-    uint32_t ecx,eax,ebx,edx,esi,edi;
+    unsigned long ecx,eax,ebx,edx,esi;
+    uint32_t edi;
 //This is so bad to cast asm3 to int then float :( !!!
     float a = (float)(int32_t) asm3 + asm2_f;
     i1 -= slopemach_ecx;
@@ -898,8 +899,8 @@ void slopevlin(intptr_t i1, uint32_t i2, int32_t i3, int32_t i4, int32_t i5, int
 		    edi += eax;
 		    i1 += slopemach_ecx;
 		    edx = ((edx&0xffffff00)|((((uint8_t  *)(ebx+edx))[slopemach_ebx])));
-		    ebx = *((uint32_t*)i3); // register trickery
-		    i3 -= 4;
+		    ebx = i3[index];
+		    index--;
 		    eax = ((eax&0xffffff00)|(*((uint8_t  *)(ebx+edx))));
 		    ebx = esi;
 
