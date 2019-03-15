@@ -8270,7 +8270,8 @@ void setbrightness(uint8_t  dabrightness, uint8_t  *dapal)
 static void fillpolygon(int32_t npoints)
 {
     int32_t z, zz, x1, y1, x2, y2, miny, maxy, y, xinc, cnt;
-    int32_t ox, oy, bx, by, p, day1, day2;
+    int32_t ox, oy, bx, by, day1, day2;
+    uint8_t* p;
     short *ptr, *ptr2;
 
     miny = 0x7fffffff;
