@@ -31,7 +31,7 @@ Contributors
 * **Project Initiator:** [Fabien Sanglard](https://github.com/fabiensanglard)
 * **Linux Integration:** [Juan Manuel Borges Caño](https://github.com/juanmabc)
 * **Autoconf/Automake Build System:** [darealshinji](https://github.com/darealshinji)
-
+* **64-bit Port:** [Rohit Nirmal](https://github.com/rohit-n)
 
 More Information
 ================
