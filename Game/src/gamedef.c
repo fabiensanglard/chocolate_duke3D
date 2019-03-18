@@ -37,7 +37,7 @@ static int32_t last_used_size;
 
 static short g_i,g_p;
 static int32_t g_x;
-static int32_t *g_t;
+static long *g_t;
 static spritetype *g_sp;
 
 #define NUMKEYWORDS     112
@@ -340,7 +340,7 @@ int32_t keyword(void)
 
 int32_t transword(void) //Returns its code #
 {
-    int32_t i, l;
+    long i, l;
 
     while( isaltok(*textptr) == 0 )
     {
@@ -445,7 +445,8 @@ void transnum(void)
 
 uint8_t  parsecommand(int readfromGRP)
 {
-    int32_t i, j, k, *tempscrptr;
+    int32_t i;
+    long j, k, *tempscrptr;
     uint8_t  done, temp_ifelse_check;
     int32_t tw;
     char *origtptr;
@@ -483,7 +484,7 @@ uint8_t  parsecommand(int readfromGRP)
             {
                 getlabel();
                 scriptptr--;
-                labelcode[labelcnt] = (int32_t) scriptptr;
+                labelcode[labelcnt] = (long) scriptptr;
                 labelcnt++;
 
                 parsing_state = 1;
@@ -628,7 +629,7 @@ uint8_t  parsecommand(int readfromGRP)
                         break;
                     }
                 if(i == labelcnt)
-                    labelcode[labelcnt++] = (int32_t) scriptptr;
+                    labelcode[labelcnt++] = (long) scriptptr;
                 for(j=0;j<2;j++)
                 {
                     if(keyword() >= 0) break;
@@ -786,7 +787,7 @@ uint8_t  parsecommand(int readfromGRP)
                     }
 
                 if(i == labelcnt)
-                    labelcode[labelcnt++] = (int32_t) scriptptr;
+                    labelcode[labelcnt++] = (long) scriptptr;
 
                 for(j=0;j<3;j++)
                 {
@@ -840,7 +841,7 @@ uint8_t  parsecommand(int readfromGRP)
                     }
 
                 if(i == labelcnt)
-                    labelcode[labelcnt++] = (int32_t) scriptptr;
+                    labelcode[labelcnt++] = (long) scriptptr;
 
                 for(j=0;j<5;j++)
                 {
@@ -1017,7 +1018,7 @@ uint8_t  parsecommand(int readfromGRP)
                 tempscrptr = scriptptr;
                 scriptptr++; //Leave a spot for the fail location
                 parsecommand(readfromGRP);
-                *tempscrptr = (int32_t) scriptptr;
+                *tempscrptr = (long) scriptptr;
             }
             else
             {
@@ -1098,7 +1099,7 @@ uint8_t  parsecommand(int readfromGRP)
 
             parsecommand(readfromGRP);
 
-            *tempscrptr = (int32_t) scriptptr;
+            *tempscrptr = (long) scriptptr;
 
             checking_ifelse++;
             return 0;
@@ -1366,7 +1367,7 @@ uint8_t  parsecommand(int readfromGRP)
             return 0;
         case 60:
 		{
-			int32_t params[30];
+			long params[30];
 
 			scriptptr--;
 			for(j = 0; j < 30; j++)
@@ -1585,7 +1586,7 @@ void loadefs(char  *filenam, char  *mptr, int readfromGRP)
     total_lines = 0;
 
     passone(readfromGRP); //Tokenize
-    *script = (int32_t) scriptptr;
+    *script = (long) scriptptr;
 
     if(warning|error)
         printf("Found %hhd warning(s), '%c' error(s).\n",warning,error);
@@ -1764,9 +1765,10 @@ short furthestcanseepoint(short i,spritetype *ts,int32_t *dax,int32_t *day)
 void alterang(short a)
 {
     short aang, angdif, goalang,j;
-    int32_t ticselapsed, *moveptr;
+    long ticselapsed, *moveptr;
 
-    moveptr = (int32_t *)g_t[1];
+    moveptr = (long *)g_t[1];
+
 
     ticselapsed = (g_t[0])&31;
 
@@ -1831,9 +1833,11 @@ void alterang(short a)
 
 void move()
 {
-    int32_t l, *moveptr;
+    int32_t l;
+    long* moveptr;
     short a, goalang, angdif;
     int32_t daxvel;
+
 
     a = g_sp->hitag;
 
@@ -1898,7 +1902,7 @@ void move()
         return;
     }
 
-    moveptr = (int32_t *)g_t[1];
+    moveptr = (long *)g_t[1];
 
     if(a&geth) g_sp->xvel += (*moveptr-g_sp->xvel)>>1;
     if(a&getv) g_sp->zvel += ((*(moveptr+1)<<4)-g_sp->zvel)>>1;
@@ -2037,7 +2041,7 @@ void parseifelse(int32_t condition)
     }
     else
     {
-        insptr = (int32_t *) *(insptr+1);
+        insptr = (long *) *(insptr+1);
         if(*insptr == 10)
         {
             insptr+=2;
@@ -2187,9 +2191,9 @@ uint8_t  parse(void)
         case 24:
             insptr++;
             g_t[5] = *insptr;
-            g_t[4] = *(int32_t *)(g_t[5]);       // Action
-            g_t[1] = *(int32_t *)(g_t[5]+4);       // move
-            g_sp->hitag = *(int32_t *)(g_t[5]+8);    // Ai
+            g_t[4] = *(long *)(g_t[5]);       // Action
+            g_t[1] = *(long *)(g_t[5]+sizeof(long));       // move
+            g_sp->hitag = *(int32_t *)(g_t[5]+(sizeof(long) * 2));    // Ai
             g_t[0] = g_t[2] = g_t[3] = 0;
             if(g_sp->hitag&random_angle)
                 g_sp->ang = TRAND&2047;
@@ -2224,7 +2228,7 @@ uint8_t  parse(void)
                 hittype[g_i].timetosleep = SLEEPTIME;
             break;
         case 10:
-            insptr = (int32_t *) *(insptr+1);
+            insptr = (long *) *(insptr+1);
             break;
         case 100:
             insptr++;
@@ -2575,11 +2579,11 @@ uint8_t  parse(void)
             break;
         case 17:
             {
-                int32_t *tempscrptr;
+                long *tempscrptr;
 
                 tempscrptr = insptr+2;
 
-                insptr = (int32_t *) *(insptr+1);
+                insptr = (long *) *(insptr+1);
                 while(1) if(parse()) break;
                 insptr = tempscrptr;
             }
@@ -3153,13 +3157,13 @@ void execute(short i,short p,int32_t x)
     if(g_t[4])
     {
         g_sp->lotag += TICSPERFRAME;
-        if(g_sp->lotag > *(int32_t *)(g_t[4]+16) )
+        if(g_sp->lotag > *(long *)(g_t[4]+(sizeof(long) * 4)) )
         {
             g_t[2]++;
             g_sp->lotag = 0;
-            g_t[3] +=  *(int32_t *)( g_t[4]+12 );
+            g_t[3] +=  *(long *)( g_t[4]+(sizeof(long) * 3) );
         }
-        if( klabs(g_t[3]) >= klabs( *(int32_t *)(g_t[4]+4) * *(int32_t *)(g_t[4]+12) ) )
+        if( klabs(g_t[3]) >= klabs( *(long *)(g_t[4]+sizeof(long)) * *(long *)(g_t[4]+(sizeof(long) * 3)) ) )
             g_t[3] = 0;
     }
 

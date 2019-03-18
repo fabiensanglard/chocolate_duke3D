@@ -1516,7 +1516,8 @@ void movefallers(void)
 void movestandables(void)
 {
     short i, j, k, m, nexti, nextj, p, sect;
-    int32_t l=0, x, *t;
+    long l=0, *t;
+    int32_t x;
     spritetype *s;
 
     i = headspritestat[6];
@@ -3138,7 +3139,8 @@ void movetransports(void)
 
 void moveactors(void)
 {
-    int32_t x, m, l, *t;
+    long m, l, *t;
+    int32_t x;
     short a, i, j, nexti, nextj, sect, p;
     spritetype *s;
     uint16_t k;
@@ -4395,7 +4397,8 @@ void moveactors(void)
 void moveexplosions(void)  // STATNUM 5
 {
     short i, j, nexti, sect, p;
-    int32_t l, x, *t;
+    long l, *t;
+    int32_t x;
     spritetype *s;
 
     i = headspritestat[5];
@@ -4927,7 +4930,8 @@ void moveexplosions(void)  // STATNUM 5
 
 void moveeffectors(void)   //STATNUM 3
 {
-    int32_t q=0, l, m, x, st, j, *t;
+    long q=0, l, st, j, *t;
+    int32_t x, m;
     short i, k, nexti, nextk, p, sh, nextj;
     spritetype *s;
     sectortype *sc;
@@ -6492,17 +6496,17 @@ void moveeffectors(void)   //STATNUM 3
 
                 if( t[0] == 1 ) //Decide if the s->sectnum should go up or down
                 {
-                    s->zvel = ksgn(s->z-*(int32_t *)l) * (SP<<4);
+                    s->zvel = ksgn(s->z-*(long *)l) * (SP<<4);
                     t[0]++;
                 }
 
                 if( sc->extra == 0 )
                 {
-                    *(int32_t *)l += s->zvel;
+                    *(long *)l += s->zvel;
 
-                    if(klabs(*(int32_t *)l-s->z) < 1024)
+                    if(klabs(*(long *)l-s->z) < 1024)
                     {
-                        *(int32_t *)l = s->z;
+                        *(long *)l = s->z;
                         KILLIT(i); //All done
                     }
                 }
