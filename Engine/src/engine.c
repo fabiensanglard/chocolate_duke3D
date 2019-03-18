@@ -8938,7 +8938,7 @@ void drawmapview(int32_t dax, int32_t day, int32_t zoome, short ang)
             else
                 globalshade = ((int32_t)sector[spr->sectnum].floorshade);
             globalshade = max(min(globalshade+spr->shade+6,numpalookups-1),0);
-            asm3 = (int32_t) FP_OFF(palookup[spr->pal]+(globalshade<<8));
+            asm3 = palookup[spr->pal]+(globalshade<<8);
             globvis = globalhisibility;
             if (sec->visibility != 0) globvis = mulscale4(globvis,(int32_t)((uint8_t )(sec->visibility+16)));
             globalpolytype = ((spr->cstat&2)>>1)+1;
