@@ -47,7 +47,7 @@ void setviewtotile(short tilenume, int32_t tileWidth, int32_t tileHeight)
     j = 0;
     for(i=0; i<=tileWidth; i++) {
         ylookup[i] = j;
-        j += tileWidth;
+        j += tileHeight;
     }
     setBytesPerLine(tileHeight);
     setviewcnt++;
